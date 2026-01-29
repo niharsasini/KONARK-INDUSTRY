@@ -1,17 +1,28 @@
-import Hero from "./components/Hero";
-import PageComponent from "./components/page";
-
+import Hero from "./components/hero/Hero.jsx";
+import PageComponent from "./components/oursolutions/solutions.jsx";
+import People from "./components/testimonials/People";
+import OurPartner from "./components/ourpartners/OurPartners";
 export default function Home() {
   return (
-    <main className="overflow-hidden text-black">
+    <main className="overflow-x-hidden text-black">
       {/* Hero Section */}
-      <section className="min-h-screen bg-[#964a22] flex items-center justify-center">
+      <section className="bg-[#964a22]">
         <Hero />
       </section>
 
-      {/* Next Page Section */}
-      <section className="bg-white text-black py-16">
+      {/* Main Content */}
+      <section className="bg-white">
         <PageComponent />
+      </section>
+
+      {/* Client Testimonials */}
+      <section className="bg-black">
+        <People />
+      </section>
+
+      {/* Client Testimonials */}
+      <section className="bg-black">
+        <OurPartner />
       </section>
     </main>
   );

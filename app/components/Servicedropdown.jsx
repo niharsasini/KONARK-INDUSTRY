@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import {
   BoltIcon,
   LightBulbIcon,
@@ -12,55 +13,46 @@ import {
 } from "@heroicons/react/24/outline";
 
 export default function ServiceDropdown({ open }) {
+  const router = useRouter();
+
   const services = [
     {
-      name: "Electric Vehicles (EV)",
+      name: "Solar Power Plants",
       description:
-        "Premium EVs with the latest technology for sustainable transport.",
-      icon: <BoltIcon className="h-6 w-6 text-gray-700" />,
-    },
-    {
-      name: "Batteries",
-      description:
-        "High-performance batteries to keep your devices and vehicles running longer.",
-      icon: <LightBulbIcon className="h-6 w-6 text-gray-700" />,
-    },
-    {
-      name: "Air Conditioners (AC)",
-      description:
-        "Energy-efficient ACs for cool comfort without high electricity bills.",
+        "Complete turnkey solutions for designing, installing, and commissioning solar power plants.",
       icon: <SparklesIcon className="h-6 w-6 text-gray-700" />,
     },
     {
-      name: "Fans",
-      description: "Modern fans with low power consumption and high airflow.",
+      name: "Robotic Arm Solutions",
+      description:
+        "Designing and manufacturing precision robotic arms for industrial automation.",
       icon: <Cog6ToothIcon className="h-6 w-6 text-gray-700" />,
     },
     {
-      name: "EV Charging Stations",
+      name: "Cold Storage Systems",
       description:
-        "Reliable EV charging solutions for homes and commercial areas.",
-      icon: <HomeIcon className="h-6 w-6 text-gray-700" />,
-    },
-    {
-      name: "LCD TVs",
-      description: "Smart LCD TVs with superior display and energy efficiency.",
-      icon: <TvIcon className="h-6 w-6 text-gray-700" />,
-    },
-    {
-      name: "Energy Storage Solutions",
-      description: "Advanced storage systems for uninterrupted power supply.",
+        "End-to-end cold storage design and execution for agriculture and industry.",
       icon: <CubeIcon className="h-6 w-6 text-gray-700" />,
+    },
+    {
+      name: "EV Charging Infrastructure",
+      description:
+        "Smart and scalable EV charging station solutions for residential and commercial use.",
+      icon: <BoltIcon className="h-6 w-6 text-gray-700" />,
     },
   ];
 
-  // Variants for cards animation
+  // Card animation variants
   const cardVariants = {
     hidden: { opacity: 0, y: 10 },
     visible: (i) => ({
       opacity: 1,
       y: 0,
-      transition: { delay: i * 0.08, type: "spring", stiffness: 200 },
+      transition: {
+        delay: i * 0.08,
+        type: "spring",
+        stiffness: 200,
+      },
     }),
   };
 
@@ -91,7 +83,7 @@ export default function ServiceDropdown({ open }) {
           {/* Services Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 px-8 py-6">
             {services.map((service, index) => (
-              <motion.a
+              <motion.div
                 key={service.name}
                 custom={index}
                 variants={cardVariants}
@@ -99,7 +91,7 @@ export default function ServiceDropdown({ open }) {
                 animate="visible"
                 whileHover={{ y: -6, scale: 1.03, rotate: 0.5 }}
                 transition={{ type: "spring", stiffness: 250, damping: 18 }}
-                href="#"
+                onClick={() => router.push("/services")}
                 className="group flex flex-col p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-md cursor-pointer transition relative overflow-hidden"
               >
                 <div className="flex items-center space-x-3 mb-2">
@@ -117,13 +109,14 @@ export default function ServiceDropdown({ open }) {
                 <p className="text-gray-600 text-sm leading-snug">
                   {service.description}
                 </p>
+
                 {/* subtle hover glow */}
                 <motion.div
                   className="absolute inset-0 rounded-xl bg-white opacity-0 pointer-events-none"
                   whileHover={{ opacity: 0.05 }}
                   transition={{ duration: 0.3 }}
                 />
-              </motion.a>
+              </motion.div>
             ))}
           </div>
 
@@ -132,6 +125,7 @@ export default function ServiceDropdown({ open }) {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
+              onClick={() => router.push("/services")}
               className="w-fit rounded-full bg-gray-900 px-5 py-2 text-sm font-medium text-white hover:bg-gray-800 transition"
             >
               Explore Solutions →

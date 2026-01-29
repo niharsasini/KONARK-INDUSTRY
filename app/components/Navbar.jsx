@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import DropdownMenu from "./DropdownMenu";
-import ProductDropdown from "./Productdropdown";
+import ProductDropdown from "./product-dropdown/Productdropdown";
 import ServiceDropdown from "./Servicedropdown";
 
 export default function Navbar() {
@@ -95,7 +95,7 @@ export default function Navbar() {
                   About Us
                 </Link>
 
-                <Link href="#" className="hidden md:block hover:text-gray-300">
+                <Link href="/contactus" className="hidden md:block hover:text-gray-300">
                   Contact Us
                 </Link>
                 <Link

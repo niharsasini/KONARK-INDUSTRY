@@ -1,12 +1,18 @@
 import "./globals.css";
 import Navbar from "./components/Navbar";
+import Footer from "./components/footer/Footer"; // 👈 import footer
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className="flex min-h-screen flex-col">
         <Navbar />
-        {children}
+
+        {/* Page content */}
+        <main className="flex-grow">{children}</main>
+
+        {/* Footer on every page */}
+        <Footer />
       </body>
     </html>
   );
