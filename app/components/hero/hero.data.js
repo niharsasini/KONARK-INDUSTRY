@@ -14,8 +14,10 @@ export const HERO_DATA = {
 };
 
 export const PRODUCT_IMAGES = [
-  "/konark/bike.png",
-  "/konark/battery-1.png",
-  "/konark/battery-2.png",
-  "/konark/charger.png",
+  "/konark/productevscooty.png",
+  "/konark/blackscooter.jpeg",
+  "/konark/ac.png",
+  "/konark/cooler.png",
+  "/konark/fan.jpeg",
+  "/konark/fancoil.png",
 ];

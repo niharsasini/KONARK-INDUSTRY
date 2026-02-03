@@ -1,47 +1,61 @@
 export const PRODUCTS = [
   {
     id: 1,
-    name: "Konark EV Battery Pro",
+    name: "Solar Power Plants",
     description:
-      "High-performance lithium-ion battery engineered for electric two-wheelers.",
+      "Complete turnkey solutions for designing, installing, and commissioning solar power plants.",
     features: [
-      "Fast Charging",
-      "2000+ Charge Cycles",
-      "Thermal Safety",
-      "Compact Design",
+      "Turnkey EPC Solutions",
+      "High-Efficiency Panels",
+      "On-Grid & Off-Grid Systems",
+      "Low Maintenance Design",
     ],
     marketFit:
-      "Optimized for Indian roads with high efficiency and long operational life.",
-    image: "/battery-1.png",
+      "Ideal for industries, commercial buildings, and large-scale renewable energy adoption in India.",
+    image: "/konark/solarpannel solutions.png",
   },
   {
     id: 2,
-    name: "Konark Energy Storage System",
+    name: "Robotic Arm Solutions",
     description:
-      "Smart energy storage solution for residential and commercial applications.",
+      "Designing and manufacturing precision robotic arms for industrial automation.",
     features: [
-      "Solar Ready",
-      "Smart Power Control",
-      "High Energy Density",
-      "Low Maintenance",
+      "High Precision Control",
+      "Custom Industrial Design",
+      "Automation Ready",
+      "Low Operational Error",
     ],
     marketFit:
-      "Ideal for renewable integration and uninterrupted power backup.",
-    image: "/battery-2.png",
+      "Boosts productivity and accuracy in manufacturing and automation-driven industries.",
+    image: "/konark/roboticarm solutins.png",
   },
   {
     id: 3,
-    name: "Konark Industrial Battery Pack",
+    name: "Cold Storage Systems",
     description:
-      "Heavy-duty battery systems built for industrial EVs and logistics fleets.",
+      "End-to-end cold storage design and execution for agriculture and industry.",
     features: [
-      "High Load Capacity",
-      "Rugged Industrial Build",
-      "Advanced BMS",
-      "Extended Warranty",
+      "Temperature Controlled Units",
+      "Energy Efficient Cooling",
+      "Modular Storage Design",
+      "24x7 Monitoring Support",
     ],
     marketFit:
-      "Reduces downtime and operating costs in demanding environments.",
-    image: "/battery-3.png",
+      "Perfect for agriculture, food processing, pharmaceuticals, and logistics.",
+    image: "/konark/coldstorage solutions.png",
+  },
+  {
+    id: 4,
+    name: "EV Charging Infrastructure",
+    description:
+      "Smart and scalable EV charging station solutions for residential and commercial use.",
+    features: [
+      "Fast Charging Support",
+      "Smart Load Management",
+      "Scalable Deployment",
+      "IoT Enabled Monitoring",
+    ],
+    marketFit: "Supports India’s rapidly growing EV ecosystem.",
+    image: "/konark/evcharge solution.png",
   },
 ];
