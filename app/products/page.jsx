@@ -5,6 +5,8 @@ import ProductList from "./ProductList";
 import ProductFilter from "./ProductFilter";
 import { heroTitle, heroSubtitle } from "./Product.styles";
 
+/* ---------------- HERO ---------------- */
+
 const HeroBanner = () => (
   <section className="relative bg-gray-900 text-white py-24 px-6 md:px-12 flex flex-col justify-center items-start">
     <h1 className={heroTitle}>Powering Innovation, Driving Industry</h1>
@@ -21,27 +23,30 @@ const HeroBanner = () => (
   </section>
 );
 
+/* ---------------- HIGHLIGHTS ---------------- */
+
 const IndustryHighlights = () => (
   <section className="py-20 px-6 md:px-12 bg-gray-100">
     <h2 className="text-3xl font-bold text-center mb-12">
       Why Choose Konark Energy Solutions?
     </h2>
+
     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
       {[
         {
           icon: "/icons/efficiency.svg",
           title: "High Efficiency",
-          desc: "Our machinery is optimized for maximum energy output with minimal waste.",
+          desc: "Optimized machinery delivering maximum output with minimal energy loss.",
         },
         {
           icon: "/icons/safety.svg",
           title: "Safety First",
-          desc: "Industry-standard safety protocols ensure reliable and safe operations.",
+          desc: "Designed with industry-grade safety standards and reliability.",
         },
         {
           icon: "/icons/sustainability.svg",
           title: "Sustainable Solutions",
-          desc: "Eco-friendly energy systems designed to reduce carbon footprint.",
+          desc: "Eco-friendly products supporting long-term sustainable growth.",
         },
       ].map((item, idx) => (
         <div key={idx} className="text-center">
@@ -54,34 +59,50 @@ const IndustryHighlights = () => (
   </section>
 );
 
+/* ---------------- PRODUCT PAGE ---------------- */
+
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const categories = [...new Set(initialProducts.map((p) => p.category))];
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     setProducts(initialProducts);
     setFilteredProducts(initialProducts);
+
+    // ✅ Dynamically generate categories from product data
+    const uniqueCategories = [
+      "All",
+      ...new Set(initialProducts.map((p) => p.category)),
+    ];
+
+    setCategories(uniqueCategories);
   }, []);
 
   const handleFilter = (category) => {
-    if (!category || category === "All") {
+    if (category === "All") {
       setFilteredProducts(products);
     } else {
-      setFilteredProducts(products.filter((p) => p.category === category));
+      setFilteredProducts(
+        products.filter((product) => product.category === category),
+      );
     }
   };
 
   return (
     <div>
       <HeroBanner />
+
       <section id="products" className="px-6 md:px-12 py-12">
         <h2 className="text-3xl font-bold text-center mb-6">
           Our Industrial Products
         </h2>
-        <ProductFilter onFilter={handleFilter} />
+
+        <ProductFilter categories={categories} onFilter={handleFilter} />
+
         <ProductList products={filteredProducts} />
       </section>
+
       <IndustryHighlights />
     </div>
   );

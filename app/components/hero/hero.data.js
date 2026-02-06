@@ -1,15 +1,16 @@
 export const HERO_DATA = {
-  tagline: "Powering Tomorrow",
+  tagline: "Engineering Reliable Power Systems",
   title: "KONARK",
   bold: "INDUSTRY",
   description:
-    "A next-generation EV & Battery Technology company delivering high-performance, safe, and sustainable energy solutions for electric mobility and energy storage.",
-  quote: "Driving Innovation • Accelerating Clean Energy • Built for India",
+    "Konark Industry is a technology-driven manufacturing enterprise specializing in electric mobility, energy storage, and advanced electrical appliances. We design and manufacture robust, high-performance products engineered for efficiency, safety, and long-term operational reliability across commercial and industrial applications.",
+  quote:
+    "Manufacturing Excellence • Electric Mobility • Energy Infrastructure • Made in India",
   highlights: [
-    "⚡ Advanced EV Batteries",
-    "🔋 Energy Storage Systems",
-    "🌱 Sustainable Manufacturing",
-    "🇮🇳 Made for Indian Roads",
+    "⚙️ Electric Mobility Manufacturing (2W, 3W)",
+    "🔋 Grid & Industrial Energy Storage Systems",
+    "🏭 Large-Scale Electrical & Electronics Manufacturing",
+    "🇮🇳 Manufacturing Unit Based in Bhubaneswar, Odisha",
   ],
 };
 

@@ -1,170 +1,351 @@
+/* ================= CATEGORY CONFIG ================= */
+
+export const CATEGORIES = {
+  EV: "Electric Vehicles",
+  HOME: "Home Appliances",
+  INDUSTRIAL: "Industrial Equipment",
+  COMPONENTS: "Industrial Components",
+  BATTERY: "Batteries",
+  ELECTRONICS: "Electronics",
+  SERVICES: "Industrial Services",
+};
+
+/* ================= PRODUCT DATA ================= */
+
 export const products = [
+  /* ================= ELECTRIC VEHICLES ================= */
+
   {
     id: 1,
     name: "Electric Scooter",
-    description: "Eco-friendly urban electric scooter",
-    category: "Vehicles",
-    price: 1200,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.EV,
+    price: 27000,
+    rating: 4.6,
+    isNew: true,
+    image: "/productimg/Electric Scooter.png",
+    shortDescription:
+      "Smart electric scooter for efficient daily city commuting.",
+    description:
+      "A reliable electric scooter designed for smooth urban mobility. It features a removable battery, LED lighting, digital display, and anti-theft security, making it ideal for everyday travel.",
+    specifications: {
+      Motor: "1000W",
+      Tyre: "12 Inch",
+      Brake: "Disc",
+      Battery: "Removable",
+      Range: "Up to 80 Km",
+    },
   },
+
   {
     id: 2,
     name: "Electric Motor Cycle",
-    description: "High performance electric motorcycle",
-    category: "Vehicles",
-    price: 4500,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.EV,
+    price: 45000,
+    rating: 4.7,
+    isNew: true,
+    image: "/productimg/Electric Motor Cycle.png",
+    shortDescription:
+      "High-performance electric motorcycle with extended riding range.",
+    description:
+      "Built for power and comfort, this electric motorcycle delivers strong acceleration, long range, and durability suitable for city and highway use.",
+    specifications: {
+      Motor: "2000W",
+      Tyre: "21 Inch",
+      Brake: "Disc",
+      Range: "Up to 90 Km",
+    },
   },
+
   {
     id: 3,
     name: "E-Rickshaw",
-    description: "Electric rickshaw for city transport",
-    category: "Vehicles",
-    price: 2500,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.EV,
+    price: 85000,
+    rating: 4.5,
+    isNew: false,
+    image: "/productimg/E-Rickshaw.png",
+    shortDescription:
+      "Heavy-duty electric rickshaw for passenger and goods transport.",
+    description:
+      "Designed for commercial operations, this e-rickshaw offers high load capacity, durable suspension, and customizable configurations.",
+    specifications: {
+      LoadCapacity: "500 Kg",
+      Suspension: "Telescopic / Beam",
+      Battery: "Removable",
+    },
   },
+
   {
     id: 4,
     name: "Utility Vehicle",
-    description: "Electric utility vehicle for cargo and transport",
-    category: "Vehicles",
-    price: 5000,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.EV,
+    price: 55000,
+    rating: 4.4,
+    isNew: false,
+    image: "/productimg/Utility Vehicle.png",
+    shortDescription:
+      "Electric utility vehicle for industrial and campus transport.",
+    description:
+      "Custom-built utility EV designed for factories, warehouses, and industrial campuses with flexible build options.",
+    specifications: {
+      Usage: "Industrial Transport",
+      Customization: "Available",
+    },
   },
+
+  /* ================= HOME APPLIANCES ================= */
+
   {
     id: 5,
     name: "Air Conditioner",
-    description: "Energy efficient split AC",
-    category: "Home Appliances",
-    price: 350,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.HOME,
+    price: 26000,
+    rating: 4.4,
+    isNew: false,
+    image: "/productimg/Air Conditioner.png",
+    shortDescription: "Energy-efficient air conditioner for Indian climate.",
+    description:
+      "Delivers fast and consistent cooling even under voltage fluctuations, suitable for residential and commercial use.",
+    specifications: {
+      Capacity: "1 / 1.5 / 2 Ton",
+      Coolant: "R32",
+      Voltage: "180V – 265V",
+    },
   },
+
   {
     id: 6,
     name: "BLDC Fan",
-    description: "High-speed, energy saving BLDC ceiling fan",
-    category: "Home Appliances",
-    price: 120,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.HOME,
+    price: 2200,
+    rating: 4.6,
+    isNew: true,
+    image: "/productimg/BLDC Fan.png",
+    shortDescription: "Low power BLDC fan with silent operation.",
+    description:
+      "Consumes significantly less electricity while delivering powerful airflow, ideal for energy savings.",
+    specifications: {
+      PowerConsumption: "28W",
+      Warranty: "3 Years",
+    },
   },
+
   {
     id: 7,
     name: "BLDC Motor",
-    description: "Durable BLDC motor for industrial use",
-    category: "Electrical Components",
-    price: 180,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.HOME,
+    price: 6500,
+    rating: 4.5,
+    isNew: false,
+    image: "/productimg/BLDC Motor .png",
+    shortDescription: "High-efficiency BLDC motor for EV and industrial use.",
+    description:
+      "Made-in-India BLDC motor available in multiple power ratings for electric vehicles and automation systems.",
+    specifications: {
+      PowerOptions: "250W – 2000W",
+      Type: "Hub & Mid Drive",
+    },
   },
+
   {
     id: 8,
     name: "Induction Cooker",
-    description: "Fast heating induction cooktop",
-    category: "Kitchen Appliances",
-    price: 80,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.HOME,
+    price: 1650,
+    rating: 4.3,
+    isNew: false,
+    image: "/productimg/Induction Cooker.png",
+    shortDescription: "Compact induction cooker for modern kitchens.",
+    description:
+      "Fast heating, safe cooking, and energy-efficient performance for daily household use.",
+    specifications: {
+      Power: "1000 – 1500W",
+      Voltage: "240V",
+    },
   },
+
   {
     id: 9,
     name: "Infra Red Cooker",
-    description: "Efficient infrared cooking appliance",
-    category: "Kitchen Appliances",
-    price: 75,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.HOME,
+    price: 1650,
+    rating: 4.2,
+    isNew: false,
+    image: "/productimg/Infra Red Cooker.png",
+    shortDescription: "Infrared cooker compatible with all cookware.",
+    description:
+      "Uses infrared heating technology for uniform heat distribution and efficient cooking.",
+    specifications: {
+      Power: "1000 – 1500W",
+      Voltage: "240V",
+    },
   },
+
   {
     id: 10,
     name: "Water Purifier",
-    description: "RO + UV water purifier for safe drinking water",
-    category: "Home Appliances",
-    price: 200,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.HOME,
+    price: 4800,
+    rating: 4.4,
+    isNew: false,
+    image: "/productimg/Water Purifier.png",
+    shortDescription: "Multi-stage RO water purifier for clean drinking water.",
+    description:
+      "Effectively removes impurities and improves taste, ensuring safe water for households.",
+    specifications: {
+      Stages: "6 Layer RO",
+    },
   },
+
   {
     id: 11,
     name: "Android TV",
-    description: "Smart Android TV with 4K resolution",
-    category: "Electronics",
-    price: 600,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.HOME,
+    price: 0,
+    rating: 4.5,
+    isNew: true,
+    image: "/productimg/Android TV.png",
+    shortDescription: "Smart Android TV with 4K display support.",
+    description:
+      "Enjoy immersive entertainment with Android OS, high-resolution visuals, and powerful audio.",
+    specifications: {
+      OS: "Android 14",
+      Resolution: "4K",
+    },
   },
+
+  /* ================= INDUSTRIAL / COLD STORAGE ================= */
+
   {
     id: 12,
     name: "Hybrid Cold Storage",
-    description: "Energy-efficient hybrid cold storage solution",
-    category: "Industrial Appliances",
-    price: 12000,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.INDUSTRIAL,
+    price: 250,
+    rating: 4.7,
+    isNew: true,
+    image: "/productimg/Hybrid Cold Storage.png",
+    shortDescription: "Solar-powered hybrid cold storage solution.",
+    description:
+      "Supports solar, battery, grid, and DG power sources with precise temperature control.",
+    specifications: {
+      Temperature: "-40°C",
+      Pricing: "₹250 per sq.ft",
+    },
   },
+
   {
     id: 13,
-    name: "Movable Cold Storage",
-    description: "Portable cold storage for perishable goods",
-    category: "Industrial Appliances",
-    price: 9000,
-    image: "https://via.placeholder.com/300",
+    name: "Cooling Coil",
+    category: CATEGORIES.COMPONENTS,
+    price: 300,
+    rating: 4.4,
+    isNew: false,
+    image: "/productimg/Cooling Coil.png",
+    shortDescription: "High-efficiency cooling coil for HVAC systems.",
+    description:
+      "Manufactured using copper pipes and aluminium fins for superior heat transfer.",
+    specifications: {
+      Pricing: "₹300 per running inch",
+    },
   },
+
   {
     id: 14,
-    name: "OEM for Cold Storage",
-    description: "Customized OEM solutions for cold storage systems",
-    category: "Industrial Appliances",
-    price: 15000,
-    image: "https://via.placeholder.com/300",
+    name: "Condenser Coil",
+    category: CATEGORIES.COMPONENTS,
+    price: 300,
+    rating: 4.4,
+    isNew: false,
+    image: "/productimg/Condenser Coil.png",
+    shortDescription: "Durable condenser coil for industrial cooling.",
+    description:
+      "Designed for high thermal efficiency and long operational life.",
+    specifications: {
+      Pricing: "₹300 per running inch",
+    },
   },
+
   {
     id: 15,
-    name: "Cooling Coil",
-    description: "High efficiency cooling coil for AC and cold storage",
-    category: "Industrial Appliances",
-    price: 400,
-    image: "https://via.placeholder.com/300",
+    name: "Air Conditioner Outer Body",
+    category: CATEGORIES.COMPONENTS,
+    price: 0,
+    rating: 4.3,
+    isNew: false,
+    image: "/productimg/Air Conditioner Outer Body.png",
+    shortDescription: "Durable AC outer body for OEM manufacturing.",
+    description:
+      "High-strength steel outer casing for air conditioners with corrosion-resistant coating.",
+    specifications: {
+      Material: "Steel",
+      Usage: "OEM Manufacturing",
+    },
   },
+
+  /* ================= BATTERY & ELECTRONICS ================= */
+
   {
     id: 16,
-    name: "Condenser Coil",
-    description: "Durable condenser coil for refrigeration systems",
-    category: "Industrial Appliances",
-    price: 450,
-    image: "https://via.placeholder.com/300",
+    name: "LFP Battery",
+    category: CATEGORIES.BATTERY,
+    price: 14000,
+    rating: 4.8,
+    isNew: true,
+    image: "/productimg/LFP Battery.png",
+    shortDescription: "Long-life LFP battery for EV and solar systems.",
+    description:
+      "High-safety lithium iron phosphate battery with long cycle life and stable performance.",
+    specifications: {
+      WithBMS: "₹14 per watt",
+      WithoutBMS: "₹11 per watt",
+    },
   },
+
   {
     id: 17,
-    name: "Air Conditioner Outer Body",
-    description: "Replacement outer body for AC units",
-    category: "Home Appliances",
-    price: 150,
-    image: "https://via.placeholder.com/300",
+    name: "BMS",
+    category: CATEGORIES.ELECTRONICS,
+    price: 0,
+    rating: 4.6,
+    isNew: true,
+    image: "/productimg/BMS.png",
+    shortDescription: "Battery Management System for LFP batteries.",
+    description:
+      "Protects batteries from overcharge, discharge, overheating, and imbalance.",
+    specifications: {
+      VoltageSupport: "Up to 60V",
+    },
   },
+
   {
     id: 18,
-    name: "LFP Battery",
-    description: "Lithium Iron Phosphate battery for EVs",
-    category: "Electrical Components",
-    price: 800,
-    image: "https://via.placeholder.com/300",
+    name: "Battery Charger",
+    category: CATEGORIES.ELECTRONICS,
+    price: 0,
+    rating: 4.5,
+    isNew: false,
+    image: "/productimg/Battery Charger.png",
+    shortDescription: "Adjustable charger for multiple battery capacities.",
+    description:
+      "Supports various current ratings with adjustable voltage control.",
+    specifications: {
+      CurrentOptions: "1A – 20A",
+    },
   },
+
   {
     id: 19,
-    name: "BMS",
-    description: "Battery Management System for lithium batteries",
-    category: "Electrical Components",
-    price: 350,
-    image: "https://via.placeholder.com/300",
-  },
-  {
-    id: 20,
-    name: "Battery Charger",
-    description: "Fast charger for EV and industrial batteries",
-    category: "Electrical Components",
-    price: 250,
-    image: "https://via.placeholder.com/300",
-  },
-  {
-    id: 21,
     name: "PCB and Soldering",
-    description: "High-quality PCB and soldering services",
-    category: "Electrical Components",
-    price: 100,
-    image: "https://via.placeholder.com/300",
+    category: CATEGORIES.SERVICES,
+    price: 0,
+    rating: 4.3,
+    isNew: false,
+    image: "/productimg/PCB and Soldering.png",
+    shortDescription: "Professional PCB assembly and soldering services.",
+    description:
+      "Reliable PCB manufacturing, assembly, and soldering for industrial and electronic products.",
+    specifications: {
+      ServiceType: "PCB Assembly & Soldering",
+    },
   },
 ];

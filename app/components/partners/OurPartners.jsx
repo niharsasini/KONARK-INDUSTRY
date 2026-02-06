@@ -1,7 +1,7 @@
 "use client";
 
 import React, { memo } from "react";
-import { PARTNERS } from "./partnersData";
+import { PARTNERS } from "./partners.data";
 
 const stats = [
   { label: "Global Partners", value: "50+" },

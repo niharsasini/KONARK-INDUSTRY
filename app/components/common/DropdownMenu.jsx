@@ -4,23 +4,10 @@ import React from "react";
 import Image from "next/image";
 
 // Import your images
-import BlackScooter from "../../public/konark/blackscooter.jpeg";
-import Cooler from "../../public/konark/cooler.png";
-import Fan from "../../public/konark/fan.jpeg";
-import FanCoil from "../../public/konark/fancoil.png";
-import Scooty from "../../public/konark/scooty.png";
-import TV from "../../public/konark/tv.jpeg";
+
 
 // Define products with their respective images
-const products = [
-  { name: "Ola S1 Pro+", tag: "Gen3", img: BlackScooter },
-  { name: "Ola S1 Pro", tag: "Gen3", img: Scooty },
-  { name: "Ola S1 X", tag: "Gen3", img: BlackScooter },
-  { name: "Roadster X+", tag: "New", img: FanCoil },
-  { name: "Roadster X", tag: "New", img: Fan },
-  { name: "Roadster", img: TV },
-  { name: "Ola Shakti", tag: "New", img: Cooler },
-];
+
 
 export default function DropdownMenu() {
   return (

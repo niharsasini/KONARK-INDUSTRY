@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-import { PRODUCTS } from "./data";
-import { CAROUSEL_RESPONSIVE, TRUST_ITEMS } from "./constants";
+import { PRODUCTS } from "./solutions.data";
+import { CAROUSEL_RESPONSIVE, TRUST_ITEMS } from "./solutions.constants";
 
 const stats = [
   { label: "Energy Solutions", value: "15+" },
@@ -33,7 +33,7 @@ export default function OurSolutionsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="mt-4 text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-extrabold leading-tight"
+            className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight"
           >
             Advanced Battery & Energy Systems
           </motion.h1>
@@ -53,7 +53,7 @@ export default function OurSolutionsPage() {
 
       {/* ================= STATS ================= */}
       <section className="pb-16 sm:pb-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((item, i) => (
             <motion.div
               key={item.label}
@@ -61,21 +61,19 @@ export default function OurSolutionsPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="bg-white rounded-2xl p-6 sm:p-8 text-center shadow-lg hover:shadow-2xl hover:-translate-y-1 transition"
+              className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-md transition"
             >
-              <h3 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 {item.value}
               </h3>
-              <p className="mt-2 text-gray-500 text-sm sm:text-base">
-                {item.label}
-              </p>
+              <p className="mt-2 text-gray-500 text-sm">{item.label}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* ================= PRODUCTS ================= */}
-      <section className="pb-20 sm:pb-28">
+      <section className="pb-20 sm:pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Carousel
             responsive={CAROUSEL_RESPONSIVE}
@@ -83,37 +81,41 @@ export default function OurSolutionsPage() {
             autoPlay
             autoPlaySpeed={5000}
             arrows={false}
-            showDots
+            showDots={false}
           >
             {PRODUCTS.map((product) => (
               <motion.div
                 key={product.id}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="mx-2 sm:mx-3 h-full bg-white rounded-2xl border border-gray-100 p-4 sm:p-6 flex flex-col shadow-lg hover:shadow-2xl hover:scale-[1.03] transition"
+                transition={{ duration: 0.4 }}
+                className="mx-2 h-full bg-white rounded-xl border border-gray-200 p-4 flex flex-col shadow-sm hover:shadow-md transition"
               >
-                <div className="flex justify-center mb-4 sm:mb-5">
+                {/* IMAGE */}
+                <div className="flex justify-center mb-3">
                   <Image
                     src={product.image}
                     alt={product.name}
-                    width={220}
-                    height={220}
+                    width={180}
+                    height={180}
                     priority={product.id === 1}
-                    className="max-h-44 sm:max-h-52 md:max-h-60 w-auto object-contain"
+                    className="max-h-36 w-auto object-contain"
                   />
                 </div>
 
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+                {/* TITLE */}
+                <h3 className="text-base font-semibold text-gray-900">
                   {product.name}
                 </h3>
 
-                <p className="mt-2 text-sm sm:text-base text-gray-600">
+                {/* DESCRIPTION */}
+                <p className="mt-1 text-sm text-gray-600 leading-snug">
                   {product.description}
                 </p>
 
-                <ul className="mt-3 sm:mt-4 space-y-1 sm:space-y-2 text-sm sm:text-base text-gray-700">
+                {/* FEATURES */}
+                <ul className="mt-2 space-y-1 text-sm text-gray-700">
                   {product.features.map((f) => (
                     <li key={f} className="flex gap-2">
                       <span className="text-blue-600 font-bold">•</span>
@@ -122,16 +124,18 @@ export default function OurSolutionsPage() {
                   ))}
                 </ul>
 
-                <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-500">
+                {/* USE CASE */}
+                <p className="mt-2 text-xs text-gray-500">
                   <strong className="text-gray-700">Use Case:</strong>{" "}
                   {product.marketFit}
                 </p>
 
-                <div className="mt-auto flex flex-col sm:flex-row gap-3 pt-4 sm:pt-6">
-                  <button className="flex-1 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 py-2 text-white font-semibold hover:from-blue-700 hover:to-indigo-700 transition">
+                {/* ACTIONS */}
+                <div className="mt-auto flex gap-2 pt-4">
+                  <button className="flex-1 rounded-md bg-blue-600 py-1.5 text-sm text-white font-medium hover:bg-blue-700 transition">
                     Enquire
                   </button>
-                  <button className="flex-1 rounded-full border border-gray-300 py-2 hover:bg-gray-100 transition">
+                  <button className="flex-1 rounded-md border border-gray-300 py-1.5 text-sm hover:bg-gray-100 transition">
                     Specs
                   </button>
                 </div>
@@ -142,8 +146,8 @@ export default function OurSolutionsPage() {
       </section>
 
       {/* ================= TRUST ================= */}
-      <section className="bg-white py-16 sm:py-24 border-t">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+      <section className="bg-white py-16 sm:py-20 border-t">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {TRUST_ITEMS.map((item, i) => (
             <motion.div
               key={item.title}
@@ -151,12 +155,12 @@ export default function OurSolutionsPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="border-l-4 border-blue-600 pl-4 sm:pl-6"
+              className="border-l-4 border-blue-600 pl-4"
             >
-              <h4 className="font-semibold text-blue-600 mb-1 sm:mb-2 text-base sm:text-lg">
+              <h4 className="font-semibold text-blue-600 mb-1 text-base">
                 {item.title}
               </h4>
-              <p className="text-sm sm:text-base text-gray-600">{item.text}</p>
+              <p className="text-sm text-gray-600">{item.text}</p>
             </motion.div>
           ))}
         </div>

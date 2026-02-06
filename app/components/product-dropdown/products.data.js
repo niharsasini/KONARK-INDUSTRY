@@ -27,7 +27,7 @@ export const PRODUCTS = [
     title: "BLDC Motors",
     description: "High-efficiency motors for EV & appliances",
     badge: "Eco",
-    image: "/konark/productbldcmotor.png",
+    image: "/productimg/BLDC Motor.png",
   },
   {
     title: "EV Charging Systems",

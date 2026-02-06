@@ -1,20 +1,76 @@
+/* ================= HERO ================= */
+export const heroTitle = `
+  text-4xl md:text-5xl lg:text-6xl
+  font-extrabold mb-6
+`;
+
+export const heroSubtitle = `
+  text-lg md:text-xl
+  text-gray-300 mb-8
+  max-w-2xl
+`;
+
+/* ================= CARD ================= */
 export const cardStyles = `
-  relative bg-white border rounded-lg overflow-hidden shadow-lg cursor-pointer
-  hover:shadow-2xl transition-transform transform hover:scale-105
+  bg-white rounded-xl
+  shadow-md
+  overflow-hidden
 `;
 
+/* ================= PAPER FOLD ================= */
 export const foldedCorner = `
-  absolute top-0 left-0 w-12 h-12 bg-yellow-500 clip-path-folded-corner
-  flex items-center justify-center
+  absolute top-0 left-0 w-0 h-0
+  border-t-[48px] border-t-yellow-500
+  border-r-[48px] border-r-transparent
+  z-20
 `;
 
-export const productImage = `w-full h-56 object-cover`;
-export const productTitle = `text-lg md:text-xl font-bold text-gray-900 mb-2`;
-export const productDescription = `text-gray-600 mb-4`;
-export const priceTag = `text-yellow-600 font-bold text-lg`;
-export const viewButton = `bg-gray-900 text-white px-3 py-1 rounded hover:bg-gray-800 transition`;
-export const categoryButton = `
-  px-4 py-2 rounded border border-gray-300 hover:bg-gray-100 transition font-medium
+export const foldedCornerText = `
+  absolute top-[6px] left-[6px]
+  text-white text-xs font-bold
+  rotate-[-45deg]
+  origin-left z-30
 `;
-export const heroTitle = `text-4xl md:text-6xl font-bold mb-4`;
-export const heroSubtitle = `text-lg md:text-xl mb-6 max-w-xl`;
+
+/* ================= IMAGE ================= */
+export const productImageWrapper = `
+  relative w-full h-56
+  overflow-hidden
+  bg-gray-100
+`;
+
+export const productImage = `
+  w-full h-full
+  object-cover
+`;
+
+/* ================= TEXT ================= */
+export const productTitle = `
+  text-lg font-semibold text-gray-900 mb-1
+`;
+
+export const productDescription = `
+  text-sm text-gray-600
+`;
+
+/* ================= PRICE ================= */
+export const priceTag = `
+  text-yellow-600 font-bold text-sm
+`;
+
+/* ================= BUTTON (ONLY HOVER HERE) ================= */
+export const viewButton = `
+  bg-gray-900 text-white text-xs
+  px-4 py-2 rounded-md
+  transition-colors duration-200
+  hover:bg-yellow-500 hover:text-gray-900
+`;
+
+/* ================= CATEGORY FILTER BUTTON ================= */
+export const categoryButton = `
+  px-5 py-2 rounded-full
+  border border-gray-300
+  text-sm font-medium text-gray-700
+  transition-all duration-200
+  hover:bg-yellow-500 hover:text-gray-900 hover:border-yellow-500
+`;

@@ -7,7 +7,7 @@ export default function HeroRightCarousel({ images }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    if (!images || images.length === 0) return;
+    if (!images?.length) return;
 
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % images.length);
@@ -17,11 +17,11 @@ export default function HeroRightCarousel({ images }) {
   }, [images]);
 
   return (
-    <div className="relative flex-1 w-full max-w-md sm:max-w-lg lg:max-w-xl mx-auto lg:mx-0">
+    <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg mx-auto">
       {/* VIEWPORT */}
-      <div className="relative h-[300px] sm:h-[400px] lg:h-[560px] overflow-hidden">
+      <div className="relative overflow-hidden aspect-square">
         <div
-          className="flex h-full transition-transform duration-700 ease-in-out"
+          className="flex w-full h-full transition-transform duration-700 ease-in-out"
           style={{ transform: `translateX(-${activeIndex * 100}%)` }}
         >
           {images.map((img, i) => (
@@ -32,10 +32,10 @@ export default function HeroRightCarousel({ images }) {
               <Image
                 src={img}
                 alt={`Top Product ${i + 1}`}
-                width={600}
-                height={600}
+                width={500}
+                height={500}
                 priority={i === 0}
-                className="max-h-full w-auto object-contain drop-shadow-[0_25px_60px_rgba(255,165,0,0.35)]"
+                className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(255,165,0,0.35)]"
               />
             </div>
           ))}

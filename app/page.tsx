@@ -1,7 +1,7 @@
 import Hero from "./components/hero/Hero.jsx";
-import PageComponent from "./components/oursolutions/solutions.jsx";
-import People from "./components/testimonials/People";
-import OurPartner from "./components/ourpartners/OurPartners";
+import PageComponent from "./components/solutions/Solutions.jsx";
+import People from "./components/testimonials/Testimonials.jsx";
+import OurPartner from "./components/partners/OurPartners.jsx";
 export default function Home() {
   return (
     <main className="overflow-x-hidden text-black">
