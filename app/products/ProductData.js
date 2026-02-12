@@ -28,11 +28,15 @@ export const products = [
     description:
       "A reliable electric scooter designed for smooth urban mobility. It features a removable battery, LED lighting, digital display, and anti-theft security, making it ideal for everyday travel.",
     specifications: {
-      Motor: "1000W",
+      MotorType: "1000W",
       Tyre: "12 Inch",
       Brake: "Disc",
       Battery: "Removable",
-      Range: "Up to 80 Km",
+      Range: "Up to 200 Km",
+
+      DigitalDisplay: "Yes",
+      RemoteControl: "Yes",
+      RemoteAntiTheft: "Yes",
     },
   },
 
@@ -52,7 +56,12 @@ export const products = [
       Motor: "2000W",
       Tyre: "21 Inch",
       Brake: "Disc",
-      Range: "Up to 90 Km",
+      Range: "Up to 500 Km",
+
+      LedLight: "Yes",
+      RemoteControl: "Yes",
+      DigitalDisplay: "Yes",
+      Battery: "Removable",
     },
   },
 
@@ -72,6 +81,15 @@ export const products = [
       LoadCapacity: "500 Kg",
       Suspension: "Telescopic / Beam",
       Battery: "Removable",
+
+      Tyre: "12 Inch",
+      GroundClearance: "210 mm",
+      Brake: "Disc & Drum",
+      LedLight: "Yes",
+      SolarChargingSupport: "Yes",
+
+      RoadSweeping: "Available",
+      TowerLight: "Available",
     },
   },
 
@@ -127,6 +145,9 @@ export const products = [
     specifications: {
       PowerConsumption: "28W",
       Warranty: "3 Years",
+
+      RatedVoltage: "190V – 265V",
+      MotorType: "Original BLDC",
     },
   },
 
@@ -140,7 +161,7 @@ export const products = [
     image: "/productimg/BLDC Motor .png",
     shortDescription: "High-efficiency BLDC motor for EV and industrial use.",
     description:
-      "Made-in-India BLDC motor available in multiple power ratings for electric vehicles and automation systems.",
+      "Made-in-India(odisha) BLDC motor available in multiple power ratings for electric vehicles and automation systems.",
     specifications: {
       PowerOptions: "250W – 2000W",
       Type: "Hub & Mid Drive",
@@ -161,6 +182,7 @@ export const products = [
     specifications: {
       Power: "1000 – 1500W",
       Voltage: "240V",
+      Warranty: "6 Months",
     },
   },
 
@@ -178,6 +200,7 @@ export const products = [
     specifications: {
       Power: "1000 – 1500W",
       Voltage: "240V",
+      Warranty: "6 Months",
     },
   },
 
@@ -211,6 +234,8 @@ export const products = [
     specifications: {
       OS: "Android 14",
       Resolution: "4K",
+      According: "To size price",
+      Inbuild: "Apps",
     },
   },
 
@@ -230,6 +255,14 @@ export const products = [
     specifications: {
       Temperature: "-40°C",
       Pricing: "₹250 per sq.ft",
+
+      InsulatedWall: "120 mm PUF",
+      TransportableWheel: "Yes",
+      DigitalDisplay: "Yes",
+      OperatingSystem: "Automatic Control System",
+      AutoSwitch: "Available",
+      InnerPartition: "Available",
+      SubChamber: "Available",
     },
   },
 
@@ -246,6 +279,11 @@ export const products = [
       "Manufactured using copper pipes and aluminium fins for superior heat transfer.",
     specifications: {
       Pricing: "₹300 per running inch",
+
+      PipeMaterial: "Copper",
+      TinMaterial: "Aluminium",
+      BodyMaterial: "Steel",
+      Coating: "Bronze",
     },
   },
 
@@ -269,7 +307,7 @@ export const products = [
     id: 15,
     name: "Air Conditioner Outer Body",
     category: CATEGORIES.COMPONENTS,
-    price: 0,
+    price: 6500,
     rating: 4.3,
     isNew: false,
     image: "/productimg/Air Conditioner Outer Body.png",
@@ -298,6 +336,9 @@ export const products = [
     specifications: {
       WithBMS: "₹14 per watt",
       WithoutBMS: "₹11 per watt",
+      Bmc: "yes",
+      Body: "yes",
+      Chargers: "yes",
     },
   },
 
