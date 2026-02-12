@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import ProductDropdown from "../product-dropdown/ProductDropdown";
+import ProductDropdown from "../productdropdown/ProductDropdown";
 import ServiceDropdown from "../service-dropdown/ServiceDropdown";
 import ProfieDropdown from "../profile-dropdown/ProfieDropdown";
 
