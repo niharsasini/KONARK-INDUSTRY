@@ -3,10 +3,12 @@
   "private": true,
   "workspaces": ["frontend", "admin", "packages/*"],
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "dev:frontend": "turbo dev --filter=frontend",
-    "dev:admin": "turbo dev --filter=admin"
+    "build": "cd frontend && npm install && npm run build",
+    "dev": "cd frontend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:admin": "cd admin && npm run dev",
+    "turbo:build": "turbo build",
+    "turbo:dev": "turbo dev"
   },
   "packageManager": "npm@10.8.2",
   "devDependencies": {
