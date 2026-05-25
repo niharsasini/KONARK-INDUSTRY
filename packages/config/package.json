@@ -1,1 +1,1 @@
-{ "name": "@konark/config", "version": "0.1.0", "main": "./site.ts" }
+{ "name": "@konark/config", "version": "0.1.0", "private": true, "main": "./site.ts" }

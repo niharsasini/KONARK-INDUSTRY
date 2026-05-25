@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { dropdownVariants } from "./products.animation";
-import ProductCarousel from "./product.carousel.config";
 import MenuColumn from "./MenuColumn";
 import { useRouter } from "next/navigation";
 
