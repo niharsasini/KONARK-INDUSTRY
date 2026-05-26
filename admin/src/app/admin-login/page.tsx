@@ -1,0 +1,104 @@
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff, Shield } from "lucide-react";
+
+const INPUT: React.CSSProperties = {
+  width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40",
+  borderRadius: 10, padding: "12px 16px", color: "#f1f5f9",
+  fontSize: 14, outline: "none", boxSizing: "border-box",
+  transition: "border-color 0.2s, box-shadow 0.2s",
+};
+
+export default function AdminLoginPage() {
+  const router = useRouter();
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [showPw, setShowPw] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const focus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.currentTarget.style.borderColor = "#00d4ff";
+    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(0,212,255,0.1)";
+  };
+  const blur = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.currentTarget.style.borderColor = "#1e2d40";
+    e.currentTarget.style.boxShadow = "none";
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    await new Promise((r) => setTimeout(r, 700));
+
+    if (form.email === "admin@konarkindustry.com" && form.password === "konark@admin2024") {
+      document.cookie = `admin_auth=true; path=/; max-age=${7 * 24 * 60 * 60}`;
+      router.push("/dashboard");
+    } else {
+      setError("Invalid credentials. Check email and password.");
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div style={{
+      background: "#0a0f1e", minHeight: "100vh",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      padding: 24,
+      backgroundImage: "linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px)",
+      backgroundSize: "60px 60px",
+    }}>
+      <div style={{ width: "100%", maxWidth: 400 }}>
+        {/* Logo */}
+        <div style={{ textAlign: "center", marginBottom: 40 }}>
+          <div style={{ width: 56, height: 56, borderRadius: "50%", border: "2px solid #00d4ff", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,212,255,0.1)", margin: "0 auto 20px" }}>
+            <Shield size={24} color="#00d4ff" />
+          </div>
+          <h1 style={{ fontSize: 24, fontWeight: 800, color: "#f1f5f9", margin: "0 0 6px" }}>Admin Sign In</h1>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Konark Industry · Control Panel</p>
+        </div>
+
+        {/* Card */}
+        <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 20, padding: "36px 32px" }}>
+          {error && (
+            <div style={{ padding: "12px 14px", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 8, marginBottom: 20, fontSize: 13, color: "#ef4444" }}>
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            <div>
+              <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 7 }}>Email Address</label>
+              <input type="email" value={form.email} onChange={set("email")} required placeholder="admin@konarkindustry.com" style={INPUT} onFocus={focus} onBlur={blur} />
+            </div>
+            <div>
+              <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 7 }}>Password</label>
+              <div style={{ position: "relative" }}>
+                <input type={showPw ? "text" : "password"} value={form.password} onChange={set("password")} required placeholder="••••••••••••" style={{ ...INPUT, paddingRight: 44 }} onFocus={focus} onBlur={blur} />
+                <button type="button" onClick={() => setShowPw((s) => !s)}
+                  style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8", display: "flex" }}>
+                  {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" disabled={loading} style={{ padding: "14px", background: loading ? "#0891b2" : "#00d4ff", color: "#0a0f1e", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", marginTop: 4, transition: "background 0.2s" }}
+              onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "#00b8d9"; }}
+              onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = loading ? "#0891b2" : "#00d4ff"; }}
+            >
+              {loading ? "Verifying..." : "Sign In to Admin →"}
+            </button>
+          </form>
+
+          <p style={{ textAlign: "center", fontSize: 11, color: "#475569", margin: "20px 0 0" }}>
+            🔒 Authorized access only · Konark Industry
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

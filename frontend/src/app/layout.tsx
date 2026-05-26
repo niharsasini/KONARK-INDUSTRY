@@ -1,7 +1,7 @@
-// build-refresh-2
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import ClientAuthModal from "@/components/ui/ClientAuthModal";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 
@@ -32,6 +32,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <Navbar />
         <main style={{ flex: 1 }}>{children}</main>
         <Footer />
+        <ClientAuthModal />
       </body>
     </html>
   );
