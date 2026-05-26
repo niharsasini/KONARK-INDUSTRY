@@ -75,15 +75,39 @@ const ProductCard = ({ product }) => {
         <div className="flex justify-between items-center mt-4">
           <span className={priceTag}>{formattedPrice}</span>
 
-          <button
-            className={viewButton}
-            onClick={(e) => {
-              e.stopPropagation();
-              goToDetails();
-            }}
-          >
-            View
-          </button>
+          {product.type === "vehicle" ? (
+            <button
+              className={viewButton}
+              style={{ background: "#00d4ff", color: "#0a0f1e", border: "none" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                goToDetails();
+              }}
+            >
+              Book Test Ride
+            </button>
+          ) : product.type === "service" ? (
+            <button
+              className={viewButton}
+              style={{ background: "#7c3aed", color: "#fff", border: "none" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                goToDetails();
+              }}
+            >
+              Book Service
+            </button>
+          ) : (
+            <button
+              className={viewButton}
+              onClick={(e) => {
+                e.stopPropagation();
+                goToDetails();
+              }}
+            >
+              Add to Cart
+            </button>
+          )}
         </div>
       </div>
     </motion.div>
