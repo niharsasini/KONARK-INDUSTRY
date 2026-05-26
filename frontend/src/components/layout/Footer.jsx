@@ -143,9 +143,9 @@ export default function Footer() {
           <h4 style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Contact</h4>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {[
-              { label: "Address", value: "Plot No. 42, Industrial Estate,\nBhubaneswar, Odisha 751024" },
-              { label: "Phone", value: "+91 98765 43210" },
-              { label: "Email", value: "info@konarkindustry.com" },
+              { label: "Address", value: "Bhimatangi Housing Colony,\nBhubaneswar, Odisha 751002" },
+              { label: "Phone", value: "+91 94376 11129" },
+              { label: "Email", value: "konarkindustrie@gmail.com" },
               { label: "Hours", value: "Mon–Sat, 9AM–6PM IST" },
             ].map((item) => (
               <div key={item.label}>

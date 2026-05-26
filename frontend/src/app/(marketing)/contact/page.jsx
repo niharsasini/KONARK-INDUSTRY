@@ -61,9 +61,9 @@ export default function ContactPage() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 32 }}>
             {[
-              { label: "Phone", value: "+91 98765 43210", sub: "Call us Mon–Sat, 9AM–6PM IST", icon: "📞" },
-              { label: "Email", value: "info@konarkindustry.com", sub: "We reply within 4 working hours", icon: "✉️" },
-              { label: "Address", value: "Plot No. 42, Industrial Estate, Bhubaneswar, Odisha 751024", sub: "", icon: "📍" },
+              { label: "Phone", value: "+91 94376 11129", sub: "Call us Mon–Sat, 9AM–6PM IST", icon: "📞" },
+              { label: "Email", value: "konarkindustrie@gmail.com", sub: "We reply within 4 working hours", icon: "✉️" },
+              { label: "Address", value: "Bhimatangi Housing Colony, Bhubaneswar, Odisha 751002", sub: "", icon: "📍" },
             ].map((item) => (
               <div key={item.label} style={{ background: "rgba(15,23,42,0.8)", backdropFilter: "blur(12px)", border: "1px solid #1e2d40", borderRadius: 12, padding: "18px 20px", display: "flex", gap: 14, alignItems: "flex-start" }}>
                 <span style={{ fontSize: 20, flexShrink: 0 }}>{item.icon}</span>

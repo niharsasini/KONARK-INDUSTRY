@@ -1,10 +1,10 @@
 export const SITE_NAME = 'Konark Industry';
 export const SITE_URL = 'https://konarkindustry.com';
-export const CONTACT_EMAIL = 'info@konarkindustry.com';
-export const SALES_EMAIL = 'sales@konarkindustry.com';
-export const SUPPORT_EMAIL = 'support@konarkindustry.com';
-export const PHONE = '+91 98765 43210';
-export const ADDRESS = 'Plot No. 42, Industrial Estate, Bhubaneswar, Odisha 751024';
+export const CONTACT_EMAIL = 'konarkindustrie@gmail.com';
+export const SALES_EMAIL = 'konarkindustrie@gmail.com';
+export const SUPPORT_EMAIL = 'konarkindustrie@gmail.com';
+export const PHONE = '+91 94376 11129';
+export const ADDRESS = 'Bhimatangi Housing Colony, Bhubaneswar, Odisha 751002';
 
 export const NAV_LINKS = [
   { label: 'Home', href: '/' },

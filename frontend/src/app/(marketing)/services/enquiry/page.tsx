@@ -303,8 +303,8 @@ export default function EnquiryPage() {
               borderRadius: 14, padding: "20px 22px",
             }}>
               <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 8px" }}>Prefer to call directly?</p>
-              <a href="tel:+919876543210" style={{ fontSize: 18, fontWeight: 800, color: "#00d4ff", textDecoration: "none", display: "block", marginBottom: 4 }}>
-                +91 98765 43210
+              <a href="tel:+919437611129" style={{ fontSize: 18, fontWeight: 800, color: "#00d4ff", textDecoration: "none", display: "block", marginBottom: 4 }}>
+                +91 94376 11129
               </a>
               <p style={{ fontSize: 12, color: "#475569", margin: 0 }}>Mon–Sat, 8AM–8PM</p>
             </div>
