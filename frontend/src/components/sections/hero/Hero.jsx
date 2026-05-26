@@ -1,9 +1,6 @@
 "use client";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { motion } from "framer-motion";
-
-const PowerOrb3D = dynamic(() => import("./PowerOrb3D"), { ssr: false });
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
@@ -32,10 +29,7 @@ export default function Hero() {
         paddingTop: 64,
       }}
     >
-      {/* Layer 1 — 3D canvas */}
-      <PowerOrb3D />
-
-      {/* Layer 2 — CSS orbs */}
+      {/* CSS orbs */}
       <div
         className="animate-float"
         style={{
