@@ -52,14 +52,27 @@ const ProductDropdown = ({ open }) => {
             </h2>
           </motion.div>
 
-          {/* Carousel */}
+          {/* Featured products */}
           <motion.div
             className="px-2 sm:px-4 md:px-12 mb-4 sm:mb-6"
+            style={{ display: "flex", gap: 12, flexWrap: "wrap" }}
             variants={fadeIn}
             initial="hidden"
             animate="visible"
           >
-            <ProductCarousel />
+            {[
+              { name: "EV Scooter X1", price: "₹27,000", img: "/productimg/Electric Scooter.png", slug: "electric-scooter" },
+              { name: "LFP Battery", price: "₹14,000", img: "/productimg/LFP Battery.png", slug: "lfp-battery" },
+              { name: "BLDC Fan", price: "₹2,200", img: "/productimg/BLDC Fan.png", slug: "bldc-fan" },
+            ].map((p) => (
+              <a key={p.slug} href={`/products/${p.slug}`} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 12px", border: "1px solid #e5e7eb", borderRadius: 10, textDecoration: "none", flex: "1 1 160px", minWidth: 160 }}>
+                <img src={p.img} alt={p.name} style={{ width: 40, height: 40, objectFit: "contain" }} />
+                <div>
+                  <p style={{ fontSize: 12, fontWeight: 600, color: "#111827", margin: 0 }}>{p.name}</p>
+                  <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>{p.price}</p>
+                </div>
+              </a>
+            ))}
           </motion.div>
 
           {/* Divider */}
