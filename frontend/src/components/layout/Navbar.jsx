@@ -4,8 +4,8 @@ import Link from "next/link";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "Products", href: "/products", hasDropdown: true },
-  { label: "Services", href: "/services" },
+  { label: "Products", href: "/products", hasDropdown: "products" },
+  { label: "Services", href: "/services", hasDropdown: "services" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
@@ -13,17 +13,17 @@ const NAV_LINKS = [
 const PRODUCT_CATEGORIES = [
   {
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} style={{ width: 18, height: 18 }}>
         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
       </svg>
     ),
     name: "EV & Mobility",
-    desc: "Scooters, motorcycles & e-rickshaws",
+    desc: "Scooters, e-rickshaws & utility EVs",
     href: "/products",
   },
   {
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} style={{ width: 18, height: 18 }}>
         <rect x="2" y="7" width="16" height="10" rx="2" /><path d="M22 11v2" />
       </svg>
     ),
@@ -33,32 +33,30 @@ const PRODUCT_CATEGORIES = [
   },
   {
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} style={{ width: 18, height: 18 }}>
         <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
       </svg>
     ),
     name: "Home Appliances",
-    desc: "BLDC fans, ACs & smart devices",
+    desc: "BLDC fans, ACs & inverters",
     href: "/products",
   },
   {
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} style={{ width: 18, height: 18 }}>
         <circle cx="12" cy="12" r="3" /><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
       </svg>
     ),
     name: "Industrial Solutions",
-    desc: "Motors, cold storage & automation",
+    desc: "Motors, cold storage & PCB",
     href: "/products",
   },
 ];
 
 function PowerLogo() {
   return (
-    <Link href="/" className="flex items-center gap-2.5 group">
-      <div
-        style={{ width: 36, height: 36, borderRadius: "50%", border: "2px solid #00d4ff", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,212,255,0.1)" }}
-      >
+    <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
+      <div style={{ width: 36, height: 36, borderRadius: "50%", border: "2px solid #00d4ff", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,212,255,0.1)" }}>
         <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}>
           <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#00d4ff" strokeWidth="2" strokeLinecap="round" />
           <circle cx="12" cy="12" r="3" fill="#00d4ff" />
@@ -74,33 +72,20 @@ function PowerLogo() {
 
 function ProductsMegaMenu() {
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "100%",
-        left: "50%",
-        transform: "translateX(-50%)",
-        marginTop: 8,
-        width: 680,
-        background: "#0f172a",
-        border: "1px solid #1e2d40",
-        borderRadius: 16,
-        boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
-        padding: 24,
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: 24,
-        zIndex: 50,
-      }}
-    >
+    <div style={{
+      position: "absolute", top: "100%", left: "50%",
+      transform: "translateX(-50%)", marginTop: 8,
+      width: 680, background: "#0f172a", border: "1px solid #1e2d40",
+      borderRadius: 16, boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
+      padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr",
+      gap: 24, zIndex: 50,
+    }}>
       <div>
         <p style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.15em", color: "#94a3b8", marginBottom: 12 }}>
           Browse by category
         </p>
         {PRODUCT_CATEGORIES.map((cat) => (
-          <Link
-            key={cat.name}
-            href={cat.href}
+          <Link key={cat.name} href={cat.href}
             style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 12px", borderRadius: 10, border: "1px solid transparent", transition: "all 0.15s", marginBottom: 4, textDecoration: "none" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(0,212,255,0.05)"; e.currentTarget.style.borderColor = "rgba(0,212,255,0.2)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "transparent"; }}
@@ -136,11 +121,58 @@ function ProductsMegaMenu() {
   );
 }
 
+function ServicesMegaMenu() {
+  return (
+    <div style={{
+      position: "absolute", top: "100%", left: "50%",
+      transform: "translateX(-50%)", marginTop: 8,
+      width: 320, background: "#0f172a", border: "1px solid #1e2d40",
+      borderRadius: 14, boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
+      padding: "12px 8px", zIndex: 50,
+    }}>
+      <Link
+        href="/services"
+        style={{
+          display: "flex", alignItems: "center", gap: 12, padding: "10px 16px",
+          borderRadius: 10, textDecoration: "none", transition: "background 0.15s",
+          marginBottom: 2,
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}
+        onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+      >
+        <span style={{ fontSize: 18 }}>🔧</span>
+        <div>
+          <p style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9", margin: 0 }}>All Services</p>
+          <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>AC, electrical, solar & more</p>
+        </div>
+      </Link>
+      <div style={{ height: 1, background: "#1e2d40", margin: "6px 8px" }} />
+      <Link
+        href="/services/enquiry"
+        style={{
+          display: "flex", alignItems: "center", gap: 12, padding: "10px 16px",
+          borderRadius: 10, textDecoration: "none", transition: "background 0.15s",
+          background: "rgba(0,212,255,0.06)", border: "1px solid rgba(0,212,255,0.15)",
+          margin: "0 4px",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.12)")}
+        onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.06)")}
+      >
+        <span style={{ fontSize: 18 }}>📋</span>
+        <div>
+          <p style={{ fontSize: 13, fontWeight: 700, color: "#00d4ff", margin: 0 }}>Book a Service</p>
+          <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>Get a technician in 24hrs</p>
+        </div>
+      </Link>
+    </div>
+  );
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [productsHover, setProductsHover] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const hoverTimeout = useRef(null);
 
   useEffect(() => {
@@ -155,12 +187,12 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  const handleProductsEnter = () => {
+  const handleEnter = (key) => {
     if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
-    setProductsHover(true);
+    setActiveDropdown(key);
   };
-  const handleProductsLeave = () => {
-    hoverTimeout.current = setTimeout(() => setProductsHover(false), 150);
+  const handleLeave = () => {
+    hoverTimeout.current = setTimeout(() => setActiveDropdown(null), 150);
   };
 
   const navStyle = scrolled
@@ -177,7 +209,7 @@ export default function Navbar() {
           <div style={{ display: "flex", alignItems: "center", gap: 4 }} className="hidden-mobile">
             {NAV_LINKS.map((link) =>
               link.hasDropdown ? (
-                <div key={link.label} style={{ position: "relative" }} onMouseEnter={handleProductsEnter} onMouseLeave={handleProductsLeave}>
+                <div key={link.label} style={{ position: "relative" }} onMouseEnter={() => handleEnter(link.hasDropdown)} onMouseLeave={handleLeave}>
                   <Link
                     href={link.href}
                     style={{ display: "flex", alignItems: "center", gap: 4, padding: "8px 14px", fontSize: 14, fontWeight: 500, color: "#f1f5f9", borderRadius: 8, textDecoration: "none", transition: "color 0.2s" }}
@@ -189,7 +221,9 @@ export default function Navbar() {
                       <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
                     </svg>
                   </Link>
-                  {productsHover && <ProductsMegaMenu />}
+                  {activeDropdown === link.hasDropdown && (
+                    link.hasDropdown === "products" ? <ProductsMegaMenu /> : <ServicesMegaMenu />
+                  )}
                 </div>
               ) : (
                 <Link
@@ -207,7 +241,7 @@ export default function Navbar() {
 
           {/* Right actions */}
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            {/* Search (hidden on mobile) */}
+            {/* Search */}
             <div style={{ position: "relative" }} className="hidden-mobile">
               {searchOpen ? (
                 <input
@@ -232,7 +266,8 @@ export default function Navbar() {
             </div>
 
             {/* Cart */}
-            <Link href="/cart" style={{ position: "relative", padding: 8, color: "#94a3b8", borderRadius: 8, display: "flex", transition: "color 0.2s" }}
+            <Link href="/cart"
+              style={{ position: "relative", padding: 8, color: "#94a3b8", borderRadius: 8, display: "flex", transition: "color 0.2s", textDecoration: "none" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
             >
@@ -246,7 +281,22 @@ export default function Navbar() {
               </span>
             </Link>
 
-            {/* Shop Now (desktop) */}
+            {/* Book Service ghost button */}
+            <Link
+              href="/services/enquiry"
+              className="hidden-mobile"
+              style={{
+                padding: "7px 16px", borderRadius: 8, textDecoration: "none",
+                border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff",
+                fontSize: 13, fontWeight: 600, transition: "all 0.2s", whiteSpace: "nowrap",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(0,212,255,0.08)"; e.currentTarget.style.borderColor = "#00d4ff"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(0,212,255,0.3)"; }}
+            >
+              Book Service
+            </Link>
+
+            {/* Shop Now */}
             <Link
               href="/products"
               className="hidden-mobile"
@@ -257,7 +307,7 @@ export default function Navbar() {
               Shop Now
             </Link>
 
-            {/* Hamburger (mobile) */}
+            {/* Hamburger */}
             <button
               onClick={() => setMobileOpen((o) => !o)}
               className="show-mobile"
@@ -288,7 +338,7 @@ export default function Navbar() {
               </svg>
             </button>
           </div>
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 0, padding: "16px 24px" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 0, padding: "16px 24px", overflowY: "auto" }}>
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.label}
@@ -301,8 +351,22 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/services/enquiry"
+              onClick={() => setMobileOpen(false)}
+              style={{ fontSize: 20, fontWeight: 700, color: "#00d4ff", padding: "16px 0", borderBottom: "1px solid #1e2d40", textDecoration: "none" }}
+            >
+              📋 Book a Service
+            </Link>
           </div>
-          <div style={{ padding: 24 }}>
+          <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 12 }}>
+            <Link
+              href="/services/enquiry"
+              onClick={() => setMobileOpen(false)}
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", border: "1px solid rgba(0,212,255,0.4)", color: "#00d4ff", fontWeight: 700, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
+            >
+              Book a Service
+            </Link>
             <Link
               href="/products"
               onClick={() => setMobileOpen(false)}

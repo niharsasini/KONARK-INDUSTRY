@@ -1,22 +1,19 @@
 "use client";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, delay, ease: "easeOut" },
-});
-
-const TRUST_PILLS = ["✓ ISI Certified", "✓ 2-Year Warranty", "✓ Free Delivery ₹5000+"];
+const TRUST_PILLS = ["✓ ISI Certified", "✓ 2-Year Warranty", "✓ Doorstep Service"];
 
 const CATEGORY_CHIPS = [
-  { icon: "⚡", label: "EV & Mobility", href: "/products" },
-  { icon: "🔋", label: "Energy Storage", href: "/products" },
-  { icon: "☀️", label: "Solar Solutions", href: "/products" },
+  { icon: "⚡", label: "EV Scooters", href: "/products?cat=ev" },
+  { icon: "🛺", label: "E-Rickshaws", href: "/products?cat=rickshaw" },
+  { icon: "🔋", label: "LFP Batteries", href: "/products?cat=battery" },
 ];
 
 export default function Hero() {
+  const router = useRouter();
+
   return (
     <section
       style={{
@@ -29,321 +26,314 @@ export default function Hero() {
         paddingTop: 64,
       }}
     >
-      {/* CSS orbs */}
-      <div
-        className="animate-float"
-        style={{
-          position: "absolute",
-          top: "-15%",
-          right: "-10%",
-          width: 600,
-          height: 600,
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(0,212,255,0.04) 0%, transparent 70%)",
-          filter: "blur(80px)",
-          pointerEvents: "none",
-          zIndex: 1,
-        }}
-      />
-      <div
-        className="animate-float"
-        style={{
-          position: "absolute",
-          bottom: "-15%",
-          left: "-10%",
-          width: 500,
-          height: 500,
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(124,58,237,0.04) 0%, transparent 70%)",
-          filter: "blur(80px)",
-          animationDelay: "2s",
-          pointerEvents: "none",
-          zIndex: 1,
-        }}
-      />
+      {/* Layer 1 — animated grid */}
+      <div style={{
+        position: "absolute", inset: 0, zIndex: 0,
+        backgroundImage: `
+          linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px)
+        `,
+        backgroundSize: "60px 60px",
+        pointerEvents: "none",
+      }} />
 
-      {/* Layer 3 — grid pattern */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage:
-            "linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          pointerEvents: "none",
-          zIndex: 1,
-        }}
-      />
+      {/* Layer 2 — glowing orbs */}
+      <div style={{
+        position: "absolute", top: "-20%", right: "-10%",
+        width: "700px", height: "700px", borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 65%)",
+        filter: "blur(60px)", pointerEvents: "none", zIndex: 0,
+        animation: "float 8s ease-in-out infinite",
+      }} />
+      <div style={{
+        position: "absolute", bottom: "-20%", left: "-10%",
+        width: "600px", height: "600px", borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 65%)",
+        filter: "blur(60px)", pointerEvents: "none", zIndex: 0,
+        animation: "float 10s ease-in-out infinite reverse",
+      }} />
 
-      {/* Layer 4 — content */}
+      {/* Layer 3 — rotating rings */}
+      <div style={{
+        position: "absolute", top: "50%", right: "5%",
+        transform: "translateY(-50%)",
+        width: "500px", height: "500px",
+        border: "1px solid rgba(0,212,255,0.08)",
+        borderRadius: "50%",
+        animation: "spin 30s linear infinite",
+        pointerEvents: "none", zIndex: 0,
+      }} />
+      <div style={{
+        position: "absolute", top: "50%", right: "5%",
+        transform: "translateY(-50%)",
+        width: "380px", height: "380px",
+        marginTop: "-60px", marginRight: "-60px",
+        border: "1px solid rgba(124,58,237,0.08)",
+        borderRadius: "50%",
+        animation: "spin 20s linear infinite reverse",
+        pointerEvents: "none", zIndex: 0,
+      }} />
+
+      {/* Content */}
       <div
+        className="hero-grid"
         style={{
           maxWidth: 1280,
           margin: "0 auto",
           padding: "80px 24px",
           display: "grid",
-          gridTemplateColumns: "60% 40%",
+          gridTemplateColumns: "55% 45%",
           gap: 40,
           alignItems: "center",
           width: "100%",
           position: "relative",
           zIndex: 10,
         }}
-        className="hero-grid"
       >
         {/* LEFT */}
         <div>
           {/* Badge */}
-          <motion.div {...fadeUp(0.1)}>
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-                padding: "6px 16px",
-                borderRadius: 999,
-                border: "1px solid rgba(0,212,255,0.4)",
-                color: "#00d4ff",
-                fontSize: 12,
-                fontWeight: 600,
-                marginBottom: 28,
-                background: "rgba(0,212,255,0.06)",
-                boxShadow: "0 0 16px rgba(0,212,255,0.2)",
-              }}
-            >
-              ⚡ Powering Odisha since 2014
-            </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.6 }}
+            style={{ marginBottom: 28 }}
+          >
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              background: "rgba(0,212,255,0.08)",
+              border: "1px solid rgba(0,212,255,0.25)",
+              borderRadius: 100, padding: "6px 16px",
+              fontSize: 12, fontWeight: 600, color: "#00d4ff",
+              letterSpacing: "0.04em",
+              boxShadow: "0 0 20px rgba(0,212,255,0.1)",
+            }}>
+              <span style={{
+                width: 6, height: 6, borderRadius: "50%",
+                background: "#00d4ff",
+                boxShadow: "0 0 8px #00d4ff",
+                animation: "pulse-glow 2s infinite",
+                display: "inline-block",
+              }} />
+              Powering Odisha since 2014
+            </span>
           </motion.div>
 
-          {/* H1 */}
+          {/* Headline */}
           <div style={{ marginBottom: 24 }}>
-            {["Power Your", "World With", "Konark"].map((line, i) => (
+            {[
+              { text: "Power Your", gradient: false },
+              { text: "World With", gradient: false },
+              { text: "Konark.", gradient: true },
+            ].map((line, i) => (
               <motion.div
-                key={line}
+                key={line.text}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.2 + i * 0.15, ease: "easeOut" }}
+                transition={{ duration: 0.7, delay: 0.2 + i * 0.1, ease: "easeOut" }}
               >
-                <h1
-                  style={{
-                    fontSize: "clamp(38px, 5.5vw, 72px)",
-                    fontWeight: 900,
-                    lineHeight: 1.1,
-                    margin: 0,
-                    ...(line === "Konark"
-                      ? {
-                          background: "linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%)",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                          backgroundClip: "text",
-                        }
-                      : { color: "#f1f5f9" }),
-                  }}
-                >
-                  {line}
+                <h1 style={{
+                  fontSize: "clamp(48px, 6vw, 80px)",
+                  fontWeight: 900,
+                  lineHeight: 1.1,
+                  margin: 0,
+                  ...(line.gradient ? {
+                    background: "linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  } : { color: "#f1f5f9" }),
+                }}>
+                  {line.text}
                 </h1>
               </motion.div>
             ))}
           </div>
 
           {/* Subtitle */}
-          <motion.p {...fadeUp(0.55)}
-            style={{ fontSize: 17, color: "#94a3b8", lineHeight: 1.7, maxWidth: 500, marginBottom: 36 }}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+            style={{ fontSize: 18, color: "#94a3b8", lineHeight: 1.8, maxWidth: 520, marginBottom: 36 }}
           >
-            India's most trusted homegrown energy brand. EVs, batteries, smart
-            appliances — all engineered at our Bhubaneswar factory.
+            We make electric scooters, e-rickshaws, and batteries in Bhubaneswar.
+            We fix your AC, EV charger, and electrical faults at your doorstep.
+            One company. Every power need. Across Odisha.
           </motion.p>
 
           {/* Buttons */}
-          <motion.div {...fadeUp(0.7)}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
             style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 28 }}
           >
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/products"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  padding: "14px 30px",
-                  background: "#00d4ff",
-                  color: "#0a0f1e",
-                  fontWeight: 700,
-                  fontSize: 15,
-                  borderRadius: 8,
-                  textDecoration: "none",
-                }}
-              >
-                Explore Products
-                <svg viewBox="0 0 20 20" fill="currentColor" style={{ width: 16, height: 16 }}>
-                  <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" />
-                </svg>
-              </Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/about"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  padding: "14px 30px",
-                  background: "transparent",
-                  color: "#00d4ff",
-                  fontWeight: 600,
-                  fontSize: 15,
-                  borderRadius: 8,
-                  textDecoration: "none",
-                  border: "1px solid rgba(0,212,255,0.5)",
-                }}
-              >
-                <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 16, height: 16 }}>
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-                Watch Our Story
-              </Link>
-            </motion.div>
+            <motion.button
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => router.push("/products")}
+              style={{
+                background: "#00d4ff", color: "#0a0f1e",
+                padding: "14px 32px", borderRadius: 10,
+                fontWeight: 800, fontSize: 15, border: "none",
+                cursor: "pointer", letterSpacing: "0.02em",
+              }}
+            >
+              Shop Products →
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => router.push("/services/enquiry")}
+              style={{
+                background: "transparent", color: "#f1f5f9",
+                border: "1px solid rgba(241,245,249,0.2)",
+                padding: "14px 32px", borderRadius: 10,
+                fontWeight: 700, fontSize: 15, cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "rgba(0,212,255,0.5)";
+                e.currentTarget.style.color = "#00d4ff";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(241,245,249,0.2)";
+                e.currentTarget.style.color = "#f1f5f9";
+              }}
+            >
+              Book a Service →
+            </motion.button>
           </motion.div>
 
           {/* Trust pills */}
-          <motion.div {...fadeUp(0.9)}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.0, duration: 0.5 }}
             style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
           >
             {TRUST_PILLS.map((pill) => (
-              <span
-                key={pill}
-                style={{
-                  fontSize: 11,
-                  color: "#94a3b8",
-                  border: "1px dashed #1e2d40",
-                  padding: "4px 12px",
-                  borderRadius: 6,
-                  fontWeight: 500,
-                }}
-              >
+              <span key={pill} style={{
+                fontSize: 12, color: "#64748b",
+                border: "1px dashed rgba(100,116,139,0.3)",
+                padding: "4px 12px", borderRadius: 100,
+                display: "inline-block",
+              }}>
                 {pill}
               </span>
             ))}
           </motion.div>
-
-          {/* Floating stat cards */}
-          <div style={{ display: "flex", gap: 12, marginTop: 40, flexWrap: "wrap" }}>
-            {[
-              { num: "25,000+", label: "Customers across India" },
-              { num: "50+", label: "Products & solutions" },
-            ].map((s, i) => (
-              <motion.div
-                key={s.num}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.1 + i * 0.15 }}
-                style={{
-                  background: "rgba(15,23,42,0.9)",
-                  border: "1px solid rgba(0,212,255,0.2)",
-                  borderRadius: 12,
-                  padding: "12px 18px",
-                  backdropFilter: "blur(10px)",
-                }}
-              >
-                <p style={{ fontSize: 20, fontWeight: 800, color: "#00d4ff", margin: "0 0 2px" }}>{s.num}</p>
-                <p style={{ fontSize: 11, color: "#94a3b8", margin: 0 }}>{s.label}</p>
-              </motion.div>
-            ))}
-          </div>
         </div>
 
-        {/* RIGHT — product showcase */}
-        <div className="hero-right" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        {/* RIGHT — 3D product showcase */}
+        <div className="hero-right" style={{ perspective: "1200px", perspectiveOrigin: "50% 50%" }}>
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            whileHover={{ rotateY: 8, rotateX: -4, scale: 1.02 }}
+            initial={{ opacity: 0, rotateY: -15, x: 60 }}
+            animate={{ opacity: 1, rotateY: 0, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
+            whileHover={{ rotateY: 8, rotateX: -5, scale: 1.03 }}
+            onClick={() => router.push("/products/electric-scooter")}
             style={{
               transformStyle: "preserve-3d",
-              perspective: "1000px",
               background: "rgba(15,23,42,0.8)",
               backdropFilter: "blur(20px)",
-              border: "1px solid rgba(0,212,255,0.2)",
-              boxShadow: "0 0 40px rgba(0,212,255,0.1)",
+              border: "1px solid rgba(0,212,255,0.15)",
               borderRadius: 20,
-              padding: "28px 24px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 16,
+              padding: 32,
+              boxShadow: "0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,255,0.08)",
+              cursor: "pointer",
             }}
           >
-            <div
-              style={{
-                width: "100%",
-                height: 240,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "rgba(17,24,39,0.6)",
-                borderRadius: 12,
-                overflow: "hidden",
-              }}
-            >
+            {/* Featured tag */}
+            <div style={{ marginBottom: 12 }}>
+              <span style={{
+                fontSize: 10, fontWeight: 700, letterSpacing: "0.12em",
+                textTransform: "uppercase", color: "#00d4ff",
+                background: "rgba(0,212,255,0.1)",
+                border: "1px solid rgba(0,212,255,0.25)",
+                padding: "3px 10px", borderRadius: 4,
+              }}>
+                FEATURED PRODUCT
+              </span>
+            </div>
+
+            {/* Product image */}
+            <div style={{
+              width: "100%", height: 220,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              background: "rgba(17,24,39,0.6)", borderRadius: 12,
+              overflow: "hidden", marginBottom: 16,
+            }}>
               <img
-                src="/productimg/Electric Scooter.png"
-                alt="Konark Electric Scooter"
-                style={{
-                  maxHeight: 200,
-                  objectFit: "contain",
-                  filter: "drop-shadow(0 4px 24px rgba(0,212,255,0.25))",
-                }}
+                src="/konark/productevscooty.png"
+                alt="Konark EV Scooter"
+                style={{ maxHeight: 200, maxWidth: "90%", objectFit: "contain",
+                  filter: "drop-shadow(0 4px 24px rgba(0,212,255,0.2))" }}
               />
             </div>
-            <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div>
-                <p style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 2px" }}>Konark X1 Electric Scooter</p>
-                <p style={{ fontSize: 13, color: "#00d4ff", fontWeight: 700, margin: 0 }}>₹27,000</p>
-              </div>
-              <Link href="/products/electric-scooter"
-                style={{ fontSize: 12, color: "#94a3b8", textDecoration: "none", fontWeight: 600, whiteSpace: "nowrap" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
-              >
-                View →
-              </Link>
+
+            {/* Name + price */}
+            <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>
+              Konark EV Scooter X1
+            </p>
+            <p style={{ fontSize: 22, fontWeight: 800, color: "#00d4ff", margin: "0 0 14px" }}>
+              ₹27,000
+            </p>
+
+            {/* Stat chips */}
+            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+              {["200km Range", "Fast Charge 4hr"].map((stat) => (
+                <span key={stat} style={{
+                  fontSize: 11, fontWeight: 600, color: "#00d4ff",
+                  background: "rgba(0,212,255,0.08)",
+                  border: "1px solid rgba(0,212,255,0.2)",
+                  padding: "4px 10px", borderRadius: 6,
+                }}>
+                  {stat}
+                </span>
+              ))}
             </div>
+
+            <Link
+              href="/products/electric-scooter"
+              onClick={(e) => e.stopPropagation()}
+              style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}
+            >
+              View Product →
+            </Link>
           </motion.div>
 
           {/* Category chips */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.6 }}
-            style={{ display: "flex", gap: 8 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.5 }}
+            style={{ display: "flex", gap: 8, marginTop: 12 }}
           >
             {CATEGORY_CHIPS.map((c) => (
               <Link
                 key={c.label}
                 href={c.href}
                 style={{
-                  flex: 1,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 4,
-                  padding: "10px 8px",
+                  flex: 1, display: "flex", flexDirection: "column",
+                  alignItems: "center", gap: 4, padding: "10px 8px",
                   background: "rgba(15,23,42,0.8)",
-                  border: "1px solid #1e2d40",
-                  borderRadius: 10,
-                  textDecoration: "none",
-                  transition: "border-color 0.2s",
-                  fontSize: 11,
-                  color: "#94a3b8",
-                  fontWeight: 600,
-                  textAlign: "center",
+                  border: "1px solid #1e2d40", borderRadius: 10,
+                  textDecoration: "none", fontSize: 11,
+                  color: "#94a3b8", fontWeight: 600, textAlign: "center",
+                  transition: "all 0.2s",
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "#00d4ff";
+                  e.currentTarget.style.color = "#00d4ff";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "#1e2d40";
+                  e.currentTarget.style.color = "#94a3b8";
+                }}
               >
                 <span style={{ fontSize: 18 }}>{c.icon}</span>
-                {c.label}
+                {c.label} →
               </Link>
             ))}
           </motion.div>
@@ -352,23 +342,20 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <motion.div
+        animate={{ y: [0, 10, 0] }}
+        transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
         style={{
-          position: "absolute",
-          bottom: 28,
-          left: "50%",
+          position: "absolute", bottom: 28, left: "50%",
           transform: "translateX(-50%)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 4,
-          color: "#94a3b8",
-          zIndex: 10,
+          display: "flex", flexDirection: "column", alignItems: "center",
+          gap: 4, color: "#94a3b8", zIndex: 10,
         }}
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
       >
-        <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase" }}>Scroll</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18, color: "#00d4ff" }}>
+        <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+          Scroll
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
+          style={{ width: 18, height: 18, color: "#00d4ff" }}>
           <path d="M6 9l6 6 6-6" />
         </svg>
       </motion.div>
