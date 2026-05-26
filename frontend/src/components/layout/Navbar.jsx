@@ -71,50 +71,89 @@ function PowerLogo() {
 }
 
 function ProductsMegaMenu() {
+  const EV_LINKS = [
+    { label: "EV Scooters", href: "/products/electric-scooter", sub: "Book a test ride" },
+    { label: "Electric Motorcycle", href: "/products/electric-motor-cycle", sub: "High performance" },
+    { label: "E-Rickshaws", href: "/products/e-rickshaw", sub: "Commercial transport" },
+    { label: "Utility Vehicles", href: "/products/utility-vehicle", sub: "Industrial campuses" },
+  ];
+  const SHOP_LINKS = [
+    { label: "BLDC Fans & ACs", href: "/products", sub: "Home appliances" },
+    { label: "LFP Batteries", href: "/products/lfp-battery", sub: "Solar & EV batteries" },
+    { label: "Inverters & BMS", href: "/products/bms", sub: "Energy management" },
+    { label: "Industrial Equipment", href: "/products", sub: "Motors, cold storage" },
+  ];
+  const SERVICE_LINKS = [
+    { label: "AC Repair & Service", href: "/services/enquiry", sub: "Same-day response" },
+    { label: "EV Charger Install", href: "/services/enquiry", sub: "Home & commercial" },
+    { label: "Solar Installation", href: "/services/enquiry", sub: "Rooftop & industrial" },
+    { label: "All Services →", href: "/services", sub: "See full catalogue", highlight: true },
+  ];
+
+  const NavItem = ({ label, href, sub, highlight }) => (
+    <Link href={href}
+      style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "7px 10px", borderRadius: 8, textDecoration: "none", transition: "background 0.15s", marginBottom: 2 }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+    >
+      <div>
+        <p style={{ fontSize: 13, fontWeight: highlight ? 700 : 600, color: highlight ? "#00d4ff" : "#f1f5f9", margin: 0 }}>{label}</p>
+        <p style={{ fontSize: 11, color: "#475569", margin: 0 }}>{sub}</p>
+      </div>
+    </Link>
+  );
+
   return (
     <div style={{
       position: "absolute", top: "100%", left: "50%",
       transform: "translateX(-50%)", marginTop: 8,
-      width: 680, background: "#0f172a", border: "1px solid #1e2d40",
+      width: 720, background: "#0f172a", border: "1px solid #1e2d40",
       borderRadius: 16, boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
-      padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr",
-      gap: 24, zIndex: 50,
+      padding: "20px 8px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr",
+      gap: 0, zIndex: 50,
     }}>
-      <div>
-        <p style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.15em", color: "#94a3b8", marginBottom: 12 }}>
-          Browse by category
+      {/* Section 1: EV Vehicles */}
+      <div style={{ padding: "0 16px", borderRight: "1px solid #1e2d40" }}>
+        <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", color: "#00d4ff", marginBottom: 10, padding: "0 10px", display: "flex", alignItems: "center", gap: 6 }}>
+          🏍 EV Vehicles
+          <span style={{ fontSize: 9, background: "rgba(0,212,255,0.12)", border: "1px solid rgba(0,212,255,0.25)", padding: "1px 6px", borderRadius: 4, color: "#00d4ff" }}>Book a Ride</span>
         </p>
-        {PRODUCT_CATEGORIES.map((cat) => (
-          <Link key={cat.name} href={cat.href}
-            style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 12px", borderRadius: 10, border: "1px solid transparent", transition: "all 0.15s", marginBottom: 4, textDecoration: "none" }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(0,212,255,0.05)"; e.currentTarget.style.borderColor = "rgba(0,212,255,0.2)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "transparent"; }}
-          >
-            <span style={{ color: "#00d4ff", flexShrink: 0 }}>{cat.icon}</span>
-            <div>
-              <p style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9", margin: 0 }}>{cat.name}</p>
-              <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>{cat.desc}</p>
-            </div>
-          </Link>
-        ))}
+        {EV_LINKS.map((l) => <NavItem key={l.label} {...l} />)}
+        <Link href="/test-ride" style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px 12px", marginTop: 8, background: "#00d4ff", color: "#0a0f1e", fontSize: 12, fontWeight: 700, borderRadius: 8, textDecoration: "none", transition: "background 0.2s" }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
+        >
+          Book Test Ride →
+        </Link>
       </div>
-      <div>
-        <p style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.15em", color: "#94a3b8", marginBottom: 12 }}>
-          Featured product
+
+      {/* Section 2: Shop Products */}
+      <div style={{ padding: "0 16px", borderRight: "1px solid #1e2d40" }}>
+        <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", color: "#10b981", marginBottom: 10, padding: "0 10px", display: "flex", alignItems: "center", gap: 6 }}>
+          🛒 Shop Products
+          <span style={{ fontSize: 9, background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.25)", padding: "1px 6px", borderRadius: 4, color: "#10b981" }}>Buy Online</span>
         </p>
-        <div style={{ padding: 16, borderRadius: 12, border: "1px solid rgba(0,212,255,0.2)", background: "rgba(0,212,255,0.05)" }}>
-          <div style={{ height: 100, background: "#111827", borderRadius: 8, marginBottom: 10, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-            <img src="/productimg/Electric Scooter.png" alt="Electric Scooter" style={{ height: "100%", objectFit: "contain" }} />
-          </div>
-          <p style={{ fontSize: 11, color: "#00d4ff", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Best Seller</p>
-          <p style={{ fontSize: 13, fontWeight: 600, color: "#fff", margin: 0 }}>Konark X1 Electric Scooter</p>
-          <p style={{ fontSize: 12, color: "#94a3b8", margin: "4px 0 10px" }}>Range: 200km · Motor: 1000W · ₹27,000</p>
-          <Link href="/products/electric-scooter" style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none" }}>
-            View details →
-          </Link>
-        </div>
-        <Link href="/products" style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 13, color: "#00d4ff", fontWeight: 500, marginTop: 16, textDecoration: "none" }}>
-          View all 50+ products →
+        {SHOP_LINKS.map((l) => <NavItem key={l.label} {...l} />)}
+        <Link href="/products" style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px 12px", marginTop: 8, border: "1px solid #1e2d40", color: "#94a3b8", fontSize: 12, fontWeight: 600, borderRadius: 8, textDecoration: "none", transition: "all 0.2s" }}
+          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
+        >
+          View All Products
+        </Link>
+      </div>
+
+      {/* Section 3: Services */}
+      <div style={{ padding: "0 16px" }}>
+        <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", color: "#a78bfa", marginBottom: 10, padding: "0 10px", display: "flex", alignItems: "center", gap: 6 }}>
+          🔧 Services
+          <span style={{ fontSize: 9, background: "rgba(167,139,250,0.1)", border: "1px solid rgba(167,139,250,0.25)", padding: "1px 6px", borderRadius: 4, color: "#a78bfa" }}>Book Online</span>
+        </p>
+        {SERVICE_LINKS.map((l) => <NavItem key={l.label} {...l} />)}
+        <Link href="/services/enquiry" style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px 12px", marginTop: 8, background: "#7c3aed", color: "#fff", fontSize: 12, fontWeight: 700, borderRadius: 8, textDecoration: "none", transition: "background 0.2s" }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#6d28d9")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#7c3aed")}
+        >
+          Book a Service →
         </Link>
       </div>
     </div>
