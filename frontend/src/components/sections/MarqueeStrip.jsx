@@ -16,7 +16,7 @@ const ROW2_ITEMS = [
   { icon: "🏭", text: "Industrial Electrical" },
 ];
 
-function MarqueeRow({ items, iconColor, speed, reverse }) {
+function MarqueeRow({ items, iconColor, textColor, speed, reverse }) {
   const doubled = [...items, ...items, ...items, ...items];
   return (
     <div style={{ overflow: "hidden", width: "100%" }}>
@@ -32,8 +32,8 @@ function MarqueeRow({ items, iconColor, speed, reverse }) {
         {doubled.map((item, i) => (
           <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
             <span style={{ color: iconColor }}>{item.icon}</span>
-            <span style={{ color: "#475569", fontSize: 13, fontWeight: 500 }}>{item.text}</span>
-            <span style={{ color: "#1e2d40", marginLeft: 8 }}>·</span>
+            <span style={{ color: textColor, fontSize: 14, fontWeight: 600, letterSpacing: "0.05em" }}>{item.text}</span>
+            <span style={{ color: "#00d4ff", marginLeft: 8 }}>·</span>
           </span>
         ))}
       </div>
@@ -47,14 +47,14 @@ export default function MarqueeStrip() {
       background: "#060d1a",
       borderTop: "1px solid #0f1e2e",
       borderBottom: "1px solid #0f1e2e",
-      padding: "12px 0",
+      padding: "16px 0",
       overflow: "hidden",
       display: "flex",
       flexDirection: "column",
       gap: 8,
     }}>
-      <MarqueeRow items={ROW1_ITEMS} iconColor="#00d4ff" speed={25} reverse={false} />
-      <MarqueeRow items={ROW2_ITEMS} iconColor="#7c3aed" speed={35} reverse={true} />
+      <MarqueeRow items={ROW1_ITEMS} iconColor="#00d4ff" textColor="#e2e8f0" speed={25} reverse={false} />
+      <MarqueeRow items={ROW2_ITEMS} iconColor="#a78bfa" textColor="#cbd5e1" speed={35} reverse={true} />
     </div>
   );
 }
