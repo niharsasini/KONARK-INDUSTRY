@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  # FastAPI application
+  api:
+    build: .
+    container_name: konark-api
+    ports:
+      - "8000:8000"
+    environment:
+      # Override the URL so the app connects to the compose mongodb service
+      - MONGODB_URL=mongodb://mongodb:27017
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+  # MongoDB database
+  mongodb:
+    image: mongo:7.0
+    container_name: konark-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      # Persist data across container restarts
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+  # Mongo Express — visual MongoDB browser at http://localhost:8081
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: konark-mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=konark2024
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+volumes:
+  # Named volume so MongoDB data survives docker-compose down
+  mongo_data:
