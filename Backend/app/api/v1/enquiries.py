@@ -10,6 +10,7 @@ DELETE /enquiries/{id}       — admin: hard delete old enquiry
 from fastapi import APIRouter, HTTPException, status, Depends, Query
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List
+from fastapi.responses import StreamingResponse
 from datetime import datetime, date
 
 from app.models.enquiry import Enquiry, EnquiryType, EnquiryStatus, UrgencyLevel
@@ -104,14 +105,29 @@ async def create_enquiry(body: EnquiryCreateRequest):
     enquiry_dict = body.model_dump()
     enquiry_dict["id"] = str(enquiry.id)
 
-    # Send emails concurrently — failures are logged but don't affect the response
+    # Send emails and create admin notification concurrently
     try:
         import asyncio
-        await asyncio.gather(
-            send_enquiry_confirmation(enquiry_dict),
+        from app.services.notification_service import notify_new_enquiry
+        from app.services.email_service import send_test_ride_confirmation
+
+        tasks = [
             send_admin_enquiry_alert(enquiry_dict),
-            return_exceptions=True,
-        )
+            notify_new_enquiry(
+                str(enquiry.id),
+                body.name,
+                body.enquiry_type.value,
+                body.phone,
+            ),
+        ]
+
+        # Send specific confirmation for test ride bookings
+        if body.enquiry_type.value == "test_ride":
+            tasks.append(send_test_ride_confirmation(enquiry_dict))
+        else:
+            tasks.append(send_enquiry_confirmation(enquiry_dict))
+
+        await asyncio.gather(*tasks, return_exceptions=True)
     except Exception:
         pass
 
@@ -213,3 +229,23 @@ async def delete_enquiry(enquiry_id: str, admin: User = Depends(get_admin_user))
             detail="Enquiry not found",
         )
     await enquiry.delete()
+
+
+class BulkReadRequest(BaseModel):
+    """List of enquiry IDs to mark as read in one operation."""
+    enquiry_ids: List[str]
+
+
+@router.post("/bulk-read")
+async def bulk_mark_read(
+    body: BulkReadRequest,
+    admin: User = Depends(get_admin_user),
+):
+    """
+    Admin: mark multiple enquiries as read in a single request.
+    Used by the "Select All → Mark Read" button in the admin enquiries panel.
+    Returns the count of enquiries that were actually changed.
+    """
+    from app.services.enquiry_service import bulk_mark_read as _bulk_mark_read
+    updated = await _bulk_mark_read(body.enquiry_ids)
+    return {"updated": updated, "message": f"{updated} enquiries marked as read"}

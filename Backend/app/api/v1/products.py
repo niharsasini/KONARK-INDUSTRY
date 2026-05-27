@@ -224,3 +224,41 @@ async def delete_product(slug: str, admin: User = Depends(get_admin_user)):
     product.is_active = False
     product.updated_at = datetime.utcnow()
     await product.save()
+
+
+@router.patch("/{slug}/toggle-stock", response_model=ProductResponse)
+async def toggle_stock(slug: str, admin: User = Depends(get_admin_user)):
+    """
+    Admin: flip a product's in_stock flag between True and False.
+    Out-of-stock products show an "Out of Stock" badge on the product page.
+    """
+    product = await Product.find_one({"slug": slug})
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Product '{slug}' not found",
+        )
+
+    product.in_stock = not product.in_stock
+    product.updated_at = datetime.utcnow()
+    await product.save()
+    return _to_response(product)
+
+
+@router.patch("/{slug}/toggle-featured", response_model=ProductResponse)
+async def toggle_featured(slug: str, admin: User = Depends(get_admin_user)):
+    """
+    Admin: flip a product's is_featured flag.
+    Featured products appear in the homepage featured section.
+    """
+    product = await Product.find_one({"slug": slug})
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Product '{slug}' not found",
+        )
+
+    product.is_featured = not product.is_featured
+    product.updated_at = datetime.utcnow()
+    await product.save()
+    return _to_response(product)

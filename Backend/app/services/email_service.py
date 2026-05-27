@@ -295,3 +295,96 @@ async def send_service_booking_confirmation(booking_data: dict) -> bool:
         f"Service Booking Confirmed: {booking_data.get('booking_number')} — Konark Industry",
         _base_template(content),
     )
+
+
+async def send_order_status_update(order_data: dict, new_status: str) -> bool:
+    """
+    Notify a customer when admin updates their order's fulfilment status.
+    Maps the status enum value to a human-readable message.
+    Skipped if no customer email is on the order.
+    """
+    if not order_data.get("customer_email"):
+        return False
+
+    # Human-friendly status messages shown to the customer
+    status_messages = {
+        "confirmed": ("Your order has been confirmed!", "#10b981", "We're preparing it for dispatch."),
+        "packed": ("Your order has been packed!", "#3b82f6", "It will be shipped very soon."),
+        "shipped": ("Your order is on its way!", "#f59e0b", "Expected delivery in 2-3 business days."),
+        "delivered": ("Your order has been delivered!", "#10b981", "Thank you for shopping with Konark Industry!"),
+        "cancelled": ("Your order has been cancelled.", "#ef4444", "Please contact us if this was unexpected."),
+    }
+
+    status_label, color, sub_message = status_messages.get(
+        new_status,
+        (f"Order status updated to {new_status}", "#00d4ff", ""),
+    )
+
+    content = f"""
+      <h2 style="color:{color};margin:0 0 8px;">&#128230; {status_label}</h2>
+      <p style="color:#94a3b8;">
+        Order: <strong style="color:#00d4ff;">{order_data.get('order_number')}</strong>
+      </p>
+      <p style="color:#94a3b8;line-height:1.7;">{sub_message}</p>
+      <div style="background:#0f172a;border:1px solid #1e2d40;border-radius:8px;padding:16px;margin:20px 0;">
+        <p style="color:#64748b;font-size:12px;margin:0 0 8px;">ORDER SUMMARY</p>
+        <p style="color:#f1f5f9;margin:4px 0;">
+          Total: <strong style="color:#00d4ff;">&#8377;{order_data.get('total_amount', 0):,.0f}</strong>
+        </p>
+        <p style="color:#f1f5f9;margin:4px 0;">Status: {new_status.upper()}</p>
+      </div>
+      <p style="color:#94a3b8;">
+        Questions? Call <a href="tel:+919437611129" style="color:#00d4ff;">+91 94376 11129</a>
+      </p>
+    """
+    return await send_email(
+        order_data["customer_email"],
+        f"Order {order_data.get('order_number')} — {status_label}",
+        _base_template(content),
+    )
+
+
+async def send_test_ride_confirmation(enquiry_data: dict) -> bool:
+    """
+    Send a specific confirmation for test ride booking enquiries.
+    Provides more detail than the generic enquiry confirmation:
+    what to bring, where to come, what to expect.
+    Skipped if no email address was provided.
+    """
+    if not enquiry_data.get("email"):
+        return False
+
+    product_name = enquiry_data.get("product_name", "an electric vehicle")
+    preferred_date = enquiry_data.get("preferred_date", "a date to be confirmed")
+
+    content = f"""
+      <h2 style="color:#00d4ff;margin:0 0 16px;">Test Ride Booking Confirmed! &#9889;</h2>
+      <p style="color:#94a3b8;line-height:1.7;">Hi {enquiry_data.get('name', 'there')},</p>
+      <p style="color:#94a3b8;line-height:1.7;">
+        Your test ride request for
+        <strong style="color:#f1f5f9;">{product_name}</strong>
+        has been received. Our team will call
+        <strong style="color:#f1f5f9;">{enquiry_data.get('phone')}</strong>
+        within 2 hours to confirm your slot.
+      </p>
+      <div style="background:#0f172a;border:1px solid #00d4ff;border-radius:8px;padding:20px;margin:20px 0;">
+        <p style="color:#64748b;font-size:12px;margin:0 0 12px;">TEST RIDE DETAILS</p>
+        <p style="color:#f1f5f9;margin:6px 0;">Vehicle: <strong>{product_name}</strong></p>
+        <p style="color:#f1f5f9;margin:6px 0;">Preferred Date: {preferred_date}</p>
+        <p style="color:#f1f5f9;margin:6px 0;">Location: Konark Industry Showroom, Bhimatangi, Bhubaneswar</p>
+      </div>
+      <p style="color:#64748b;font-size:14px;line-height:1.7;">
+        <strong style="color:#94a3b8;">What to bring:</strong><br>
+        &#10003; Valid driving licence (for scooter/motorcycle)<br>
+        &#10003; Comfortable riding clothes<br>
+        &#10003; This email or your phone number for check-in
+      </p>
+      <p style="color:#94a3b8;margin-top:16px;">
+        Direct enquiries: <a href="tel:+919437611129" style="color:#00d4ff;">+91 94376 11129</a>
+      </p>
+    """
+    return await send_email(
+        enquiry_data["email"],
+        f"Test Ride Booking Confirmed — {product_name} | Konark Industry",
+        _base_template(content),
+    )

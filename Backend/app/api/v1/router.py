@@ -1,11 +1,11 @@
 """
 router.py - API v1 Router
 Combines all sub-routers under the /api/v1 prefix.
-Adding a new feature module: import its router here and call include_router.
+To add a new module: import its router here and call include_router.
 """
 
 from fastapi import APIRouter
-from app.api.v1 import auth, products, enquiries, orders, services, admin
+from app.api.v1 import auth, products, enquiries, orders, services, admin, reviews
 
 # Master v1 router — mounted at /api/v1 in main.py
 api_router = APIRouter(prefix="/api/v1")
@@ -27,3 +27,6 @@ api_router.include_router(services.router)
 
 # Admin dashboard routes: /api/v1/admin/...
 api_router.include_router(admin.router)
+
+# Review routes: /api/v1/products/{slug}/reviews and /api/v1/reviews/{id}
+api_router.include_router(reviews.router)

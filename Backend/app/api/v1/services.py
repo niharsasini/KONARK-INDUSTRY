@@ -105,16 +105,28 @@ async def create_booking(body: BookingCreateRequest):
     )
     await booking.insert()
 
-    # Send confirmation email (non-blocking)
+    # Send confirmation email and create admin notification concurrently
     try:
-        await send_service_booking_confirmation({
-            "email": body.email,
-            "name": body.name,
-            "phone": body.phone,
-            "booking_number": booking_number,
-            "service_type": body.service_type,
-            "city": body.city,
-        })
+        import asyncio as _asyncio
+        from app.services.notification_service import notify_new_booking
+        await _asyncio.gather(
+            send_service_booking_confirmation({
+                "email": body.email,
+                "name": body.name,
+                "phone": body.phone,
+                "booking_number": booking_number,
+                "service_type": body.service_type,
+                "city": body.city,
+            }),
+            notify_new_booking(
+                str(booking.id),
+                booking_number,
+                body.name,
+                body.service_type,
+                body.city,
+            ),
+            return_exceptions=True,
+        )
     except Exception:
         pass
 
@@ -210,3 +222,51 @@ async def delete_booking(booking_id: str, admin: User = Depends(get_admin_user))
             detail="Service booking not found",
         )
     await booking.delete()
+
+
+@router.get("/bookings/export")
+async def export_bookings_csv(
+    status_filter: Optional[str] = Query(None, alias="status"),
+    city: Optional[str] = Query(None),
+    admin: User = Depends(get_admin_user),
+):
+    """
+    Admin: download all service bookings as a CSV file.
+    Optional filters for status and city.
+    """
+    import csv
+    import io
+    from fastapi.responses import StreamingResponse
+
+    query_filter = {}
+    if status_filter:
+        query_filter["status"] = status_filter
+    if city:
+        query_filter["city"] = city
+
+    bookings = await ServiceBooking.find(query_filter).sort(-ServiceBooking.created_at).to_list()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "Booking Number", "Name", "Phone", "Email",
+        "Service Type", "City", "Preferred Date", "Time Slot",
+        "Urgency", "Assigned Technician", "Status", "Date Submitted",
+    ])
+    for b in bookings:
+        writer.writerow([
+            b.booking_number, b.name, b.phone, b.email or "",
+            b.service_type, b.city,
+            str(b.preferred_date) if b.preferred_date else "",
+            b.time_slot.value if b.time_slot else "",
+            b.urgency, b.assigned_technician or "",
+            b.status.value,
+            b.created_at.strftime("%Y-%m-%d %H:%M"),
+        ])
+
+    output.seek(0)
+    return StreamingResponse(
+        output,
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=konark_bookings.csv"},
+    )

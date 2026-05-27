@@ -1,7 +1,7 @@
 """
 database.py - MongoDB Database Connection
 Uses Motor (async MongoDB driver) with Beanie ODM.
-Beanie provides type-safe document models backed by Pydantic v2.
+All Document models must be registered here in init_beanie.
 """
 
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -18,31 +18,41 @@ client: AsyncIOMotorClient = None
 async def connect_to_mongo():
     """
     Creates MongoDB connection on app startup.
-    Called from FastAPI lifespan event handler.
-    Imports all document models so Beanie registers their collections.
+    Called from the FastAPI lifespan event handler.
+    Every Beanie Document model must be listed in document_models.
     """
     global client
     settings = get_settings()
 
-    # Import all models here so Beanie registers them
+    # Import all models so Beanie registers their collections and indexes
     from app.models.user import User
     from app.models.product import Product
     from app.models.enquiry import Enquiry
     from app.models.order import Order
     from app.models.service_booking import ServiceBooking
+    from app.models.review import Review
+    from app.models.notification import Notification
+    from app.models.site_settings import SiteSettings
 
     logger.info(f"Connecting to MongoDB at {settings.mongodb_url}")
 
-    # Create async motor client
     client = AsyncIOMotorClient(settings.mongodb_url)
 
-    # Initialize Beanie with all document models
     await init_beanie(
         database=client[settings.mongodb_db_name],
-        document_models=[User, Product, Enquiry, Order, ServiceBooking],
+        document_models=[
+            User,
+            Product,
+            Enquiry,
+            Order,
+            ServiceBooking,
+            Review,
+            Notification,
+            SiteSettings,
+        ],
     )
 
-    logger.info(f"Connected to MongoDB database: {settings.mongodb_db_name}")
+    logger.info(f"Connected to MongoDB: {settings.mongodb_db_name} (8 collections registered)")
 
 
 async def close_mongo_connection():

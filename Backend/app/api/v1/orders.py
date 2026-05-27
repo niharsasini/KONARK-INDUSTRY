@@ -150,17 +150,28 @@ async def place_order(
     )
     await order.insert()
 
-    # Send confirmation email (non-blocking)
+    # Send confirmation email and create admin notification concurrently
     try:
-        await send_order_confirmation({
-            "customer_email": body.customer_email,
-            "order_number": order_number,
-            "items": items_snapshot,
-            "subtotal": totals["subtotal"],
-            "delivery_charge": totals["delivery_charge"],
-            "gst_amount": totals["gst_amount"],
-            "total_amount": totals["total_amount"],
-        })
+        import asyncio as _asyncio
+        from app.services.notification_service import notify_new_order
+        await _asyncio.gather(
+            send_order_confirmation({
+                "customer_email": body.customer_email,
+                "order_number": order_number,
+                "items": items_snapshot,
+                "subtotal": totals["subtotal"],
+                "delivery_charge": totals["delivery_charge"],
+                "gst_amount": totals["gst_amount"],
+                "total_amount": totals["total_amount"],
+            }),
+            notify_new_order(
+                str(order.id),
+                order_number,
+                body.customer_name,
+                totals["total_amount"],
+            ),
+            return_exceptions=True,
+        )
     except Exception:
         pass
 
@@ -267,4 +278,45 @@ async def update_order_status(
     order.updated_at = datetime.utcnow()
     await order.save()
 
+    # Email customer about the status change (non-blocking)
+    try:
+        from app.services.email_service import send_order_status_update
+        await send_order_status_update(
+            {
+                "customer_email": order.customer_email,
+                "order_number": order.order_number,
+                "total_amount": order.total_amount,
+            },
+            body.order_status.value,
+        )
+    except Exception:
+        pass
+
     return _to_response(order)
+
+
+@router.get("/export")
+async def export_orders_csv(
+    order_status: Optional[str] = Query(None),
+    admin: User = Depends(get_admin_user),
+):
+    """
+    Admin: download all orders (optionally filtered by status) as a CSV file.
+    Returns a StreamingResponse so large order lists don't block memory.
+    """
+    from fastapi.responses import StreamingResponse
+    from app.services.order_service import export_orders_to_csv
+    import io
+
+    query_filter = {}
+    if order_status:
+        query_filter["order_status"] = order_status
+
+    orders = await Order.find(query_filter).sort(-Order.created_at).to_list()
+    csv_content = await export_orders_to_csv(orders)
+
+    return StreamingResponse(
+        io.StringIO(csv_content),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=konark_orders.csv"},
+    )
