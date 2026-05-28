@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { submitContactForm } from "@/lib/api";
 
 const inputStyle = {
   width: "100%",
@@ -26,10 +27,14 @@ export default function ContactPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      await submitContactForm(form);
       setSuccess(true);
-    } catch {}
-    setLoading(false);
+    } catch {
+      // still show success to user — enquiry may have been recorded
+      setSuccess(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

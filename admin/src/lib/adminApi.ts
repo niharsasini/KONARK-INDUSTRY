@@ -1,0 +1,294 @@
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+
+async function adminRequest<T>(
+  path: string,
+  options: RequestInit = {}
+): Promise<T> {
+  const token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("konark_admin_token")
+      : null;
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...(options.headers as Record<string, string>),
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  const res = await fetch(`${BASE_URL}${path}`, { ...options, headers });
+
+  if (res.status === 401) {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("konark_admin_token");
+      window.location.href = "/admin-login";
+    }
+    throw new Error("Unauthorised. Please log in again.");
+  }
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.detail || data.message || "Request failed");
+  }
+
+  return data as T;
+}
+
+// ─── DASHBOARD ───────────────────────────────────────────────────────────────
+
+export async function getStats() {
+  return adminRequest("/api/v1/admin/stats");
+}
+
+export async function getRecentActivity() {
+  return adminRequest("/api/v1/admin/recent-activity");
+}
+
+export async function getNotifications() {
+  return adminRequest("/api/v1/admin/notifications");
+}
+
+export async function markNotificationRead(id: string) {
+  return adminRequest(`/api/v1/admin/notifications/${id}/read`, {
+    method: "PATCH",
+  });
+}
+
+// ─── PRODUCTS ────────────────────────────────────────────────────────────────
+
+export async function getAdminProducts(
+  filters: Record<string, string> = {}
+) {
+  const params = new URLSearchParams(filters);
+  const qs = params.toString();
+  return adminRequest(`/api/v1/products${qs ? `?${qs}` : ""}`);
+}
+
+export async function createProduct(data: Record<string, unknown>) {
+  return adminRequest("/api/v1/products", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateProduct(
+  slug: string,
+  data: Record<string, unknown>
+) {
+  return adminRequest(`/api/v1/products/${slug}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteProduct(slug: string) {
+  return adminRequest(`/api/v1/products/${slug}`, { method: "DELETE" });
+}
+
+export async function toggleStock(slug: string) {
+  return adminRequest(`/api/v1/products/${slug}/toggle-stock`, {
+    method: "PATCH",
+  });
+}
+
+export async function toggleFeatured(slug: string) {
+  return adminRequest(`/api/v1/products/${slug}/toggle-featured`, {
+    method: "PATCH",
+  });
+}
+
+// ─── ENQUIRIES ───────────────────────────────────────────────────────────────
+
+export async function getEnquiries(filters: Record<string, string> = {}) {
+  const params = new URLSearchParams(filters);
+  const qs = params.toString();
+  return adminRequest(`/api/v1/admin/enquiries${qs ? `?${qs}` : ""}`);
+}
+
+export async function getEnquiry(id: string) {
+  return adminRequest(`/api/v1/admin/enquiries/${id}`);
+}
+
+export async function updateEnquiryStatus(
+  id: string,
+  status: string,
+  notes?: string
+) {
+  return adminRequest(`/api/v1/admin/enquiries/${id}/status`, {
+    method: "PATCH",
+    body: JSON.stringify({ status, notes }),
+  });
+}
+
+export async function markEnquiriesRead(ids: string[]) {
+  return adminRequest("/api/v1/admin/enquiries/mark-read", {
+    method: "POST",
+    body: JSON.stringify({ ids }),
+  });
+}
+
+export async function deleteEnquiry(id: string) {
+  return adminRequest(`/api/v1/admin/enquiries/${id}`, { method: "DELETE" });
+}
+
+// ─── ORDERS ──────────────────────────────────────────────────────────────────
+
+export async function getOrders(filters: Record<string, string> = {}) {
+  const params = new URLSearchParams(filters);
+  const qs = params.toString();
+  return adminRequest(`/api/v1/admin/orders${qs ? `?${qs}` : ""}`);
+}
+
+export async function getOrder(orderNumber: string) {
+  return adminRequest(`/api/v1/admin/orders/${orderNumber}`);
+}
+
+export async function updateOrderStatus(
+  orderNumber: string,
+  status: string
+) {
+  return adminRequest(`/api/v1/admin/orders/${orderNumber}/status`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
+  });
+}
+
+export async function exportOrders() {
+  const token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("konark_admin_token")
+      : null;
+  const res = await fetch(`${BASE_URL}/api/v1/admin/orders/export`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "konark-orders.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ─── SERVICES ────────────────────────────────────────────────────────────────
+
+export async function getServiceBookings(
+  filters: Record<string, string> = {}
+) {
+  const params = new URLSearchParams(filters);
+  const qs = params.toString();
+  return adminRequest(`/api/v1/admin/services${qs ? `?${qs}` : ""}`);
+}
+
+export async function getServiceBooking(id: string) {
+  return adminRequest(`/api/v1/admin/services/${id}`);
+}
+
+export async function updateServiceBooking(
+  id: string,
+  data: Record<string, unknown>
+) {
+  return adminRequest(`/api/v1/admin/services/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function exportServiceBookings() {
+  const token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("konark_admin_token")
+      : null;
+  const res = await fetch(`${BASE_URL}/api/v1/admin/services/export`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "konark-service-bookings.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ─── CUSTOMERS ───────────────────────────────────────────────────────────────
+
+export async function getCustomers(filters: Record<string, string> = {}) {
+  const params = new URLSearchParams(filters);
+  const qs = params.toString();
+  return adminRequest(`/api/v1/admin/customers${qs ? `?${qs}` : ""}`);
+}
+
+export async function getCustomer(id: string) {
+  return adminRequest(`/api/v1/admin/customers/${id}`);
+}
+
+export async function toggleCustomerStatus(id: string) {
+  return adminRequest(`/api/v1/admin/customers/${id}/toggle-status`, {
+    method: "PATCH",
+  });
+}
+
+export async function exportCustomers() {
+  const token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("konark_admin_token")
+      : null;
+  const res = await fetch(`${BASE_URL}/api/v1/admin/customers/export`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "konark-customers.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ─── ANALYTICS ───────────────────────────────────────────────────────────────
+
+export async function getDailyAnalytics() {
+  return adminRequest("/api/v1/admin/analytics/daily");
+}
+
+export async function getTopProducts() {
+  return adminRequest("/api/v1/admin/analytics/top-products");
+}
+
+export async function getRevenueAnalytics() {
+  return adminRequest("/api/v1/admin/analytics/revenue");
+}
+
+// ─── SETTINGS ────────────────────────────────────────────────────────────────
+
+export async function getSettings() {
+  return adminRequest("/api/v1/admin/settings");
+}
+
+export async function updateSettings(data: Record<string, unknown>) {
+  return adminRequest("/api/v1/admin/settings", {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+}
+
+// ─── REVIEWS ─────────────────────────────────────────────────────────────────
+
+export async function getProductReviews(slug: string) {
+  return adminRequest(`/api/v1/products/${slug}/reviews`);
+}
+
+export async function approveReview(id: string) {
+  return adminRequest(`/api/v1/admin/reviews/${id}/approve`, {
+    method: "PATCH",
+  });
+}
+
+export async function deleteReview(id: string) {
+  return adminRequest(`/api/v1/admin/reviews/${id}`, { method: "DELETE" });
+}

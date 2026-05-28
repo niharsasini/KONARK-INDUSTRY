@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { registerUser } from "@/lib/api";
 
 const CITIES = ["Bhubaneswar", "Cuttack", "Puri", "Rourkela", "Berhampur", "Sambalpur", "Balasore", "Brahmapur", "Other"];
 
@@ -68,13 +69,16 @@ export default function RegisterPage() {
       return;
     }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 900));
-    const firstName = form.name.split(" ")[0];
-    localStorage.setItem("konark_user", JSON.stringify({ name: form.name, email: form.email, phone: form.phone, city: form.city }));
-    localStorage.removeItem("konark_auth_prompt_last_shown");
-    setLoading(false);
-    setToast(`Welcome to Konark, ${firstName}! 🎉`);
-    setTimeout(() => router.push("/"), 1800);
+    try {
+      await registerUser(form.name, form.phone, form.email, form.password, form.city);
+      const firstName = form.name.split(" ")[0];
+      setToast(`Welcome to Konark, ${firstName}!`);
+      setTimeout(() => router.push("/"), 1800);
+    } catch (err: unknown) {
+      setToast(err instanceof Error ? err.message : "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

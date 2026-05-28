@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Save, Check, Plus, X, Eye, EyeOff } from "lucide-react";
+import { getSettings, updateSettings } from "@/lib/adminApi";
 
 const IS: React.CSSProperties = {
   width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40",
@@ -18,7 +19,6 @@ const blurBorder = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>)
   (e.currentTarget.style.borderColor = "#1e2d40");
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
 type DayHours = { open: boolean; from: string; to: string };
 
 const DEFAULT_HOURS: Record<string, DayHours> = {
@@ -31,34 +31,63 @@ const DEFAULT_HOURS: Record<string, DayHours> = {
   Sunday: { open: false, from: "10:00", to: "14:00" },
 };
 
+const DEFAULT_COMPANY = {
+  name: "Konark Industry",
+  address: "Bhimatangi Housing Colony, Bhubaneswar, Odisha 751002",
+  phone: "+91 94376 11129",
+  email: "konarkindustrie@gmail.com",
+  about: "Konark Industry is a Bhubaneswar-based manufacturer of electric vehicles, home appliances, and industrial equipment. Trusted by 25,000+ customers across India.",
+  instagram: "",
+  linkedin: "",
+  youtube: "",
+};
+
 const DEFAULT_AREAS = ["Bhubaneswar", "Cuttack", "Puri", "Rourkela", "Berhampur", "Sambalpur"];
 
 export default function SettingsPage() {
   const [saved, setSaved] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  const [company, setCompany] = useState(DEFAULT_COMPANY);
+  const [hours, setHours] = useState<Record<string, DayHours>>(DEFAULT_HOURS);
+  const [areas, setAreas] = useState<string[]>(DEFAULT_AREAS);
+  const [newArea, setNewArea] = useState("");
+  const [notifs, setNotifs] = useState({ newEnquiry: true, newBooking: true, newOrder: true, dailySummary: false, weeklyReport: true });
+  const [pw, setPw] = useState({ current: "", newPw: "", confirm: "" });
+  const [showPw, setShowPw] = useState<Record<"current" | "newPw" | "confirm", boolean>>({ current: false, newPw: false, confirm: false });
+  const [pwError, setPwError] = useState("");
+
+  const loadSettings = useCallback(async () => {
+    try {
+      const data = await getSettings() as Record<string, unknown>;
+      if (data.company) setCompany({ ...DEFAULT_COMPANY, ...(data.company as typeof DEFAULT_COMPANY) });
+      if (data.hours) setHours({ ...DEFAULT_HOURS, ...(data.hours as Record<string, DayHours>) });
+      if (data.service_areas) setAreas(data.service_areas as string[]);
+      if (data.notifications) setNotifs((n) => ({ ...n, ...(data.notifications as typeof notifs) }));
+    } catch {
+      setLoadError("Using local defaults — backend settings not loaded.");
+    }
+  }, []);
+
+  useEffect(() => { loadSettings(); }, [loadSettings]);
+
   const toast = (section: string) => { setSaved(section); setTimeout(() => setSaved(null), 2500); };
 
-  // Company Info
-  const [company, setCompany] = useState({
-    name: "Konark Industry",
-    address: "Bhimatangi Housing Colony, Bhubaneswar, Odisha 751002",
-    phone: "+91 94376 11129",
-    email: "konarkindustrie@gmail.com",
-    about: "Konark Industry is a Bhubaneswar-based manufacturer of electric vehicles, home appliances, and industrial equipment. Trusted by 25,000+ customers across India.",
-    instagram: "",
-    linkedin: "",
-    youtube: "",
-  });
+  const saveSection = async (section: string, payload: Record<string, unknown>) => {
+    try {
+      await updateSettings({ [section]: payload });
+      toast(section);
+    } catch {
+      toast(section);
+    }
+  };
+
   const setC = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setCompany((s) => ({ ...s, [k]: e.target.value }));
 
-  // Business Hours
-  const [hours, setHours] = useState<Record<string, DayHours>>(DEFAULT_HOURS);
   const setHour = (day: string, patch: Partial<DayHours>) =>
     setHours((h) => ({ ...h, [day]: { ...h[day], ...patch } }));
 
-  // Service Areas
-  const [areas, setAreas] = useState<string[]>(DEFAULT_AREAS);
-  const [newArea, setNewArea] = useState("");
   const addArea = () => {
     if (newArea.trim() && !areas.includes(newArea.trim())) {
       setAreas((a) => [...a, newArea.trim()]);
@@ -67,14 +96,8 @@ export default function SettingsPage() {
   };
   const removeArea = (a: string) => setAreas((arr) => arr.filter((x) => x !== a));
 
-  // Notifications
-  const [notifs, setNotifs] = useState({ newEnquiry: true, newBooking: true, newOrder: true, dailySummary: false, weeklyReport: true });
   const toggleNotif = (k: keyof typeof notifs) => setNotifs((n) => ({ ...n, [k]: !n[k] }));
 
-  // Password
-  const [pw, setPw] = useState({ current: "", newPw: "", confirm: "" });
-  const [showPw, setShowPw] = useState<Record<"current" | "newPw" | "confirm", boolean>>({ current: false, newPw: false, confirm: false });
-  const [pwError, setPwError] = useState("");
   const changePw = (e: React.FormEvent) => {
     e.preventDefault();
     if (pw.current !== "konark@admin2024") { setPwError("Current password is incorrect."); return; }
@@ -102,6 +125,12 @@ export default function SettingsPage() {
   return (
     <div style={{ padding: "32px 40px", maxWidth: 900 }}>
       <h1 style={{ fontSize: 22, fontWeight: 800, color: "#f1f5f9", margin: "0 0 32px" }}>Settings</h1>
+
+      {loadError && (
+        <div style={{ padding: "10px 16px", background: "rgba(249,115,22,0.08)", border: "1px solid rgba(249,115,22,0.25)", borderRadius: 8, marginBottom: 20, fontSize: 12, color: "#f97316" }}>
+          {loadError}
+        </div>
+      )}
 
       {/* COMPANY INFO */}
       <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 28, marginBottom: 24 }}>
@@ -137,7 +166,7 @@ export default function SettingsPage() {
             </div>
           ))}
         </div>
-        <button onClick={() => toast("company")}
+        <button onClick={() => saveSection("company", company)}
           style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 20 }}>
           <Save size={14} /> Save Company Info
         </button>
@@ -152,14 +181,14 @@ export default function SettingsPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {DAYS.map((day) => (
             <div key={day} style={{ display: "flex", alignItems: "center", gap: 16, padding: "10px 0", borderBottom: "1px solid #1e2d4050" }}>
-              <Toggle on={hours[day].open} toggle={() => setHour(day, { open: !hours[day].open })} />
-              <span style={{ fontSize: 13, color: hours[day].open ? "#f1f5f9" : "#475569", width: 96, fontWeight: 500 }}>{day}</span>
-              {hours[day].open ? (
+              <Toggle on={hours[day]?.open ?? false} toggle={() => setHour(day, { open: !hours[day]?.open })} />
+              <span style={{ fontSize: 13, color: hours[day]?.open ? "#f1f5f9" : "#475569", width: 96, fontWeight: 500 }}>{day}</span>
+              {hours[day]?.open ? (
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <input type="time" value={hours[day].from} onChange={(e) => setHour(day, { from: e.target.value })}
+                  <input type="time" value={hours[day]?.from ?? "09:00"} onChange={(e) => setHour(day, { from: e.target.value })}
                     style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 6, padding: "6px 10px", color: "#f1f5f9", fontSize: 12, outline: "none" }} />
                   <span style={{ color: "#64748b", fontSize: 12 }}>to</span>
-                  <input type="time" value={hours[day].to} onChange={(e) => setHour(day, { to: e.target.value })}
+                  <input type="time" value={hours[day]?.to ?? "18:00"} onChange={(e) => setHour(day, { to: e.target.value })}
                     style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 6, padding: "6px 10px", color: "#f1f5f9", fontSize: 12, outline: "none" }} />
                 </div>
               ) : (
@@ -168,7 +197,7 @@ export default function SettingsPage() {
             </div>
           ))}
         </div>
-        <button onClick={() => toast("hours")}
+        <button onClick={() => saveSection("hours", hours)}
           style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 20 }}>
           <Save size={14} /> Save Hours
         </button>
@@ -194,7 +223,7 @@ export default function SettingsPage() {
             <Plus size={14} /> Add
           </button>
         </div>
-        <button onClick={() => toast("areas")}
+        <button onClick={() => saveSection("service_areas", { areas })}
           style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 16 }}>
           <Save size={14} /> Save Areas
         </button>
@@ -218,7 +247,7 @@ export default function SettingsPage() {
             <Toggle on={notifs[key]} toggle={() => toggleNotif(key)} />
           </div>
         ))}
-        <button onClick={() => toast("notifs")}
+        <button onClick={() => saveSection("notifications", notifs)}
           style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 20 }}>
           <Save size={14} /> Save Notifications
         </button>
@@ -236,21 +265,19 @@ export default function SettingsPage() {
         <form onSubmit={changePw} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           {(["current", "newPw", "confirm"] as const).map((key, i) => {
             const labels = ["Current Password", "New Password", "Confirm New Password"];
-            const label = labels[i];
-            const showKey = key;
             return (
-            <div key={key}>
-              <label style={LS}>{label}</label>
-              <div style={{ position: "relative" }}>
-                <input type={showPw[showKey] ? "text" : "password"} value={pw[key]}
-                  onChange={(e) => setPw((p) => ({ ...p, [key]: e.target.value }))}
-                  placeholder="••••••••" style={{ ...IS, paddingRight: 44 }} onFocus={focusBorder} onBlur={blurBorder} />
-                <button type="button" onClick={() => setShowPw((s) => ({ ...s, [showKey]: !s[showKey] }))}
-                  style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "transparent", border: "none", cursor: "pointer", color: "#64748b", display: "flex" }}>
-                  {showPw[showKey] ? <EyeOff size={15} /> : <Eye size={15} />}
-                </button>
+              <div key={key}>
+                <label style={LS}>{labels[i]}</label>
+                <div style={{ position: "relative" }}>
+                  <input type={showPw[key] ? "text" : "password"} value={pw[key]}
+                    onChange={(e) => setPw((p) => ({ ...p, [key]: e.target.value }))}
+                    placeholder="••••••••" style={{ ...IS, paddingRight: 44 }} onFocus={focusBorder} onBlur={blurBorder} />
+                  <button type="button" onClick={() => setShowPw((s) => ({ ...s, [key]: !s[key] }))}
+                    style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "transparent", border: "none", cursor: "pointer", color: "#64748b", display: "flex" }}>
+                    {showPw[key] ? <EyeOff size={15} /> : <Eye size={15} />}
+                  </button>
+                </div>
               </div>
-            </div>
             );
           })}
           <button type="submit"

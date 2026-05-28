@@ -1,18 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    console.log('New enquiry received:', JSON.stringify(body, null, 2));
-    // TODO: Add email sending via Resend in next phase
-    return NextResponse.json({
-      ok: true,
-      message: 'Enquiry received. We will call you within 2 hours.',
+    const res = await fetch(`${BACKEND}/api/v1/enquiries`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
     });
-  } catch (error) {
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
+  } catch {
     return NextResponse.json(
-      { ok: false, message: 'Something went wrong. Please call us directly.' },
-      { status: 500 }
+      { ok: false, message: 'Could not reach backend. Please call us directly.' },
+      { status: 502 }
     );
   }
 }

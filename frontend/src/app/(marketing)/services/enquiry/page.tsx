@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { submitEnquiry } from "@/lib/api";
 
 const SERVICE_OPTIONS = [
   "AC Repair & Service",
@@ -75,16 +76,10 @@ export default function EnquiryPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (data.ok) setSuccess(true);
-      else setError(data.message || "Something went wrong. Please try again.");
-    } catch {
-      setError("Network error. Please call us directly.");
+      await submitEnquiry({ ...form, enquiry_type: "service" });
+      setSuccess(true);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Network error. Please call us directly.");
     } finally {
       setLoading(false);
     }

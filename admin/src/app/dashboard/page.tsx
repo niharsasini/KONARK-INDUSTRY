@@ -1,26 +1,17 @@
 "use client";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Package, Mail, ShoppingBag, Users, TrendingUp, Plus, ExternalLink, Download } from "lucide-react";
-
-const STAT_CARDS = [
-  { label: "Total Products", value: "19", trend: "+2 this month", icon: Package, color: "#00d4ff" },
-  { label: "Pending Enquiries", value: "8", trend: "+3 today", icon: Mail, color: "#f97316" },
-  { label: "Test Ride Bookings", value: "3", trend: "This week", icon: ShoppingBag, color: "#10b981" },
-  { label: "Service Bookings", value: "12", trend: "+5 this month", icon: Users, color: "#7c3aed" },
-];
-
-const SAMPLE_ENQUIRIES = [
-  { name: "Ramesh Patra", type: "Test Ride", phone: "94376 11129", date: "25 May", status: "New" },
-  { name: "Sunita Behera", type: "Product Enquiry", phone: "98765 43210", date: "24 May", status: "In Progress" },
-  { name: "Manas Das", type: "Service Booking", phone: "91234 56789", date: "23 May", status: "Done" },
-  { name: "Priya Mohanty", type: "Test Ride", phone: "70123 45678", date: "22 May", status: "New" },
-  { name: "Bikash Sahoo", type: "Product Enquiry", phone: "81234 56789", date: "21 May", status: "In Progress" },
-];
+import { getStats, getRecentActivity, getNotifications } from "@/lib/adminApi";
+import SkeletonLoader from "@/components/SkeletonLoader";
+import ErrorState from "@/components/ErrorState";
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
   New: { bg: "rgba(0,212,255,0.1)", color: "#00d4ff" },
   "In Progress": { bg: "rgba(249,115,22,0.1)", color: "#f97316" },
   Done: { bg: "rgba(16,185,129,0.1)", color: "#10b981" },
+  Contacted: { bg: "rgba(124,58,237,0.1)", color: "#a78bfa" },
+  Resolved: { bg: "rgba(16,185,129,0.1)", color: "#10b981" },
 };
 
 const QUICK_ACTIONS = [
@@ -30,23 +21,12 @@ const QUICK_ACTIONS = [
   { label: "Go to Live Site", href: "http://localhost:3000", icon: ExternalLink, primary: false, external: true },
 ];
 
-const CHART_DATA = [
-  { day: "Mon", value: 65 },
-  { day: "Tue", value: 42 },
-  { day: "Wed", value: 88 },
-  { day: "Thu", value: 55 },
-  { day: "Fri", value: 72 },
-  { day: "Sat", value: 95 },
-  { day: "Sun", value: 38 },
-];
-
-const MAX_VAL = Math.max(...CHART_DATA.map((d) => d.value));
-
-function RevenueChart() {
+function RevenueChart({ data }: { data: { day: string; value: number }[] }) {
   const H = 120;
   const W = 400;
   const BAR_W = 34;
-  const GAP = (W - CHART_DATA.length * BAR_W) / (CHART_DATA.length + 1);
+  const MAX_VAL = Math.max(...data.map((d) => d.value), 1);
+  const GAP = (W - data.length * BAR_W) / (data.length + 1);
 
   return (
     <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: "24px" }}>
@@ -55,7 +35,7 @@ function RevenueChart() {
         <span style={{ fontSize: 11, color: "#94a3b8", background: "#0f172a", padding: "4px 10px", borderRadius: 100, border: "1px solid #1e2d40" }}>Last 7 days</span>
       </div>
       <svg viewBox={`0 0 ${W} ${H + 30}`} style={{ width: "100%", height: "auto" }}>
-        {CHART_DATA.map((d, i) => {
+        {data.map((d, i) => {
           const barH = (d.value / MAX_VAL) * H;
           const x = GAP + i * (BAR_W + GAP);
           const y = H - barH;
@@ -74,16 +54,61 @@ function RevenueChart() {
 }
 
 export default function DashboardPage() {
+  const [stats, setStats] = useState<Record<string, unknown> | null>(null);
+  const [activity, setActivity] = useState<unknown[]>([]);
+  const [chartData, setChartData] = useState<{ day: string; value: number }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const [statsRes, activityRes] = await Promise.all([
+        getStats(),
+        getRecentActivity(),
+      ]);
+      setStats(statsRes as Record<string, unknown>);
+      const actArr = Array.isArray(activityRes) ? activityRes : (activityRes as Record<string, unknown[]>).enquiries ?? [];
+      setActivity(actArr.slice(0, 5) as unknown[]);
+      const chart = (activityRes as Record<string, unknown>).weekly_chart;
+      if (Array.isArray(chart)) setChartData(chart as { day: string; value: number }[]);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Could not load dashboard data.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { fetchData(); }, [fetchData]);
+
+  if (loading) return <div style={{ padding: "32px 40px" }}><SkeletonLoader variant="dashboard" /></div>;
+  if (error) return <div style={{ padding: "32px 40px" }}><ErrorState message={error} onRetry={fetchData} /></div>;
+
+  const statCards = [
+    { label: "Total Products", value: String((stats as Record<string, unknown>)?.total_products ?? "—"), trend: "In catalogue", icon: Package, color: "#00d4ff" },
+    { label: "Pending Enquiries", value: String((stats as Record<string, unknown>)?.pending_enquiries ?? "—"), trend: "Awaiting response", icon: Mail, color: "#f97316" },
+    { label: "Test Ride Bookings", value: String((stats as Record<string, unknown>)?.test_ride_bookings ?? "—"), trend: "This week", icon: ShoppingBag, color: "#10b981" },
+    { label: "Service Bookings", value: String((stats as Record<string, unknown>)?.service_bookings ?? "—"), trend: "This month", icon: Users, color: "#7c3aed" },
+  ];
+
+  const fallbackChart = chartData.length > 0
+    ? chartData
+    : [
+        { day: "Mon", value: 0 }, { day: "Tue", value: 0 }, { day: "Wed", value: 0 },
+        { day: "Thu", value: 0 }, { day: "Fri", value: 0 }, { day: "Sat", value: 0 }, { day: "Sun", value: 0 },
+      ];
+
   return (
     <div style={{ padding: "32px 40px", maxWidth: 1400 }}>
       <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>Good morning, Admin 👋</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>Good morning, Admin</h1>
         <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Here's what's happening at Konark Industry today.</p>
       </div>
 
       {/* Stat cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18, marginBottom: 32 }}>
-        {STAT_CARDS.map(({ label, value, trend, icon: Icon, color }) => (
+        {statCards.map(({ label, value, trend, icon: Icon, color }) => (
           <div key={label} style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: "20px 22px" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
               <p style={{ fontSize: 11, color: "#94a3b8", margin: 0, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600 }}>{label}</p>
@@ -102,7 +127,7 @@ export default function DashboardPage() {
 
       {/* Chart + Quick actions */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20, marginBottom: 28 }}>
-        <RevenueChart />
+        <RevenueChart data={fallbackChart} />
         <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: "24px" }}>
           <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 18px" }}>Quick Actions</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -116,15 +141,6 @@ export default function DashboardPage() {
               </Link>
             ))}
           </div>
-          <div style={{ marginTop: 20, padding: "14px", background: "rgba(0,212,255,0.04)", border: "1px solid rgba(0,212,255,0.12)", borderRadius: 10 }}>
-            <p style={{ fontSize: 11, fontWeight: 700, color: "#00d4ff", margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>Catalog</p>
-            {[{ label: "EV Vehicles", count: 4 }, { label: "Products", count: 14 }, { label: "Services", count: 1 }].map((s) => (
-              <div key={s.label} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0", borderBottom: "1px solid #1e2d4050", fontSize: 12 }}>
-                <span style={{ color: "#94a3b8" }}>{s.label}</span>
-                <span style={{ color: "#f1f5f9", fontWeight: 700 }}>{s.count}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -134,28 +150,33 @@ export default function DashboardPage() {
           <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Recent Enquiries</h2>
           <Link href="/enquiries" style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}>View all →</Link>
         </div>
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr style={{ borderBottom: "1px solid #1e2d40" }}>
-              {["Name", "Type", "Phone", "Date", "Status"].map((h) => (
-                <th key={h} style={{ padding: "0 12px 12px 0", textAlign: "left", fontSize: 11, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {SAMPLE_ENQUIRIES.map((row, i) => (
-              <tr key={i} style={{ borderBottom: "1px solid #1e2d4060" }}>
-                <td style={{ padding: "13px 12px 13px 0", fontSize: 13, fontWeight: 600, color: "#f1f5f9" }}>{row.name}</td>
-                <td style={{ padding: "13px 12px 13px 0", fontSize: 12, color: "#94a3b8" }}>{row.type}</td>
-                <td style={{ padding: "13px 12px 13px 0", fontSize: 12, color: "#94a3b8" }}>{row.phone}</td>
-                <td style={{ padding: "13px 12px 13px 0", fontSize: 12, color: "#94a3b8", whiteSpace: "nowrap" }}>{row.date}</td>
-                <td style={{ padding: "13px 0" }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: STATUS_COLORS[row.status]?.bg, color: STATUS_COLORS[row.status]?.color }}>{row.status}</span>
-                </td>
+
+        {activity.length === 0 ? (
+          <p style={{ fontSize: 13, color: "#475569", textAlign: "center", padding: "24px 0" }}>No enquiries yet.</p>
+        ) : (
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid #1e2d40" }}>
+                {["Name", "Type", "Phone", "Date", "Status"].map((h) => (
+                  <th key={h} style={{ padding: "0 12px 12px 0", textAlign: "left", fontSize: 11, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>{h}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {(activity as Record<string, string>[]).map((row, i) => (
+                <tr key={i} style={{ borderBottom: "1px solid #1e2d4060" }}>
+                  <td style={{ padding: "13px 12px 13px 0", fontSize: 13, fontWeight: 600, color: "#f1f5f9" }}>{row.name}</td>
+                  <td style={{ padding: "13px 12px 13px 0", fontSize: 12, color: "#94a3b8" }}>{row.enquiry_type ?? row.type}</td>
+                  <td style={{ padding: "13px 12px 13px 0", fontSize: 12, color: "#94a3b8" }}>{row.phone}</td>
+                  <td style={{ padding: "13px 12px 13px 0", fontSize: 12, color: "#94a3b8", whiteSpace: "nowrap" }}>{row.created_at ? new Date(row.created_at).toLocaleDateString("en-IN") : row.date}</td>
+                  <td style={{ padding: "13px 0" }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: STATUS_COLORS[row.status]?.bg ?? "rgba(0,212,255,0.1)", color: STATUS_COLORS[row.status]?.color ?? "#00d4ff" }}>{row.status ?? "New"}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

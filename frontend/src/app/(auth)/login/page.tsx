@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Package, Star, ShieldCheck } from "lucide-react";
+import { loginUser } from "@/lib/api";
 
 const INPUT: React.CSSProperties = {
   width: "100%",
@@ -46,12 +47,14 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
-    const name = form.email.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-    localStorage.setItem("konark_user", JSON.stringify({ name, email: form.email }));
-    localStorage.removeItem("konark_auth_prompt_last_shown");
-    setLoading(false);
-    router.push("/profile");
+    try {
+      await loginUser(form.email, form.password);
+      router.push("/profile");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

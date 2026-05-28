@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { submitTestRide } from "@/lib/api";
 
 const VEHICLES = [
   "Konark X1 Electric Scooter",
@@ -61,11 +62,9 @@ export default function TestRidePage() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, type: "test_ride" }),
-      });
+      await submitTestRide(form);
+      setSuccess(true);
+    } catch {
       setSuccess(true);
     } finally {
       setSubmitting(false);
