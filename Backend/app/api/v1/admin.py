@@ -441,7 +441,7 @@ async def get_settings(admin: User = Depends(get_admin_user)):
     Admin: return the current site settings document.
     Creates the settings document with defaults if it doesn't exist yet.
     """
-    settings = await SiteSettings.get_settings()
+    settings = await SiteSettings.get_site_settings()
     # Return as dict — exclude MongoDB internals
     data = settings.model_dump(exclude={"id", "revision_id"})
     data["id"] = str(settings.id)
@@ -457,7 +457,7 @@ async def update_settings(
     Admin: update one or more site setting fields.
     Only provided fields are changed — all others remain as-is.
     """
-    settings = await SiteSettings.get_settings()
+    settings = await SiteSettings.get_site_settings()
 
     update_data = body.model_dump(exclude_none=True)
     for field, value in update_data.items():

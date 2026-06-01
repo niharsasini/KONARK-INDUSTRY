@@ -1,7 +1,7 @@
 """
 site_settings.py - Site Settings Document Model
 Stores a single document (singleton pattern) with all admin-configurable settings.
-Use SiteSettings.get_settings() to always get or create the one document.
+Use SiteSettings.get_site_settings() to always get or create the one document.
 """
 
 from beanie import Document
@@ -66,10 +66,12 @@ class SiteSettings(Document):
         indexes = ["settings_key"]
 
     @classmethod
-    async def get_settings(cls) -> "SiteSettings":
+    async def get_site_settings(cls) -> "SiteSettings":
         """
         Always returns the single settings document.
         Creates it with defaults if it doesn't exist yet.
+        NOTE: Named get_site_settings (not get_settings) to avoid overriding
+        Beanie's internal Document.get_settings() which returns DocumentSettings.
         """
         settings = await cls.find_one({"settings_key": "global"})
         if not settings:
