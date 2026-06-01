@@ -103,3 +103,34 @@ body {
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }
 }
+
+@keyframes scrollProducts {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.products-carousel:hover .products-track {
+  animation-play-state: paused;
+}
+
+@media (max-width: 768px) {
+  .products-carousel {
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    cursor: grab;
+  }
+  .products-carousel::-webkit-scrollbar {
+    display: none;
+  }
+  .products-track {
+    animation: none !important;
+  }
+  .products-track > div {
+    width: 270px !important;
+    margin-right: 16px !important;
+    scroll-snap-align: start;
+  }
+}

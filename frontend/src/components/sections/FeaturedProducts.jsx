@@ -354,14 +354,20 @@ function ProductCard({ product, index, inView }) {
   return <ProductBuyCard product={product} index={index} inView={inView} />;
 }
 
+const CARD_W = 300;
+const CARD_GAP = 24;
+
 export default function FeaturedProducts() {
   const [activeTab, setActiveTab] = useState("All");
   const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true });
-  const { ref: gridRef, inView: gridIn } = useInView({ threshold: 0.05, triggerOnce: true });
 
   const filterFn = FILTER_FN[activeTab] || (() => true);
   const filtered = products.filter(filterFn).slice(0, 6);
   const displayed = filtered.length > 0 ? filtered : products.slice(0, 6);
+  // Double the array so the CSS animation loops seamlessly
+  const doubled = [...displayed, ...displayed];
+  // Explicit track width ensures -50% translateX lands exactly at the start of the second set
+  const trackWidth = doubled.length * (CARD_W + CARD_GAP);
 
   const TAB_ICONS = { All: "✦", "EV Vehicles": "🏍", "Buy Now": "🛒", "Book Service": "🔧" };
 
@@ -455,18 +461,35 @@ export default function FeaturedProducts() {
           </motion.div>
         )}
 
-        {/* Grid */}
+        {/* Auto-scrolling product carousel */}
         <div
-          ref={gridRef}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gap: 24,
-          }}
+          className="products-carousel"
+          style={{ overflow: "hidden", position: "relative", width: "100%" }}
         >
-          {displayed.map((product, i) => (
-            <ProductCard key={product.id} product={product} index={i} inView={gridIn} />
-          ))}
+          {/* key={activeTab} resets the animation whenever the filter tab changes */}
+          <div
+            key={activeTab}
+            className="products-track"
+            style={{
+              display: "flex",
+              width: `${trackWidth}px`,
+              animation: "scrollProducts 40s linear infinite",
+            }}
+          >
+            {doubled.map((product, i) => (
+              <div
+                key={`${product.id}-${i}`}
+                style={{ flexShrink: 0, width: CARD_W, marginRight: CARD_GAP }}
+              >
+                {/* inView={true} makes all cards immediately visible in the carousel */}
+                <ProductCard
+                  product={product}
+                  index={i % displayed.length}
+                  inView={true}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* View all */}

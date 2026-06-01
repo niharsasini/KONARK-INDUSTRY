@@ -363,7 +363,12 @@ export default function Hero() {
       <style>{`
         @media (max-width: 768px) {
           .hero-grid { grid-template-columns: 1fr !important; }
-          .hero-right { display: none !important; }
+          .hero-right {
+            display: block !important;
+            max-width: 320px;
+            width: 100%;
+            margin: 0 auto;
+          }
         }
       `}</style>
     </section>
