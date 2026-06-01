@@ -5,6 +5,7 @@ import StatsSection from "@/components/sections/StatsSection";
 import FeaturedProducts from "@/components/sections/FeaturedProducts";
 import ServicesPreview from "@/components/sections/ServicesPreview";
 import WhyKonark from "@/components/sections/WhyKonark";
+import CertificationsSection from "@/components/sections/CertificationsSection";
 import SolutionsSection from "@/components/sections/SolutionsSection";
 import Testimonials from "@/components/sections/testimonials/Testimonials";
 import CTABanner from "@/components/sections/CTABanner";
@@ -24,6 +25,7 @@ export default function HomePage() {
       <FeaturedProducts />
       <ServicesPreview />
       <WhyKonark />
+      <CertificationsSection />
       <SolutionsSection />
       <Testimonials />
       <CTABanner />
