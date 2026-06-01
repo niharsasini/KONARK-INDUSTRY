@@ -63,14 +63,7 @@ export default function WhyKonark() {
           </p>
         </motion.div>
 
-        <div
-          ref={gridRef}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: 20,
-          }}
-        >
+        <div ref={gridRef} className="why-grid">
           {FEATURES.map((f, i) => (
             <motion.div
               key={f.title}

@@ -31,17 +31,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section
-      style={{
-        minHeight: "100vh",
-        background: "#0a0f1e",
-        position: "relative",
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        paddingTop: 64,
-      }}
-    >
+    <section className="hero-section" style={{ paddingTop: 64 }}>
       {/* Layer 1 — animated grid */}
       <div style={{
         position: "absolute", inset: 0, zIndex: 0,
@@ -91,23 +81,9 @@ export default function Hero() {
       }} />
 
       {/* Content */}
-      <div
-        className="hero-grid"
-        style={{
-          maxWidth: 1280,
-          margin: "0 auto",
-          padding: "80px 24px",
-          display: "grid",
-          gridTemplateColumns: "55% 45%",
-          gap: 40,
-          alignItems: "center",
-          width: "100%",
-          position: "relative",
-          zIndex: 10,
-        }}
-      >
+      <div className="hero-container">
         {/* LEFT */}
-        <div>
+        <div className="hero-left">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -148,11 +124,7 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 + i * 0.1, ease: "easeOut" }}
               >
-                <h1 style={{
-                  fontSize: "clamp(48px, 6vw, 80px)",
-                  fontWeight: 900,
-                  lineHeight: 1.1,
-                  margin: 0,
+                <h1 className="hero-headline" style={{
                   ...(line.gradient ? {
                     background: "linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%)",
                     WebkitBackgroundClip: "text",
@@ -168,10 +140,10 @@ export default function Hero() {
 
           {/* Subtitle */}
           <motion.p
+            className="hero-subtitle"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.6 }}
-            style={{ fontSize: 18, color: "#94a3b8", lineHeight: 1.8, maxWidth: 520, marginBottom: 36 }}
           >
             We make electric scooters, e-rickshaws, and batteries in Bhubaneswar.
             We fix your AC, EV charger, and electrical faults at your doorstep.
@@ -180,10 +152,10 @@ export default function Hero() {
 
           {/* Buttons */}
           <motion.div
+            className="hero-buttons"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.5 }}
-            style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 28 }}
           >
             <motion.button
               whileHover={{ scale: 1.04 }}
@@ -223,10 +195,10 @@ export default function Hero() {
 
           {/* Trust pills */}
           <motion.div
+            className="hero-trust"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.0, duration: 0.5 }}
-            style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
           >
             {TRUST_PILLS.map((pill) => (
               <span key={pill} style={{
@@ -244,22 +216,13 @@ export default function Hero() {
         {/* RIGHT — 3D product showcase (auto-cycles) */}
         <div className="hero-right" style={{ perspective: "1200px", perspectiveOrigin: "50% 50%" }}>
           <motion.div
+            className="hero-product-card"
             initial={{ opacity: 0, rotateY: -15, x: 60 }}
             animate={{ opacity: 1, rotateY: 0, x: 0 }}
             transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
             whileHover={{ rotateY: 8, rotateX: -5, scale: 1.03 }}
             onClick={() => router.push(`/products/${currentProduct.slug}`)}
-            style={{
-              transformStyle: "preserve-3d",
-              background: "rgba(15,23,42,0.8)",
-              backdropFilter: "blur(20px)",
-              border: "1px solid rgba(0,212,255,0.15)",
-              borderRadius: 20,
-              padding: 32,
-              boxShadow: "0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,255,0.08)",
-              cursor: "pointer",
-              overflow: "hidden",
-            }}
+            style={{ transformStyle: "preserve-3d" }}
           >
             {/* key={currentIndex} triggers fade animation on every product change */}
             <motion.div
@@ -356,10 +319,10 @@ export default function Hero() {
 
           {/* Category quick-links */}
           <motion.div
+            className="hero-category-chips"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.5 }}
-            style={{ display: "flex", gap: 8, marginTop: 12 }}
           >
             {CATEGORY_CHIPS.map((c) => (
               <Link

@@ -89,7 +89,7 @@ export default function SolutionsSection() {
         </div>
 
         {/* Tabs */}
-        <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 40 }}>
+        <div className="solutions-tabs">
           {TABS.map((t) => (
             <button
               key={t.id}
@@ -108,7 +108,7 @@ export default function SolutionsSection() {
         </div>
 
         {/* Content */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, alignItems: "center" }} className="solutions-grid">
+        <div className="solutions-content">
           <div style={{
             borderRadius: 20, overflow: "hidden", border: "1px solid #1e2d40",
             background: "#0f172a", display: "flex", alignItems: "center",
@@ -150,11 +150,6 @@ export default function SolutionsSection() {
           </div>
         </div>
       </div>
-      <style>{`
-        @media (max-width: 768px) {
-          .solutions-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </section>
   );
 }

@@ -83,10 +83,7 @@ export default function Testimonials() {
           </p>
         </motion.div>
 
-        <div
-          ref={gridRef}
-          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24 }}
-        >
+        <div ref={gridRef} className="testimonials-grid">
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={t.name}

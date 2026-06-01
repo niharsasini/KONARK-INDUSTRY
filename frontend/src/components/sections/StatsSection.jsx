@@ -40,30 +40,15 @@ export default function StatsSection() {
 
   return (
     <section style={{ background: "#060d1a", padding: "80px 24px" }}>
-      <div
-        ref={ref}
-        style={{
-          maxWidth: 1280,
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: 24,
-        }}
-      >
+      <div ref={ref} className="stats-grid">
         {STATS.map((stat, i) => (
           <motion.div
             key={stat.label}
+            className="stat-card"
             initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: i * 0.12, ease: "easeOut" }}
-            style={{
-              background: "#0a0f1e",
-              border: "1px solid #1e2d40",
-              borderRadius: 16,
-              padding: "32px 28px",
-              transition: "border-color 300ms, transform 300ms",
-              cursor: "default",
-            }}
+            style={{ transition: "border-color 300ms, transform 300ms", cursor: "default" }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = "rgba(0,212,255,0.3)";
               e.currentTarget.style.transform = "translateY(-4px)";
@@ -74,10 +59,10 @@ export default function StatsSection() {
             }}
           >
             <div style={{ width: 40, height: 3, background: "#00d4ff", marginBottom: 16, borderRadius: 2 }} />
-            <p style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800, color: "#00d4ff", margin: "0 0 6px", lineHeight: 1 }}>
+            <p className="stat-number">
               <CountUp target={stat.num} suffix={stat.suffix} active={inView} />
             </p>
-            <p style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>{stat.label}</p>
+            <p className="stat-label">{stat.label}</p>
             <p style={{ fontSize: 12, color: "#475569", margin: 0 }}>{stat.desc}</p>
           </motion.div>
         ))}

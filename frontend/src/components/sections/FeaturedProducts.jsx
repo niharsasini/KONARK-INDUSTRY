@@ -372,7 +372,7 @@ export default function FeaturedProducts() {
   const TAB_ICONS = { All: "✦", "EV Vehicles": "🏍", "Buy Now": "🛒", "Book Service": "🔧" };
 
   return (
-    <section style={{ background: "#0a0f1e", padding: "100px 24px" }}>
+    <section className="featured-section" style={{ background: "#0a0f1e" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         {/* Header */}
         <motion.div
@@ -405,22 +405,12 @@ export default function FeaturedProducts() {
         </motion.div>
 
         {/* Tabs */}
-        <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 40 }}>
+        <div className="filter-tabs">
           {TABS.map((tab) => (
             <button
               key={tab}
+              className={`filter-tab${activeTab === tab ? " active" : ""}`}
               onClick={() => setActiveTab(tab)}
-              style={{
-                display: "flex", alignItems: "center", gap: 6,
-                padding: "9px 20px", borderRadius: 999, border: "1px solid",
-                borderColor: activeTab === tab ? "#00d4ff" : "#1e2d40",
-                background: activeTab === tab ? "#00d4ff" : "transparent",
-                color: activeTab === tab ? "#0a0f1e" : "#64748b",
-                fontSize: 13, fontWeight: activeTab === tab ? 700 : 500,
-                cursor: "pointer", transition: "all 0.2s",
-              }}
-              onMouseEnter={(e) => { if (activeTab !== tab) e.currentTarget.style.color = "#00d4ff"; }}
-              onMouseLeave={(e) => { if (activeTab !== tab) e.currentTarget.style.color = "#64748b"; }}
             >
               <span>{TAB_ICONS[tab]}</span> {tab}
             </button>

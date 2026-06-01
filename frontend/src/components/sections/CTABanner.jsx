@@ -4,6 +4,7 @@ import Link from "next/link";
 export default function CTABanner() {
   return (
     <section
+      className="cta-banner"
       style={{
         background: "#0a0f1e",
         position: "relative",
@@ -32,7 +33,7 @@ export default function CTABanner() {
           or just want someone to fix your AC —
           we're the one number to call in Odisha.
         </p>
-        <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
+        <div className="cta-banner-buttons">
           <Link
             href="/products"
             style={{

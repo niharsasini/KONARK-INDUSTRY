@@ -170,12 +170,8 @@ export default function ServicesPreview() {
         {/* Grid */}
         <div
           ref={gridRef}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gap: 20,
-            marginBottom: 56,
-          }}
+          className="services-grid"
+          style={{ marginBottom: 56 }}
         >
           {SERVICES.map((service, i) => (
             <ServiceCard key={service.title} service={service} index={i} inView={gridIn} />
