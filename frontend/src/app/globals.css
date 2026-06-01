@@ -134,3 +134,26 @@ body {
     scroll-snap-align: start;
   }
 }
+
+/* ─── Hero responsive ──────────────────────────────── */
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    padding: 60px 20px 40px !important;
+    gap: 32px !important;
+  }
+
+  .hero-right {
+    display: flex !important;
+    align-items: center;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+}

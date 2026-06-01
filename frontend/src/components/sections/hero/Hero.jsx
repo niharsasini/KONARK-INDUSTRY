@@ -1,7 +1,9 @@
 "use client";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { products } from "@/components/product/ProductData";
 
 const TRUST_PILLS = ["✓ ISI Certified", "✓ 2-Year Warranty", "✓ Doorstep Service"];
 
@@ -11,8 +13,22 @@ const CATEGORY_CHIPS = [
   { icon: "🔋", label: "LFP Batteries", href: "/products?cat=battery" },
 ];
 
+// Products highlighted in the hero card: newly launched or top-rated
+const featuredProducts = products.filter(p => p.isNew || p.rating >= 4.5).slice(0, 6);
+
 export default function Hero() {
   const router = useRouter();
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const currentProduct = featuredProducts[currentIndex] || featuredProducts[0];
+
+  // Auto-cycle every 3 seconds; clear on unmount
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex(prev => (prev === featuredProducts.length - 1 ? 0 : prev + 1));
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <section
@@ -225,14 +241,14 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* RIGHT — 3D product showcase */}
+        {/* RIGHT — 3D product showcase (auto-cycles) */}
         <div className="hero-right" style={{ perspective: "1200px", perspectiveOrigin: "50% 50%" }}>
           <motion.div
             initial={{ opacity: 0, rotateY: -15, x: 60 }}
             animate={{ opacity: 1, rotateY: 0, x: 0 }}
             transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
             whileHover={{ rotateY: 8, rotateX: -5, scale: 1.03 }}
-            onClick={() => router.push("/products/electric-scooter")}
+            onClick={() => router.push(`/products/${currentProduct.slug}`)}
             style={{
               transformStyle: "preserve-3d",
               background: "rgba(15,23,42,0.8)",
@@ -242,68 +258,103 @@ export default function Hero() {
               padding: 32,
               boxShadow: "0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,255,0.08)",
               cursor: "pointer",
+              overflow: "hidden",
             }}
           >
-            {/* Featured tag */}
-            <div style={{ marginBottom: 12 }}>
-              <span style={{
-                fontSize: 10, fontWeight: 700, letterSpacing: "0.12em",
-                textTransform: "uppercase", color: "#00d4ff",
-                background: "rgba(0,212,255,0.1)",
-                border: "1px solid rgba(0,212,255,0.25)",
-                padding: "3px 10px", borderRadius: 4,
+            {/* key={currentIndex} triggers fade animation on every product change */}
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              {/* Featured tag */}
+              <div style={{ marginBottom: 12 }}>
+                <span style={{
+                  fontSize: 10, fontWeight: 700, letterSpacing: "0.12em",
+                  textTransform: "uppercase", color: "#00d4ff",
+                  background: "rgba(0,212,255,0.1)",
+                  border: "1px solid rgba(0,212,255,0.25)",
+                  padding: "3px 10px", borderRadius: 4,
+                }}>
+                  FEATURED PRODUCT
+                </span>
+              </div>
+
+              {/* Product image */}
+              <div style={{
+                width: "100%", height: 220,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                background: "rgba(17,24,39,0.6)", borderRadius: 12,
+                overflow: "hidden", marginBottom: 16,
               }}>
-                FEATURED PRODUCT
-              </span>
-            </div>
+                <img
+                  src={currentProduct.image}
+                  alt={currentProduct.name}
+                  style={{ maxHeight: 200, maxWidth: "90%", objectFit: "contain",
+                    filter: "drop-shadow(0 4px 24px rgba(0,212,255,0.2))" }}
+                />
+              </div>
 
-            {/* Product image */}
-            <div style={{
-              width: "100%", height: 220,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              background: "rgba(17,24,39,0.6)", borderRadius: 12,
-              overflow: "hidden", marginBottom: 16,
-            }}>
-              <img
-                src="/konark/productevscooty.png"
-                alt="Konark EV Scooter"
-                style={{ maxHeight: 200, maxWidth: "90%", objectFit: "contain",
-                  filter: "drop-shadow(0 4px 24px rgba(0,212,255,0.2))" }}
-              />
-            </div>
+              {/* Name + price */}
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>
+                {currentProduct.name}
+              </p>
+              <p style={{ fontSize: 22, fontWeight: 800, color: "#00d4ff", margin: "0 0 14px" }}>
+                {currentProduct.price > 0
+                  ? `₹${currentProduct.price.toLocaleString("en-IN")}`
+                  : "Price on Request"}
+              </p>
 
-            {/* Name + price */}
-            <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>
-              Konark EV Scooter X1
-            </p>
-            <p style={{ fontSize: 22, fontWeight: 800, color: "#00d4ff", margin: "0 0 14px" }}>
-              ₹27,000
-            </p>
-
-            {/* Stat chips */}
-            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-              {["200km Range", "Fast Charge 4hr"].map((stat) => (
-                <span key={stat} style={{
+              {/* Stat chips — category + rating */}
+              <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+                <span style={{
                   fontSize: 11, fontWeight: 600, color: "#00d4ff",
                   background: "rgba(0,212,255,0.08)",
                   border: "1px solid rgba(0,212,255,0.2)",
                   padding: "4px 10px", borderRadius: 6,
                 }}>
-                  {stat}
+                  {currentProduct.category.replace("Electric Vehicles", "EV").replace("Home Appliances", "Home")}
                 </span>
-              ))}
-            </div>
+                <span style={{
+                  fontSize: 11, fontWeight: 600, color: "#f97316",
+                  background: "rgba(249,115,22,0.08)",
+                  border: "1px solid rgba(249,115,22,0.2)",
+                  padding: "4px 10px", borderRadius: 6,
+                }}>
+                  ⭐ {currentProduct.rating}
+                </span>
+              </div>
 
-            <Link
-              href="/products/electric-scooter"
-              onClick={(e) => e.stopPropagation()}
-              style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}
-            >
-              View Product →
-            </Link>
+              <Link
+                href={`/products/${currentProduct.slug}`}
+                onClick={(e) => e.stopPropagation()}
+                style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}
+              >
+                View Product →
+              </Link>
+            </motion.div>
           </motion.div>
 
-          {/* Category chips */}
+          {/* Dot indicators — click to jump to a product */}
+          <div style={{ display: "flex", gap: 6, justifyContent: "center", marginTop: 12 }}>
+            {featuredProducts.map((_, i) => (
+              <div
+                key={i}
+                onClick={() => setCurrentIndex(i)}
+                style={{
+                  width: i === currentIndex ? 20 : 6,
+                  height: 6,
+                  borderRadius: 3,
+                  background: i === currentIndex ? "#00d4ff" : "#1e2d40",
+                  cursor: "pointer",
+                  transition: "all 300ms",
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Category quick-links */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -360,17 +411,6 @@ export default function Hero() {
         </svg>
       </motion.div>
 
-      <style>{`
-        @media (max-width: 768px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
-          .hero-right {
-            display: block !important;
-            max-width: 320px;
-            width: 100%;
-            margin: 0 auto;
-          }
-        }
-      `}</style>
     </section>
   );
 }
