@@ -1,203 +1,202 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const SERVICES = [
-  {
-    icon: "❄️",
-    iconBg: "rgba(0,212,255,0.1)",
-    color: "#00d4ff",
-    title: "AC Repair & Service",
-    desc: "AC not cooling, making noise, or leaking? We diagnose and fix all brands — same day if booked before noon.",
-    cta: "Book AC Service →",
-  },
-  {
-    icon: "⚡",
-    iconBg: "rgba(0,212,255,0.1)",
-    color: "#00d4ff",
-    title: "EV Charger Install & Repair",
-    desc: "Installing a new EV charger at home or fixing one that's stopped working. Certified technicians, 1-year warranty.",
-    cta: "Book EV Service →",
-  },
-  {
-    icon: "🏠",
-    iconBg: "rgba(124,58,237,0.1)",
-    color: "#7c3aed",
-    title: "Home Electrical Work",
-    desc: "Wiring, rewiring, fault finding, board upgrades. Full home electrical solutions by licensed electricians.",
-    cta: "Book Electrician →",
-  },
-  {
-    icon: "☀️",
-    iconBg: "rgba(249,115,22,0.1)",
-    color: "#f97316",
-    title: "Solar Panel Installation",
-    desc: "Rooftop solar from survey to commissioning. We handle everything — panels, inverter, net metering, subsidy paperwork.",
-    cta: "Book Solar Visit →",
-  },
-  {
-    icon: "🔋",
-    iconBg: "rgba(124,58,237,0.1)",
-    color: "#7c3aed",
-    title: "Battery System Setup",
-    desc: "Custom LFP battery packs for your solar system, EV, or industrial backup. Sized and installed by our engineers.",
-    cta: "Book Battery Setup →",
-  },
-  {
-    icon: "🔧",
-    iconBg: "rgba(16,185,129,0.1)",
-    color: "#10b981",
-    title: "Annual Maintenance (AMC)",
-    desc: "Keep everything running at peak condition year-round. AMC plans for appliances, EVs, and industrial equipment.",
-    cta: "Get AMC Quote →",
-  },
-  {
-    icon: "🔋",
-    iconBg: "rgba(124,58,237,0.1)",
-    color: "#7c3aed",
-    title: "Battery Swap Service",
-    desc: "Hand us your discharged EV battery. Drive away with a fully charged one. Home pickup available across Odisha.",
-    cta: "Book a Swap →",
-    href: "/battery-swap",
-    isNew: true,
-  },
+  { icon: "❄️", color: "#00d4ff", title: "AC Repair & Service", desc: "Diagnose and fix all brands, same day if booked before noon." },
+  { icon: "⚡", color: "#00d4ff", title: "EV Charger Install", desc: "Certified installation at home or commercial premises. 1-year warranty." },
+  { icon: "🏠", color: "#7c3aed", title: "Home Electrical", desc: "Wiring, rewiring, fault finding, board upgrades by licensed electricians." },
+  { icon: "☀️", color: "#f97316", title: "Solar Installation", desc: "Survey to commissioning — panels, inverter, net metering, subsidy paperwork." },
+  { icon: "🔋", color: "#7c3aed", title: "Battery Setup", desc: "Custom LFP battery packs for solar, EV, or industrial backup. Installed." },
+  { icon: "🔧", color: "#10b981", title: "Annual AMC", desc: "AMC plans for appliances, EVs, and industrial equipment. Peak condition." },
 ];
 
 function ServiceCard({ service, index, inView }) {
+  const router = useRouter();
+  const [hovered, setHovered] = useState(false);
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+      initial={{ opacity: 0, x: 60 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
-        background: "#0f172a",
-        border: "1px solid #1e2d40",
+        background: "rgba(15,23,42,0.7)",
+        backdropFilter: "blur(10px)",
+        border: "1px solid rgba(255,255,255,0.05)",
+        borderLeft: `3px solid ${hovered ? service.color : service.color + "80"}`,
         borderRadius: 16,
-        padding: 28,
+        padding: "20px",
+        transform: hovered ? "translateY(-3px)" : "translateY(0)",
+        boxShadow: hovered ? `0 16px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)` : "none",
+        transition: "all 0.25s",
         display: "flex",
         flexDirection: "column",
-        gap: 14,
-        transition: "border-color 0.2s, transform 0.2s, box-shadow 0.2s",
-        cursor: "default",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = service.color;
-        e.currentTarget.style.transform = "translateY(-4px)";
-        e.currentTarget.style.boxShadow = `0 16px 40px rgba(0,0,0,0.3), 0 0 20px ${service.color}15`;
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = "#1e2d40";
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "none";
+        gap: 12,
       }}
     >
-      <div style={{
-        width: 52, height: 52, borderRadius: "50%",
-        background: service.iconBg, display: "flex",
-        alignItems: "center", justifyContent: "center", fontSize: 24,
-      }}>
-        {service.icon}
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <div style={{
+          width: 40, height: 40, borderRadius: "50%",
+          background: `${service.color}18`, border: `1px solid ${service.color}40`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: 18, flexShrink: 0,
+        }}>
+          {service.icon}
+        </div>
+        <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{service.title}</p>
       </div>
-      <div>
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", margin: "0 0 8px", display: "flex", alignItems: "center", gap: 8 }}>
-          {service.title}
-          {service.isNew && (
-            <span style={{ fontSize: 9, background: "#00d4ff", color: "#0a0f1e", padding: "2px 6px", borderRadius: 3, fontWeight: 800, letterSpacing: "0.05em" }}>NEW</span>
-          )}
-        </h3>
-        <p style={{ fontSize: 13, color: "#64748b", margin: 0, lineHeight: 1.8 }}>
-          {service.desc}
-        </p>
-      </div>
-      <ServiceCTA cta={service.cta} color={service.color} href={service.href} />
+      <p style={{ fontSize: 13, color: "#64748b", margin: 0, lineHeight: 1.65, flex: 1 }}>{service.desc}</p>
+      <button
+        onClick={() => router.push("/services/enquiry")}
+        style={{
+          background: "transparent", border: "none", padding: 0,
+          color: service.color, fontSize: 13, fontWeight: 700,
+          cursor: "pointer", textAlign: "left", transition: "opacity 0.2s",
+        }}
+        onMouseEnter={e => (e.currentTarget.style.opacity = "0.7")}
+        onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+      >
+        Book →
+      </button>
     </motion.div>
   );
 }
 
-function ServiceCTA({ cta, color, href }) {
-  const router = useRouter();
-  return (
-    <button
-      onClick={() => router.push(href || "/services/enquiry")}
-      style={{
-        marginTop: "auto", display: "inline-flex", alignItems: "center",
-        fontSize: 13, fontWeight: 600, color, background: "transparent",
-        border: "none", cursor: "pointer", padding: 0,
-        transition: "opacity 0.2s",
-      }}
-      onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.75")}
-      onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-    >
-      {cta}
-    </button>
-  );
-}
-
 export default function ServicesPreview() {
+  const { ref: leftRef, inView: leftIn } = useInView({ threshold: 0.15, triggerOnce: true });
+  const { ref: rightRef, inView: rightIn } = useInView({ threshold: 0.05, triggerOnce: true });
   const router = useRouter();
-  const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true });
-  const { ref: gridRef, inView: gridIn } = useInView({ threshold: 0.05, triggerOnce: true });
 
   return (
-    <section style={{ background: "#060d1a", padding: "100px 24px" }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        {/* Header */}
+    <section style={{ background: "#060d1a", padding: "100px 24px", position: "relative", overflow: "hidden" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "40% 60%", gap: 64, alignItems: "start" }} className="services-layout">
+        {/* LEFT COLUMN */}
         <motion.div
-          ref={headRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={headIn ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          style={{ textAlign: "center", marginBottom: 56 }}
+          ref={leftRef}
+          initial={{ opacity: 0, x: -40 }}
+          animate={leftIn ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          style={{ position: "sticky", top: 120 }}
+          className="services-left-sticky"
         >
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)",
-            color: "#00d4ff", fontSize: 11, fontWeight: 600, textTransform: "uppercase",
-            letterSpacing: "0.12em", background: "rgba(0,212,255,0.08)", marginBottom: 16,
+            borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff",
+            fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em",
+            background: "rgba(0,212,255,0.08)", marginBottom: 20,
           }}>
             OUR SERVICES
           </span>
-          <h2 style={{ fontSize: "clamp(24px, 3.5vw, 44px)", fontWeight: 900, color: "#f1f5f9", margin: "0 0 14px", lineHeight: 1.2 }}>
-            We Come To You.
+
+          <h2 style={{ fontSize: "clamp(32px, 3.5vw, 52px)", fontWeight: 900, lineHeight: 1.15, margin: "0 0 16px" }}>
+            <span style={{ color: "#f1f5f9" }}>We Come</span>
+            <br />
+            <span style={{
+              background: "linear-gradient(270deg, #00d4ff, #7c3aed, #f97316, #00d4ff)",
+              backgroundSize: "300% 300%",
+              animation: "gradient-shift 4s ease infinite",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}>To You.</span>
           </h2>
-          <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 520, margin: "0 auto", lineHeight: 1.8 }}>
-            Something not working? Our trained technicians are available across Odisha.
-            Book a service visit in under 2 minutes.
+
+          <p style={{ fontSize: 15, color: "#94a3b8", lineHeight: 1.8, marginBottom: 32 }}>
+            Something broken? Our certified technicians reach your home across Odisha — usually the same day you call.
           </p>
+
+          {/* Big response time stat */}
+          <div style={{ marginBottom: 28 }}>
+            <p style={{
+              fontSize: 64, fontWeight: 900, color: "#00d4ff", margin: 0, lineHeight: 1,
+              textShadow: "0 0 30px rgba(0,212,255,0.4)",
+            }}>2 hrs</p>
+            <p style={{ fontSize: 12, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.12em", marginTop: 4 }}>
+              Average response time
+            </p>
+          </div>
+
+          {/* Phone CTA */}
+          <a
+            href="tel:+919437611129"
+            style={{
+              display: "flex", alignItems: "center", gap: 14,
+              padding: "16px 20px", background: "#0f172a",
+              border: "1px solid #1e2d40", borderRadius: 12,
+              textDecoration: "none", transition: "border-color 0.2s",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.borderColor = "#00d4ff")}
+            onMouseLeave={e => (e.currentTarget.style.borderColor = "#1e2d40")}
+          >
+            <div style={{
+              width: 40, height: 40, borderRadius: "50%",
+              background: "rgba(0,212,255,0.12)", border: "1px solid rgba(0,212,255,0.3)",
+              display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 18,
+            }}>📞</div>
+            <div>
+              <p style={{ fontSize: 11, color: "#64748b", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.08em" }}>Call Now</p>
+              <p style={{ fontSize: 17, fontWeight: 800, color: "#00d4ff", margin: 0 }}>+91 94376 11129</p>
+            </div>
+          </a>
         </motion.div>
 
-        {/* Grid */}
-        <div
-          ref={gridRef}
-          className="services-grid"
-          style={{ marginBottom: 56 }}
-        >
-          {SERVICES.map((service, i) => (
-            <ServiceCard key={service.title} service={service} index={i} inView={gridIn} />
+        {/* RIGHT COLUMN */}
+        <div ref={rightRef} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }} className="services-right-grid">
+          {SERVICES.map((s, i) => (
+            <ServiceCard key={s.title} service={s} index={i} inView={rightIn} />
           ))}
         </div>
+      </div>
 
-        {/* Big CTA */}
-        <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: 16, color: "#94a3b8", marginBottom: 20 }}>
-            Need a service not listed here? Tell us what's wrong.
+      {/* Bottom CTA bar */}
+      <div style={{ maxWidth: 1280, margin: "48px auto 0", padding: "0 0" }}>
+        <div style={{
+          background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 12,
+          padding: "20px 28px", display: "flex", alignItems: "center",
+          justifyContent: "space-between", flexWrap: "wrap", gap: 16,
+        }}>
+          <p style={{ fontSize: 15, color: "#94a3b8", margin: 0 }}>
+            Need something not listed? Tell us what's wrong.
           </p>
-          <button
-            onClick={() => router.push("/services/enquiry")}
-            style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "16px 40px", background: "#00d4ff", color: "#0a0f1e",
-              fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none",
-              cursor: "pointer", transition: "background 0.2s",
+          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <button
+              onClick={() => router.push("/services/enquiry")}
+              style={{
+                padding: "10px 22px", background: "#00d4ff", color: "#0a0f1e",
+                border: "none", borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: "pointer",
+              }}
+            >
+              Send Enquiry →
+            </button>
+            <Link href="/services" style={{
+              fontSize: 14, color: "#64748b", textDecoration: "none", fontWeight: 600,
+              transition: "color 0.2s",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
-          >
-            Send Us an Enquiry →
-          </button>
+              onMouseEnter={e => (e.currentTarget.style.color = "#00d4ff")}
+              onMouseLeave={e => (e.currentTarget.style.color = "#64748b")}
+            >
+              View all services →
+            </Link>
+          </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .services-layout { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .services-right-grid { grid-template-columns: 1fr !important; }
+          .services-left-sticky { position: static !important; }
+        }
+        @media (max-width: 1024px) {
+          .services-layout { grid-template-columns: 45% 55% !important; gap: 32px !important; }
+        }
+      `}</style>
     </section>
   );
 }

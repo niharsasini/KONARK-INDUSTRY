@@ -8,6 +8,7 @@ import WhyKonark from "@/components/sections/WhyKonark";
 import CertificationsSection from "@/components/sections/CertificationsSection";
 import SolutionsSection from "@/components/sections/SolutionsSection";
 import Testimonials from "@/components/sections/testimonials/Testimonials";
+import OurPartners from "@/components/sections/partners/OurPartners";
 import CTABanner from "@/components/sections/CTABanner";
 
 export const metadata: Metadata = {
@@ -28,6 +29,7 @@ export default function HomePage() {
       <CertificationsSection />
       <SolutionsSection />
       <Testimonials />
+      <OurPartners />
       <CTABanner />
     </main>
   );

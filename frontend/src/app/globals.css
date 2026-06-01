@@ -18,6 +18,19 @@
   --k-success: #10b981;
   --k-danger: #ef4444;
   --k-card-hover-border: #2d4a6b;
+  --cyan: #00d4ff;
+  --purple: #7c3aed;
+  --orange: #f97316;
+  --green: #10b981;
+  --pink: #ec4899;
+  --gold: #f59e0b;
+  --navy: #0a0f1e;
+  --surface: #0f172a;
+  --card: #111827;
+  --border: #1e2d40;
+  --text: #f1f5f9;
+  --muted: #64748b;
+  --subtle: #94a3b8;
 }
 
 * { box-sizing: border-box; }
@@ -102,6 +115,37 @@ body {
 @keyframes marquee-reverse {
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }
+}
+
+@keyframes float3d {
+  0%, 100% { transform: translateY(0) rotateX(0deg); }
+  50% { transform: translateY(-12px) rotateX(3deg); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(0,212,255,0.2); }
+  50% { box-shadow: 0 0 40px rgba(0,212,255,0.5), 0 0 80px rgba(0,212,255,0.2); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes slide-right {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ring-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes scrollProducts {

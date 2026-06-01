@@ -6,499 +6,273 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { products } from "@/components/product/ProductData";
 
-const TABS = ["All", "EV Vehicles", "Buy Now", "Book Service"];
+const TABS = [
+  { label: "All", icon: "✦", filter: () => true },
+  { label: "EV Vehicles", icon: "🏍", filter: (p) => p.type === "vehicle" },
+  { label: "Buy Now", icon: "🛒", filter: (p) => p.type === "product" },
+  { label: "Book Service", icon: "🔧", filter: (p) => p.type === "service" },
+];
 
-const FILTER_FN = {
-  All: () => true,
-  "EV Vehicles": (p) => p.type === "vehicle",
-  "Buy Now": (p) => p.type === "product",
-  "Book Service": (p) => p.type === "service",
-};
+const CARD_W = 280;
+const CARD_GAP = 20;
 
-const BADGE_COLORS = {
-  "Electric Vehicles": "#00d4ff",
-  Batteries: "#7c3aed",
-  "Home Appliances": "#10b981",
-  "Industrial Equipment": "#f97316",
-  "Industrial Components": "#f97316",
-  Electronics: "#94a3b8",
-  "Industrial Services": "#a78bfa",
-};
-
-function StarRating({ rating }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-      {[1, 2, 3, 4, 5].map((s) => (
-        <svg key={s} viewBox="0 0 20 20"
-          fill={s <= Math.round(rating) ? "#f97316" : "none"}
-          stroke="#f97316" strokeWidth={1.5}
-          style={{ width: 12, height: 12 }}>
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-      <span style={{ fontSize: 11, color: "#94a3b8", marginLeft: 2 }}>({rating})</span>
-    </div>
-  );
-}
-
-function VehicleCard({ product, index, inView }) {
-  const [rotX, setRotX] = useState(0);
-  const [rotY, setRotY] = useState(0);
-  const [hovered, setHovered] = useState(false);
-
-  const onMove = (e) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    setRotX(((e.clientY - r.top) / r.height - 0.5) * -12);
-    setRotY(((e.clientX - r.left) / r.width - 0.5) * 12);
-  };
-  const onLeave = () => { setRotX(0); setRotY(0); setHovered(false); };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-    >
-      <motion.div
-        onMouseMove={onMove}
-        onMouseLeave={onLeave}
-        onMouseEnter={() => setHovered(true)}
-        animate={{ rotateX: rotX, rotateY: rotY }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        style={{
-          transformStyle: "preserve-3d",
-          background: "linear-gradient(145deg, #0d1b2e, #0f172a)",
-          border: `1px solid ${hovered ? "rgba(0,212,255,0.35)" : "#1e2d40"}`,
-          borderRadius: 18,
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          cursor: "pointer",
-          boxShadow: hovered ? "0 16px 48px rgba(0,212,255,0.12)" : "none",
-          transition: "border-color 0.2s, box-shadow 0.2s",
-        }}
-      >
-        {/* Image area */}
-        <div style={{ position: "relative", background: "#060d1a", height: 200, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-          <img src={product.image} alt={product.name} loading="lazy"
-            style={{ maxHeight: 160, maxWidth: "85%", objectFit: "contain", filter: hovered ? "drop-shadow(0 0 20px rgba(0,212,255,0.3))" : "none", transition: "filter 0.3s" }} />
-          {/* EV badge */}
-          <span style={{
-            position: "absolute", top: 12, left: 12,
-            background: "rgba(0,212,255,0.15)", border: "1px solid rgba(0,212,255,0.4)",
-            color: "#00d4ff", fontSize: 10, fontWeight: 800, padding: "3px 8px",
-            borderRadius: 4, textTransform: "uppercase", letterSpacing: "0.1em",
-          }}>⚡ EV</span>
-          {product.isNew && (
-            <span style={{
-              position: "absolute", top: 12, right: 12,
-              background: "#00d4ff", color: "#0a0f1e",
-              fontSize: 10, fontWeight: 800, padding: "3px 8px",
-              borderRadius: 4, textTransform: "uppercase",
-            }}>NEW</span>
-          )}
-        </div>
-
-        {/* Body */}
-        <div style={{ padding: "16px 20px", flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
-          <p style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{product.name}</p>
-          <p style={{ fontSize: 11, color: "#00d4ff", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", margin: 0 }}>🏍 EV Vehicle</p>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>
-            {product.price > 0
-              ? <><span style={{ fontSize: 11, color: "#64748b" }}>Starting </span><span style={{ fontSize: 17, fontWeight: 800, color: "#00d4ff" }}>₹{product.price.toLocaleString("en-IN")}</span></>
-              : <span style={{ fontSize: 13, color: "#64748b", fontStyle: "italic" }}>Price on Request</span>
-            }
-          </p>
-        </div>
-
-        {/* Footer */}
-        <div style={{ padding: "14px 20px", borderTop: "1px solid #1e2d40", display: "flex", gap: 8 }}>
-          <Link
-            href={`/products/${product.slug}`}
-            style={{
-              flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
-              padding: "9px 12px", fontSize: 12, fontWeight: 700,
-              background: "#00d4ff", color: "#0a0f1e",
-              borderRadius: 8, textDecoration: "none", transition: "background 0.2s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
-          >
-            Book Test Ride →
-          </Link>
-          <Link
-            href={`/products/${product.slug}`}
-            style={{
-              flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
-              padding: "9px 12px", fontSize: 12, fontWeight: 600,
-              background: "transparent", color: "#f1f5f9",
-              border: "1px solid #1e2d40", borderRadius: 8, textDecoration: "none",
-              transition: "all 0.2s",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#f1f5f9"; }}
-          >
-            Get Best Price
-          </Link>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-function ProductBuyCard({ product, index, inView }) {
-  const [rotX, setRotX] = useState(0);
-  const [rotY, setRotY] = useState(0);
-  const [hovered, setHovered] = useState(false);
-  const badgeColor = BADGE_COLORS[product.category] || "#94a3b8";
-
-  const onMove = (e) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    setRotX(((e.clientY - r.top) / r.height - 0.5) * -14);
-    setRotY(((e.clientX - r.left) / r.width - 0.5) * 14);
-  };
-  const onLeave = () => { setRotX(0); setRotY(0); setHovered(false); };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-    >
-      <motion.div
-        onMouseMove={onMove}
-        onMouseLeave={onLeave}
-        onMouseEnter={() => setHovered(true)}
-        animate={{ rotateX: rotX, rotateY: rotY }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        style={{
-          transformStyle: "preserve-3d",
-          background: "#0f172a",
-          border: `1px solid ${hovered ? "rgba(16,185,129,0.3)" : "#1e2d40"}`,
-          borderRadius: 16,
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          cursor: "pointer",
-          boxShadow: hovered ? "0 12px 40px rgba(0,0,0,0.4)" : "none",
-          transition: "border-color 0.2s, box-shadow 0.2s",
-        }}
-      >
-        {/* Image */}
-        <div style={{ position: "relative", background: "#060d1a", height: 200, padding: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <img src={product.image} alt={product.name} loading="lazy"
-            style={{ maxHeight: 160, maxWidth: "85%", objectFit: "contain" }} />
-          {product.isNew && (
-            <span style={{
-              position: "absolute", top: 12, left: 12,
-              background: "#00d4ff", color: "#0a0f1e",
-              fontSize: 10, fontWeight: 800, padding: "3px 8px", borderRadius: 4,
-            }}>NEW</span>
-          )}
-          {/* In Stock badge */}
-          <span style={{
-            position: "absolute", bottom: 12, right: 12,
-            background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.3)",
-            color: "#10b981", fontSize: 10, fontWeight: 700, padding: "2px 8px",
-            borderRadius: 4,
-          }}>● In Stock</span>
-          <span style={{
-            position: "absolute", top: 12, right: 12,
-            fontSize: 10, fontWeight: 700, padding: "3px 10px",
-            borderRadius: 100, background: `${badgeColor}18`,
-            color: badgeColor, border: `1px solid ${badgeColor}30`,
-            textTransform: "uppercase",
-          }}>
-            {product.category.replace("Electric Vehicles", "EV").replace("Home Appliances", "Home").replace("Industrial Equipment", "Industrial")}
-          </span>
-        </div>
-
-        {/* Body */}
-        <div style={{ padding: "16px 20px", flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
-          <p style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{product.name}</p>
-          <StarRating rating={product.rating} />
-          <div>
-            <p style={{ fontSize: 20, fontWeight: 800, margin: 0, color: product.price > 0 ? "#00d4ff" : "#64748b" }}>
-              {product.price > 0
-                ? `₹${product.price.toLocaleString("en-IN")}`
-                : <span style={{ fontSize: 14, fontWeight: 500 }}>Price on Request</span>
-              }
-            </p>
-            {product.price > 0 && (
-              <p style={{ fontSize: 11, color: "#64748b", margin: "2px 0 0" }}>
-                or ₹{Math.round(product.price / 12).toLocaleString("en-IN")}/mo on EMI
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div style={{ padding: "14px 20px", borderTop: "1px solid #1e2d40", display: "flex", gap: 8 }}>
-          <Link
-            href={`/products/${product.slug}`}
-            style={{
-              flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
-              padding: "9px 12px", fontSize: 12, fontWeight: 700,
-              background: "#00d4ff", color: "#0a0f1e",
-              borderRadius: 8, textDecoration: "none", transition: "background 0.2s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
-          >
-            Add to Cart 🛒
-          </Link>
-          <Link
-            href={`/products/${product.slug}`}
-            style={{
-              flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
-              padding: "9px 12px", fontSize: 12, fontWeight: 600,
-              background: "rgba(255,255,255,0.05)", color: "#f1f5f9",
-              border: "1px solid #1e2d40", borderRadius: 8, textDecoration: "none",
-              transition: "all 0.2s",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.borderColor = "#94a3b8"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.borderColor = "#1e2d40"; }}
-          >
-            Buy Now
-          </Link>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-function ServiceCard({ product, index, inView }) {
+function TiltCard({ product }) {
   const router = useRouter();
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
+
+  const catColor = {
+    "Electric Vehicles": "#00d4ff",
+    Batteries: "#7c3aed",
+    "Home Appliances": "#10b981",
+    "Industrial Equipment": "#f97316",
+    "Industrial Services": "#a78bfa",
+  }[product.category] || "#64748b";
+
+  function onMove(e) {
+    const r = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientY - r.top) / r.height - 0.5) * -10;
+    const y = ((e.clientX - r.left) / r.width - 0.5) * 10;
+    setTilt({ x, y });
+  }
+
+  const ctaLabel = product.type === "vehicle" ? "Book Test Ride" : product.type === "service" ? "Book Now" : "Add to Cart";
+  const ctaColor = product.type === "service" ? "#7c3aed" : "#00d4ff";
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      onMouseMove={onMove}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => { setTilt({ x: 0, y: 0 }); setHovered(false); }}
+      animate={{ rotateX: tilt.x, rotateY: tilt.y }}
+      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      onClick={() => router.push(`/products/${product.slug}`)}
+      style={{
+        width: CARD_W, flexShrink: 0, marginRight: CARD_GAP,
+        background: "linear-gradient(145deg, #111827, #0f172a)",
+        border: `1px solid ${hovered ? `${catColor}60` : "#1e2d40"}`,
+        borderRadius: 20, overflow: "hidden",
+        boxShadow: hovered ? `0 30px 60px rgba(0,0,0,0.5), 0 0 30px ${catColor}20` : "0 20px 40px rgba(0,0,0,0.4)",
+        cursor: "pointer", transformStyle: "preserve-3d",
+        transition: "border-color 0.2s, box-shadow 0.2s",
+        display: "flex", flexDirection: "column",
+      }}
     >
-      <div
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        style={{
-          background: "#0f172a",
-          border: `1px solid ${hovered ? "rgba(124,58,237,0.35)" : "#1e2d40"}`,
-          borderRadius: 16,
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          cursor: "pointer",
-          boxShadow: hovered ? "0 12px 40px rgba(124,58,237,0.12)" : "none",
-          transform: hovered ? "translateY(-3px)" : "none",
-          transition: "all 0.25s",
-        }}
-      >
-        {/* Image */}
-        <div style={{ position: "relative", background: "#060d1a", height: 200, padding: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <img src={product.image} alt={product.name} loading="lazy"
-            style={{ maxHeight: 160, maxWidth: "85%", objectFit: "contain", opacity: 0.85 }} />
-          {/* Free Quote badge */}
+      {/* Image area */}
+      <div style={{
+        height: 200, position: "relative",
+        background: "radial-gradient(ellipse at center, #0f172a 0%, #060d1a 100%)",
+        display: "flex", alignItems: "center", justifyContent: "center", padding: 20,
+        overflow: "hidden",
+      }}>
+        <img
+          src={product.image} alt={product.name} loading="lazy"
+          style={{ maxHeight: 160, maxWidth: "85%", objectFit: "contain",
+            filter: hovered ? `drop-shadow(0 0 20px ${catColor}60)` : "none",
+            transition: "filter 0.3s",
+          }}
+        />
+        {product.isNew && (
           <span style={{
             position: "absolute", top: 12, left: 12,
-            background: "rgba(124,58,237,0.15)", border: "1px solid rgba(124,58,237,0.4)",
-            color: "#a78bfa", fontSize: 10, fontWeight: 800, padding: "3px 8px",
-            borderRadius: 4, textTransform: "uppercase", letterSpacing: "0.08em",
-          }}>Free Quote</span>
-        </div>
+            background: "#00d4ff", color: "#0a0f1e",
+            fontSize: 9, fontWeight: 800, padding: "2px 8px", borderRadius: 4, textTransform: "uppercase",
+          }}>NEW</span>
+        )}
+        <span style={{
+          position: "absolute", top: 12, right: 12,
+          background: `${catColor}18`, border: `1px solid ${catColor}40`,
+          color: catColor, fontSize: 9, fontWeight: 700,
+          padding: "2px 8px", borderRadius: 4, textTransform: "uppercase",
+        }}>
+          {product.category.replace("Electric Vehicles", "EV").replace("Home Appliances", "Home").replace("Industrial Equipment", "Industrial")}
+        </span>
+        {/* Bottom color strip */}
+        <div style={{
+          position: "absolute", bottom: 0, left: 0, right: 0, height: 3,
+          background: `linear-gradient(90deg, ${catColor}, transparent)`,
+        }} />
+      </div>
 
-        {/* Body */}
-        <div style={{ padding: "16px 20px", flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
-          <p style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{product.name}</p>
-          <p style={{ fontSize: 12, color: "#a78bfa", margin: 0 }}>⏱ Response within 2 hrs</p>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0, lineHeight: 1.5 }}>{product.shortDescription}</p>
+      {/* Body */}
+      <div style={{ padding: "14px 16px", flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
+        <p style={{
+          fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0,
+          overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
+        }}>{product.name}</p>
+        <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
+          {[1,2,3,4,5].map(s => (
+            <svg key={s} viewBox="0 0 12 12" fill={s <= Math.round(product.rating) ? "#f97316" : "none"} stroke="#f97316" strokeWidth={1.5} style={{ width: 10, height: 10 }}>
+              <path d="M6 1l1.24 2.51L10 3.86 8 5.82l.47 2.76L6 7.25 3.53 8.58 4 5.82 2 3.86l2.76-.35L6 1z" />
+            </svg>
+          ))}
+          <span style={{ fontSize: 10, color: "#64748b", marginLeft: 2 }}>({product.rating})</span>
         </div>
+        <p style={{ fontSize: 18, fontWeight: 800, color: product.price > 0 ? catColor : "#64748b", margin: 0 }}>
+          {product.price > 0 ? `₹${product.price.toLocaleString("en-IN")}` : <span style={{ fontSize: 13, fontStyle: "italic" }}>Price on Request</span>}
+        </p>
+      </div>
 
-        {/* Footer */}
-        <div style={{ padding: "14px 20px", borderTop: "1px solid #1e2d40", display: "flex", gap: 8 }}>
-          <button
-            onClick={() => router.push("/services/enquiry")}
-            style={{
-              flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
-              padding: "9px 12px", fontSize: 12, fontWeight: 700,
-              background: "#7c3aed", color: "#fff",
-              border: "none", borderRadius: 8, cursor: "pointer", transition: "background 0.2s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#6d28d9")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#7c3aed")}
-          >
-            Book Service →
-          </button>
-          <Link
-            href={`/products/${product.slug}`}
-            style={{
-              flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
-              padding: "9px 12px", fontSize: 12, fontWeight: 600,
-              background: "transparent", color: "#94a3b8",
-              border: "1px solid #1e2d40", borderRadius: 8, textDecoration: "none",
-              transition: "all 0.2s",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#7c3aed"; e.currentTarget.style.color = "#a78bfa"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
-          >
-            Know More
-          </Link>
-        </div>
+      {/* Footer */}
+      <div style={{
+        padding: "12px 16px", borderTop: "1px solid #1e2d40",
+        display: "flex", gap: 8, alignItems: "center",
+      }}>
+        <Link
+          href={`/products/${product.slug}`}
+          onClick={e => e.stopPropagation()}
+          style={{
+            flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
+            padding: "8px 10px", fontSize: 12, fontWeight: 700,
+            background: "transparent", color: ctaColor,
+            border: `1px solid ${ctaColor}60`, borderRadius: 8,
+            textDecoration: "none", transition: "background 0.2s",
+          }}
+          onMouseEnter={e => (e.currentTarget.style.background = `${ctaColor}18`)}
+          onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+        >
+          {ctaLabel} →
+        </Link>
+        <button
+          onClick={e => e.stopPropagation()}
+          style={{
+            width: 34, height: 34, borderRadius: 8,
+            background: "transparent", border: "1px solid #1e2d40",
+            color: "#64748b", cursor: "pointer", display: "flex",
+            alignItems: "center", justifyContent: "center", flexShrink: 0,
+            transition: "all 0.2s", fontSize: 14,
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = "#ef4444"; e.currentTarget.style.color = "#ef4444"; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#64748b"; }}
+          title="Add to wishlist"
+        >♡</button>
       </div>
     </motion.div>
   );
 }
 
-function ProductCard({ product, index, inView }) {
-  if (product.type === "vehicle") return <VehicleCard product={product} index={index} inView={inView} />;
-  if (product.type === "service") return <ServiceCard product={product} index={index} inView={inView} />;
-  return <ProductBuyCard product={product} index={index} inView={inView} />;
-}
-
-const CARD_W = 300;
-const CARD_GAP = 24;
-
 export default function FeaturedProducts() {
-  const [activeTab, setActiveTab] = useState("All");
+  const [activeTab, setActiveTab] = useState(0);
   const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true });
 
-  const filterFn = FILTER_FN[activeTab] || (() => true);
-  const filtered = products.filter(filterFn).slice(0, 6);
-  const displayed = filtered.length > 0 ? filtered : products.slice(0, 6);
-  // Double the array so the CSS animation loops seamlessly
+  const filtered = products.filter(TABS[activeTab].filter).slice(0, 8);
+  const displayed = filtered.length > 0 ? filtered : products.slice(0, 8);
   const doubled = [...displayed, ...displayed];
-  // Explicit track width ensures -50% translateX lands exactly at the start of the second set
   const trackWidth = doubled.length * (CARD_W + CARD_GAP);
 
-  const TAB_ICONS = { All: "✦", "EV Vehicles": "🏍", "Buy Now": "🛒", "Book Service": "🔧" };
-
   return (
-    <section className="featured-section" style={{ background: "#0a0f1e" }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        {/* Header */}
+    <section style={{ background: "#0a0f1e", padding: "100px 0", overflow: "hidden", position: "relative" }}>
+      {/* Decorative background text */}
+      <div style={{
+        position: "absolute", top: "50%", left: "50%",
+        transform: "translate(-50%, -50%)",
+        fontSize: "clamp(120px, 20vw, 220px)",
+        fontWeight: 900, color: "rgba(241,245,249,0.02)",
+        pointerEvents: "none", userSelect: "none", whiteSpace: "nowrap",
+        zIndex: 0,
+      }}>
+        PRODUCTS
+      </div>
+
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
+        {/* Header — left-aligned */}
         <motion.div
           ref={headRef}
           initial={{ opacity: 0, y: 30 }}
           animate={headIn ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          style={{ textAlign: "center", marginBottom: 48 }}
+          transition={{ duration: 0.6 }}
+          style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 36, flexWrap: "wrap", gap: 16 }}
         >
-          <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)",
-            color: "#00d4ff", fontSize: 11, fontWeight: 600, textTransform: "uppercase",
-            letterSpacing: "0.12em", background: "rgba(0,212,255,0.08)", marginBottom: 16,
-          }}>
-            OUR CATALOGUE
-          </span>
-          <h2 style={{ fontSize: "clamp(24px, 3.5vw, 44px)", fontWeight: 900, margin: "0 0 12px", lineHeight: 1.2 }}>
-            <span style={{ color: "#f1f5f9" }}>Built in Odisha. </span>
+          <div>
             <span style={{
-              background: "linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%)",
-              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+              display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
+              borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff",
+              fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em",
+              background: "rgba(0,212,255,0.08)", marginBottom: 14, display: "block", width: "fit-content",
             }}>
-              Trusted Across India.
+              OUR CATALOGUE
             </span>
-          </h2>
-          <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
-            Every scooter, battery, and appliance from our Bhubaneswar factory passes 47 quality checks. No exceptions.
-          </p>
+            <h2 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, margin: "0 0 10px", lineHeight: 1.15 }}>
+              <span style={{ color: "#f1f5f9" }}>Our Product </span>
+              <span style={{
+                background: "linear-gradient(135deg, #00d4ff, #7c3aed)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+              }}>Catalogue</span>
+            </h2>
+            <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 480, margin: 0, lineHeight: 1.7 }}>
+              Every scooter, battery, and appliance from our Bhubaneswar factory passes 47 quality checks.
+            </p>
+          </div>
+          <Link href="/products" style={{
+            padding: "10px 22px", borderRadius: 10, border: "1px solid #1e2d40",
+            color: "#94a3b8", fontSize: 14, fontWeight: 600, textDecoration: "none",
+            transition: "all 0.2s", whiteSpace: "nowrap",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
+          >
+            View all 50+ →
+          </Link>
         </motion.div>
 
-        {/* Tabs */}
-        <div className="filter-tabs">
-          {TABS.map((tab) => (
+        {/* Scrollable tab pills */}
+        <div style={{
+          display: "flex", gap: 8, marginBottom: 36,
+          overflowX: "auto", scrollbarWidth: "none", paddingBottom: 4,
+        }}>
+          {TABS.map((tab, i) => (
             <button
-              key={tab}
-              className={`filter-tab${activeTab === tab ? " active" : ""}`}
-              onClick={() => setActiveTab(tab)}
+              key={tab.label}
+              onClick={() => setActiveTab(i)}
+              style={{
+                display: "flex", alignItems: "center", gap: 6, flexShrink: 0,
+                padding: "9px 18px", borderRadius: 999, fontSize: 13, fontWeight: 600,
+                cursor: "pointer", transition: "all 0.2s",
+                background: activeTab === i ? "#00d4ff" : "transparent",
+                color: activeTab === i ? "#0a0f1e" : "#64748b",
+                border: `1px solid ${activeTab === i ? "#00d4ff" : "#1e2d40"}`,
+                boxShadow: activeTab === i ? "0 0 16px rgba(0,212,255,0.3)" : "none",
+              }}
             >
-              <span>{TAB_ICONS[tab]}</span> {tab}
+              <span>{tab.icon}</span> {tab.label}
             </button>
           ))}
         </div>
+      </div>
 
-        {/* EV Vehicles banner */}
-        {activeTab === "EV Vehicles" && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{
-              marginBottom: 32, padding: "16px 24px",
-              background: "linear-gradient(135deg, rgba(0,212,255,0.08), rgba(124,58,237,0.06))",
-              border: "1px solid rgba(0,212,255,0.2)", borderRadius: 12,
-              display: "flex", alignItems: "center", justifyContent: "space-between",
-              flexWrap: "wrap", gap: 12,
-            }}
-          >
-            <div>
-              <p style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 2px" }}>
-                🏍 Book a test ride at our Bhubaneswar showroom
-              </p>
-              <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>
-                Bhimatangi Housing Colony, Bhubaneswar — Call <a href="tel:+919437611129" style={{ color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}>+91 94376 11129</a> to schedule
-              </p>
-            </div>
-            <Link
-              href="/test-ride"
-              style={{
-                padding: "9px 20px", background: "#00d4ff", color: "#0a0f1e",
-                fontWeight: 700, fontSize: 13, borderRadius: 8, textDecoration: "none",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Book Test Ride →
-            </Link>
-          </motion.div>
-        )}
-
-        {/* Auto-scrolling product carousel */}
+      {/* Carousel */}
+      <div className="products-carousel" style={{ overflow: "hidden", position: "relative" }}>
         <div
-          className="products-carousel"
-          style={{ overflow: "hidden", position: "relative", width: "100%" }}
+          key={activeTab}
+          className="products-track"
+          style={{
+            display: "flex",
+            paddingLeft: 24,
+            width: `${trackWidth + 24}px`,
+            animation: "scrollProducts 35s linear infinite",
+          }}
         >
-          {/* key={activeTab} resets the animation whenever the filter tab changes */}
-          <div
-            key={activeTab}
-            className="products-track"
-            style={{
-              display: "flex",
-              width: `${trackWidth}px`,
-              animation: "scrollProducts 40s linear infinite",
-            }}
-          >
-            {doubled.map((product, i) => (
-              <div
-                key={`${product.id}-${i}`}
-                style={{ flexShrink: 0, width: CARD_W, marginRight: CARD_GAP }}
-              >
-                {/* inView={true} makes all cards immediately visible in the carousel */}
-                <ProductCard
-                  product={product}
-                  index={i % displayed.length}
-                  inView={true}
-                />
-              </div>
-            ))}
-          </div>
+          {doubled.map((p, i) => (
+            <TiltCard key={`${p.id}-${i}`} product={p} />
+          ))}
         </div>
+      </div>
 
-        {/* View all */}
-        <div style={{ textAlign: "center", marginTop: 48 }}>
-          <Link
-            href="/products"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "12px 32px", borderRadius: 10,
-              border: "1px solid #1e2d40", background: "transparent",
-              color: "#94a3b8", fontSize: 14, fontWeight: 600,
-              textDecoration: "none", transition: "all 0.2s",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
-          >
-            View All 50+ Products →
-          </Link>
-        </div>
+      <div style={{ textAlign: "center", marginTop: 40 }}>
+        <Link href="/products" style={{
+          display: "inline-flex", alignItems: "center", gap: 8,
+          padding: "13px 32px", borderRadius: 10,
+          border: "1px solid #1e2d40", background: "transparent",
+          color: "#94a3b8", fontSize: 14, fontWeight: 600,
+          textDecoration: "none", transition: "all 0.2s",
+          margin: "0 24px",
+        }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
+        >
+          View All 50+ Products →
+        </Link>
       </div>
     </section>
   );

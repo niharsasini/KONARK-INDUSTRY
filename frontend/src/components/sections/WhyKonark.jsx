@@ -1,33 +1,122 @@
 "use client";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
 const FEATURES = [
   {
-    icon: "🛡️",
-    color: "#00d4ff",
+    num: "01", icon: "🛡️", color: "#00d4ff",
     title: "ISI & BIS Certified",
-    desc: "Every product meets strict Indian Bureau of Standards requirements. We don't ship anything we wouldn't put in our own homes.",
+    body: "Every product meets Bureau of Indian Standards requirements. We don't ship what we wouldn't use ourselves.",
+    fromX: -60,
   },
   {
-    icon: "🚚",
-    color: "#7c3aed",
-    title: "Doorstep Service Across Odisha",
-    desc: "AC not cooling? EV charger acting up? We send our trained technicians to your home or business — usually within 24 hours.",
+    num: "02", icon: "🚚", color: "#7c3aed",
+    title: "Doorstep Service",
+    body: "AC acting up? EV charger dead? We send trained technicians to you — usually within 24 hours across Odisha.",
+    fromX: 60,
   },
   {
-    icon: "🔋",
-    color: "#10b981",
-    title: "2-Year Product Warranty",
-    desc: "Every scooter, rickshaw, battery, and appliance comes with a full 2-year warranty. 50+ authorised service points in Odisha.",
+    num: "03", icon: "🔋", color: "#f97316",
+    title: "2-Year Warranty",
+    body: "Every scooter, battery, and appliance comes with a full 2-year warranty. 50+ authorised service centres.",
+    fromX: -60,
   },
   {
-    icon: "⚡",
-    color: "#f97316",
-    title: "Energy Efficient by Design",
-    desc: "All appliances carry 4-star or 5-star BEE ratings. Our EVs cut your transport costs by up to 80% vs petrol vehicles.",
+    num: "04", icon: "⚡", color: "#10b981",
+    title: "Energy Efficient",
+    body: "4-star or 5-star BEE rated appliances. Our EVs cut commute costs by up to 80% compared to petrol vehicles.",
+    fromX: 60,
   },
 ];
+
+function FeatureCard({ f, index, inView }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: f.fromX }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.12, ease: "easeOut" }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        position: "relative",
+        background: hovered
+          ? `linear-gradient(145deg, #0f172a, #111827)`
+          : "linear-gradient(145deg, #0f172a, #111827)",
+        border: `1px solid ${hovered ? f.color + "50" : "#1e2d40"}`,
+        borderRadius: 24,
+        padding: "40px 36px",
+        overflow: "hidden",
+        transform: hovered ? "translateY(-4px)" : "translateY(0)",
+        boxShadow: hovered ? `0 24px 48px rgba(0,0,0,0.4), 0 0 0 1px ${f.color}20` : "none",
+        transition: "all 0.3s",
+      }}
+    >
+      {/* Decorative corner number */}
+      <span style={{
+        position: "absolute", top: -10, right: 20,
+        fontSize: 80, fontWeight: 900,
+        color: `${f.color}06`,
+        lineHeight: 1, userSelect: "none", pointerEvents: "none",
+        transition: "color 0.3s",
+      }}>
+        {f.num}
+      </span>
+
+      {/* Background glow on hover */}
+      {hovered && (
+        <div style={{
+          position: "absolute", top: -40, left: -40, width: 180, height: 180,
+          borderRadius: "50%", background: `radial-gradient(circle, ${f.color}10 0%, transparent 70%)`,
+          pointerEvents: "none",
+        }} />
+      )}
+
+      {/* Color bar */}
+      <div style={{
+        width: 48, height: 3, background: f.color,
+        borderRadius: 2, marginBottom: 20,
+        boxShadow: hovered ? `0 0 12px ${f.color}` : "none",
+        transition: "box-shadow 0.3s",
+      }} />
+
+      {/* Icon */}
+      <div style={{
+        width: 64, height: 64, borderRadius: "50%",
+        background: `${f.color}18`, border: `2px solid ${f.color}40`,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: 28, marginBottom: 20,
+        boxShadow: hovered ? `0 0 20px ${f.color}30` : "none",
+        transition: "box-shadow 0.3s",
+      }}>
+        {f.icon}
+      </div>
+
+      {/* Title */}
+      <h3 style={{
+        fontSize: 22, fontWeight: 700, color: "#f1f5f9",
+        margin: "0 0 14px", lineHeight: 1.3,
+        position: "relative",
+      }}>
+        {f.title}
+        {/* Animated underline */}
+        <span style={{
+          display: "block", height: 2, background: f.color,
+          borderRadius: 1, marginTop: 8,
+          transform: hovered ? "scaleX(1)" : "scaleX(0)",
+          transformOrigin: "left",
+          transition: "transform 0.3s",
+        }} />
+      </h3>
+
+      <p style={{ fontSize: 15, color: "#64748b", margin: 0, lineHeight: 1.8 }}>
+        {f.body}
+      </p>
+    </motion.div>
+  );
+}
 
 export default function WhyKonark() {
   const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true });
@@ -35,79 +124,57 @@ export default function WhyKonark() {
 
   return (
     <section style={{
-      background: "linear-gradient(180deg, #060d1a 0%, #0a0f1e 100%)",
+      background: "#060d1a",
       padding: "100px 24px",
+      backgroundImage: "radial-gradient(circle, rgba(0,212,255,0.07) 1px, transparent 1px)",
+      backgroundSize: "30px 30px",
     }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+        {/* Header */}
         <motion.div
           ref={headRef}
           initial={{ opacity: 0, y: 30 }}
           animate={headIn ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.6 }}
           style={{ textAlign: "center", marginBottom: 56 }}
         >
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)",
-            color: "#00d4ff", fontSize: 11, fontWeight: 600, textTransform: "uppercase",
-            letterSpacing: "0.12em", background: "rgba(0,212,255,0.08)", marginBottom: 16,
+            borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff",
+            fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em",
+            background: "rgba(0,212,255,0.08)", marginBottom: 16,
           }}>
             WHY CHOOSE US
           </span>
-          <h2 style={{ fontSize: "clamp(24px, 3.5vw, 44px)", fontWeight: 900, color: "#f1f5f9", margin: "0 0 14px", lineHeight: 1.2 }}>
-            The Konark Promise
+          <h2 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, margin: "0 0 14px", lineHeight: 1.2 }}>
+            <span style={{ color: "#f1f5f9" }}>The Konark </span>
+            <span style={{
+              background: "linear-gradient(135deg, #00d4ff, #7c3aed)",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+            }}>Promise</span>
           </h2>
           <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 520, margin: "0 auto", lineHeight: 1.8 }}>
-            We don't cut corners. Every product we make and every service we provide carries
-            our name — and we take that seriously.
+            We don't cut corners. Every product we make and every service we provide carries our name — and we take that seriously.
           </p>
         </motion.div>
 
-        <div ref={gridRef} className="why-grid">
+        {/* 2x2 grid */}
+        <div
+          ref={gridRef}
+          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}
+          className="why-features-grid"
+        >
           {FEATURES.map((f, i) => (
-            <motion.div
-              key={f.title}
-              initial={{ opacity: 0, y: 40 }}
-              animate={gridIn ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.12, ease: "easeOut" }}
-              style={{
-                background: "#0f172a",
-                border: "1px solid #1e2d40",
-                borderRadius: 16,
-                padding: "36px 32px",
-                transition: "border-color 0.2s, transform 0.2s, box-shadow 0.2s",
-                cursor: "default",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,212,255,0.25)";
-                e.currentTarget.style.transform = "translateY(-6px)";
-                e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.3)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#1e2d40";
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
-              <div style={{ width: 48, height: 3, background: f.color, marginBottom: 20, borderRadius: 2 }} />
-              <div style={{
-                width: 56, height: 56, borderRadius: "50%",
-                background: `${f.color}18`, display: "flex",
-                alignItems: "center", justifyContent: "center",
-                fontSize: 24, marginBottom: 18,
-              }}>
-                {f.icon}
-              </div>
-              <h3 style={{ fontSize: 19, fontWeight: 700, color: "#f1f5f9", margin: "0 0 10px" }}>
-                {f.title}
-              </h3>
-              <p style={{ fontSize: 14, color: "#64748b", margin: 0, lineHeight: 1.8 }}>
-                {f.desc}
-              </p>
-            </motion.div>
+            <FeatureCard key={f.title} f={f} index={i} inView={gridIn} />
           ))}
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .why-features-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+        }
+      `}</style>
     </section>
   );
 }
