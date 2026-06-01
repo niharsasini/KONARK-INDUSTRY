@@ -33,6 +33,7 @@ async def connect_to_mongo():
     from app.models.review import Review
     from app.models.notification import Notification
     from app.models.site_settings import SiteSettings
+    from app.models.battery_swap import BatterySwap
 
     logger.info(f"Connecting to MongoDB at {settings.mongodb_url}")
 
@@ -49,10 +50,11 @@ async def connect_to_mongo():
             Review,
             Notification,
             SiteSettings,
+            BatterySwap,
         ],
     )
 
-    logger.info(f"Connected to MongoDB: {settings.mongodb_db_name} (8 collections registered)")
+    logger.info(f"Connected to MongoDB: {settings.mongodb_db_name} (9 collections registered)")
 
 
 async def close_mongo_connection():

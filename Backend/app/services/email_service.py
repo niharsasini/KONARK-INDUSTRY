@@ -344,6 +344,195 @@ async def send_order_status_update(order_data: dict, new_status: str) -> bool:
     )
 
 
+async def send_swap_request_confirmation(swap_data: dict) -> bool:
+    """
+    Email to the customer confirming receipt of their battery swap request.
+    Includes token number, preferred date, time slot, and next steps.
+    Skipped if no email address was provided.
+    """
+    if not swap_data.get("email"):
+        return False
+
+    token = swap_data.get("token_number", "")
+    content = f"""
+      <h2 style="color:#00d4ff;margin:0 0 16px;">Battery Swap Request Received! &#9889;</h2>
+      <p style="color:#94a3b8;line-height:1.7;">Hi {swap_data.get('name', 'there')},</p>
+      <p style="color:#94a3b8;line-height:1.7;">
+        Your battery swap request has been received. Save your token number — you'll need it to track your request.
+      </p>
+
+      <!-- Token display -->
+      <div style="background:#0f172a;border:2px solid #00d4ff;border-radius:12px;padding:24px;margin:24px 0;text-align:center;">
+        <p style="color:#64748b;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;margin:0 0 8px;">YOUR SWAP TOKEN</p>
+        <p style="color:#00d4ff;font-size:28px;font-weight:900;font-family:monospace;letter-spacing:0.1em;margin:0 0 8px;">{token}</p>
+        <p style="color:#64748b;font-size:12px;margin:0;">Use this token to track your request at konark-industry.vercel.app/battery-swap/track</p>
+      </div>
+
+      <div style="background:#0f172a;border:1px solid #1e2d40;border-radius:8px;padding:20px;margin:20px 0;">
+        <p style="color:#64748b;font-size:12px;margin:0 0 12px;text-transform:uppercase;letter-spacing:0.1em;">REQUEST SUMMARY</p>
+        <p style="color:#f1f5f9;margin:6px 0;">Battery: <strong>{swap_data.get('battery_capacity')} {swap_data.get('battery_type')}</strong></p>
+        <p style="color:#f1f5f9;margin:6px 0;">Preferred Date: <strong>{swap_data.get('preferred_date')}</strong></p>
+        <p style="color:#f1f5f9;margin:6px 0;">Time Slot: <strong>{swap_data.get('preferred_time_slot')}</strong></p>
+        <p style="color:#f1f5f9;margin:6px 0;">Location: <strong>{swap_data.get('swap_location')}</strong></p>
+        <p style="color:#f1f5f9;margin:6px 0;">Estimated Fee: <strong style="color:#00d4ff;">&#8377;{swap_data.get('estimated_fee', 150)}</strong> (confirmed after inspection)</p>
+      </div>
+
+      <div style="background:#0f172a;border-left:3px solid #f97316;padding:16px;border-radius:0 8px 8px 0;margin:20px 0;">
+        <p style="color:#f97316;font-weight:700;margin:0 0 6px;">What happens next?</p>
+        <p style="color:#94a3b8;margin:4px 0;font-size:13px;">&#128222; We will call you on <strong style="color:#f1f5f9;">{swap_data.get('phone')}</strong> within 2 hours to confirm your slot.</p>
+        <p style="color:#94a3b8;margin:4px 0;font-size:13px;">&#128274; Keep your battery ready at the specified address.</p>
+        <p style="color:#94a3b8;margin:4px 0;font-size:13px;">&#9989; Our technician brings a fully charged replacement battery of the same capacity.</p>
+      </div>
+
+      <p style="color:#94a3b8;">
+        Questions? Call <a href="tel:+919437611129" style="color:#00d4ff;">+91 94376 11129</a>
+      </p>
+    """
+    return await send_email(
+        swap_data["email"],
+        f"Battery Swap Confirmed: {token} — Konark Industry",
+        _base_template(content),
+    )
+
+
+async def send_swap_admin_alert(swap_data: dict) -> bool:
+    """
+    Alert the admin inbox when a new battery swap request arrives.
+    Shows all battery and customer details so admin can call back immediately.
+    """
+    settings = get_settings()
+    token = swap_data.get("token_number", "")
+
+    content = f"""
+      <h2 style="color:#f97316;margin:0 0 16px;">&#9889; New Battery Swap Request: {token}</h2>
+
+      <div style="background:#0f172a;border-left:3px solid #00d4ff;padding:16px;border-radius:0 8px 8px 0;margin:16px 0;">
+        <p style="color:#f1f5f9;margin:4px 0;font-size:16px;"><strong>Name:</strong> {swap_data.get('name')}</p>
+        <p style="color:#00d4ff;margin:4px 0;font-size:20px;font-weight:700;">&#128222; {swap_data.get('phone')}</p>
+        <p style="color:#f1f5f9;margin:4px 0;"><strong>Email:</strong> {swap_data.get('email') or 'Not provided'}</p>
+        <p style="color:#f1f5f9;margin:4px 0;"><strong>City:</strong> {swap_data.get('city')}</p>
+        <p style="color:#f1f5f9;margin:4px 0;"><strong>Address:</strong> {swap_data.get('address')}</p>
+      </div>
+
+      <div style="background:#0f172a;border:1px solid #1e2d40;border-radius:8px;padding:16px;margin:16px 0;">
+        <p style="color:#64748b;font-size:12px;margin:0 0 8px;text-transform:uppercase;letter-spacing:0.1em;">BATTERY DETAILS</p>
+        <p style="color:#f1f5f9;margin:4px 0;">Type: <strong>{swap_data.get('battery_type')}</strong></p>
+        <p style="color:#f1f5f9;margin:4px 0;">Capacity: <strong style="color:#00d4ff;">{swap_data.get('battery_capacity')}</strong></p>
+        <p style="color:#f1f5f9;margin:4px 0;">Brand: {swap_data.get('battery_brand')}</p>
+        <p style="color:#f1f5f9;margin:4px 0;">Condition: {swap_data.get('battery_condition')}</p>
+        {"<p style='color:#ef4444;margin:4px 0;'><strong>&#9888; Physical damage reported</strong></p>" if swap_data.get('battery_photo_url') else ""}
+        {"<p style='color:#f1f5f9;margin:4px 0;'>Photo: <a href='" + str(swap_data.get('battery_photo_url','')) + "' style='color:#00d4ff;'>View Photo</a></p>" if swap_data.get('battery_photo_url') else ""}
+      </div>
+
+      <div style="background:#0f172a;border:1px solid #1e2d40;border-radius:8px;padding:16px;margin:16px 0;">
+        <p style="color:#64748b;font-size:12px;margin:0 0 8px;text-transform:uppercase;letter-spacing:0.1em;">SCHEDULE</p>
+        <p style="color:#f1f5f9;margin:4px 0;">Date: <strong>{swap_data.get('preferred_date')}</strong></p>
+        <p style="color:#f1f5f9;margin:4px 0;">Time: <strong>{swap_data.get('preferred_time_slot')}</strong></p>
+        <p style="color:#f1f5f9;margin:4px 0;">Location: <strong>{swap_data.get('swap_location')}</strong></p>
+        <p style="color:#f1f5f9;margin:4px 0;">Est. Fee: <strong style="color:#00d4ff;">&#8377;{swap_data.get('estimated_fee', 150)}</strong></p>
+      </div>
+    """
+    return await send_email(
+        settings.company_email,
+        f"[BATTERY SWAP] {swap_data.get('name')} — {swap_data.get('battery_capacity')} — {token}",
+        _base_template(content),
+    )
+
+
+async def send_swap_confirmed(swap_data: dict) -> bool:
+    """
+    Email to the customer when admin confirms their swap slot.
+    Includes confirmed date, time, technician name, and location details.
+    """
+    if not swap_data.get("email"):
+        return False
+
+    token = swap_data.get("token_number", "")
+    location = swap_data.get("swap_location", "")
+    location_detail = (
+        "Our technician will come to your address. Please ensure someone is available."
+        if "Home" in location
+        else "Please bring your battery to our Bhubaneswar center: Bhimatangi Housing Colony."
+    )
+
+    content = f"""
+      <h2 style="color:#10b981;margin:0 0 16px;">&#9989; Your Swap is Confirmed!</h2>
+      <p style="color:#94a3b8;line-height:1.7;">Hi {swap_data.get('name')},</p>
+      <p style="color:#94a3b8;line-height:1.7;">
+        Great news! Your battery swap slot has been confirmed. Here are your confirmed details:
+      </p>
+
+      <div style="background:#0f172a;border:2px solid #10b981;border-radius:12px;padding:24px;margin:24px 0;">
+        <p style="color:#64748b;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;margin:0 0 12px;">CONFIRMED DETAILS</p>
+        <p style="color:#f1f5f9;margin:6px 0;">Token: <strong style="color:#00d4ff;">{token}</strong></p>
+        <p style="color:#f1f5f9;margin:6px 0;">Date: <strong style="color:#10b981;">{swap_data.get('confirmed_date') or swap_data.get('preferred_date')}</strong></p>
+        <p style="color:#f1f5f9;margin:6px 0;">Time: <strong>{swap_data.get('confirmed_time_slot') or swap_data.get('preferred_time_slot')}</strong></p>
+        <p style="color:#f1f5f9;margin:6px 0;">Technician: <strong>{swap_data.get('assigned_technician') or 'Will be assigned soon'}</strong></p>
+        <p style="color:#f1f5f9;margin:6px 0;">Location: <strong>{location}</strong></p>
+        <p style="color:#f1f5f9;margin:6px 0;">Swap Fee: <strong style="color:#00d4ff;">&#8377;{swap_data.get('swap_fee', 150)}</strong></p>
+      </div>
+
+      <div style="background:#0f172a;border-left:3px solid #f97316;padding:16px;border-radius:0 8px 8px 0;margin:20px 0;">
+        <p style="color:#f97316;font-weight:700;margin:0 0 6px;">What to do now:</p>
+        <p style="color:#94a3b8;font-size:13px;margin:4px 0;">{location_detail}</p>
+        <p style="color:#94a3b8;font-size:13px;margin:4px 0;">&#128274; Keep the battery accessible and charged to its current level.</p>
+        <p style="color:#94a3b8;font-size:13px;margin:4px 0;">&#128222; Our technician will call 30 minutes before arrival.</p>
+      </div>
+
+      <p style="color:#94a3b8;">
+        Questions? Call <a href="tel:+919437611129" style="color:#00d4ff;">+91 94376 11129</a>
+      </p>
+    """
+    return await send_email(
+        swap_data["email"],
+        f"Swap Slot Confirmed: {token} — Konark Industry",
+        _base_template(content),
+    )
+
+
+async def send_swap_completed(swap_data: dict) -> bool:
+    """
+    Email to the customer when their battery swap is marked complete.
+    Thanks them and includes warranty information for the swapped battery.
+    """
+    if not swap_data.get("email"):
+        return False
+
+    token = swap_data.get("token_number", "")
+    content = f"""
+      <h2 style="color:#10b981;margin:0 0 16px;">&#127881; Battery Swap Complete!</h2>
+      <p style="color:#94a3b8;line-height:1.7;">Hi {swap_data.get('name')},</p>
+      <p style="color:#94a3b8;line-height:1.7;">
+        Your battery swap has been completed successfully. Your vehicle is now powered by a fully charged battery.
+      </p>
+
+      <div style="background:#0f172a;border:1px solid #10b981;border-radius:12px;padding:20px;margin:24px 0;">
+        <p style="color:#64748b;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;margin:0 0 12px;">SWAP COMPLETED</p>
+        <p style="color:#f1f5f9;margin:6px 0;">Token: <strong style="color:#00d4ff;">{token}</strong></p>
+        <p style="color:#f1f5f9;margin:6px 0;">Battery: <strong>{swap_data.get('battery_capacity')}</strong></p>
+        <p style="color:#f1f5f9;margin:6px 0;">Technician: <strong>{swap_data.get('assigned_technician') or 'Konark Team'}</strong></p>
+        <p style="color:#10b981;margin:6px 0;font-weight:700;">&#9989; Fully charged. Ready to ride.</p>
+      </div>
+
+      <div style="background:#0f172a;border:1px solid #1e2d40;border-radius:8px;padding:16px;margin:16px 0;">
+        <p style="color:#64748b;font-size:12px;margin:0 0 8px;text-transform:uppercase;letter-spacing:0.1em;">WARRANTY INFO</p>
+        <p style="color:#f1f5f9;font-size:13px;margin:4px 0;">&#9989; 3-month warranty on the swapped battery</p>
+        <p style="color:#f1f5f9;font-size:13px;margin:4px 0;">&#9989; Same capacity as your original battery</p>
+        <p style="color:#f1f5f9;font-size:13px;margin:4px 0;">&#128222; If any issue, call us within 72 hours for a free re-inspection</p>
+      </div>
+
+      <p style="color:#94a3b8;line-height:1.7;">
+        Thank you for choosing Konark Industry. We'd love a review!<br>
+        &#128231; <a href="mailto:konarkindustrie@gmail.com" style="color:#00d4ff;">konarkindustrie@gmail.com</a>
+      </p>
+    """
+    return await send_email(
+        swap_data["email"],
+        f"Battery Swap Complete: {token} — Konark Industry",
+        _base_template(content),
+    )
+
+
 async def send_test_ride_confirmation(enquiry_data: dict) -> bool:
     """
     Send a specific confirmation for test ride booking enquiries.

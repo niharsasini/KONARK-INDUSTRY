@@ -13,6 +13,7 @@ const PRODUCT_LINKS = [
 const COMPANY_LINKS = [
   { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
+  { label: "Battery Swap", href: "/battery-swap" },
   { label: "Partner With Us", href: "/partner" },
   { label: "Careers", href: "/contact" },
   { label: "Press", href: "/contact" },

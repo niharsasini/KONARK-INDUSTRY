@@ -52,6 +52,16 @@ const SERVICES = [
     desc: "Keep everything running at peak condition year-round. AMC plans for appliances, EVs, and industrial equipment.",
     cta: "Get AMC Quote →",
   },
+  {
+    icon: "🔋",
+    iconBg: "rgba(124,58,237,0.1)",
+    color: "#7c3aed",
+    title: "Battery Swap Service",
+    desc: "Hand us your discharged EV battery. Drive away with a fully charged one. Home pickup available across Odisha.",
+    cta: "Book a Swap →",
+    href: "/battery-swap",
+    isNew: true,
+  },
 ];
 
 function ServiceCard({ service, index, inView }) {
@@ -90,23 +100,26 @@ function ServiceCard({ service, index, inView }) {
         {service.icon}
       </div>
       <div>
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", margin: "0 0 8px" }}>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", margin: "0 0 8px", display: "flex", alignItems: "center", gap: 8 }}>
           {service.title}
+          {service.isNew && (
+            <span style={{ fontSize: 9, background: "#00d4ff", color: "#0a0f1e", padding: "2px 6px", borderRadius: 3, fontWeight: 800, letterSpacing: "0.05em" }}>NEW</span>
+          )}
         </h3>
         <p style={{ fontSize: 13, color: "#64748b", margin: 0, lineHeight: 1.8 }}>
           {service.desc}
         </p>
       </div>
-      <ServiceCTA cta={service.cta} color={service.color} />
+      <ServiceCTA cta={service.cta} color={service.color} href={service.href} />
     </motion.div>
   );
 }
 
-function ServiceCTA({ cta, color }) {
+function ServiceCTA({ cta, color, href }) {
   const router = useRouter();
   return (
     <button
-      onClick={() => router.push("/services/enquiry")}
+      onClick={() => router.push(href || "/services/enquiry")}
       style={{
         marginTop: "auto", display: "inline-flex", alignItems: "center",
         fontSize: 13, fontWeight: 600, color, background: "transparent",

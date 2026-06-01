@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard, Package, ShoppingBag, Mail, Wrench,
   Users, FileEdit, Settings, LogOut, Menu, X,
-  Bell, ExternalLink, ChevronRight,
+  Bell, ExternalLink, ChevronRight, Battery,
 } from "lucide-react";
 
 const NAV = [
@@ -14,6 +14,7 @@ const NAV = [
   { label: "Orders", href: "/orders", icon: ShoppingBag, badge: 3 },
   { label: "Enquiries", href: "/enquiries", icon: Mail, badge: 8 },
   { label: "Services", href: "/services", icon: Wrench, badge: 12 },
+  { label: "Battery Swap", href: "/battery-swap", icon: Battery },
   { label: "Customers", href: "/customers", icon: Users },
   { label: "Content", href: "/content", icon: FileEdit },
   { label: "Settings", href: "/settings", icon: Settings },

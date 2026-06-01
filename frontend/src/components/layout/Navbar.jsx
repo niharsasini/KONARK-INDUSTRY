@@ -45,17 +45,21 @@ function ProductsMegaMenu() {
     { label: "AC Repair & Service", href: "/services/enquiry", sub: "Same-day response" },
     { label: "EV Charger Install", href: "/services/enquiry", sub: "Home & commercial" },
     { label: "Solar Installation", href: "/services/enquiry", sub: "Rooftop & industrial" },
+    { label: "Battery Swap", href: "/battery-swap", sub: "Hand in dead, drive out charged", isNew: true },
     { label: "All Services →", href: "/services", sub: "See full catalogue", highlight: true },
   ];
 
-  const NavItem = ({ label, href, sub, highlight }) => (
+  const NavItem = ({ label, href, sub, highlight, isNew }) => (
     <Link href={href}
       style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "7px 10px", borderRadius: 8, textDecoration: "none", transition: "background 0.15s", marginBottom: 2 }}
       onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}
       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
     >
       <div>
-        <p style={{ fontSize: 13, fontWeight: highlight ? 700 : 600, color: highlight ? "#00d4ff" : "#f1f5f9", margin: 0 }}>{label}</p>
+        <p style={{ fontSize: 13, fontWeight: highlight ? 700 : 600, color: highlight ? "#00d4ff" : "#f1f5f9", margin: 0, display: "flex", alignItems: "center", gap: 6 }}>
+          {label}
+          {isNew && <span style={{ fontSize: 9, background: "#00d4ff", color: "#0a0f1e", padding: "1px 5px", borderRadius: 3, fontWeight: 800, letterSpacing: "0.05em" }}>NEW</span>}
+        </p>
         <p style={{ fontSize: 11, color: "#475569", margin: 0 }}>{sub}</p>
       </div>
     </Link>
@@ -114,7 +118,7 @@ function ServicesMegaMenu() {
         </div>
       </Link>
       <div style={{ height: 1, background: "#1e2d40", margin: "6px 8px" }} />
-      <Link href="/services/enquiry" style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", borderRadius: 10, textDecoration: "none", transition: "background 0.15s", background: "rgba(0,212,255,0.06)", border: "1px solid rgba(0,212,255,0.15)", margin: "0 4px" }}
+      <Link href="/services/enquiry" style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", borderRadius: 10, textDecoration: "none", transition: "background 0.15s", background: "rgba(0,212,255,0.06)", border: "1px solid rgba(0,212,255,0.15)", margin: "0 4px 4px" }}
         onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.12)")}
         onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.06)")}
       >
@@ -122,6 +126,19 @@ function ServicesMegaMenu() {
         <div>
           <p style={{ fontSize: 13, fontWeight: 700, color: "#00d4ff", margin: 0 }}>Book a Service</p>
           <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>Get a technician in 24hrs</p>
+        </div>
+      </Link>
+      <Link href="/battery-swap" style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", borderRadius: 10, textDecoration: "none", transition: "background 0.15s", background: "rgba(124,58,237,0.06)", border: "1px solid rgba(124,58,237,0.2)", margin: "0 4px" }}
+        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(124,58,237,0.12)")}
+        onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(124,58,237,0.06)")}
+      >
+        <span style={{ fontSize: 18 }}>🔋</span>
+        <div>
+          <p style={{ fontSize: 13, fontWeight: 700, color: "#a78bfa", margin: 0, display: "flex", alignItems: "center", gap: 6 }}>
+            Battery Swap
+            <span style={{ fontSize: 9, background: "#00d4ff", color: "#0a0f1e", padding: "1px 5px", borderRadius: 3, fontWeight: 800 }}>NEW</span>
+          </p>
+          <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>Dead battery? Swap it today</p>
         </div>
       </Link>
     </div>

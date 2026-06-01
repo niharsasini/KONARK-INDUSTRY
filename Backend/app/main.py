@@ -5,11 +5,13 @@ and defines startup/shutdown lifecycle via lifespan.
 """
 
 import logging
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.config import get_settings
 from app.database import connect_to_mongo, close_mongo_connection
@@ -81,6 +83,11 @@ def create_application() -> FastAPI:
 
     # All versioned API routes under /api/v1
     app.include_router(api_router)
+
+    # Serve uploaded files (battery photos, etc.) under /uploads
+    uploads_dir = os.getenv("UPLOADS_DIR", "/var/www/konark/uploads")
+    if os.path.isdir(uploads_dir):
+        app.mount("/uploads", StaticFiles(directory=uploads_dir), name="uploads")
 
     # ---------- Root endpoints ----------
 

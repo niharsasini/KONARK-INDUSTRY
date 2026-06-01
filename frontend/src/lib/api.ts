@@ -172,3 +172,30 @@ export async function getMyOrders() {
 export async function getOrder(orderNumber: string) {
   return request(`/api/v1/orders/${orderNumber}`);
 }
+
+// ─── BATTERY SWAP ─────────────────────────────────────────────────────────────
+
+export async function submitBatterySwap(data: Record<string, unknown>) {
+  return request("/api/v1/battery-swap", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function trackBatterySwap(token: string) {
+  return request(`/api/v1/battery-swap/${token.toUpperCase()}`);
+}
+
+export async function uploadBatteryPhoto(file: File): Promise<{ photo_url: string }> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch(`${BASE_URL}/api/v1/battery-swap/upload-photo`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.detail || "Upload failed");
+  return data as { photo_url: string };
+}

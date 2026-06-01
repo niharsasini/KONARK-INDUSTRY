@@ -277,6 +277,33 @@ export async function updateSettings(data: Record<string, unknown>) {
   });
 }
 
+// ─── BATTERY SWAP ─────────────────────────────────────────────────────────────
+
+export async function getBatterySwaps(filters: Record<string, string> = {}) {
+  const params = new URLSearchParams(filters);
+  const qs = params.toString();
+  return adminRequest(`/api/v1/battery-swap${qs ? `?${qs}` : ""}`);
+}
+
+export async function getBatterySwap(id: string) {
+  return adminRequest(`/api/v1/battery-swap/admin/${id}`);
+}
+
+export async function updateBatterySwap(id: string, data: Record<string, unknown>) {
+  return adminRequest(`/api/v1/battery-swap/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteBatterySwap(id: string) {
+  return adminRequest(`/api/v1/battery-swap/${id}`, { method: "DELETE" });
+}
+
+export async function getBatterySwapStats() {
+  return adminRequest("/api/v1/battery-swap/stats");
+}
+
 // ─── REVIEWS ─────────────────────────────────────────────────────────────────
 
 export async function getProductReviews(slug: string) {

@@ -59,6 +59,19 @@ export default function CTABanner() {
           >
             Book a Service
           </Link>
+          <Link
+            href="/battery-swap"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              padding: "16px 36px", background: "rgba(124,58,237,0.12)", color: "#a78bfa",
+              fontWeight: 700, fontSize: 15, borderRadius: 10, textDecoration: "none",
+              border: "1px solid rgba(124,58,237,0.3)", transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(124,58,237,0.2)"; e.currentTarget.style.borderColor = "#7c3aed"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(124,58,237,0.12)"; e.currentTarget.style.borderColor = "rgba(124,58,237,0.3)"; }}
+          >
+            🔋 Battery Swap
+          </Link>
         </div>
       </div>
     </section>
