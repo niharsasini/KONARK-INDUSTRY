@@ -39,19 +39,11 @@ export default function Testimonials() {
   const [featured, ...rest] = TESTIMONIALS;
 
   return (
-    <section style={{ background: "#060d1a", padding: "100px 24px", position: "relative", overflow: "hidden" }}>
-      {/* Decorative large quote mark */}
-      <div style={{
-        position: "absolute", top: "8%", left: "5%",
-        fontSize: 320, fontWeight: 900, color: "rgba(0,212,255,0.025)",
-        lineHeight: 1, pointerEvents: "none", userSelect: "none",
-        fontFamily: "Georgia, serif",
-      }}>
-        "
-      </div>
+    <section className="testimonials-section" style={{ position: "relative", overflow: "hidden" }}>
+      {/* Decorative quote */}
+      <div style={{ position: "absolute", top: "8%", left: "5%", fontSize: 320, fontWeight: 900, color: "rgba(0,212,255,0.025)", lineHeight: 1, pointerEvents: "none", userSelect: "none", fontFamily: "Georgia, serif" }}>&quot;</div>
 
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        {/* Header */}
+      <div className="testimonials-inner">
         <motion.div
           ref={headRef}
           initial={{ opacity: 0, y: 30 }}
@@ -59,20 +51,11 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           style={{ textAlign: "center", marginBottom: 48 }}
         >
-          <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff",
-            fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em",
-            background: "rgba(0,212,255,0.08)", marginBottom: 16,
-          }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(0,212,255,0.08)", marginBottom: 16 }}>
             Customer Stories
           </span>
-          <h2 style={{ fontSize: "clamp(26px, 3.5vw, 44px)", fontWeight: 900, color: "#f1f5f9", margin: "0 0 10px" }}>
-            Real People. Real Results.
-          </h2>
-          <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 440, margin: "0 auto" }}>
-            Don't take our word for it — here's what our customers actually say.
-          </p>
+          <h2 style={{ fontSize: "clamp(26px, 3.5vw, 44px)", fontWeight: 900, color: "#f1f5f9", margin: "0 0 10px" }}>Real People. Real Results.</h2>
+          <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 440, margin: "0 auto" }}>Don&apos;t take our word for it — here&apos;s what our customers actually say.</p>
         </motion.div>
 
         <div ref={contentRef}>
@@ -81,49 +64,41 @@ export default function Testimonials() {
             initial={{ opacity: 0, y: 40 }}
             animate={contentIn ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
+            className="testimonial-featured"
             style={{
               background: "linear-gradient(135deg, rgba(0,212,255,0.05), rgba(124,58,237,0.05))",
-              border: "1px solid rgba(0,212,255,0.2)", borderRadius: 24, padding: "40px 40px",
-              marginBottom: 20,
-              display: "flex", gap: 32, alignItems: "flex-start",
+              border: "1px solid rgba(0,212,255,0.2)",
             }}
-            className="testimonial-featured"
           >
             {/* Avatar */}
             <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
-              <div style={{ position: "relative" }}>
-                <div style={{
-                  width: 80, height: 80, borderRadius: "50%",
-                  background: `${featured.color}20`, border: `3px solid ${featured.color}60`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 20, fontWeight: 800, color: featured.color,
+              <div
+                className="testimonial-avatar"
+                style={{
+                  background: `${featured.color}20`,
+                  border: `3px solid ${featured.color}60`,
+                  color: featured.color,
                   boxShadow: `0 0 0 6px ${featured.color}10`,
                   animation: "glow-pulse 3s ease-in-out infinite",
-                }}>
-                  {featured.initials}
-                </div>
+                  width: 80,
+                  height: 80,
+                  fontSize: 20,
+                }}
+              >
+                {featured.initials}
               </div>
               <Stars count={featured.rating} />
             </div>
 
             {/* Content */}
             <div style={{ flex: 1 }}>
-              <p style={{
-                fontSize: 17, color: "#e2e8f0", lineHeight: 2,
-                fontStyle: "italic", margin: "0 0 20px",
-              }}>
-                &ldquo;{featured.text}&rdquo;
-              </p>
+              <p className="testimonial-featured-text">&ldquo;{featured.text}&rdquo;</p>
               <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                 <div>
                   <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{featured.name}</p>
                   <p style={{ fontSize: 12, color: "#94a3b8", margin: "2px 0 0" }}>{featured.location}</p>
                 </div>
-                <span style={{
-                  fontSize: 11, color: featured.color, fontWeight: 600,
-                  background: `${featured.color}12`, padding: "3px 10px",
-                  borderRadius: 100, border: `1px solid ${featured.color}30`,
-                }}>
+                <span style={{ fontSize: 11, color: featured.color, fontWeight: 600, background: `${featured.color}12`, padding: "3px 10px", borderRadius: 100, border: `1px solid ${featured.color}30` }}>
                   {featured.product}
                 </span>
               </div>
@@ -131,31 +106,20 @@ export default function Testimonials() {
           </motion.div>
 
           {/* Two smaller cards */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }} className="testimonials-pair">
+          <div className="testimonial-small-row testimonials-pair">
             {rest.map((t, i) => (
               <motion.div
                 key={t.name}
                 initial={{ opacity: 0, x: i === 0 ? -40 : 40 }}
                 animate={contentIn ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
-                style={{
-                  background: "rgba(15,23,42,0.8)", backdropFilter: "blur(12px)",
-                  border: "1px solid #1e2d40", borderLeft: `3px solid ${t.color}`,
-                  borderRadius: 16, padding: "24px",
-                  display: "flex", flexDirection: "column", gap: 14,
-                }}
+                className="testimonial-small"
+                style={{ borderLeft: `3px solid ${t.color}`, display: "flex", flexDirection: "column", gap: 14 }}
               >
                 <Stars count={t.rating} size={12} />
-                <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.8, margin: 0, fontStyle: "italic", flex: 1 }}>
-                  &ldquo;{t.text}&rdquo;
-                </p>
+                <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.8, margin: 0, fontStyle: "italic", flex: 1 }}>&ldquo;{t.text}&rdquo;</p>
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <div style={{
-                    width: 38, height: 38, borderRadius: "50%",
-                    background: `${t.color}20`, border: `2px solid ${t.color}50`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    color: t.color, fontSize: 11, fontWeight: 700, flexShrink: 0,
-                  }}>{t.initials}</div>
+                  <div style={{ width: 38, height: 38, borderRadius: "50%", background: `${t.color}20`, border: `2px solid ${t.color}50`, display: "flex", alignItems: "center", justifyContent: "center", color: t.color, fontSize: 11, fontWeight: 700, flexShrink: 0 }}>{t.initials}</div>
                   <div>
                     <p style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{t.name}</p>
                     <p style={{ fontSize: 11, color: "#94a3b8", margin: "1px 0 0" }}>{t.location}</p>

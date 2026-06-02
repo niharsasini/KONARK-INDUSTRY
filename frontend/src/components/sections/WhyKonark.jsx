@@ -40,80 +40,31 @@ function FeatureCard({ f, index, inView }) {
       transition={{ duration: 0.6, delay: index * 0.12, ease: "easeOut" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="why-card"
       style={{
-        position: "relative",
-        background: hovered
-          ? `linear-gradient(145deg, #0f172a, #111827)`
-          : "linear-gradient(145deg, #0f172a, #111827)",
         border: `1px solid ${hovered ? f.color + "50" : "#1e2d40"}`,
-        borderRadius: 24,
-        padding: "40px 36px",
-        overflow: "hidden",
         transform: hovered ? "translateY(-4px)" : "translateY(0)",
         boxShadow: hovered ? `0 24px 48px rgba(0,0,0,0.4), 0 0 0 1px ${f.color}20` : "none",
-        transition: "all 0.3s",
       }}
     >
-      {/* Decorative corner number */}
-      <span style={{
-        position: "absolute", top: -10, right: 20,
-        fontSize: 80, fontWeight: 900,
-        color: `${f.color}06`,
-        lineHeight: 1, userSelect: "none", pointerEvents: "none",
-        transition: "color 0.3s",
-      }}>
-        {f.num}
-      </span>
+      <span className="why-card-number">{f.num}</span>
 
-      {/* Background glow on hover */}
       {hovered && (
-        <div style={{
-          position: "absolute", top: -40, left: -40, width: 180, height: 180,
-          borderRadius: "50%", background: `radial-gradient(circle, ${f.color}10 0%, transparent 70%)`,
-          pointerEvents: "none",
-        }} />
+        <div style={{ position: "absolute", top: -40, left: -40, width: 180, height: 180, borderRadius: "50%", background: `radial-gradient(circle, ${f.color}10 0%, transparent 70%)`, pointerEvents: "none" }} />
       )}
 
-      {/* Color bar */}
-      <div style={{
-        width: 48, height: 3, background: f.color,
-        borderRadius: 2, marginBottom: 20,
-        boxShadow: hovered ? `0 0 12px ${f.color}` : "none",
-        transition: "box-shadow 0.3s",
-      }} />
+      <div style={{ width: 48, height: 3, background: f.color, borderRadius: 2, marginBottom: 20, boxShadow: hovered ? `0 0 12px ${f.color}` : "none", transition: "box-shadow 0.3s" }} />
 
-      {/* Icon */}
-      <div style={{
-        width: 64, height: 64, borderRadius: "50%",
-        background: `${f.color}18`, border: `2px solid ${f.color}40`,
-        display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: 28, marginBottom: 20,
-        boxShadow: hovered ? `0 0 20px ${f.color}30` : "none",
-        transition: "box-shadow 0.3s",
-      }}>
+      <div style={{ width: 64, height: 64, borderRadius: "50%", background: `${f.color}18`, border: `2px solid ${f.color}40`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, marginBottom: 20, boxShadow: hovered ? `0 0 20px ${f.color}30` : "none", transition: "box-shadow 0.3s" }}>
         {f.icon}
       </div>
 
-      {/* Title */}
-      <h3 style={{
-        fontSize: 22, fontWeight: 700, color: "#f1f5f9",
-        margin: "0 0 14px", lineHeight: 1.3,
-        position: "relative",
-      }}>
+      <h3 style={{ fontSize: 22, fontWeight: 700, color: "#f1f5f9", margin: "0 0 14px", lineHeight: 1.3, position: "relative" }}>
         {f.title}
-        {/* Animated underline */}
-        <span style={{
-          display: "block", height: 2, background: f.color,
-          borderRadius: 1, marginTop: 8,
-          transform: hovered ? "scaleX(1)" : "scaleX(0)",
-          transformOrigin: "left",
-          transition: "transform 0.3s",
-        }} />
+        <span style={{ display: "block", height: 2, background: f.color, borderRadius: 1, marginTop: 8, transform: hovered ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left", transition: "transform 0.3s" }} />
       </h3>
 
-      <p style={{ fontSize: 15, color: "#64748b", margin: 0, lineHeight: 1.8 }}>
-        {f.body}
-      </p>
+      <p style={{ fontSize: 15, color: "#64748b", margin: 0, lineHeight: 1.8 }}>{f.body}</p>
     </motion.div>
   );
 }
@@ -123,20 +74,14 @@ export default function WhyKonark() {
   const { ref: gridRef, inView: gridIn } = useInView({ threshold: 0.05, triggerOnce: true });
 
   return (
-    <section style={{
-      background: "#060d1a",
-      padding: "100px 24px",
-      backgroundImage: "radial-gradient(circle, rgba(0,212,255,0.07) 1px, transparent 1px)",
-      backgroundSize: "30px 30px",
-    }}>
+    <section className="why-section">
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        {/* Header */}
         <motion.div
           ref={headRef}
           initial={{ opacity: 0, y: 30 }}
           animate={headIn ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          style={{ textAlign: "center", marginBottom: 56 }}
+          style={{ textAlign: "center", marginBottom: 56, padding: "0 24px" }}
         >
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
@@ -148,22 +93,14 @@ export default function WhyKonark() {
           </span>
           <h2 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, margin: "0 0 14px", lineHeight: 1.2 }}>
             <span style={{ color: "#f1f5f9" }}>The Konark </span>
-            <span style={{
-              background: "linear-gradient(135deg, #00d4ff, #7c3aed)",
-              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-            }}>Promise</span>
+            <span style={{ background: "linear-gradient(135deg, #00d4ff, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Promise</span>
           </h2>
           <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 520, margin: "0 auto", lineHeight: 1.8 }}>
-            We don't cut corners. Every product we make and every service we provide carries our name — and we take that seriously.
+            We don&apos;t cut corners. Every product we make and every service we provide carries our name — and we take that seriously.
           </p>
         </motion.div>
 
-        {/* 2x2 grid */}
-        <div
-          ref={gridRef}
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}
-          className="why-features-grid"
-        >
+        <div ref={gridRef} className="why-grid why-features-grid">
           {FEATURES.map((f, i) => (
             <FeatureCard key={f.title} f={f} index={i} inView={gridIn} />
           ))}

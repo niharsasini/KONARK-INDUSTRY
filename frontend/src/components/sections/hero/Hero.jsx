@@ -13,7 +13,6 @@ const CATEGORY_CHIPS = [
   { icon: "🔋", label: "LFP Batteries", href: "/products?cat=battery" },
 ];
 
-// Products highlighted in the hero card: newly launched or top-rated
 const featuredProducts = products.filter(p => p.isNew || p.rating >= 4.5).slice(0, 6);
 
 export default function Hero() {
@@ -22,7 +21,6 @@ export default function Hero() {
 
   const currentProduct = featuredProducts[currentIndex] || featuredProducts[0];
 
-  // Auto-cycle every 3 seconds; clear on unmount
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex(prev => (prev === featuredProducts.length - 1 ? 0 : prev + 1));
@@ -32,7 +30,7 @@ export default function Hero() {
 
   return (
     <section className="hero-section" style={{ paddingTop: 64 }}>
-      {/* Layer 1 — animated grid */}
+      {/* Animated grid layer */}
       <div style={{
         position: "absolute", inset: 0, zIndex: 0,
         backgroundImage: `
@@ -43,7 +41,7 @@ export default function Hero() {
         pointerEvents: "none",
       }} />
 
-      {/* Layer 2 — glowing orbs */}
+      {/* Glowing orbs */}
       <div style={{
         position: "absolute", top: "-20%", right: "-10%",
         width: "700px", height: "700px", borderRadius: "50%",
@@ -59,7 +57,7 @@ export default function Hero() {
         animation: "float 10s ease-in-out infinite reverse",
       }} />
 
-      {/* Layer 3 — rotating rings */}
+      {/* Rotating rings */}
       <div style={{
         position: "absolute", top: "50%", right: "5%",
         transform: "translateY(-50%)",
@@ -91,15 +89,7 @@ export default function Hero() {
             transition={{ delay: 0.1, duration: 0.6 }}
             style={{ marginBottom: 28 }}
           >
-            <span style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              background: "rgba(0,212,255,0.08)",
-              border: "1px solid rgba(0,212,255,0.25)",
-              borderRadius: 100, padding: "6px 16px",
-              fontSize: 12, fontWeight: 600, color: "#00d4ff",
-              letterSpacing: "0.04em",
-              boxShadow: "0 0 20px rgba(0,212,255,0.1)",
-            }}>
+            <span className="hero-badge">
               <span style={{
                 width: 6, height: 6, borderRadius: "50%",
                 background: "#00d4ff",
@@ -152,7 +142,7 @@ export default function Hero() {
 
           {/* Buttons */}
           <motion.div
-            className="hero-buttons"
+            className="hero-btn-row hero-buttons"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.5 }}
@@ -161,12 +151,7 @@ export default function Hero() {
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => router.push("/products")}
-              style={{
-                background: "#00d4ff", color: "#0a0f1e",
-                padding: "14px 32px", borderRadius: 10,
-                fontWeight: 800, fontSize: 15, border: "none",
-                cursor: "pointer", letterSpacing: "0.02em",
-              }}
+              className="hero-btn-primary"
             >
               Shop Products →
             </motion.button>
@@ -174,12 +159,7 @@ export default function Hero() {
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => router.push("/services/enquiry")}
-              style={{
-                background: "transparent", color: "#f1f5f9",
-                border: "1px solid rgba(241,245,249,0.2)",
-                padding: "14px 32px", borderRadius: 10,
-                fontWeight: 700, fontSize: 15, cursor: "pointer",
-              }}
+              className="hero-btn-ghost"
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "rgba(0,212,255,0.5)";
                 e.currentTarget.style.color = "#00d4ff";
@@ -195,36 +175,30 @@ export default function Hero() {
 
           {/* Trust pills */}
           <motion.div
-            className="hero-trust"
+            className="hero-trust-row hero-trust"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.0, duration: 0.5 }}
           >
             {TRUST_PILLS.map((pill) => (
-              <span key={pill} style={{
-                fontSize: 12, color: "#64748b",
-                border: "1px dashed rgba(100,116,139,0.3)",
-                padding: "4px 12px", borderRadius: 100,
-                display: "inline-block",
-              }}>
+              <span key={pill} className="hero-trust-pill">
                 {pill}
               </span>
             ))}
           </motion.div>
         </div>
 
-        {/* RIGHT — 3D product showcase (auto-cycles) */}
-        <div className="hero-right" style={{ perspective: "1200px", perspectiveOrigin: "50% 50%" }}>
+        {/* RIGHT — product showcase */}
+        <div className="hero-right-col" style={{ perspective: "1200px", perspectiveOrigin: "50% 50%" }}>
           <motion.div
-            className="hero-product-card"
+            className="hero-product-card hero-product-card-inner"
             initial={{ opacity: 0, rotateY: -15, x: 60 }}
             animate={{ opacity: 1, rotateY: 0, x: 0 }}
             transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
             whileHover={{ rotateY: 8, rotateX: -5, scale: 1.03 }}
             onClick={() => router.push(`/products/${currentProduct.slug}`)}
-            style={{ transformStyle: "preserve-3d" }}
+            style={{ transformStyle: "preserve-3d", cursor: "pointer" }}
           >
-            {/* key={currentIndex} triggers fade animation on every product change */}
             <motion.div
               key={currentIndex}
               initial={{ opacity: 0, y: 10 }}
@@ -269,7 +243,7 @@ export default function Hero() {
                   : "Price on Request"}
               </p>
 
-              {/* Stat chips — category + rating */}
+              {/* Chips */}
               <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
                 <span style={{
                   fontSize: 11, fontWeight: 600, color: "#00d4ff",
@@ -299,7 +273,7 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Dot indicators — click to jump to a product */}
+          {/* Dot indicators */}
           <div style={{ display: "flex", gap: 6, justifyContent: "center", marginTop: 12 }}>
             {featuredProducts.map((_, i) => (
               <div
@@ -317,7 +291,7 @@ export default function Hero() {
             ))}
           </div>
 
-          {/* Category quick-links */}
+          {/* Category chips */}
           <motion.div
             className="hero-category-chips"
             initial={{ opacity: 0, y: 20 }}
@@ -365,15 +339,11 @@ export default function Hero() {
           gap: 4, color: "#94a3b8", zIndex: 10,
         }}
       >
-        <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase" }}>
-          Scroll
-        </span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
-          style={{ width: 18, height: 18, color: "#00d4ff" }}>
+        <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase" }}>Scroll</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18, color: "#00d4ff" }}>
           <path d="M6 9l6 6 6-6" />
         </svg>
       </motion.div>
-
     </section>
   );
 }

@@ -39,78 +39,33 @@ export default function StatsSection() {
   const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true });
 
   return (
-    <section style={{
-      background: "linear-gradient(135deg, #0a0f1e 0%, #0f172a 100%)",
-      padding: "64px 24px",
-    }}>
-      <div
-        ref={ref}
-        style={{
-          maxWidth: 1280,
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          position: "relative",
-        }}
-        className="stats-row"
-      >
+    <section className="stats-section">
+      <div ref={ref} className="stats-inner stats-row">
         {STATS.map((stat, i) => (
           <motion.div
             key={stat.label}
+            className="stat-item"
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: i * 0.15, ease: "easeOut" }}
-            style={{
-              padding: "32px 28px",
-              textAlign: "center",
-              position: "relative",
-            }}
           >
-            {/* Vertical divider (not on last item) */}
-            {i < 3 && (
-              <div style={{
-                position: "absolute", right: 0, top: "20%", bottom: "20%",
-                width: 1, background: "rgba(30,45,64,0.8)",
-              }} />
-            )}
-
-            {/* Icon circle */}
-            <div style={{
-              width: 52, height: 52, borderRadius: "50%",
-              background: `${stat.color}18`,
-              border: `1px solid ${stat.color}40`,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 22, margin: "0 auto 16px",
-            }}>
+            <div
+              className="stat-icon"
+              style={{
+                background: `${stat.color}18`,
+                border: `1px solid ${stat.color}40`,
+                fontSize: 22,
+              }}
+            >
               {stat.icon}
             </div>
 
-            {/* Number with gradient */}
-            <p style={{
-              fontSize: "clamp(40px, 4vw, 56px)",
-              fontWeight: 900,
-              lineHeight: 1,
-              margin: "0 0 8px",
-              background: "linear-gradient(135deg, #00d4ff, #7c3aed)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}>
+            <p className="stat-number">
               <AnimatedNumber target={stat.num} suffix={stat.suffix} active={inView} />
             </p>
 
-            {/* Label */}
-            <p style={{
-              fontSize: 13, fontWeight: 700, color: "#f1f5f9",
-              textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 4px",
-            }}>
-              {stat.label}
-            </p>
-
-            {/* Description */}
-            <p style={{ fontSize: 12, color: "#475569", margin: 0 }}>
-              {stat.desc}
-            </p>
+            <p className="stat-label">{stat.label}</p>
+            <p className="stat-desc">{stat.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -120,12 +75,6 @@ export default function StatsSection() {
           .stats-row {
             grid-template-columns: repeat(2, 1fr) !important;
             gap: 0;
-          }
-          .stats-row > div {
-            border-bottom: 1px solid #1e2d40;
-          }
-          .stats-row > div:nth-child(odd) {
-            border-right: 1px solid #1e2d40;
           }
         }
       `}</style>

@@ -63,7 +63,7 @@ const TABS = [
   },
 ];
 
-function TabContent({ tab, inView }) {
+function TabContent({ tab }) {
   return (
     <motion.div
       key={tab.id}
@@ -71,32 +71,22 @@ function TabContent({ tab, inView }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}
       className="solutions-content-grid"
+      style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}
     >
       {/* Left */}
       <div>
-        <p style={{
-          fontSize: "clamp(52px, 6vw, 72px)", fontWeight: 900, color: tab.color,
-          margin: "0 0 4px", lineHeight: 1,
-          textShadow: `0 0 40px ${tab.color}50`,
-        }}>{tab.stat}</p>
-        <p style={{
-          fontSize: 11, color: "#64748b", textTransform: "uppercase",
-          letterSpacing: "0.12em", marginBottom: 20,
-        }}>{tab.statLabel}</p>
+        <p className="solutions-stat-num" style={{ color: tab.color, margin: "0 0 4px", lineHeight: 1, textShadow: `0 0 40px ${tab.color}50`, fontWeight: 900 }}>
+          {tab.stat}
+        </p>
+        <p style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 20 }}>{tab.statLabel}</p>
         <h3 style={{ fontSize: 28, fontWeight: 800, color: "#f1f5f9", margin: "0 0 12px" }}>{tab.heading}</h3>
         <p style={{ fontSize: 15, color: "#94a3b8", lineHeight: 1.8, marginBottom: 24 }}>{tab.desc}</p>
 
-        {/* Features */}
-        <ul style={{ listStyle: "none", padding: 0, margin: "0 0 28px", display: "flex", flexDirection: "column", gap: 10 }}>
+        <ul className="solutions-features-list" style={{ listStyle: "none", padding: 0, margin: "0 0 28px", display: "flex", flexDirection: "column", gap: 10 }}>
           {tab.features.map(f => (
             <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "#f1f5f9" }}>
-              <span style={{
-                width: 20, height: 20, borderRadius: "50%", flexShrink: 0,
-                background: `${tab.color}20`, border: `1px solid ${tab.color}50`,
-                display: "flex", alignItems: "center", justifyContent: "center", marginTop: 1,
-              }}>
+              <span style={{ width: 20, height: 20, borderRadius: "50%", flexShrink: 0, background: `${tab.color}20`, border: `1px solid ${tab.color}50`, display: "flex", alignItems: "center", justifyContent: "center", marginTop: 1 }}>
                 <svg viewBox="0 0 12 12" fill={tab.color} style={{ width: 7, height: 7 }}>
                   <path d="M2 6l3 3 5-6" stroke={tab.color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" fill="none" />
                 </svg>
@@ -106,12 +96,7 @@ function TabContent({ tab, inView }) {
           ))}
         </ul>
 
-        <button style={{
-          padding: "12px 26px", background: `${tab.color}18`,
-          border: `1px solid ${tab.color}50`, color: tab.color,
-          borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer",
-          transition: "all 0.2s",
-        }}
+        <button style={{ padding: "12px 26px", background: `${tab.color}18`, border: `1px solid ${tab.color}50`, color: tab.color, borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", minHeight: 44 }}
           onMouseEnter={e => { e.currentTarget.style.background = `${tab.color}30`; }}
           onMouseLeave={e => { e.currentTarget.style.background = `${tab.color}18`; }}
         >
@@ -119,42 +104,21 @@ function TabContent({ tab, inView }) {
         </button>
       </div>
 
-      {/* Right — 3D floating card */}
+      {/* Right — floating card */}
       <div style={{ display: "flex", justifyContent: "center" }}>
         <motion.div
           animate={{ y: [0, -12, 0], rotateX: [0, 3, 0] }}
           transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
-          style={{
-            background: "rgba(15,23,42,0.8)", backdropFilter: "blur(20px)",
-            border: `1px solid ${tab.color}25`,
-            borderRadius: 24, padding: 32,
-            width: "100%", maxWidth: 340,
-            boxShadow: `0 30px 60px rgba(0,0,0,0.5), 0 0 40px ${tab.color}15`,
-            transformStyle: "preserve-3d",
-          }}
+          style={{ background: "rgba(15,23,42,0.8)", backdropFilter: "blur(20px)", border: `1px solid ${tab.color}25`, borderRadius: 24, padding: 32, width: "100%", maxWidth: 340, boxShadow: `0 30px 60px rgba(0,0,0,0.5), 0 0 40px ${tab.color}15`, transformStyle: "preserve-3d" }}
         >
-          {/* Product chips */}
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
             {tab.products.map(p => (
-              <span key={p} style={{
-                fontSize: 10, padding: "3px 10px", borderRadius: 100,
-                background: `${tab.color}12`, color: tab.color,
-                border: `1px solid ${tab.color}30`, fontWeight: 600,
-              }}>{p}</span>
+              <span key={p} style={{ fontSize: 10, padding: "3px 10px", borderRadius: 100, background: `${tab.color}12`, color: tab.color, border: `1px solid ${tab.color}30`, fontWeight: 600 }}>{p}</span>
             ))}
           </div>
-
-          {/* Product image */}
-          <div style={{
-            background: "#060d1a", borderRadius: 16, padding: 24,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            marginBottom: 16, minHeight: 180,
-          }}>
-            <img src={tab.image} alt={tab.label} loading="lazy"
-              style={{ maxWidth: "80%", maxHeight: 160, objectFit: "contain",
-                filter: `drop-shadow(0 0 20px ${tab.color}40)` }} />
+          <div style={{ background: "#060d1a", borderRadius: 16, padding: 24, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, minHeight: 180 }}>
+            <img src={tab.image} alt={tab.label} loading="lazy" style={{ maxWidth: "80%", maxHeight: 160, objectFit: "contain", filter: `drop-shadow(0 0 20px ${tab.color}40)` }} />
           </div>
-
           <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>{tab.heading}</p>
           <p style={{ fontSize: 13, color: "#64748b", margin: 0 }}>Engineered in Bhubaneswar, Odisha</p>
         </motion.div>
@@ -169,12 +133,8 @@ export default function SolutionsSection() {
   const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true });
 
   return (
-    <section style={{
-      background: "linear-gradient(180deg, #060d1a 0%, #0a0f1e 100%)",
-      padding: "100px 24px",
-    }}>
+    <section style={{ background: "linear-gradient(180deg, #060d1a 0%, #0a0f1e 100%)", padding: "100px 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        {/* Header */}
         <motion.div
           ref={headRef}
           initial={{ opacity: 0, y: 30 }}
@@ -182,45 +142,34 @@ export default function SolutionsSection() {
           transition={{ duration: 0.6 }}
           style={{ textAlign: "center", marginBottom: 48 }}
         >
-          <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff",
-            fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em",
-            background: "rgba(0,212,255,0.08)", marginBottom: 16,
-          }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(0,212,255,0.08)", marginBottom: 16 }}>
             WHAT WE MAKE
           </span>
           <h2 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, margin: "0 0 12px", lineHeight: 1.2 }}>
             <span style={{ color: "#f1f5f9" }}>Complete Energy </span>
-            <span style={{
-              background: "linear-gradient(135deg, #00d4ff, #7c3aed)",
-              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-            }}>Ecosystem</span>
+            <span style={{ background: "linear-gradient(135deg, #00d4ff, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Ecosystem</span>
           </h2>
           <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
             One company. Four pillars. Everything you need to live, work, and move sustainably.
           </p>
         </motion.div>
 
-        {/* Icon tabs */}
-        <div style={{
-          display: "flex", gap: 10, justifyContent: "center",
-          flexWrap: "wrap", marginBottom: 48,
-        }}>
+        {/* Tabs */}
+        <div className="solutions-tabs-row" style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", marginBottom: 48, overflowX: "auto", scrollbarWidth: "none" }}>
           {TABS.map(t => (
             <button
               key={t.id}
               onClick={() => setActive(t.id)}
+              className={`solutions-tab-btn${active === t.id ? " active" : ""}`}
               style={{
                 display: "flex", alignItems: "center", gap: 8,
                 padding: "10px 22px", borderRadius: 12, fontSize: 14, fontWeight: 600,
-                cursor: "pointer", transition: "all 0.25s",
-                background: active === t.id
-                  ? `linear-gradient(135deg, ${t.color}30, ${t.color}15)`
-                  : "transparent",
+                cursor: "pointer", transition: "all 0.25s", flexShrink: 0,
+                background: active === t.id ? `linear-gradient(135deg, ${t.color}30, ${t.color}15)` : "transparent",
                 color: active === t.id ? t.color : "#64748b",
                 border: `1px solid ${active === t.id ? t.color + "60" : "#1e2d40"}`,
                 boxShadow: active === t.id ? `0 0 20px ${t.color}20` : "none",
+                minHeight: 44,
               }}
             >
               <span style={{ fontSize: 18 }}>{t.icon}</span>
@@ -229,18 +178,16 @@ export default function SolutionsSection() {
           ))}
         </div>
 
-        {/* Animated tab content */}
         <AnimatePresence mode="wait">
           <TabContent key={active} tab={tab} />
         </AnimatePresence>
       </div>
 
       <style>{`
+        .solutions-stat-num { font-size: clamp(52px, 6vw, 72px); }
         @media (max-width: 768px) {
-          .solutions-content-grid {
-            grid-template-columns: 1fr !important;
-            gap: 32px !important;
-          }
+          .solutions-content-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .solutions-tabs-row { justify-content: flex-start !important; }
         }
       `}</style>
     </section>

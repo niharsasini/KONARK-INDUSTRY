@@ -25,19 +25,11 @@ function ServiceCard({ service, index, inView }) {
       transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="service-glass-card"
       style={{
-        background: "rgba(15,23,42,0.7)",
-        backdropFilter: "blur(10px)",
-        border: "1px solid rgba(255,255,255,0.05)",
         borderLeft: `3px solid ${hovered ? service.color : service.color + "80"}`,
-        borderRadius: 16,
-        padding: "20px",
         transform: hovered ? "translateY(-3px)" : "translateY(0)",
         boxShadow: hovered ? `0 16px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)` : "none",
-        transition: "all 0.25s",
-        display: "flex",
-        flexDirection: "column",
-        gap: 12,
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -51,14 +43,10 @@ function ServiceCard({ service, index, inView }) {
         </div>
         <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{service.title}</p>
       </div>
-      <p style={{ fontSize: 13, color: "#64748b", margin: 0, lineHeight: 1.65, flex: 1 }}>{service.desc}</p>
+      <p style={{ fontSize: 13, color: "#64748b", margin: "12px 0 0", lineHeight: 1.65, flex: 1 }}>{service.desc}</p>
       <button
         onClick={() => router.push("/services/enquiry")}
-        style={{
-          background: "transparent", border: "none", padding: 0,
-          color: service.color, fontSize: 13, fontWeight: 700,
-          cursor: "pointer", textAlign: "left", transition: "opacity 0.2s",
-        }}
+        style={{ background: "transparent", border: "none", padding: "12px 0 0", color: service.color, fontSize: 13, fontWeight: 700, cursor: "pointer", textAlign: "left", transition: "opacity 0.2s", minHeight: 44 }}
         onMouseEnter={e => (e.currentTarget.style.opacity = "0.7")}
         onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
       >
@@ -74,16 +62,15 @@ export default function ServicesPreview() {
   const router = useRouter();
 
   return (
-    <section style={{ background: "#060d1a", padding: "100px 24px", position: "relative", overflow: "hidden" }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "40% 60%", gap: 64, alignItems: "start" }} className="services-layout">
-        {/* LEFT COLUMN */}
+    <section className="services-section" style={{ background: "#060d1a", overflow: "hidden" }}>
+      <div className="services-inner services-layout">
+        {/* LEFT */}
         <motion.div
           ref={leftRef}
           initial={{ opacity: 0, x: -40 }}
           animate={leftIn ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          style={{ position: "sticky", top: 120 }}
-          className="services-left-sticky"
+          className="services-left services-left-sticky"
         >
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
@@ -111,34 +98,18 @@ export default function ServicesPreview() {
             Something broken? Our certified technicians reach your home across Odisha — usually the same day you call.
           </p>
 
-          {/* Big response time stat */}
           <div style={{ marginBottom: 28 }}>
-            <p style={{
-              fontSize: 64, fontWeight: 900, color: "#00d4ff", margin: 0, lineHeight: 1,
-              textShadow: "0 0 30px rgba(0,212,255,0.4)",
-            }}>2 hrs</p>
-            <p style={{ fontSize: 12, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.12em", marginTop: 4 }}>
-              Average response time
-            </p>
+            <p style={{ fontSize: 64, fontWeight: 900, color: "#00d4ff", margin: 0, lineHeight: 1, textShadow: "0 0 30px rgba(0,212,255,0.4)" }}>2 hrs</p>
+            <p style={{ fontSize: 12, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.12em", marginTop: 4 }}>Average response time</p>
           </div>
 
-          {/* Phone CTA */}
           <a
             href="tel:+919437611129"
-            style={{
-              display: "flex", alignItems: "center", gap: 14,
-              padding: "16px 20px", background: "#0f172a",
-              border: "1px solid #1e2d40", borderRadius: 12,
-              textDecoration: "none", transition: "border-color 0.2s",
-            }}
+            style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 12, textDecoration: "none", transition: "border-color 0.2s" }}
             onMouseEnter={e => (e.currentTarget.style.borderColor = "#00d4ff")}
             onMouseLeave={e => (e.currentTarget.style.borderColor = "#1e2d40")}
           >
-            <div style={{
-              width: 40, height: 40, borderRadius: "50%",
-              background: "rgba(0,212,255,0.12)", border: "1px solid rgba(0,212,255,0.3)",
-              display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 18,
-            }}>📞</div>
+            <div style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(0,212,255,0.12)", border: "1px solid rgba(0,212,255,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 18 }}>📞</div>
             <div>
               <p style={{ fontSize: 11, color: "#64748b", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.08em" }}>Call Now</p>
               <p style={{ fontSize: 17, fontWeight: 800, color: "#00d4ff", margin: 0 }}>+91 94376 11129</p>
@@ -146,8 +117,8 @@ export default function ServicesPreview() {
           </a>
         </motion.div>
 
-        {/* RIGHT COLUMN */}
-        <div ref={rightRef} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }} className="services-right-grid">
+        {/* RIGHT */}
+        <div ref={rightRef} className="services-grid-right services-right-grid">
           {SERVICES.map((s, i) => (
             <ServiceCard key={s.title} service={s} index={i} inView={rightIn} />
           ))}
@@ -155,29 +126,17 @@ export default function ServicesPreview() {
       </div>
 
       {/* Bottom CTA bar */}
-      <div style={{ maxWidth: 1280, margin: "48px auto 0", padding: "0 0" }}>
-        <div style={{
-          background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 12,
-          padding: "20px 28px", display: "flex", alignItems: "center",
-          justifyContent: "space-between", flexWrap: "wrap", gap: 16,
-        }}>
-          <p style={{ fontSize: 15, color: "#94a3b8", margin: 0 }}>
-            Need something not listed? Tell us what's wrong.
-          </p>
-          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+      <div style={{ maxWidth: 1280, margin: "48px auto 0", padding: "0 48px" }}>
+        <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 12, padding: "20px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+          <p style={{ fontSize: 15, color: "#94a3b8", margin: 0 }}>Need something not listed? Tell us what&apos;s wrong.</p>
+          <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
             <button
               onClick={() => router.push("/services/enquiry")}
-              style={{
-                padding: "10px 22px", background: "#00d4ff", color: "#0a0f1e",
-                border: "none", borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: "pointer",
-              }}
+              style={{ padding: "10px 22px", background: "#00d4ff", color: "#0a0f1e", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: "pointer", minHeight: 44 }}
             >
               Send Enquiry →
             </button>
-            <Link href="/services" style={{
-              fontSize: 14, color: "#64748b", textDecoration: "none", fontWeight: 600,
-              transition: "color 0.2s",
-            }}
+            <Link href="/services" style={{ fontSize: 14, color: "#64748b", textDecoration: "none", fontWeight: 600, transition: "color 0.2s" }}
               onMouseEnter={e => (e.currentTarget.style.color = "#00d4ff")}
               onMouseLeave={e => (e.currentTarget.style.color = "#64748b")}
             >

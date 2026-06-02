@@ -145,46 +145,15 @@ function ServicesMegaMenu() {
   );
 }
 
-function UserDropdown({ user, onSignOut }) {
-  return (
-    <div style={{ position: "absolute", top: "calc(100% + 8px)", right: 0, width: 220, background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, boxShadow: "0 20px 48px rgba(0,0,0,0.5)", padding: "8px", zIndex: 50 }}>
-      <div style={{ padding: "10px 12px 12px", borderBottom: "1px solid #1e2d40", marginBottom: 4 }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", margin: "0 0 2px" }}>Hi, {user.name.split(" ")[0]}</p>
-        <p style={{ fontSize: 11, color: "#94a3b8", margin: 0 }}>{user.email}</p>
-      </div>
-      {[
-        { label: "My Orders", href: "/orders", icon: "📦" },
-        { label: "My Wishlist", href: "/profile#wishlist", icon: "❤️" },
-        { label: "My Profile", href: "/profile", icon: "👤" },
-      ].map(({ label, href, icon }) => (
-        <Link key={label} href={href} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 12px", borderRadius: 8, textDecoration: "none", color: "#f1f5f9", fontSize: 13, transition: "background 0.15s" }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-        >
-          <span>{icon}</span>{label}
-        </Link>
-      ))}
-      <div style={{ height: 1, background: "#1e2d40", margin: "4px 0" }} />
-      <button onClick={onSignOut} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 12px", borderRadius: 8, background: "transparent", border: "none", color: "#ef4444", fontSize: 13, width: "100%", cursor: "pointer", transition: "background 0.15s" }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.06)")}
-        onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-      >
-        <span>🚪</span> Sign Out
-      </button>
-    </div>
-  );
-}
-
 export default function Navbar() {
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [expandedSection, setExpandedSection] = useState(null);
   const [user, setUser] = useState(null);
-  const [userDropOpen, setUserDropOpen] = useState(false);
   const hoverTimeout = useRef(null);
-  const userDropRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -206,20 +175,10 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (mobileOpen) document.body.style.overflow = "hidden";
+    if (menuOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
     return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen]);
-
-  useEffect(() => {
-    const handleClick = (e) => {
-      if (userDropRef.current && !userDropRef.current.contains(e.target)) {
-        setUserDropOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
+  }, [menuOpen]);
 
   const handleEnter = (key) => {
     if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
@@ -232,7 +191,6 @@ export default function Navbar() {
   const signOut = () => {
     localStorage.removeItem("konark_user");
     setUser(null);
-    setUserDropOpen(false);
     router.refresh();
   };
 
@@ -240,16 +198,14 @@ export default function Navbar() {
     ? { background: "rgba(10,15,30,0.95)", backdropFilter: "blur(12px)", borderBottom: "1px solid #1e2d40" }
     : { background: "transparent" };
 
-  const initials = user ? user.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase() : "";
-
   return (
     <>
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, transition: "all 0.3s", ...navStyle }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
           <PowerLogo />
 
-          {/* Desktop nav */}
-          <div style={{ display: "flex", alignItems: "center", gap: 4 }} className="hidden-mobile">
+          {/* Desktop center nav */}
+          <div className="nav-links-desktop">
             {NAV_LINKS.map((link) =>
               link.hasDropdown ? (
                 <div key={link.label} style={{ position: "relative" }} onMouseEnter={() => handleEnter(link.hasDropdown)} onMouseLeave={handleLeave}>
@@ -279,8 +235,8 @@ export default function Navbar() {
 
           {/* Right actions */}
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            {/* Search */}
-            <div style={{ position: "relative" }} className="hidden-mobile">
+            {/* Search — desktop only */}
+            <div style={{ position: "relative" }} className="nav-right-desktop">
               {searchOpen ? (
                 <input autoFocus onBlur={() => setSearchOpen(false)} placeholder="Search products..."
                   style={{ width: 192, background: "#111827", border: "1px solid #1e2d40", color: "#f1f5f9", fontSize: 13, padding: "7px 12px", borderRadius: 8, outline: "none" }}
@@ -297,7 +253,19 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Cart */}
+            {/* Desktop CTA buttons */}
+            <div className="nav-right-desktop">
+              <Link href="/services/enquiry" style={{ padding: "8px 16px", borderRadius: 8, textDecoration: "none", border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff", fontSize: 13, fontWeight: 600, transition: "all 0.2s", whiteSpace: "nowrap" }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(0,212,255,0.08)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+              >Book Service</Link>
+              <Link href="/products" style={{ padding: "8px 16px", background: "#00d4ff", color: "#0a0f1e", fontSize: 13, fontWeight: 700, borderRadius: 8, textDecoration: "none", transition: "background 0.2s", whiteSpace: "nowrap" }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
+              >Shop Now</Link>
+            </div>
+
+            {/* Cart — always visible */}
             <Link href="/cart" style={{ position: "relative", padding: 8, color: "#94a3b8", borderRadius: 8, display: "flex", transition: "color 0.2s", textDecoration: "none" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
@@ -310,86 +278,134 @@ export default function Navbar() {
               <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "#00d4ff", color: "#0a0f1e", fontSize: 10, fontWeight: 700, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>0</span>
             </Link>
 
-            {/* Auth: user avatar or login/register */}
-            {user ? (
-              <div ref={userDropRef} style={{ position: "relative" }} className="hidden-mobile">
-                <button onClick={() => setUserDropOpen((o) => !o)}
-                  style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(0,212,255,0.15)", border: "2px solid rgba(0,212,255,0.4)", display: "flex", alignItems: "center", justifyContent: "center", color: "#00d4ff", fontSize: 13, fontWeight: 800, cursor: "pointer" }}
-                >
-                  {initials}
-                </button>
-                {userDropOpen && <UserDropdown user={user} onSignOut={signOut} />}
-              </div>
-            ) : (
-              <>
-                <Link href="/login" className="hidden-mobile"
-                  style={{ padding: "7px 16px", borderRadius: 8, textDecoration: "none", border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff", fontSize: 13, fontWeight: 600, transition: "all 0.2s", whiteSpace: "nowrap" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(0,212,255,0.08)"; e.currentTarget.style.borderColor = "#00d4ff"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(0,212,255,0.3)"; }}
-                >Login</Link>
-                <Link href="/register" className="hidden-mobile"
-                  style={{ padding: "8px 16px", background: "#00d4ff", color: "#0a0f1e", fontSize: 13, fontWeight: 700, borderRadius: 8, textDecoration: "none", transition: "background 0.2s", whiteSpace: "nowrap" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
-                >Register</Link>
-              </>
-            )}
-
-            {/* Hamburger */}
-            <button onClick={() => setMobileOpen((o) => !o)} className="show-mobile"
-              style={{ padding: 8, background: "transparent", border: "none", cursor: "pointer", color: "#f1f5f9", display: "none" }}
+            {/* Hamburger — mobile only */}
+            <button
+              onClick={() => setMenuOpen((o) => !o)}
+              className="nav-hamburger"
+              aria-label="Open menu"
             >
-              {mobileOpen ? (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 24, height: 24 }}><path d="M18 6L6 18M6 6l12 12" /></svg>
-              ) : (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 24, height: 24 }}><path d="M3 12h18M3 6h18M3 18h18" /></svg>
-              )}
+              <span />
+              <span />
+              <span />
             </button>
           </div>
         </div>
       </nav>
 
       {/* Mobile overlay */}
-      {mobileOpen && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 99, background: "#0a0f1e", display: "flex", flexDirection: "column" }}>
-          <div style={{ height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 24px", borderBottom: "1px solid #1e2d40" }}>
-            <PowerLogo />
-            <button onClick={() => setMobileOpen(false)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "#f1f5f9" }}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 24, height: 24 }}><path d="M18 6L6 18M6 6l12 12" /></svg>
+      <div className={`mobile-menu-overlay${menuOpen ? " open" : ""}`}>
+        {/* Logo top-left */}
+        <div style={{ position: "absolute", top: 16, left: 24, zIndex: 999 }}>
+          <PowerLogo />
+        </div>
+
+        {/* Close button top-right */}
+        <button
+          onClick={() => setMenuOpen(false)}
+          style={{ position: "absolute", top: 12, right: 16, zIndex: 999, background: "transparent", border: "none", cursor: "pointer", color: "#f1f5f9", width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 8 }}
+          aria-label="Close menu"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 24, height: 24 }}>
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div className="mobile-menu-inner">
+          {/* Home */}
+          <Link href="/" className="mobile-nav-item" onClick={() => setMenuOpen(false)}>
+            Home
+          </Link>
+
+          {/* Products — expandable */}
+          <div>
+            <button
+              className="mobile-nav-item"
+              style={{ background: "transparent", border: "none", width: "100%", cursor: "pointer" }}
+              onClick={() => setExpandedSection((s) => s === "products" ? null : "products")}
+            >
+              Products
+              <span style={{ fontSize: 14, color: "#64748b" }}>{expandedSection === "products" ? "▲" : "▾"}</span>
             </button>
-          </div>
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 0, padding: "16px 24px", overflowY: "auto" }}>
-            {NAV_LINKS.map((link) => (
-              <Link key={link.label} href={link.href} onClick={() => setMobileOpen(false)}
-                style={{ fontSize: 28, fontWeight: 700, color: "#f1f5f9", padding: "16px 0", borderBottom: "1px solid #1e2d40", textDecoration: "none", transition: "color 0.2s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#f1f5f9")}
-              >{link.label}</Link>
-            ))}
-            {user ? (
-              <button onClick={() => { signOut(); setMobileOpen(false); }}
-                style={{ fontSize: 20, fontWeight: 700, color: "#ef4444", padding: "16px 0", borderBottom: "1px solid #1e2d40", textDecoration: "none", background: "transparent", border: "none", textAlign: "left", cursor: "pointer" }}
-              >Sign Out</button>
-            ) : (
-              <Link href="/login" onClick={() => setMobileOpen(false)}
-                style={{ fontSize: 20, fontWeight: 700, color: "#00d4ff", padding: "16px 0", borderBottom: "1px solid #1e2d40", textDecoration: "none" }}
-              >Login / Register</Link>
+            {expandedSection === "products" && (
+              <div>
+                <Link href="/products?cat=ev" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>EV Scooters</Link>
+                <Link href="/products?cat=rickshaw" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>E-Rickshaws</Link>
+                <Link href="/products?cat=battery" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>Batteries</Link>
+                <Link href="/products" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>All Products</Link>
+              </div>
             )}
           </div>
-          <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 12 }}>
-            {!user && (
-              <Link href="/register" onClick={() => setMobileOpen(false)}
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "16px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 17, borderRadius: 12, textDecoration: "none" }}
-              >Create Free Account</Link>
+
+          {/* Services — expandable */}
+          <div>
+            <button
+              className="mobile-nav-item"
+              style={{ background: "transparent", border: "none", width: "100%", cursor: "pointer" }}
+              onClick={() => setExpandedSection((s) => s === "services" ? null : "services")}
+            >
+              Services
+              <span style={{ fontSize: 14, color: "#64748b" }}>{expandedSection === "services" ? "▲" : "▾"}</span>
+            </button>
+            {expandedSection === "services" && (
+              <div>
+                <Link href="/services/enquiry" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>AC Repair</Link>
+                <Link href="/services/enquiry" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>EV Charger</Link>
+                <Link href="/battery-swap" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>Battery Swap</Link>
+                <Link href="/services" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>All Services</Link>
+              </div>
             )}
+          </div>
+
+          {/* About */}
+          <Link href="/about" className="mobile-nav-item" onClick={() => setMenuOpen(false)}>
+            About
+          </Link>
+
+          {/* Contact */}
+          <Link href="/contact" className="mobile-nav-item" onClick={() => setMenuOpen(false)}>
+            Contact
+          </Link>
+
+          {/* Auth */}
+          {user ? (
+            <button
+              onClick={() => { signOut(); setMenuOpen(false); }}
+              className="mobile-nav-item"
+              style={{ background: "transparent", border: "none", cursor: "pointer", color: "#ef4444", width: "100%", textAlign: "left" }}
+            >
+              Sign Out
+            </button>
+          ) : (
+            <Link href="/login" className="mobile-nav-item" style={{ color: "#00d4ff" }} onClick={() => setMenuOpen(false)}>
+              Login / Register
+            </Link>
+          )}
+
+          {/* Action buttons */}
+          <div className="mobile-menu-actions">
+            <Link className="mobile-btn-primary" href="/products" onClick={() => setMenuOpen(false)}>
+              Shop Products
+            </Link>
+            <Link className="mobile-btn-purple" href="/battery-swap" onClick={() => setMenuOpen(false)}>
+              🔋 Battery Swap
+            </Link>
+            <Link className="mobile-btn-ghost" href="/services/enquiry" onClick={() => setMenuOpen(false)}>
+              Book a Service
+            </Link>
+          </div>
+
+          {/* Contact strip */}
+          <div style={{ textAlign: "center", marginTop: 32, paddingTop: 24, borderTop: "1px solid #1e2d40" }}>
+            <a
+              href="tel:+919437611129"
+              style={{ fontSize: 22, color: "#00d4ff", fontWeight: 800, display: "block", marginBottom: 6, textDecoration: "none" }}
+            >
+              📞 +91 94376 11129
+            </a>
+            <span style={{ fontSize: 13, color: "#64748b" }}>konarkindustrie@gmail.com</span>
           </div>
         </div>
-      )}
-
-      <style>{`
-        @media (min-width: 768px) { .hidden-mobile { display: flex !important; } .show-mobile { display: none !important; } }
-        @media (max-width: 767px) { .hidden-mobile { display: none !important; } .show-mobile { display: flex !important; } }
-      `}</style>
+      </div>
     </>
   );
 }

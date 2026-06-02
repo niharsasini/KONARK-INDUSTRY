@@ -48,7 +48,7 @@ function TiltCard({ product }) {
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
       onClick={() => router.push(`/products/${product.slug}`)}
       style={{
-        width: CARD_W, flexShrink: 0, marginRight: CARD_GAP,
+        width: "100%", flexShrink: 0,
         background: "linear-gradient(145deg, #111827, #0f172a)",
         border: `1px solid ${hovered ? `${catColor}60` : "#1e2d40"}`,
         borderRadius: 20, overflow: "hidden",
@@ -58,7 +58,7 @@ function TiltCard({ product }) {
         display: "flex", flexDirection: "column",
       }}
     >
-      {/* Image area */}
+      {/* Image */}
       <div style={{
         height: 200, position: "relative",
         background: "radial-gradient(ellipse at center, #0f172a 0%, #060d1a 100%)",
@@ -73,34 +73,17 @@ function TiltCard({ product }) {
           }}
         />
         {product.isNew && (
-          <span style={{
-            position: "absolute", top: 12, left: 12,
-            background: "#00d4ff", color: "#0a0f1e",
-            fontSize: 9, fontWeight: 800, padding: "2px 8px", borderRadius: 4, textTransform: "uppercase",
-          }}>NEW</span>
+          <span style={{ position: "absolute", top: 12, left: 12, background: "#00d4ff", color: "#0a0f1e", fontSize: 9, fontWeight: 800, padding: "2px 8px", borderRadius: 4, textTransform: "uppercase" }}>NEW</span>
         )}
-        <span style={{
-          position: "absolute", top: 12, right: 12,
-          background: `${catColor}18`, border: `1px solid ${catColor}40`,
-          color: catColor, fontSize: 9, fontWeight: 700,
-          padding: "2px 8px", borderRadius: 4, textTransform: "uppercase",
-        }}>
+        <span style={{ position: "absolute", top: 12, right: 12, background: `${catColor}18`, border: `1px solid ${catColor}40`, color: catColor, fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 4, textTransform: "uppercase" }}>
           {product.category.replace("Electric Vehicles", "EV").replace("Home Appliances", "Home").replace("Industrial Equipment", "Industrial")}
         </span>
-        {/* Bottom color strip */}
-        <div style={{
-          position: "absolute", bottom: 0, left: 0, right: 0, height: 3,
-          background: `linear-gradient(90deg, ${catColor}, transparent)`,
-        }} />
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${catColor}, transparent)` }} />
       </div>
 
       {/* Body */}
       <div style={{ padding: "14px 16px", flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
-        <p style={{
-          fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0,
-          overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical",
-        }}>{product.name}</p>
+        <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{product.name}</p>
         <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
           {[1,2,3,4,5].map(s => (
             <svg key={s} viewBox="0 0 12 12" fill={s <= Math.round(product.rating) ? "#f97316" : "none"} stroke="#f97316" strokeWidth={1.5} style={{ width: 10, height: 10 }}>
@@ -115,20 +98,11 @@ function TiltCard({ product }) {
       </div>
 
       {/* Footer */}
-      <div style={{
-        padding: "12px 16px", borderTop: "1px solid #1e2d40",
-        display: "flex", gap: 8, alignItems: "center",
-      }}>
+      <div style={{ padding: "12px 16px", borderTop: "1px solid #1e2d40", display: "flex", gap: 8, alignItems: "center" }}>
         <Link
           href={`/products/${product.slug}`}
           onClick={e => e.stopPropagation()}
-          style={{
-            flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
-            padding: "8px 10px", fontSize: 12, fontWeight: 700,
-            background: "transparent", color: ctaColor,
-            border: `1px solid ${ctaColor}60`, borderRadius: 8,
-            textDecoration: "none", transition: "background 0.2s",
-          }}
+          style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "8px 10px", fontSize: 12, fontWeight: 700, background: "transparent", color: ctaColor, border: `1px solid ${ctaColor}60`, borderRadius: 8, textDecoration: "none", transition: "background 0.2s" }}
           onMouseEnter={e => (e.currentTarget.style.background = `${ctaColor}18`)}
           onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
         >
@@ -136,13 +110,7 @@ function TiltCard({ product }) {
         </Link>
         <button
           onClick={e => e.stopPropagation()}
-          style={{
-            width: 34, height: 34, borderRadius: 8,
-            background: "transparent", border: "1px solid #1e2d40",
-            color: "#64748b", cursor: "pointer", display: "flex",
-            alignItems: "center", justifyContent: "center", flexShrink: 0,
-            transition: "all 0.2s", fontSize: 14,
-          }}
+          style={{ width: 34, height: 34, borderRadius: 8, background: "transparent", border: "1px solid #1e2d40", color: "#64748b", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.2s", fontSize: 14 }}
           onMouseEnter={e => { e.currentTarget.style.borderColor = "#ef4444"; e.currentTarget.style.color = "#ef4444"; }}
           onMouseLeave={e => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#64748b"; }}
           title="Add to wishlist"
@@ -162,7 +130,7 @@ export default function FeaturedProducts() {
   const trackWidth = doubled.length * (CARD_W + CARD_GAP);
 
   return (
-    <section style={{ background: "#0a0f1e", padding: "100px 0", overflow: "hidden", position: "relative" }}>
+    <section className="products-section">
       {/* Decorative background text */}
       <div style={{
         position: "absolute", top: "50%", left: "50%",
@@ -175,40 +143,33 @@ export default function FeaturedProducts() {
         PRODUCTS
       </div>
 
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
-        {/* Header — left-aligned */}
+      <div style={{ position: "relative", zIndex: 1 }}>
+        {/* Header */}
         <motion.div
           ref={headRef}
           initial={{ opacity: 0, y: 30 }}
           animate={headIn ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 36, flexWrap: "wrap", gap: 16 }}
+          className="products-header"
         >
-          <div>
+          <div className="products-header-left">
             <span style={{
               display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
               borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff",
               fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em",
-              background: "rgba(0,212,255,0.08)", marginBottom: 14, display: "block", width: "fit-content",
+              background: "rgba(0,212,255,0.08)", marginBottom: 14,
             }}>
               OUR CATALOGUE
             </span>
             <h2 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, margin: "0 0 10px", lineHeight: 1.15 }}>
               <span style={{ color: "#f1f5f9" }}>Our Product </span>
-              <span style={{
-                background: "linear-gradient(135deg, #00d4ff, #7c3aed)",
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-              }}>Catalogue</span>
+              <span style={{ background: "linear-gradient(135deg, #00d4ff, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Catalogue</span>
             </h2>
             <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 480, margin: 0, lineHeight: 1.7 }}>
               Every scooter, battery, and appliance from our Bhubaneswar factory passes 47 quality checks.
             </p>
           </div>
-          <Link href="/products" style={{
-            padding: "10px 22px", borderRadius: 10, border: "1px solid #1e2d40",
-            color: "#94a3b8", fontSize: 14, fontWeight: 600, textDecoration: "none",
-            transition: "all 0.2s", whiteSpace: "nowrap",
-          }}
+          <Link href="/products" style={{ padding: "10px 22px", borderRadius: 10, border: "1px solid #1e2d40", color: "#94a3b8", fontSize: 14, fontWeight: 600, textDecoration: "none", transition: "all 0.2s", whiteSpace: "nowrap", alignSelf: "flex-end" }}
             onMouseEnter={e => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
           >
@@ -216,15 +177,13 @@ export default function FeaturedProducts() {
           </Link>
         </motion.div>
 
-        {/* Scrollable tab pills */}
-        <div style={{
-          display: "flex", gap: 8, marginBottom: 36,
-          overflowX: "auto", scrollbarWidth: "none", paddingBottom: 4,
-        }}>
+        {/* Filter tabs */}
+        <div className="filter-tabs-row" style={{ display: "flex", gap: 8, marginBottom: 36, overflowX: "auto", scrollbarWidth: "none", paddingBottom: 4, paddingLeft: 48, paddingRight: 48 }}>
           {TABS.map((tab, i) => (
             <button
               key={tab.label}
               onClick={() => setActiveTab(i)}
+              className={`filter-tab-btn${activeTab === i ? " active" : ""}`}
               style={{
                 display: "flex", alignItems: "center", gap: 6, flexShrink: 0,
                 padding: "9px 18px", borderRadius: 999, fontSize: 13, fontWeight: 600,
@@ -242,32 +201,25 @@ export default function FeaturedProducts() {
       </div>
 
       {/* Carousel */}
-      <div className="products-carousel" style={{ overflow: "hidden", position: "relative" }}>
+      <div className="products-carousel-wrap products-carousel">
         <div
           key={activeTab}
           className="products-track"
           style={{
-            display: "flex",
-            paddingLeft: 24,
-            width: `${trackWidth + 24}px`,
             animation: "scrollProducts 35s linear infinite",
+            width: `${trackWidth + 24}px`,
           }}
         >
           {doubled.map((p, i) => (
-            <TiltCard key={`${p.id}-${i}`} product={p} />
+            <div key={`${p.id}-${i}`} className="product-card-wrap">
+              <TiltCard product={p} />
+            </div>
           ))}
         </div>
       </div>
 
       <div style={{ textAlign: "center", marginTop: 40 }}>
-        <Link href="/products" style={{
-          display: "inline-flex", alignItems: "center", gap: 8,
-          padding: "13px 32px", borderRadius: 10,
-          border: "1px solid #1e2d40", background: "transparent",
-          color: "#94a3b8", fontSize: 14, fontWeight: 600,
-          textDecoration: "none", transition: "all 0.2s",
-          margin: "0 24px",
-        }}
+        <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 32px", borderRadius: 10, border: "1px solid #1e2d40", background: "transparent", color: "#94a3b8", fontSize: 14, fontWeight: 600, textDecoration: "none", transition: "all 0.2s", margin: "0 24px" }}
           onMouseEnter={e => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
           onMouseLeave={e => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
         >

@@ -39,35 +39,37 @@ export default function Footer() {
   return (
     <footer style={{ background: "#0a0f1e", borderTop: "1px solid #1e2d40" }}>
       {/* CTA Band */}
-      <div className="footer-top-cta" style={{ background: "linear-gradient(135deg, rgba(0,212,255,0.08) 0%, rgba(124,58,237,0.08) 100%)", borderBottom: "1px solid #1e2d40", textAlign: "center" }}>
-        <h2 style={{ fontSize: 28, fontWeight: 700, color: "#f1f5f9", margin: "0 0 8px" }}>
-          Ready to power your future?
-        </h2>
-        <p style={{ color: "#94a3b8", fontSize: 15, margin: "0 0 24px" }}>
-          Join 25,000+ homes, businesses, and industries already running on Konark.
-        </p>
-        <div className="footer-top-buttons">
-          <Link
-            href="/products"
-            style={{ padding: "12px 28px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: "none", transition: "background 0.2s" }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
-          >
-            Explore Products
-          </Link>
-          <Link
-            href="/contact"
-            style={{ padding: "12px 28px", background: "transparent", color: "#f1f5f9", fontWeight: 600, fontSize: 14, borderRadius: 8, textDecoration: "none", border: "1px solid #1e2d40", transition: "all 0.2s" }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#f1f5f9"; }}
-          >
-            Contact Us
-          </Link>
+      <div className="footer-top footer-top-cta">
+        <div className="footer-top-inner">
+          <h2 style={{ fontSize: 28, fontWeight: 700, color: "#f1f5f9", margin: "0 0 8px" }}>
+            Ready to power your future?
+          </h2>
+          <p style={{ color: "#94a3b8", fontSize: 15, margin: "0 0 24px" }}>
+            Join 25,000+ homes, businesses, and industries already running on Konark.
+          </p>
+          <div className="footer-top-buttons" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <Link
+              href="/products"
+              style={{ padding: "12px 28px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: "none", transition: "background 0.2s", display: "inline-block" }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
+            >
+              Explore Products
+            </Link>
+            <Link
+              href="/contact"
+              style={{ padding: "12px 28px", background: "transparent", color: "#f1f5f9", fontWeight: 600, fontSize: 14, borderRadius: 8, textDecoration: "none", border: "1px solid #1e2d40", transition: "all 0.2s", display: "inline-block" }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#f1f5f9"; }}
+            >
+              Contact Us
+            </Link>
+          </div>
         </div>
       </div>
 
       {/* Main footer */}
-      <div className="footer-grid">
+      <div className="footer-main footer-grid">
         {/* Brand */}
         <div>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, textDecoration: "none" }}>
@@ -159,7 +161,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="footer-bottom" style={{ borderTop: "1px solid #1e2d40", padding: "20px 24px", maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+      <div className="footer-bottom-bar footer-bottom">
         <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>
           © 2024 Konark Industry Pvt. Ltd. ·{" "}
           <Link href="/contact" style={{ color: "#94a3b8", textDecoration: "none" }}>Privacy Policy</Link>
