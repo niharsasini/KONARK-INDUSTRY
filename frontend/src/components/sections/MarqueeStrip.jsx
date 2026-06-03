@@ -49,6 +49,8 @@ export default function MarqueeStrip() {
       borderBottom: "1px solid #0f1e2e",
       padding: "16px 0",
       overflow: "hidden",
+      maxWidth: "100vw",
+      width: "100%",
       display: "flex",
       flexDirection: "column",
       gap: 8,

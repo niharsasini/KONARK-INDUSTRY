@@ -42,14 +42,14 @@ export default function Hero() {
       }} />
 
       {/* Glowing orbs */}
-      <div style={{
+      <div className="hero-orb-cyan" style={{
         position: "absolute", top: "-20%", right: "-10%",
         width: "700px", height: "700px", borderRadius: "50%",
         background: "radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 65%)",
         filter: "blur(60px)", pointerEvents: "none", zIndex: 0,
         animation: "float 8s ease-in-out infinite",
       }} />
-      <div style={{
+      <div className="hero-orb-purple" style={{
         position: "absolute", bottom: "-20%", left: "-10%",
         width: "600px", height: "600px", borderRadius: "50%",
         background: "radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 65%)",
@@ -58,7 +58,7 @@ export default function Hero() {
       }} />
 
       {/* Rotating rings */}
-      <div style={{
+      <div className="hero-ring-1" style={{
         position: "absolute", top: "50%", right: "5%",
         transform: "translateY(-50%)",
         width: "500px", height: "500px",
@@ -67,7 +67,7 @@ export default function Hero() {
         animation: "spin 30s linear infinite",
         pointerEvents: "none", zIndex: 0,
       }} />
-      <div style={{
+      <div className="hero-ring-2" style={{
         position: "absolute", top: "50%", right: "5%",
         transform: "translateY(-50%)",
         width: "380px", height: "380px",

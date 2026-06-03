@@ -1,5 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
+*, *::before, *::after {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+html {
+  overflow-x: hidden;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -33,17 +50,12 @@
   --subtle: #94a3b8;
 }
 
-* { box-sizing: border-box; }
-
-html { scroll-behavior: smooth; }
-
 body {
   background: var(--k-bg);
   color: var(--k-text);
   font-family: 'Inter', system-ui, sans-serif;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
 }
 
 ::selection { background: var(--k-accent); color: var(--k-bg); }
@@ -1337,17 +1349,28 @@ img {
     gap: 28px !important;
   }
 
+  .hero-left {
+    order: 1 !important;
+  }
+
   .hero-right-col {
-    order: -1 !important;
+    order: 2 !important;
+    display: flex !important;
     align-items: center !important;
+    justify-content: center !important;
     width: 100% !important;
   }
 
   .hero-product-card-inner {
-    max-width: 320px !important;
+    max-width: 300px !important;
     width: 100% !important;
     margin: 0 auto !important;
-    padding: 20px !important;
+    padding: 16px !important;
+  }
+
+  .hero-product-card-inner img {
+    height: 160px !important;
+    object-fit: contain !important;
   }
 
   .hero-headline { font-size: 34px !important; margin-bottom: 12px !important; }
@@ -1498,4 +1521,65 @@ img {
   .stat-number { font-size: 30px !important; }
   .footer-main { grid-template-columns: 1fr !important; }
   .partners-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ===== HERO DECORATIVE ELEMENTS MOBILE ===== */
+@media (max-width: 768px) {
+  .hero-ring-1,
+  .hero-ring-2,
+  .hero-ring-3 {
+    display: none !important;
+  }
+
+  .hero-orb-cyan,
+  .hero-orb-purple {
+    width: 200px !important;
+    height: 200px !important;
+    opacity: 0.04 !important;
+  }
+}
+
+/* ===== NAVBAR INNER MOBILE ===== */
+@media (max-width: 768px) {
+  .navbar-inner {
+    padding: 0 16px !important;
+    height: 60px !important;
+  }
+
+  .nav-hamburger {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+}
+
+/* ===== AUTH PROMPT MODAL MOBILE ===== */
+@media (max-width: 768px) {
+  .auth-prompt-modal {
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+}
+
+/* ===== SECTION PADDINGS MOBILE ===== */
+@media (max-width: 768px) {
+  .stats-section { padding: 40px 0 !important; }
+  .products-section { padding: 48px 0 !important; }
+  .services-section { padding: 48px 0 !important; }
+  .why-section { padding: 48px 0 !important; }
+  .certs-section { padding: 48px 0 !important; }
+  .testimonials-section { padding: 48px 0 !important; }
+  .cta-section { padding: 48px 20px !important; }
+
+  .section-header-inner {
+    padding: 0 20px !important;
+  }
 }

@@ -51,6 +51,7 @@ export default function AuthPromptModal() {
     <AnimatePresence>
       {show && (
         <motion.div
+          className="auth-prompt-modal"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
