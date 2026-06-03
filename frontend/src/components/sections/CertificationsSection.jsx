@@ -1,165 +1,463 @@
-"use client";
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+'use client'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
-// Replace with actual Google Drive PDF links
-const CERTS = [
+const certs = [
   {
-    iconText: "SI", accentColor: "#FF9933",
-    title: "Startup India",
-    issuer: "Ministry of Commerce & Industry",
-    certNumber: "DIPP182913",
-    validDate: "Valid till December 2032",
-    href: "https://drive.google.com",
+    id: 1,
+    title: 'Startup India',
+    issuer: 'Ministry of Commerce & Industry',
+    subtitle: 'Dept. for Promotion of Industry & Internal Trade',
+    number: 'Cert No: DIPP182913',
+    valid: 'Valid till December 2032',
+    tag: 'Government of India ✓',
+    color: '#FF9933',
+    iconText: 'SI',
+    badge: 'DIPP RECOGNISED',
+    driveLink: 'https://drive.google.com/file/d/1KXTqXjShczsEB4VQh5bNHgMrqwVIKT2S/view?usp=drive_link',
+    embedUrl: 'https://drive.google.com/file/d/1KXTqXjShczsEB4VQh5bNHgMrqwVIKT2S/preview',
   },
   {
-    iconText: "SO", accentColor: "#00d4ff",
-    title: "Startup Odisha",
-    issuer: "Govt. of Odisha — MSME Dept.",
-    certNumber: "OSP/SP/02193",
-    validDate: "Issued April 2025",
-    href: "https://drive.google.com",
+    id: 2,
+    title: 'Startup Odisha',
+    issuer: 'Govt. of Odisha — MSME Dept.',
+    subtitle: 'Odisha Startup Policy 2016',
+    number: 'Reg No: OSP/SP/02193',
+    valid: 'Issued April 2025',
+    tag: 'Government of Odisha ✓',
+    color: '#00d4ff',
+    iconText: 'SO',
+    badge: 'STATE RECOGNISED',
+    driveLink: 'https://drive.google.com/file/d/1cGzOUQD_izwzAO0aEh3Oolkp8YVF_1Rx/view?usp=drive_link',
+    embedUrl: 'https://drive.google.com/file/d/1cGzOUQD_izwzAO0aEh3Oolkp8YVF_1Rx/preview',
   },
   {
-    iconText: "MSME", accentColor: "#7c3aed",
-    title: "Udyam Registration",
-    issuer: "Ministry of MSMEs, Govt. of India",
-    certNumber: "UDYAM-OD-19-0064755",
-    validDate: "Registered January 2024",
-    href: "https://drive.google.com",
+    id: 3,
+    title: 'Udyam MSME Registration',
+    issuer: 'Ministry of MSME, Govt. of India',
+    subtitle: 'Manufacturing — Motor Vehicles',
+    number: 'UDYAM-OD-19-0064755',
+    valid: 'Registered January 2024',
+    tag: 'Government of India ✓',
+    color: '#7c3aed',
+    iconText: 'MSME',
+    badge: 'MSME REGISTERED',
+    driveLink: 'https://drive.google.com/file/d/1dSzfTJV_iwTU4ZVvcd-UFB59t7KwVt50/view?usp=drive_link',
+    embedUrl: 'https://drive.google.com/file/d/1dSzfTJV_iwTU4ZVvcd-UFB59t7KwVt50/preview',
   },
   {
-    iconText: "IEC", accentColor: "#f97316",
-    title: "Importer-Exporter Code",
-    issuer: "Directorate General of Foreign Trade",
-    certNumber: "IEC: ABBFK1614L",
-    validDate: "Issued November 2024",
-    href: "https://drive.google.com",
+    id: 4,
+    title: 'Importer-Exporter Code',
+    issuer: 'Directorate General of Foreign Trade',
+    subtitle: 'Ministry of Commerce & Industry',
+    number: 'IEC: ABBFK1614L',
+    valid: 'Issued November 2024',
+    tag: 'DGFT Approved ✓',
+    color: '#f97316',
+    iconText: 'IEC',
+    badge: 'EXPORT CERTIFIED',
+    driveLink: 'https://drive.google.com/file/d/1iSr8CKXbYpp0IIToj9xPEkJ45Rzga08p/view?usp=drive_link',
+    embedUrl: 'https://drive.google.com/file/d/1iSr8CKXbYpp0IIToj9xPEkJ45Rzga08p/preview',
   },
-];
-
-function CertCard({ cert, index, inView }) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <motion.a
-      href={cert.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      initial={{ opacity: 0, x: 80 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="cert-card cert-card-stair"
-      style={{
-        border: `1px solid ${hovered ? cert.accentColor + "60" : "#1e2d40"}`,
-        transform: `translateX(${index * 20}px) ${hovered ? "scale(1.02)" : "scale(1)"}`,
-        boxShadow: hovered ? `0 16px 40px rgba(0,0,0,0.4), 0 0 20px ${cert.accentColor}20` : "none",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Top accent line */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: cert.accentColor, opacity: hovered ? 1 : 0.5, transition: "opacity 0.3s" }} />
-
-      {/* Icon */}
-      <div
-        className="cert-icon"
-        style={{
-          background: `${cert.accentColor}20`,
-          border: `2px solid ${cert.accentColor}50`,
-          color: cert.accentColor,
-          fontSize: cert.iconText.length > 2 ? 9 : 14,
-          letterSpacing: cert.iconText.length > 2 ? "0.04em" : "0",
-          boxShadow: hovered ? `0 0 20px ${cert.accentColor}30` : "none",
-          borderRadius: "50%",
-          width: 64,
-          height: 64,
-          flexShrink: 0,
-        }}
-      >
-        {cert.iconText}
-      </div>
-
-      {/* Details */}
-      <div className="cert-info">
-        <p className="cert-name">{cert.title}</p>
-        <p className="cert-issuer" style={{ color: cert.accentColor }}>{cert.issuer}</p>
-        <p className="cert-number">{cert.certNumber}</p>
-        <p className="cert-valid">{cert.validDate}</p>
-      </div>
-
-      {/* View */}
-      <span
-        className="cert-view"
-        style={{ color: cert.accentColor, border: `1px solid ${cert.accentColor}50`, padding: "7px 14px", borderRadius: 8, fontSize: 12, fontWeight: 700, flexShrink: 0, whiteSpace: "nowrap" }}
-      >
-        View →
-      </span>
-    </motion.a>
-  );
-}
+  {
+    id: 5,
+    title: 'Trade Mark Registration',
+    issuer: 'Trade Marks Registry, Mumbai',
+    subtitle: 'Class 9 — TV Sets & Electronics',
+    number: 'TM No: 5527539',
+    valid: 'Registered 13 July 2022',
+    tag: 'IP India · Govt. of India ✓',
+    color: '#ec4899',
+    iconText: 'TM',
+    badge: 'TRADE MARK REGISTERED',
+    driveLink: 'https://drive.google.com/file/d/1gBi-o7MYoX3R82_SJ3N2lPpPGrnbnnZz/view?usp=drive_link',
+    embedUrl: 'https://drive.google.com/file/d/1gBi-o7MYoX3R82_SJ3N2lPpPGrnbnnZz/preview',
+  },
+]
 
 export default function CertificationsSection() {
-  const { ref: leftRef, inView: leftIn } = useInView({ threshold: 0.1, triggerOnce: true });
-  const { ref: rightRef, inView: rightIn } = useInView({ threshold: 0.05, triggerOnce: true });
+  const [activeCert, setActiveCert] = useState(null)
 
   return (
-    <section className="certs-section" style={{ borderTop: "1px solid #1e2d40", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: 1, background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.08), transparent)", transform: "translateY(-50%)", pointerEvents: "none" }} />
+    <>
+      <section className="certs-section" style={{
+        padding: '80px 0',
+        background: '#0a0f1e',
+        position: 'relative',
+      }}>
+        <div style={{
+          maxWidth: '1100px',
+          margin: '0 auto',
+          padding: '0 48px',
+        }} className="certs-inner">
 
-      <div className="certs-inner certs-layout">
-        {/* LEFT */}
-        <motion.div
-          ref={leftRef}
-          initial={{ opacity: 0, x: -40 }}
-          animate={leftIn ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="certs-left-sticky"
-          style={{ position: "sticky", top: 120 }}
-        >
-          <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff",
-            fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em",
-            background: "rgba(0,212,255,0.08)", marginBottom: 20,
-          }}>
-            GOVT. RECOGNISED
-          </span>
-          <h2 style={{ fontSize: "clamp(28px, 3vw, 44px)", fontWeight: 900, margin: "0 0 16px", lineHeight: 1.2 }}>
-            <span style={{ color: "#f1f5f9" }}>Certified</span>
-            <br />
-            <span style={{ background: "linear-gradient(135deg, #00d4ff, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>by India.</span>
-          </h2>
-          <p style={{ fontSize: 15, color: "#94a3b8", lineHeight: 1.8, marginBottom: 28 }}>
-            Every certificate below is issued by the Government of India or Government of Odisha and is publicly verifiable on official portals.
-          </p>
+          {/* LEFT COLUMN */}
+          <div className="certs-left">
+            <span style={{
+              display: 'inline-block',
+              background: 'rgba(0,212,255,0.08)',
+              border: '1px solid rgba(0,212,255,0.2)',
+              color: '#00d4ff',
+              fontSize: '11px',
+              fontWeight: 700,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              padding: '5px 14px',
+              borderRadius: '100px',
+              marginBottom: '16px',
+            }}>
+              GOVT. RECOGNISED
+            </span>
 
-          <div style={{ display: "flex", alignItems: "flex-start", gap: 12, background: "#0f172a", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 12, padding: "16px 18px" }}>
-            <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 14 }}>✓</div>
-            <p style={{ fontSize: 13, color: "#64748b", margin: 0, lineHeight: 1.7 }}>
-              All certificates are active and verifiable on respective government portals.
+            <h2 style={{
+              fontSize: 'clamp(28px,4vw,42px)',
+              fontWeight: 900,
+              color: '#f1f5f9',
+              lineHeight: 1.2,
+              marginBottom: '16px',
+            }}>
+              Certified{' '}
+              <span style={{
+                background: 'linear-gradient(135deg,#00d4ff,#7c3aed)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>by India.</span>
+            </h2>
+
+            <p style={{
+              color: '#94a3b8',
+              fontSize: '16px',
+              lineHeight: 1.8,
+              marginBottom: '32px',
+              maxWidth: '360px',
+            }}>
+              Every certificate below is issued by the Government
+              of India or Government of Odisha and is publicly
+              verifiable on official government portals.
             </p>
+
+            <div style={{
+              background: 'rgba(16,185,129,0.08)',
+              border: '1px solid rgba(16,185,129,0.2)',
+              borderRadius: '12px',
+              padding: '16px 20px',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '12px',
+              maxWidth: '360px',
+            }}>
+              <span style={{
+                fontSize: '20px',
+                lineHeight: 1,
+                marginTop: '2px',
+              }}>✅</span>
+              <div>
+                <p style={{
+                  color: '#10b981',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  margin: '0 0 4px',
+                }}>
+                  All certificates are active
+                </p>
+                <p style={{
+                  color: '#64748b',
+                  fontSize: '12px',
+                  margin: 0,
+                  lineHeight: 1.6,
+                }}>
+                  Click any certificate to view the
+                  official document directly.
+                </p>
+              </div>
+            </div>
           </div>
-        </motion.div>
 
-        {/* RIGHT — cert cards */}
-        <div ref={rightRef}>
-          {CERTS.map((cert, i) => (
-            <CertCard key={cert.title} cert={cert} index={i} inView={rightIn} />
-          ))}
+          {/* RIGHT COLUMN — Certificate Cards */}
+          <div className="certs-right">
+            {certs.map((cert, i) => (
+              <motion.div
+                key={cert.id}
+                className="cert-card"
+                onClick={() => setActiveCert(cert)}
+                initial={{ opacity: 0, x: 40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                style={{
+                  background: '#0f172a',
+                  border: '1px solid #1e2d40',
+                  borderRadius: '16px',
+                  padding: '20px 24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  cursor: 'pointer',
+                  marginBottom: '14px',
+                  transition: 'all 300ms',
+                  textDecoration: 'none',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+                whileHover={{
+                  x: 6,
+                  borderColor: cert.color + '55',
+                }}
+              >
+                {/* Top color bar */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0, left: 0, right: 0,
+                  height: '3px',
+                  background: cert.color,
+                  borderRadius: '16px 16px 0 0',
+                }} />
+
+                {/* Icon */}
+                <div style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '14px',
+                  background: cert.color + '22',
+                  border: `1px solid ${cert.color}44`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: cert.color,
+                  flexShrink: 0,
+                  textAlign: 'center',
+                  lineHeight: 1.2,
+                  letterSpacing: '0.02em',
+                }}>
+                  {cert.iconText}
+                </div>
+
+                {/* Info */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{
+                    display: 'inline-block',
+                    background: cert.color + '18',
+                    color: cert.color,
+                    fontSize: '9px',
+                    fontWeight: 700,
+                    letterSpacing: '0.08em',
+                    padding: '2px 8px',
+                    borderRadius: '100px',
+                    marginBottom: '6px',
+                    textTransform: 'uppercase',
+                  }}>
+                    {cert.badge}
+                  </div>
+                  <div style={{
+                    fontSize: '15px',
+                    fontWeight: 700,
+                    color: '#f1f5f9',
+                    marginBottom: '2px',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}>
+                    {cert.title}
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    color: '#64748b',
+                    marginBottom: '2px',
+                  }}>
+                    {cert.issuer}
+                  </div>
+                  <div style={{
+                    fontSize: '11px',
+                    color: '#475569',
+                    fontFamily: 'monospace',
+                  }}>
+                    {cert.number} · {cert.valid}
+                  </div>
+                </div>
+
+                {/* View button */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '4px',
+                  flexShrink: 0,
+                }}>
+                  <div style={{
+                    background: cert.color + '18',
+                    border: `1px solid ${cert.color}44`,
+                    color: cert.color,
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    padding: '6px 12px',
+                    borderRadius: '8px',
+                    whiteSpace: 'nowrap',
+                  }}>
+                    View →
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
 
-      <style>{`
-        @media (max-width: 768px) {
-          .certs-layout { grid-template-columns: 1fr !important; gap: 40px !important; }
-          .certs-left-sticky { position: static !important; }
-          .cert-card-stair { transform: translateX(0) !important; }
-        }
-      `}</style>
-    </section>
-  );
+      {/* CERTIFICATE MODAL */}
+      <AnimatePresence>
+        {activeCert && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setActiveCert(null)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,0.92)',
+              zIndex: 9999,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '16px',
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.25 }}
+              onClick={e => e.stopPropagation()}
+              style={{
+                width: '100%',
+                maxWidth: '900px',
+                height: '88vh',
+                background: '#0f172a',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                border: '1px solid #1e2d40',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              {/* Modal header */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '14px 20px',
+                borderBottom: '1px solid #1e2d40',
+                background: '#0a0f1e',
+                flexShrink: 0,
+                gap: '12px',
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  minWidth: 0,
+                }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '8px',
+                    background: activeCert.color + '22',
+                    border: `1px solid ${activeCert.color}44`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '9px',
+                    fontWeight: 800,
+                    color: activeCert.color,
+                    flexShrink: 0,
+                  }}>
+                    {activeCert.iconText}
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{
+                      color: '#f1f5f9',
+                      fontWeight: 700,
+                      fontSize: '15px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}>
+                      {activeCert.title}
+                    </div>
+                    <div style={{
+                      color: '#64748b',
+                      fontSize: '11px',
+                      fontFamily: 'monospace',
+                    }}>
+                      {activeCert.number}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  gap: '8px',
+                  alignItems: 'center',
+                  flexShrink: 0,
+                }}>
+                  <a
+                    href={activeCert.driveLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      background: '#00d4ff',
+                      color: '#0a0f1e',
+                      padding: '7px 14px',
+                      borderRadius: '8px',
+                      fontSize: '12px',
+                      fontWeight: 700,
+                      textDecoration: 'none',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Open in Drive ↗
+                  </a>
+                  <button
+                    onClick={() => setActiveCert(null)}
+                    style={{
+                      background: 'transparent',
+                      border: '1px solid #1e2d40',
+                      color: '#94a3b8',
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+
+              {/* PDF iframe */}
+              <iframe
+                src={activeCert.embedUrl}
+                style={{
+                  width: '100%',
+                  flex: 1,
+                  border: 'none',
+                  background: '#ffffff',
+                }}
+                title={activeCert.title}
+                allow="autoplay"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  )
 }
