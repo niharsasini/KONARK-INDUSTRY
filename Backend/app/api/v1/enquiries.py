@@ -7,7 +7,7 @@ PATCH /enquiries/{id}        — admin: update status / add notes
 DELETE /enquiries/{id}       — admin: hard delete old enquiry
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query
+from fastapi import APIRouter, HTTPException, status, Depends, Query, Request
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List
 from fastapi.responses import StreamingResponse
@@ -15,6 +15,7 @@ from datetime import datetime, date
 
 from app.models.enquiry import Enquiry, EnquiryType, EnquiryStatus, UrgencyLevel
 from app.core.dependencies import get_admin_user
+from app.main import limiter
 from app.models.user import User
 from app.services.email_service import (
     send_enquiry_confirmation,
@@ -91,7 +92,8 @@ def _to_response(e: Enquiry) -> EnquiryResponse:
 # ---------- Endpoints ----------
 
 @router.post("", response_model=EnquiryResponse, status_code=status.HTTP_201_CREATED)
-async def create_enquiry(body: EnquiryCreateRequest):
+@limiter.limit("10/minute")
+async def create_enquiry(request: Request, body: EnquiryCreateRequest):
     """
     Public endpoint: save a customer enquiry and fire notification emails.
     Sends a confirmation email to the customer (if email provided)

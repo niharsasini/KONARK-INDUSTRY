@@ -8,10 +8,11 @@ PUT  /auth/me        — update profile (name, phone, city)
 POST /auth/logout    — client-side: just discard tokens; placeholder endpoint
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, Request
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 from datetime import datetime
+from app.main import limiter
 
 from app.models.user import User, UserRole
 from app.core.security import (
@@ -78,7 +79,8 @@ class UserResponse(BaseModel):
 # ---------- Endpoints ----------
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
-async def register(body: RegisterRequest):
+@limiter.limit("3/minute")
+async def register(request: Request, body: RegisterRequest):
     """
     Create a new customer account.
     Checks for duplicate email and phone before saving.
@@ -126,7 +128,8 @@ async def register(body: RegisterRequest):
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(body: LoginRequest):
+@limiter.limit("5/minute")
+async def login(request: Request, body: LoginRequest):
     """
     Authenticate with email and password.
     Updates last_login timestamp on success.

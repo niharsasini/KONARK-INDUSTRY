@@ -1,8 +1,10 @@
 "use client";
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Star } from "lucide-react";
+import { useCartStore, useWishlistStore } from "@/store";
+import toast from "react-hot-toast";
 import {
   cardStyles,
   foldedCorner,
@@ -17,6 +19,9 @@ import {
 
 const ProductCard = ({ product }) => {
   const router = useRouter();
+  const { addItem } = useCartStore();
+  const { toggle, isInWishlist } = useWishlistStore();
+  const [added, setAdded] = useState(false);
 
   const formattedPrice =
     typeof product.price === "number" && product.price > 0
@@ -25,6 +30,29 @@ const ProductCard = ({ product }) => {
 
   const goToDetails = () => {
     router.push(`/products/${product.slug}`);
+  };
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    addItem({
+      id: product.id || product.slug,
+      slug: product.slug,
+      name: product.name,
+      price: product.price || 0,
+      image: product.images?.[0] || product.image || "",
+      category: product.category || "",
+      type: product.type || "product",
+    });
+    toast.success(`${product.name} added to cart!`);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
+
+  const handleWishlist = (e) => {
+    e.stopPropagation();
+    toggle(product.slug);
+    const inList = isInWishlist(product.slug);
+    toast(inList ? "Removed from wishlist" : `${product.name} saved ❤️`);
   };
 
   return (
@@ -79,10 +107,7 @@ const ProductCard = ({ product }) => {
             <button
               className={viewButton}
               style={{ background: "#00d4ff", color: "#0a0f1e", border: "none" }}
-              onClick={(e) => {
-                e.stopPropagation();
-                goToDetails();
-              }}
+              onClick={(e) => { e.stopPropagation(); goToDetails(); }}
             >
               Book Test Ride
             </button>
@@ -90,23 +115,26 @@ const ProductCard = ({ product }) => {
             <button
               className={viewButton}
               style={{ background: "#7c3aed", color: "#fff", border: "none" }}
-              onClick={(e) => {
-                e.stopPropagation();
-                goToDetails();
-              }}
+              onClick={(e) => { e.stopPropagation(); goToDetails(); }}
             >
               Book Service
             </button>
           ) : (
-            <button
-              className={viewButton}
-              onClick={(e) => {
-                e.stopPropagation();
-                goToDetails();
-              }}
-            >
-              Add to Cart
-            </button>
+            <div style={{ display: "flex", gap: 6 }} onClick={(e) => e.stopPropagation()}>
+              <button
+                className={viewButton}
+                style={{ flex: 1, background: added ? "#10b981" : undefined }}
+                onClick={handleAddToCart}
+              >
+                {added ? "Added! ✓" : "Add to Cart"}
+              </button>
+              <button
+                onClick={handleWishlist}
+                style={{ width: 32, height: 32, borderRadius: 6, border: "1px solid #1e2d40", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, color: isInWishlist(product.slug) ? "#ef4444" : "#64748b", transition: "all 0.15s" }}
+              >
+                {isInWishlist(product.slug) ? "❤️" : "🤍"}
+              </button>
+            </div>
           )}
         </div>
       </div>

@@ -16,7 +16,7 @@ import asyncio
 from datetime import datetime, date
 from typing import Optional, List
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query, UploadFile, File
+from fastapi import APIRouter, HTTPException, status, Depends, Query, UploadFile, File, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
@@ -24,6 +24,7 @@ from app.models.battery_swap import (
     BatterySwap, SwapStatus, BatteryType, BatteryCondition, SwapTimeSlot, SwapLocation,
 )
 from app.core.dependencies import get_admin_user
+from app.main import limiter
 from app.models.user import User
 from app.services.battery_swap_service import generate_swap_token, calculate_swap_fee
 from app.services.email_service import (
@@ -238,7 +239,8 @@ def _to_track(s: BatterySwap) -> SwapTrackResponse:
 # ─── Endpoints ────────────────────────────────────────────────────────────────
 
 @router.post("", status_code=status.HTTP_201_CREATED)
-async def submit_swap_request(body: SwapCreateRequest):
+@limiter.limit("5/minute")
+async def submit_swap_request(request: Request, body: SwapCreateRequest):
     """
     Public: create a new battery swap request.
     Generates a unique BSW token, saves to MongoDB, fires confirmation emails.

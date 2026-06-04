@@ -12,12 +12,18 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 from app.config import get_settings
 from app.database import connect_to_mongo, close_mongo_connection
 from app.api.v1.router import api_router
 from app.middleware.logging_middleware import LoggingMiddleware
 from app.middleware.cors_middleware import get_allowed_origins
+
+# Shared rate limiter instance — imported by individual route modules
+limiter = Limiter(key_func=get_remote_address)
 
 # Configure root logger — outputs to stdout for Docker / cloud log collectors
 logging.basicConfig(
@@ -63,11 +69,15 @@ def create_application() -> FastAPI:
             "EV vehicles, home appliances, industrial equipment, "
             "service bookings, and order management."
         ),
-        docs_url="/api/docs",          # Swagger UI
-        redoc_url="/api/redoc",        # ReDoc UI
+        docs_url="/api/docs",
+        redoc_url="/api/redoc",
         openapi_url="/api/openapi.json",
         lifespan=lifespan,
     )
+
+    # Rate limiting
+    app.state.limiter = limiter
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
     # CORS — allow frontend and admin panel origins
     app.add_middleware(

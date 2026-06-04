@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
+import { useCartStore } from "@/store";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -262,6 +263,7 @@ function ServicesMegaMenu({ onPanelEnter, onPanelLeave }) {
 
 export default function Navbar() {
   const router = useRouter();
+  const cartCount = useCartStore((s) => s.itemCount());
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -440,7 +442,9 @@ export default function Navbar() {
                 <line x1="3" y1="6" x2="21" y2="6" />
                 <path d="M16 10a4 4 0 01-8 0" />
               </svg>
-              <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "#00d4ff", color: "#0a0f1e", fontSize: 10, fontWeight: 700, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>0</span>
+              {cartCount > 0 && (
+                <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "#00d4ff", color: "#0a0f1e", fontSize: 10, fontWeight: 700, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>{cartCount > 9 ? "9+" : cartCount}</span>
+              )}
             </Link>
 
             {/* Hamburger — mobile only */}
