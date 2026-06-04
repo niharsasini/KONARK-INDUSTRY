@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -10,6 +11,12 @@ const NAV_LINKS = [
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
+
+const DROPDOWN_VARIANTS = {
+  initial: { opacity: 0, y: -8 },
+  animate: { opacity: 1, y: 0 },
+  exit:    { opacity: 0, y: -8 },
+};
 
 function PowerLogo() {
   return (
@@ -28,120 +35,228 @@ function PowerLogo() {
   );
 }
 
-function ProductsMegaMenu() {
-  const EV_LINKS = [
-    { label: "EV Scooters", href: "/products/electric-scooter", sub: "Book a test ride" },
-    { label: "Electric Motorcycle", href: "/products/electric-motor-cycle", sub: "High performance" },
-    { label: "E-Rickshaws", href: "/products/e-rickshaw", sub: "Commercial transport" },
-    { label: "Utility Vehicles", href: "/products/utility-vehicle", sub: "Industrial campuses" },
-  ];
-  const SHOP_LINKS = [
-    { label: "BLDC Fans & ACs", href: "/products", sub: "Home appliances" },
-    { label: "LFP Batteries", href: "/products/lfp-battery", sub: "Solar & EV batteries" },
-    { label: "Inverters & BMS", href: "/products/bms", sub: "Energy management" },
-    { label: "Industrial Equipment", href: "/products", sub: "Motors, cold storage" },
-  ];
-  const SERVICE_LINKS = [
-    { label: "AC Repair & Service", href: "/services/enquiry", sub: "Same-day response" },
-    { label: "EV Charger Install", href: "/services/enquiry", sub: "Home & commercial" },
-    { label: "Solar Installation", href: "/services/enquiry", sub: "Rooftop & industrial" },
-    { label: "Battery Swap", href: "/battery-swap", sub: "Hand in dead, drive out charged", isNew: true },
-    { label: "All Services →", href: "/services", sub: "See full catalogue", highlight: true },
-  ];
-
-  const NavItem = ({ label, href, sub, highlight, isNew }) => (
-    <Link href={href}
-      style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "7px 10px", borderRadius: 8, textDecoration: "none", transition: "background 0.15s", marginBottom: 2 }}
-      onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}
-      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-    >
-      <div>
-        <p style={{ fontSize: 13, fontWeight: highlight ? 700 : 600, color: highlight ? "#00d4ff" : "#f1f5f9", margin: 0, display: "flex", alignItems: "center", gap: 6 }}>
-          {label}
-          {isNew && <span style={{ fontSize: 9, background: "#00d4ff", color: "#0a0f1e", padding: "1px 5px", borderRadius: 3, fontWeight: 800, letterSpacing: "0.05em" }}>NEW</span>}
-        </p>
-        <p style={{ fontSize: 11, color: "#475569", margin: 0 }}>{sub}</p>
-      </div>
-    </Link>
-  );
-
+function ColHeader({ emoji, title, color }) {
   return (
-    <div style={{ position: "absolute", top: "100%", left: "50%", transform: "translateX(-50%)", marginTop: 8, width: 720, background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, boxShadow: "0 25px 50px rgba(0,0,0,0.5)", padding: "20px 8px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 0, zIndex: 50 }}>
-      <div style={{ padding: "0 16px", borderRight: "1px solid #1e2d40" }}>
-        <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", color: "#00d4ff", marginBottom: 10, padding: "0 10px", display: "flex", alignItems: "center", gap: 6 }}>
-          🏍 EV Vehicles
-          <span style={{ fontSize: 9, background: "rgba(0,212,255,0.12)", border: "1px solid rgba(0,212,255,0.25)", padding: "1px 6px", borderRadius: 4, color: "#00d4ff" }}>Book a Ride</span>
-        </p>
-        {EV_LINKS.map((l) => <NavItem key={l.label} {...l} />)}
-        <Link href="/test-ride" style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px 12px", marginTop: 8, background: "#00d4ff", color: "#0a0f1e", fontSize: 12, fontWeight: 700, borderRadius: 8, textDecoration: "none", transition: "background 0.2s" }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
-        >Book Test Ride →</Link>
-      </div>
-      <div style={{ padding: "0 16px", borderRight: "1px solid #1e2d40" }}>
-        <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", color: "#10b981", marginBottom: 10, padding: "0 10px", display: "flex", alignItems: "center", gap: 6 }}>
-          🛒 Shop Products
-          <span style={{ fontSize: 9, background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.25)", padding: "1px 6px", borderRadius: 4, color: "#10b981" }}>Buy Online</span>
-        </p>
-        {SHOP_LINKS.map((l) => <NavItem key={l.label} {...l} />)}
-        <Link href="/products" style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px 12px", marginTop: 8, border: "1px solid #1e2d40", color: "#94a3b8", fontSize: 12, fontWeight: 600, borderRadius: 8, textDecoration: "none", transition: "all 0.2s" }}
-          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
-        >View All Products</Link>
-      </div>
-      <div style={{ padding: "0 16px" }}>
-        <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", color: "#a78bfa", marginBottom: 10, padding: "0 10px", display: "flex", alignItems: "center", gap: 6 }}>
-          🔧 Services
-          <span style={{ fontSize: 9, background: "rgba(167,139,250,0.1)", border: "1px solid rgba(167,139,250,0.25)", padding: "1px 6px", borderRadius: 4, color: "#a78bfa" }}>Book Online</span>
-        </p>
-        {SERVICE_LINKS.map((l) => <NavItem key={l.label} {...l} />)}
-        <Link href="/services/enquiry" style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px 12px", marginTop: 8, background: "#7c3aed", color: "#fff", fontSize: 12, fontWeight: 700, borderRadius: 8, textDecoration: "none", transition: "background 0.2s" }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#6d28d9")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#7c3aed")}
-        >Book a Service →</Link>
-      </div>
+    <div style={{
+      fontSize: 11, fontWeight: 700, color,
+      textTransform: "uppercase", letterSpacing: "0.1em",
+      marginBottom: 12, paddingBottom: 8,
+      borderBottom: "1px solid #1e2d40",
+    }}>
+      {emoji} {title}
     </div>
   );
 }
 
-function ServicesMegaMenu() {
+function ProdItem({ icon, iconBg, label, href, highlight, isNew }) {
   return (
-    <div style={{ position: "absolute", top: "100%", left: "50%", transform: "translateX(-50%)", marginTop: 8, width: 320, background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, boxShadow: "0 25px 50px rgba(0,0,0,0.5)", padding: "12px 8px", zIndex: 50 }}>
-      <Link href="/services" style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", borderRadius: 10, textDecoration: "none", transition: "background 0.15s", marginBottom: 2 }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}
-        onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-      >
-        <span style={{ fontSize: 18 }}>🔧</span>
-        <div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9", margin: 0 }}>All Services</p>
-          <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>AC, electrical, solar & more</p>
-        </div>
-      </Link>
-      <div style={{ height: 1, background: "#1e2d40", margin: "6px 8px" }} />
-      <Link href="/services/enquiry" style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", borderRadius: 10, textDecoration: "none", transition: "background 0.15s", background: "rgba(0,212,255,0.06)", border: "1px solid rgba(0,212,255,0.15)", margin: "0 4px 4px" }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.12)")}
-        onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.06)")}
-      >
-        <span style={{ fontSize: 18 }}>📋</span>
-        <div>
-          <p style={{ fontSize: 13, fontWeight: 700, color: "#00d4ff", margin: 0 }}>Book a Service</p>
-          <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>Get a technician in 24hrs</p>
-        </div>
-      </Link>
-      <Link href="/battery-swap" style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", borderRadius: 10, textDecoration: "none", transition: "background 0.15s", background: "rgba(124,58,237,0.06)", border: "1px solid rgba(124,58,237,0.2)", margin: "0 4px" }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(124,58,237,0.12)")}
-        onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(124,58,237,0.06)")}
-      >
-        <span style={{ fontSize: 18 }}>🔋</span>
-        <div>
-          <p style={{ fontSize: 13, fontWeight: 700, color: "#a78bfa", margin: 0, display: "flex", alignItems: "center", gap: 6 }}>
-            Battery Swap
-            <span style={{ fontSize: 9, background: "#00d4ff", color: "#0a0f1e", padding: "1px 5px", borderRadius: 3, fontWeight: 800 }}>NEW</span>
-          </p>
-          <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>Dead battery? Swap it today</p>
-        </div>
-      </Link>
-    </div>
+    <Link
+      href={href}
+      style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 8, textDecoration: "none", transition: "background 150ms" }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.06)")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+    >
+      <div style={{
+        width: 32, height: 32, borderRadius: "50%",
+        background: iconBg || "rgba(0,212,255,0.12)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: 15, flexShrink: 0,
+      }}>
+        {icon}
+      </div>
+      <span style={{ fontSize: 14, fontWeight: 600, color: highlight ? "#00d4ff" : "#f1f5f9", display: "flex", alignItems: "center", gap: 6 }}>
+        {label}
+        {isNew && <span style={{ fontSize: 9, background: "#00d4ff", color: "#0a0f1e", padding: "1px 5px", borderRadius: 3, fontWeight: 800 }}>NEW</span>}
+      </span>
+    </Link>
+  );
+}
+
+function SvcItem({ icon, iconBg, label, desc, href }) {
+  return (
+    <Link
+      href={href}
+      style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 12px", borderRadius: 8, textDecoration: "none", transition: "background 150ms" }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.06)")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+    >
+      <div style={{
+        width: 32, height: 32, borderRadius: "50%",
+        background: iconBg,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: 16, flexShrink: 0, marginTop: 1,
+      }}>
+        {icon}
+      </div>
+      <div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: "#f1f5f9" }}>{label}</div>
+        <div style={{ fontSize: 12, color: "#64748b", marginTop: 1 }}>{desc}</div>
+      </div>
+    </Link>
+  );
+}
+
+function ProductsMegaMenu({ onPanelEnter, onPanelLeave }) {
+  return (
+    <motion.div
+      className="mega-menu-panel"
+      variants={DROPDOWN_VARIANTS}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={{ duration: 0.15 }}
+      onMouseEnter={onPanelEnter}
+      onMouseLeave={onPanelLeave}
+      style={{
+        position: "absolute",
+        top: "calc(100% + 8px)",
+        left: 0,
+        background: "#0f172a",
+        border: "1px solid #1e2d40",
+        borderRadius: 16,
+        boxShadow: "0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,212,255,0.05)",
+        padding: 24,
+        zIndex: 200,
+        minWidth: 620,
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 160px",
+        gap: 0,
+      }}
+    >
+      {/* Column 1 — EV Vehicles */}
+      <div style={{ paddingRight: 20, borderRight: "1px solid #1e2d40" }}>
+        <ColHeader emoji="⚡" title="EV Vehicles" color="#00d4ff" />
+        <ProdItem icon="🛵" iconBg="rgba(0,212,255,0.12)" label="EV Scooters" href="/products?cat=ev-scooter" />
+        <ProdItem icon="🛺" iconBg="rgba(0,212,255,0.10)" label="E-Rickshaws" href="/products?cat=e-rickshaw" />
+        <ProdItem icon="🏍" iconBg="rgba(0,212,255,0.10)" label="Electric Motorcycles" href="/products?cat=electric-motorcycle" />
+        <Link
+          href="/test-ride"
+          style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 12px", borderRadius: 8, textDecoration: "none", marginTop: 8, background: "rgba(0,212,255,0.12)", border: "1px solid rgba(0,212,255,0.25)", transition: "background 150ms" }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.22)")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.12)")}
+        >
+          <span style={{ fontSize: 15 }}>🎯</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#00d4ff" }}>Book Test Ride</span>
+        </Link>
+      </div>
+
+      {/* Column 2 — Shop Products */}
+      <div style={{ paddingLeft: 20, paddingRight: 20, borderRight: "1px solid #1e2d40" }}>
+        <ColHeader emoji="🛒" title="Shop Products" color="#a78bfa" />
+        <ProdItem icon="💨" iconBg="rgba(167,139,250,0.12)" label="BLDC Fans" href="/products?cat=fan" />
+        <ProdItem icon="❄️" iconBg="rgba(167,139,250,0.10)" label="Air Conditioners" href="/products?cat=ac" />
+        <ProdItem icon="🔋" iconBg="rgba(167,139,250,0.10)" label="LFP Batteries" href="/products?cat=battery" />
+        <ProdItem icon="☀️" iconBg="rgba(167,139,250,0.10)" label="Solar Inverters" href="/products?cat=solar" />
+        <ProdItem icon="⚙️" iconBg="rgba(167,139,250,0.10)" label="Industrial Motors" href="/products?cat=industrial" />
+      </div>
+
+      {/* Column 3 — Featured Product card */}
+      <div style={{ paddingLeft: 20, display: "flex", flexDirection: "column" }}>
+        <ColHeader emoji="⭐" title="Featured" color="#f59e0b" />
+        <Link
+          href="/products?cat=ev-scooter"
+          style={{ display: "block", textDecoration: "none", background: "#111827", border: "1px solid #1e2d40", borderRadius: 10, overflow: "hidden", flex: 1, transition: "border-color 150ms" }}
+          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(0,212,255,0.4)")}
+          onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+        >
+          <div style={{ background: "#0d1424", display: "flex", alignItems: "center", justifyContent: "center", padding: "12px 8px", height: 90 }}>
+            <img src="/productimg/Electric Scooter.png" alt="EV Scooter" style={{ maxHeight: 80, maxWidth: "100%", objectFit: "contain" }} />
+          </div>
+          <div style={{ padding: "10px 10px 12px" }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#f1f5f9", marginBottom: 2 }}>EV Scooter Pro</div>
+            <div style={{ fontSize: 13, fontWeight: 800, color: "#00d4ff", marginBottom: 6 }}>₹89,999</div>
+            <div style={{ fontSize: 11, fontWeight: 600, color: "#94a3b8" }}>View →</div>
+          </div>
+        </Link>
+      </div>
+
+      {/* Bottom bar */}
+      <div style={{ gridColumn: "1 / -1", marginTop: 16, paddingTop: 16, borderTop: "1px solid #1e2d40", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Link
+          href="/products"
+          style={{ fontSize: 13, color: "#94a3b8", textDecoration: "none", fontWeight: 500, transition: "color 150ms" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#f1f5f9")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
+        >
+          Browse all 50+ products →
+        </Link>
+        <Link
+          href="/battery-swap"
+          style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 13, color: "#a78bfa", textDecoration: "none", fontWeight: 600, transition: "color 150ms" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#c4b5fd")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#a78bfa")}
+        >
+          🔋 Battery Swap —&nbsp;
+          <span style={{ fontSize: 9, background: "#7c3aed", color: "#fff", padding: "2px 6px", borderRadius: 3, fontWeight: 800, letterSpacing: "0.04em" }}>NEW</span>
+        </Link>
+      </div>
+    </motion.div>
+  );
+}
+
+function ServicesMegaMenu({ onPanelEnter, onPanelLeave }) {
+  return (
+    <motion.div
+      className="mega-menu-panel"
+      variants={DROPDOWN_VARIANTS}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={{ duration: 0.15 }}
+      onMouseEnter={onPanelEnter}
+      onMouseLeave={onPanelLeave}
+      style={{
+        position: "absolute",
+        top: "calc(100% + 8px)",
+        left: 0,
+        background: "#0f172a",
+        border: "1px solid #1e2d40",
+        borderRadius: 16,
+        boxShadow: "0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,212,255,0.05)",
+        padding: 24,
+        zIndex: 200,
+        minWidth: 560,
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 0,
+      }}
+    >
+      {/* Column 1 — Home Services */}
+      <div style={{ paddingRight: 20, borderRight: "1px solid #1e2d40" }}>
+        <ColHeader emoji="🏠" title="Home Services" color="#00d4ff" />
+        <SvcItem icon="❄️" iconBg="rgba(0,212,255,0.12)" label="AC Repair" desc="All brands, same day" href="/services/enquiry" />
+        <SvcItem icon="⚡" iconBg="rgba(0,212,255,0.10)" label="EV Charger Install" desc="Home & commercial" href="/services/enquiry" />
+        <SvcItem icon="🏠" iconBg="rgba(0,212,255,0.10)" label="Home Electrical" desc="Wiring & fault repair" href="/services/enquiry" />
+      </div>
+
+      {/* Column 2 — Energy Services */}
+      <div style={{ paddingLeft: 20 }}>
+        <ColHeader emoji="☀️" title="Energy Services" color="#f59e0b" />
+        <SvcItem icon="☀️" iconBg="rgba(245,158,11,0.12)" label="Solar Installation" desc="Rooftop & ground mount" href="/services/enquiry" />
+        <SvcItem icon="🔋" iconBg="rgba(245,158,11,0.10)" label="Battery System Setup" desc="LFP & lead acid" href="/services/enquiry" />
+        <SvcItem icon="🔧" iconBg="rgba(245,158,11,0.10)" label="Annual AMC" desc="Preventive maintenance" href="/services/enquiry" />
+      </div>
+
+      {/* Bottom bar */}
+      <div style={{ gridColumn: "1 / -1", marginTop: 16, paddingTop: 16, borderTop: "1px solid #1e2d40", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Link
+          href="/services"
+          style={{ fontSize: 13, color: "#94a3b8", textDecoration: "none", fontWeight: 500, transition: "color 150ms" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#f1f5f9")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
+        >
+          View all services →
+        </Link>
+        <Link
+          href="/services/enquiry"
+          style={{ fontSize: 13, fontWeight: 700, color: "#0a0f1e", background: "#00d4ff", padding: "8px 16px", borderRadius: 8, textDecoration: "none", transition: "background 150ms" }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
+        >
+          Book a Service Now →
+        </Link>
+      </div>
+    </motion.div>
   );
 }
 
@@ -150,10 +265,12 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [productOpen, setProductOpen] = useState(false);
+  const [serviceOpen, setServiceOpen] = useState(false);
   const [expandedSection, setExpandedSection] = useState(null);
   const [user, setUser] = useState(null);
-  const hoverTimeout = useRef(null);
+  const productTimer = useRef(null);
+  const serviceTimer = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -180,12 +297,21 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  const handleEnter = (key) => {
-    if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
-    setActiveDropdown(key);
+  const openProduct = () => {
+    clearTimeout(productTimer.current);
+    setProductOpen(true);
+    setServiceOpen(false);
   };
-  const handleLeave = () => {
-    hoverTimeout.current = setTimeout(() => setActiveDropdown(null), 150);
+  const closeProduct = () => {
+    productTimer.current = setTimeout(() => setProductOpen(false), 100);
+  };
+  const openService = () => {
+    clearTimeout(serviceTimer.current);
+    setServiceOpen(true);
+    setProductOpen(false);
+  };
+  const closeService = () => {
+    serviceTimer.current = setTimeout(() => setServiceOpen(false), 100);
   };
 
   const signOut = () => {
@@ -208,8 +334,15 @@ export default function Navbar() {
           <div className="nav-links-desktop">
             {NAV_LINKS.map((link) =>
               link.hasDropdown ? (
-                <div key={link.label} style={{ position: "relative" }} onMouseEnter={() => handleEnter(link.hasDropdown)} onMouseLeave={handleLeave}>
-                  <Link href={link.href} style={{ display: "flex", alignItems: "center", gap: 4, padding: "8px 14px", fontSize: 14, fontWeight: 500, color: "#f1f5f9", borderRadius: 8, textDecoration: "none", transition: "color 0.2s" }}
+                <div
+                  key={link.label}
+                  style={{ position: "relative" }}
+                  onMouseEnter={link.hasDropdown === "products" ? openProduct : openService}
+                  onMouseLeave={link.hasDropdown === "products" ? closeProduct : closeService}
+                >
+                  <Link
+                    href={link.href}
+                    style={{ display: "flex", alignItems: "center", gap: 4, padding: "8px 14px", fontSize: 14, fontWeight: 500, color: "#f1f5f9", borderRadius: 8, textDecoration: "none", transition: "color 0.2s" }}
                     onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
                     onMouseLeave={(e) => (e.currentTarget.style.color = "#f1f5f9")}
                   >
@@ -218,12 +351,28 @@ export default function Navbar() {
                       <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
                     </svg>
                   </Link>
-                  {activeDropdown === link.hasDropdown && (
-                    link.hasDropdown === "products" ? <ProductsMegaMenu /> : <ServicesMegaMenu />
-                  )}
+                  <AnimatePresence>
+                    {link.hasDropdown === "products" && productOpen && (
+                      <ProductsMegaMenu
+                        key="products-menu"
+                        onPanelEnter={() => clearTimeout(productTimer.current)}
+                        onPanelLeave={closeProduct}
+                      />
+                    )}
+                    {link.hasDropdown === "services" && serviceOpen && (
+                      <ServicesMegaMenu
+                        key="services-menu"
+                        onPanelEnter={() => clearTimeout(serviceTimer.current)}
+                        onPanelLeave={closeService}
+                      />
+                    )}
+                  </AnimatePresence>
                 </div>
               ) : (
-                <Link key={link.label} href={link.href} style={{ padding: "8px 14px", fontSize: 14, fontWeight: 500, color: "#f1f5f9", borderRadius: 8, textDecoration: "none", transition: "color 0.2s" }}
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  style={{ padding: "8px 14px", fontSize: 14, fontWeight: 500, color: "#f1f5f9", borderRadius: 8, textDecoration: "none", transition: "color 0.2s" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#f1f5f9")}
                 >
@@ -238,11 +387,17 @@ export default function Navbar() {
             {/* Search — desktop only */}
             <div style={{ position: "relative" }} className="nav-right-desktop">
               {searchOpen ? (
-                <input autoFocus onBlur={() => setSearchOpen(false)} placeholder="Search products..."
+                <input
+                  autoFocus
+                  onBlur={() => setSearchOpen(false)}
+                  placeholder="Search products..."
                   style={{ width: 192, background: "#111827", border: "1px solid #1e2d40", color: "#f1f5f9", fontSize: 13, padding: "7px 12px", borderRadius: 8, outline: "none" }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")} />
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
+                />
               ) : (
-                <button onClick={() => setSearchOpen(true)} style={{ padding: 8, color: "#94a3b8", background: "transparent", border: "none", cursor: "pointer", borderRadius: 8, transition: "color 0.2s", display: "flex", alignItems: "center" }}
+                <button
+                  onClick={() => setSearchOpen(true)}
+                  style={{ padding: 8, color: "#94a3b8", background: "transparent", border: "none", cursor: "pointer", borderRadius: 8, transition: "color 0.2s", display: "flex", alignItems: "center" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
                 >
@@ -255,18 +410,28 @@ export default function Navbar() {
 
             {/* Desktop CTA buttons */}
             <div className="nav-right-desktop">
-              <Link href="/services/enquiry" style={{ padding: "8px 16px", borderRadius: 8, textDecoration: "none", border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff", fontSize: 13, fontWeight: 600, transition: "all 0.2s", whiteSpace: "nowrap" }}
+              <Link
+                href="/services/enquiry"
+                style={{ padding: "8px 16px", borderRadius: 8, textDecoration: "none", border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff", fontSize: 13, fontWeight: 600, transition: "all 0.2s", whiteSpace: "nowrap" }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(0,212,255,0.08)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
-              >Book Service</Link>
-              <Link href="/products" style={{ padding: "8px 16px", background: "#00d4ff", color: "#0a0f1e", fontSize: 13, fontWeight: 700, borderRadius: 8, textDecoration: "none", transition: "background 0.2s", whiteSpace: "nowrap" }}
+              >
+                Book Service
+              </Link>
+              <Link
+                href="/products"
+                style={{ padding: "8px 16px", background: "#00d4ff", color: "#0a0f1e", fontSize: 13, fontWeight: 700, borderRadius: 8, textDecoration: "none", transition: "background 0.2s", whiteSpace: "nowrap" }}
                 onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
-              >Shop Now</Link>
+              >
+                Shop Now
+              </Link>
             </div>
 
             {/* Cart — always visible */}
-            <Link href="/cart" style={{ position: "relative", padding: 8, color: "#94a3b8", borderRadius: 8, display: "flex", transition: "color 0.2s", textDecoration: "none" }}
+            <Link
+              href="/cart"
+              style={{ position: "relative", padding: 8, color: "#94a3b8", borderRadius: 8, display: "flex", transition: "color 0.2s", textDecoration: "none" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
             >
@@ -294,12 +459,10 @@ export default function Navbar() {
 
       {/* Mobile overlay */}
       <div className={`mobile-menu-overlay${menuOpen ? " open" : ""}`}>
-        {/* Logo top-left */}
         <div style={{ position: "absolute", top: 16, left: 24, zIndex: 999 }}>
           <PowerLogo />
         </div>
 
-        {/* Close button top-right */}
         <button
           onClick={() => setMenuOpen(false)}
           style={{ position: "absolute", top: 12, right: 16, zIndex: 999, background: "transparent", border: "none", cursor: "pointer", color: "#f1f5f9", width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 8 }}
@@ -311,12 +474,8 @@ export default function Navbar() {
         </button>
 
         <div className="mobile-menu-inner">
-          {/* Home */}
-          <Link href="/" className="mobile-nav-item" onClick={() => setMenuOpen(false)}>
-            Home
-          </Link>
+          <Link href="/" className="mobile-nav-item" onClick={() => setMenuOpen(false)}>Home</Link>
 
-          {/* Products — expandable */}
           <div>
             <button
               className="mobile-nav-item"
@@ -328,15 +487,15 @@ export default function Navbar() {
             </button>
             {expandedSection === "products" && (
               <div>
-                <Link href="/products?cat=ev" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>EV Scooters</Link>
-                <Link href="/products?cat=rickshaw" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>E-Rickshaws</Link>
-                <Link href="/products?cat=battery" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>Batteries</Link>
+                <Link href="/products?cat=ev-scooter" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>EV Scooters</Link>
+                <Link href="/products?cat=e-rickshaw" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>E-Rickshaws</Link>
+                <Link href="/products?cat=battery" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>LFP Batteries</Link>
+                <Link href="/test-ride" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>Book Test Ride</Link>
                 <Link href="/products" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>All Products</Link>
               </div>
             )}
           </div>
 
-          {/* Services — expandable */}
           <div>
             <button
               className="mobile-nav-item"
@@ -349,24 +508,17 @@ export default function Navbar() {
             {expandedSection === "services" && (
               <div>
                 <Link href="/services/enquiry" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>AC Repair</Link>
-                <Link href="/services/enquiry" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>EV Charger</Link>
+                <Link href="/services/enquiry" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>EV Charger Install</Link>
+                <Link href="/services/enquiry" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>Solar Installation</Link>
                 <Link href="/battery-swap" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>Battery Swap</Link>
                 <Link href="/services" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>All Services</Link>
               </div>
             )}
           </div>
 
-          {/* About */}
-          <Link href="/about" className="mobile-nav-item" onClick={() => setMenuOpen(false)}>
-            About
-          </Link>
+          <Link href="/about" className="mobile-nav-item" onClick={() => setMenuOpen(false)}>About</Link>
+          <Link href="/contact" className="mobile-nav-item" onClick={() => setMenuOpen(false)}>Contact</Link>
 
-          {/* Contact */}
-          <Link href="/contact" className="mobile-nav-item" onClick={() => setMenuOpen(false)}>
-            Contact
-          </Link>
-
-          {/* Auth */}
           {user ? (
             <button
               onClick={() => { signOut(); setMenuOpen(false); }}
@@ -381,25 +533,14 @@ export default function Navbar() {
             </Link>
           )}
 
-          {/* Action buttons */}
           <div className="mobile-menu-actions">
-            <Link className="mobile-btn-primary" href="/products" onClick={() => setMenuOpen(false)}>
-              Shop Products
-            </Link>
-            <Link className="mobile-btn-purple" href="/battery-swap" onClick={() => setMenuOpen(false)}>
-              🔋 Battery Swap
-            </Link>
-            <Link className="mobile-btn-ghost" href="/services/enquiry" onClick={() => setMenuOpen(false)}>
-              Book a Service
-            </Link>
+            <Link className="mobile-btn-primary" href="/products" onClick={() => setMenuOpen(false)}>Shop Products</Link>
+            <Link className="mobile-btn-purple" href="/battery-swap" onClick={() => setMenuOpen(false)}>🔋 Battery Swap</Link>
+            <Link className="mobile-btn-ghost" href="/services/enquiry" onClick={() => setMenuOpen(false)}>Book a Service</Link>
           </div>
 
-          {/* Contact strip */}
           <div style={{ textAlign: "center", marginTop: 32, paddingTop: 24, borderTop: "1px solid #1e2d40" }}>
-            <a
-              href="tel:+919437611129"
-              style={{ fontSize: 22, color: "#00d4ff", fontWeight: 800, display: "block", marginBottom: 6, textDecoration: "none" }}
-            >
+            <a href="tel:+919437611129" style={{ fontSize: 22, color: "#00d4ff", fontWeight: 800, display: "block", marginBottom: 6, textDecoration: "none" }}>
               📞 +91 94376 11129
             </a>
             <span style={{ fontSize: 13, color: "#64748b" }}>konarkindustrie@gmail.com</span>

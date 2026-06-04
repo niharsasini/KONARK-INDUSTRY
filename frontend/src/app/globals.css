@@ -723,6 +723,14 @@ img {
   gap: 32px;
 }
 
+/* Mega menu responsive: center under nav item on medium screens */
+@media (max-width: 1199px) {
+  .mega-menu-panel {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
 .nav-right-desktop {
   display: flex;
   align-items: center;
