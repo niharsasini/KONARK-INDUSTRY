@@ -12,7 +12,7 @@ from fastapi import APIRouter, HTTPException, status, Depends, Request
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 from datetime import datetime
-from app.main import limiter
+from app.core.limiter import limiter
 
 from app.models.user import User, UserRole
 from app.core.security import (

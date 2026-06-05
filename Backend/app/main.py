@@ -12,18 +12,15 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
+from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+from app.core.limiter import limiter
 
 from app.config import get_settings
 from app.database import connect_to_mongo, close_mongo_connection
 from app.api.v1.router import api_router
 from app.middleware.logging_middleware import LoggingMiddleware
 from app.middleware.cors_middleware import get_allowed_origins
-
-# Shared rate limiter instance — imported by individual route modules
-limiter = Limiter(key_func=get_remote_address)
 
 # Configure root logger — outputs to stdout for Docker / cloud log collectors
 logging.basicConfig(

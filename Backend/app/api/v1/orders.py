@@ -7,7 +7,7 @@ PATCH /orders/{order_number}/status   — admin: update fulfilment status + emai
 """
 
 from fastapi import APIRouter, HTTPException, status, Depends, Query, Request
-from app.main import limiter
+from app.core.limiter import limiter
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime

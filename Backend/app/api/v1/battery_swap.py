@@ -24,7 +24,7 @@ from app.models.battery_swap import (
     BatterySwap, SwapStatus, BatteryType, BatteryCondition, SwapTimeSlot, SwapLocation,
 )
 from app.core.dependencies import get_admin_user
-from app.main import limiter
+from app.core.limiter import limiter
 from app.models.user import User
 from app.services.battery_swap_service import generate_swap_token, calculate_swap_fee
 from app.services.email_service import (

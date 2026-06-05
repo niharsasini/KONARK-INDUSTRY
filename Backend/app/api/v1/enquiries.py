@@ -15,7 +15,7 @@ from datetime import datetime, date
 
 from app.models.enquiry import Enquiry, EnquiryType, EnquiryStatus, UrgencyLevel
 from app.core.dependencies import get_admin_user
-from app.main import limiter
+from app.core.limiter import limiter
 from app.models.user import User
 from app.services.email_service import (
     send_enquiry_confirmation,

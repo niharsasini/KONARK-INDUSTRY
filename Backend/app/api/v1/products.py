@@ -8,7 +8,7 @@ DELETE /products/{slug}   — soft delete product (admin only)
 """
 
 from fastapi import APIRouter, HTTPException, status, Depends, Query, Request
-from app.main import limiter
+from app.core.limiter import limiter
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime
