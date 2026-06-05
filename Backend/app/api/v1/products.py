@@ -7,7 +7,8 @@ PUT  /products/{slug}     — update product (admin only)
 DELETE /products/{slug}   — soft delete product (admin only)
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query
+from fastapi import APIRouter, HTTPException, status, Depends, Query, Request
+from app.main import limiter
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime
@@ -159,8 +160,10 @@ async def get_product(slug: str):
     return _to_response(product)
 
 
+@limiter.limit("30/minute")
 @router.post("", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
 async def create_product(
+    request: Request,
     body: ProductCreateRequest,
     admin: User = Depends(get_admin_user),
 ):
@@ -180,8 +183,10 @@ async def create_product(
     return _to_response(product)
 
 
+@limiter.limit("30/minute")
 @router.put("/{slug}", response_model=ProductResponse)
 async def update_product(
+    request: Request,
     slug: str,
     body: ProductUpdateRequest,
     admin: User = Depends(get_admin_user),

@@ -11,7 +11,20 @@ export const metadata: Metadata = {
   title: { default: "Konark Industry", template: "%s | Konark Industry" },
   description:
     "Odisha's leading manufacturer of EVs, batteries, home appliances, and industrial solutions. Based in Bhubaneswar.",
-  openGraph: { siteName: "Konark Industry", locale: "en_IN", type: "website" },
+  openGraph: {
+    siteName: "Konark Industry",
+    locale: "en_IN",
+    type: "website",
+    images: [
+      { url: "/konark/og-image.png", width: 1200, height: 630, alt: "Konark Industry – Odisha's EV & Energy Brand" },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Konark Industry",
+    description: "Odisha's leading manufacturer of EVs, batteries, home appliances, and industrial solutions.",
+    images: ["/konark/og-image.png"],
+  },
   keywords: [
     "electric vehicle",
     "EV scooter",

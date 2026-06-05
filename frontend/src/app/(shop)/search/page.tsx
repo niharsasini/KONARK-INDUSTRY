@@ -1,8 +1,9 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { Suspense } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { products as ProductData } from '@/components/product/ProductData'
+import { getProducts } from '@/lib/api'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCartStore } from '@/store'
@@ -62,11 +63,25 @@ function SearchResults() {
   const searchParams = useSearchParams()
   const query = searchParams.get('q') || ''
 
-  const results = ProductData.filter((p: any) =>
-    p.name.toLowerCase().includes(query.toLowerCase()) ||
-    p.category.toLowerCase().includes(query.toLowerCase()) ||
-    (p.description || '').toLowerCase().includes(query.toLowerCase())
+  const [results, setResults] = useState<any[]>(() =>
+    ProductData.filter((p: any) =>
+      p.name.toLowerCase().includes(query.toLowerCase()) ||
+      p.category.toLowerCase().includes(query.toLowerCase()) ||
+      (p.description || '').toLowerCase().includes(query.toLowerCase())
+    )
   )
+
+  useEffect(() => {
+    const local = ProductData.filter((p: any) =>
+      p.name.toLowerCase().includes(query.toLowerCase()) ||
+      p.category.toLowerCase().includes(query.toLowerCase()) ||
+      (p.description || '').toLowerCase().includes(query.toLowerCase())
+    )
+    setResults(local)
+    getProducts({ search: query || undefined })
+      .then((data: any) => { if (Array.isArray(data)) setResults(data) })
+      .catch(() => {})
+  }, [query])
 
   return (
     <div style={{ background: '#0a0f1e', minHeight: '100vh', paddingTop: '80px' }}>

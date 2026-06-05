@@ -6,7 +6,8 @@ GET  /orders/{order_number}           — detail for a single order
 PATCH /orders/{order_number}/status   — admin: update fulfilment status + email customer
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query
+from fastapi import APIRouter, HTTPException, status, Depends, Query, Request
+from app.main import limiter
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime
@@ -100,8 +101,10 @@ def _to_response(o: Order) -> OrderResponse:
 
 # ---------- Endpoints ----------
 
+@limiter.limit("20/minute")
 @router.post("", response_model=OrderResponse, status_code=status.HTTP_201_CREATED)
 async def place_order(
+    request: Request,
     body: PlaceOrderRequest,
     current_user: Optional[User] = Depends(get_optional_user),
 ):

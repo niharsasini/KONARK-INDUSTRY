@@ -360,7 +360,7 @@ export default function BatterySwapAdminPage() {
                         ["Condition", detail.battery_condition],
                         ["Charge", `${detail.current_charge_percent}%`],
                         detail.battery_serial_number ? ["Serial #", detail.battery_serial_number] : null,
-                      ].filter(Boolean).map(([k, v]: (string | null)[]) => (
+                      ].filter((x): x is string[] => Boolean(x)).map(([k, v]) => (
                         <div key={k as string} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid rgba(30,45,64,0.5)" }}>
                           <span style={{ color: "#64748b", fontSize: 12 }}>{k}</span>
                           <span style={{ color: "#f1f5f9", fontSize: 12, fontWeight: 500 }}>{v}</span>
@@ -384,7 +384,7 @@ export default function BatterySwapAdminPage() {
                         ["Time Slot", detail.preferred_time_slot],
                         ["Location", detail.swap_location],
                         detail.special_instructions ? ["Instructions", detail.special_instructions] : null,
-                      ].filter(Boolean).map(([k, v]: (string | null)[]) => (
+                      ].filter((x): x is string[] => Boolean(x)).map(([k, v]) => (
                         <div key={k as string} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid rgba(30,45,64,0.5)" }}>
                           <span style={{ color: "#64748b", fontSize: 12 }}>{k}</span>
                           <span style={{ color: "#f1f5f9", fontSize: 12, fontWeight: 500, maxWidth: "60%", textAlign: "right" }}>{v}</span>

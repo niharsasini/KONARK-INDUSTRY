@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { products as allProducts } from "@/components/product/ProductData";
+import { products as staticProducts } from "@/components/product/ProductData";
+import { getProducts } from "@/lib/api";
 
 const CATEGORIES = ["All", "Electric Vehicles", "Batteries", "Home Appliances", "Industrial Equipment", "Industrial Components", "Electronics"];
 const TYPE_FILTERS = [
@@ -133,6 +134,15 @@ export default function ProductsPage() {
   const [sortBy, setSortBy] = useState("newest");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 200000]);
+  const [productsList, setProductsList] = useState(null);
+
+  useEffect(() => {
+    getProducts()
+      .then((data) => setProductsList(Array.isArray(data) ? data : null))
+      .catch(() => {});
+  }, []);
+
+  const allProducts = productsList ?? staticProducts;
 
   const toggleCategory = (cat) => {
     if (cat === "All") { setSelectedCategories(["All"]); return; }
@@ -153,7 +163,7 @@ export default function ProductsPage() {
     else if (sortBy === "price-desc") list = [...list].sort((a, b) => (b.price || 0) - (a.price || 0));
     else if (sortBy === "rating") list = [...list].sort((a, b) => b.rating - a.rating);
     return list;
-  }, [selectedCategories, typeFilter, minRating, sortBy, priceRange]);
+  }, [selectedCategories, typeFilter, minRating, sortBy, priceRange, productsList]);
 
   const Sidebar = () => (
     <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, padding: 20, display: "flex", flexDirection: "column", gap: 20 }}>

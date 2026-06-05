@@ -33,15 +33,36 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 700));
 
-    if (form.email === "admin@konarkindustry.com" && form.password === "konark@admin2024") {
-      document.cookie = `admin_auth=true; path=/; max-age=${7 * 24 * 60 * 60}`;
+    try {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+      const res = await fetch(`${backendUrl}/api/v1/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: form.email, password: form.password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.detail || data.message || "Invalid credentials.");
+        return;
+      }
+
+      if (data.user?.role !== "admin") {
+        setError("Access denied. Admin account required.");
+        return;
+      }
+
+      localStorage.setItem("konark_admin_token", data.access_token);
+      localStorage.setItem("konark_admin_user", JSON.stringify(data.user));
+      document.cookie = `admin_auth=true; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Strict`;
       router.push("/dashboard");
-    } else {
-      setError("Invalid credentials. Check email and password.");
+    } catch {
+      setError("Connection error. Please try again.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

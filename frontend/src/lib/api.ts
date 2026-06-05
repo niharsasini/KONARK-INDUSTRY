@@ -91,7 +91,7 @@ export async function getCurrentUser() {
 }
 
 export async function updateProfile(data: Record<string, unknown>) {
-  return request("/api/v1/auth/profile", {
+  return request("/api/v1/auth/me", {
     method: "PUT",
     body: JSON.stringify(data),
   });
@@ -166,7 +166,7 @@ export async function createOrder(data: Record<string, unknown>) {
 }
 
 export async function getMyOrders() {
-  return request("/api/v1/orders/my");
+  return request("/api/v1/orders");
 }
 
 export async function getOrder(orderNumber: string) {

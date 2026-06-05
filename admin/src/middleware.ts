@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get("admin_auth");
+  const isAuthenticated = request.cookies.get("admin_auth")?.value === "true";
   const { pathname } = request.nextUrl;
 
   const isLoginPage = pathname === "/admin-login";
@@ -10,11 +10,11 @@ export function middleware(request: NextRequest) {
 
   if (isPublicAsset) return NextResponse.next();
 
-  if (!token && !isLoginPage) {
+  if (!isAuthenticated && !isLoginPage) {
     return NextResponse.redirect(new URL("/admin-login", request.url));
   }
 
-  if (token && isLoginPage) {
+  if (isAuthenticated && isLoginPage) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 

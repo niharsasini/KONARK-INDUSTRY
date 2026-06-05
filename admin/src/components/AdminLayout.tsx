@@ -57,6 +57,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const signOut = () => {
     document.cookie = "admin_auth=; path=/; max-age=0";
+    localStorage.removeItem("konark_admin_token");
+    localStorage.removeItem("konark_admin_user");
     router.push("/admin-login");
   };
 
