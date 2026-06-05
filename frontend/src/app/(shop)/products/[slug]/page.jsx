@@ -233,10 +233,41 @@ function VehicleDetailPage({ product }) {
             ))}
           </div>
 
+          {/* Upcoming model banner */}
+          {product.inStock === false && product.type === "vehicle" && (
+            <div style={{
+              background: "rgba(124,58,237,0.1)",
+              border: "1px solid rgba(124,58,237,0.3)",
+              borderRadius: 12, padding: "16px 20px",
+              display: "flex", gap: 12, marginBottom: 28,
+              alignItems: "flex-start",
+            }}>
+              <span style={{ fontSize: 22 }}>⚡</span>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: "#a78bfa", margin: "0 0 4px" }}>New Model Coming Soon</p>
+                <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 12px", lineHeight: 1.6 }}>
+                  This is an upcoming Konark product. Register your interest to be notified when it launches.
+                </p>
+                <Link
+                  href="/contact?interest=upcoming"
+                  style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", background: "rgba(124,58,237,0.2)", border: "1px solid rgba(124,58,237,0.4)", color: "#a78bfa", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 700, transition: "background 0.2s" }}
+                  onMouseEnter={e => (e.currentTarget.style.background = "rgba(124,58,237,0.3)")}
+                  onMouseLeave={e => (e.currentTarget.style.background = "rgba(124,58,237,0.2)")}
+                >
+                  Register Interest →
+                </Link>
+              </div>
+            </div>
+          )}
+
           {/* Full specs accordion */}
           {specs.length > 0 && (
             <div style={{ borderTop: "1px solid #1e2d40", paddingTop: 24 }}>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", marginBottom: 14 }}>Full Specifications</h3>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", marginBottom: 14 }}>
+                {product.inStock === false && product.type === "vehicle"
+                  ? "🚀 Upcoming New Model — Specifications"
+                  : "Full Specifications"}
+              </h3>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 40px" }}>
                 {specs.map(([k, v], i) => (
                   <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #1e2d40" }}>

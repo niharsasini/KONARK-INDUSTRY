@@ -5,27 +5,27 @@ import { useInView } from "react-intersection-observer";
 
 const FEATURES = [
   {
-    num: "01", icon: "🛡️", color: "#00d4ff",
-    title: "ISI & BIS Certified",
-    body: "Every product meets Bureau of Indian Standards requirements. We don't ship what we wouldn't use ourselves.",
+    num: "01", icon: "⚡", color: "#00d4ff",
+    title: "Odisha's Own EV Brand",
+    body: "We design, manufacture, and service our own electric vehicles right here in Bhubaneswar. No middlemen. No import markup. Just honest Odisha-made technology at fair prices.",
     fromX: -60,
   },
   {
-    num: "02", icon: "🚚", color: "#7c3aed",
-    title: "Doorstep Service",
-    body: "AC acting up? EV charger dead? We send trained technicians to you — usually within 24 hours across Odisha.",
+    num: "02", icon: "🔋", color: "#7c3aed",
+    title: "Complete Energy Ecosystem",
+    body: "From manufacturing LFP batteries to installing solar and wind power plants — we cover the full energy chain. One company handles everything from production to installation to maintenance.",
     fromX: 60,
   },
   {
-    num: "03", icon: "🔋", color: "#f97316",
-    title: "2-Year Warranty",
-    body: "Every scooter, battery, and appliance comes with a full 2-year warranty. 50+ authorised service centres.",
+    num: "03", icon: "🏭", color: "#f97316",
+    title: "Factory Direct Pricing",
+    body: "Because we make what we sell, you get factory prices without distributor markups. Our Bhubaneswar factory produces EV scooters, rickshaws, batteries, fans and ACs under one roof.",
     fromX: -60,
   },
   {
-    num: "04", icon: "⚡", color: "#10b981",
-    title: "Energy Efficient",
-    body: "4-star or 5-star BEE rated appliances. Our EVs cut commute costs by up to 80% compared to petrol vehicles.",
+    num: "04", icon: "🤝", color: "#10b981",
+    title: "Trusted by Govt. Bodies",
+    body: "Recognised by Startup India (DIPP182913), Startup Odisha (OSP/SP/02193), and registered under MSME (UDYAM-OD-19-0064755). Our credentials are public and verifiable.",
     fromX: 60,
   },
 ];

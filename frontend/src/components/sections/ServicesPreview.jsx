@@ -6,12 +6,45 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const SERVICES = [
-  { icon: "❄️", color: "#00d4ff", title: "AC Repair & Service", desc: "Diagnose and fix all brands, same day if booked before noon." },
-  { icon: "⚡", color: "#00d4ff", title: "EV Charger Install", desc: "Certified installation at home or commercial premises. 1-year warranty." },
-  { icon: "🏠", color: "#7c3aed", title: "Home Electrical", desc: "Wiring, rewiring, fault finding, board upgrades by licensed electricians." },
-  { icon: "☀️", color: "#f97316", title: "Solar Installation", desc: "Survey to commissioning — panels, inverter, net metering, subsidy paperwork." },
-  { icon: "🔋", color: "#7c3aed", title: "Battery Setup", desc: "Custom LFP battery packs for solar, EV, or industrial backup. Installed." },
-  { icon: "🔧", color: "#10b981", title: "Annual AMC", desc: "AMC plans for appliances, EVs, and industrial equipment. Peak condition." },
+  {
+    icon: "❄️", color: "#00d4ff",
+    title: "AC Repair & Service",
+    desc: "Diagnose and fix all brands, same day if booked before noon.",
+    link: "/services/enquiry", external: false, cta: "Book →",
+  },
+  {
+    icon: "⚡", color: "#00d4ff",
+    title: "EV Charging Station Installation",
+    desc: "Install commercial and home EV charging stations. Certified installation, 1-year warranty on all equipment.",
+    link: "https://www.soumyashipower.in/", external: true, cta: "Learn More →",
+    partner: "Partner Service",
+  },
+  {
+    icon: "🔋", color: "#7c3aed",
+    title: "Battery Swap Service",
+    desc: "Exchange your discharged EV battery for a fully charged one. Home pickup available. Get a swap token instantly.",
+    link: "/battery-swap", external: false, cta: "Book a Swap →",
+  },
+  {
+    icon: "☀️", color: "#f97316",
+    title: "Solar Power Plant Installation",
+    desc: "Residential and commercial solar power plants. Rooftop, ground-mount, and captive solar up to 1MW.",
+    link: "https://www.soumyashipower.in/", external: true, cta: "Get Solar Quote →",
+    partner: "Partner Service",
+  },
+  {
+    icon: "💨", color: "#00d4ff",
+    title: "Wind Power Plant Installation",
+    desc: "Small and large-scale wind energy solutions. Hybrid wind-solar systems for farms, industries, and institutions.",
+    link: "https://www.soumyashipower.in/", external: true, cta: "Explore Wind Energy →",
+    partner: "Partner Service",
+  },
+  {
+    icon: "🏠", color: "#10b981",
+    title: "Home Electrical Work",
+    desc: "Wiring, rewiring, fault finding, board upgrades by licensed electricians.",
+    link: "/services/enquiry", external: false, cta: "Book →",
+  },
 ];
 
 function ServiceCard({ service, index, inView }) {
@@ -41,17 +74,37 @@ function ServiceCard({ service, index, inView }) {
         }}>
           {service.icon}
         </div>
-        <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{service.title}</p>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{service.title}</p>
+          {service.partner && (
+            <span style={{ fontSize: 10, color: "#64748b", fontWeight: 500 }}>
+              ↗ {service.partner}
+            </span>
+          )}
+        </div>
       </div>
       <p style={{ fontSize: 13, color: "#64748b", margin: "12px 0 0", lineHeight: 1.65, flex: 1 }}>{service.desc}</p>
-      <button
-        onClick={() => router.push("/services/enquiry")}
-        style={{ background: "transparent", border: "none", padding: "12px 0 0", color: service.color, fontSize: 13, fontWeight: 700, cursor: "pointer", textAlign: "left", transition: "opacity 0.2s", minHeight: 44 }}
-        onMouseEnter={e => (e.currentTarget.style.opacity = "0.7")}
-        onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
-      >
-        Book →
-      </button>
+      {service.external ? (
+        <a
+          href={service.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: "inline-block", paddingTop: 12, color: service.color, fontSize: 13, fontWeight: 700, textDecoration: "none", transition: "opacity 0.2s" }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = "0.7")}
+          onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+        >
+          {service.cta}
+        </a>
+      ) : (
+        <button
+          onClick={() => router.push(service.link)}
+          style={{ background: "transparent", border: "none", padding: "12px 0 0", color: service.color, fontSize: 13, fontWeight: 700, cursor: "pointer", textAlign: "left", transition: "opacity 0.2s", minHeight: 44 }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = "0.7")}
+          onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+        >
+          {service.cta}
+        </button>
+      )}
     </motion.div>
   );
 }

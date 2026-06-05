@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { products } from "@/components/product/ProductData";
 
 const TRUST_PILLS = ["✓ ISI Certified", "✓ 2-Year Warranty", "✓ Doorstep Service"];
@@ -13,20 +13,66 @@ const CATEGORY_CHIPS = [
   { icon: "🔋", label: "LFP Batteries", href: "/products?cat=battery" },
 ];
 
-const featuredProducts = products.filter(p => p.isNew || p.rating >= 4.5).slice(0, 6);
+const CAR_IMAGES = [
+  "/konark/car-1 (1).png",
+  "/konark/car-2.png",
+  "/konark/car-3.png",
+  "/konark/car-4.png",
+  "/konark/car-5.png",
+  "/konark/car-6.png",
+  "/konark/car-7.png",
+  "/konark/car-8.png",
+];
+
+const vehicleProducts = products.filter((p) => p.type === "vehicle").slice(0, 4);
+
+const DECK = [
+  ...vehicleProducts.map((p) => ({
+    type: "product",
+    src: p.image,
+    name: p.name,
+    price: p.price,
+    slug: p.slug,
+    badge: "FEATURED",
+    badgeColor: "#00d4ff",
+    specs: [p.category.replace("Electric Vehicles", "Electric"), `⭐ ${p.rating}`],
+  })),
+  ...CAR_IMAGES.map((src) => ({
+    type: "car",
+    src,
+    name: "EV Car — Coming Soon",
+    price: null,
+    slug: null,
+    badge: "UPCOMING",
+    badgeColor: "#7c3aed",
+    specs: ["Electric", "New Model 2025"],
+  })),
+];
 
 export default function Hero() {
   const router = useRouter();
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const currentProduct = featuredProducts[currentIndex] || featuredProducts[0];
+  const [current, setCurrent] = useState(0);
+  const touchStartX = useRef(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex(prev => (prev === featuredProducts.length - 1 ? 0 : prev + 1));
+      setCurrent((prev) => (prev + 1) % DECK.length);
     }, 3000);
     return () => clearInterval(timer);
   }, []);
+
+  const advance = () => setCurrent((prev) => (prev + 1) % DECK.length);
+  const goBack = () => setCurrent((prev) => (prev - 1 + DECK.length) % DECK.length);
+
+  const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+  const onTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) > 50) { dx < 0 ? advance() : goBack(); }
+    touchStartX.current = null;
+  };
+
+  const card = DECK[current];
 
   return (
     <section className="hero-section" style={{ paddingTop: 64 }}>
@@ -188,102 +234,166 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* RIGHT — product showcase */}
-        <div className="hero-right-col" style={{ perspective: "1200px", perspectiveOrigin: "50% 50%" }}>
-          <motion.div
-            className="hero-product-card hero-product-card-inner"
-            initial={{ opacity: 0, rotateY: -15, x: 60 }}
-            animate={{ opacity: 1, rotateY: 0, x: 0 }}
-            transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
-            whileHover={{ rotateY: 8, rotateX: -5, scale: 1.03 }}
-            onClick={() => router.push(`/products/${currentProduct.slug}`)}
-            style={{ transformStyle: "preserve-3d", cursor: "pointer" }}
-          >
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              {/* Featured tag */}
-              <div style={{ marginBottom: 12 }}>
-                <span style={{
-                  fontSize: 10, fontWeight: 700, letterSpacing: "0.12em",
-                  textTransform: "uppercase", color: "#00d4ff",
-                  background: "rgba(0,212,255,0.1)",
-                  border: "1px solid rgba(0,212,255,0.25)",
-                  padding: "3px 10px", borderRadius: 4,
-                }}>
-                  FEATURED PRODUCT
-                </span>
-              </div>
+        {/* RIGHT — playing card deck */}
+        <div
+          className="hero-right-col"
+          style={{ perspective: "1200px" }}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        >
+          <div style={{ position: "relative", width: "100%", maxWidth: 360, margin: "0 auto", minHeight: 380 }}>
+            {/* Stack back cards — real upcoming images from the deck */}
+            {[
+              { deckOffset: 3, rotate: -6, tx: -18, ty: 12, opacity: 0.3, zIndex: 1 },
+              { deckOffset: 2, rotate: -3, tx: -9,  ty: 6,  opacity: 0.52, zIndex: 2 },
+              { deckOffset: 1, rotate: -1, tx: -3,  ty: 2,  opacity: 0.75, zIndex: 3 },
+            ].map(({ deckOffset, rotate, tx, ty, opacity, zIndex }, i) => {
+              const deckIdx = (current + deckOffset) % DECK.length;
+              const backCard = DECK[deckIdx];
+              return (
+                <div
+                  key={i}
+                  onClick={() => setCurrent(deckIdx)}
+                  style={{
+                    position: "absolute", inset: 0,
+                    background: "rgba(15,23,42,0.92)",
+                    backdropFilter: "blur(4px)",
+                    border: "1px solid rgba(0,212,255,0.12)",
+                    borderRadius: 20,
+                    transform: `rotate(${rotate}deg) translate(${tx}px, ${ty}px)`,
+                    transformOrigin: "center bottom",
+                    opacity,
+                    zIndex,
+                    overflow: "hidden",
+                    cursor: "pointer",
+                    transition: "opacity 0.3s ease",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}
+                >
+                  <img
+                    src={backCard.src}
+                    alt=""
+                    style={{
+                      maxHeight: "65%", maxWidth: "80%",
+                      objectFit: "contain",
+                      filter: "blur(1px) brightness(0.45)",
+                      pointerEvents: "none",
+                    }}
+                  />
+                </div>
+              );
+            })}
 
-              {/* Product image */}
-              <div style={{
-                width: "100%", height: 220,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                background: "rgba(17,24,39,0.6)", borderRadius: 12,
-                overflow: "hidden", marginBottom: 16,
-              }}>
-                <img
-                  src={currentProduct.image}
-                  alt={currentProduct.name}
-                  style={{ maxHeight: 200, maxWidth: "90%", objectFit: "contain",
-                    filter: "drop-shadow(0 4px 24px rgba(0,212,255,0.2))" }}
-                />
-              </div>
-
-              {/* Name + price */}
-              <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>
-                {currentProduct.name}
-              </p>
-              <p style={{ fontSize: 22, fontWeight: 800, color: "#00d4ff", margin: "0 0 14px" }}>
-                {currentProduct.price > 0
-                  ? `₹${currentProduct.price.toLocaleString("en-IN")}`
-                  : "Price on Request"}
-              </p>
-
-              {/* Chips */}
-              <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
-                <span style={{
-                  fontSize: 11, fontWeight: 600, color: "#00d4ff",
-                  background: "rgba(0,212,255,0.08)",
-                  border: "1px solid rgba(0,212,255,0.2)",
-                  padding: "4px 10px", borderRadius: 6,
-                }}>
-                  {currentProduct.category.replace("Electric Vehicles", "EV").replace("Home Appliances", "Home")}
-                </span>
-                <span style={{
-                  fontSize: 11, fontWeight: 600, color: "#f97316",
-                  background: "rgba(249,115,22,0.08)",
-                  border: "1px solid rgba(249,115,22,0.2)",
-                  padding: "4px 10px", borderRadius: 6,
-                }}>
-                  ⭐ {currentProduct.rating}
-                </span>
-              </div>
-
-              <Link
-                href={`/products/${currentProduct.slug}`}
-                onClick={(e) => e.stopPropagation()}
-                style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}
+            {/* Front card with "deal from deck" animation */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={current}
+                initial={{ x: 55, y: -22, opacity: 0, rotate: 9, scale: 0.88 }}
+                animate={{ x: 0, y: 0, opacity: 1, rotate: 0, scale: 1 }}
+                exit={{ x: -70, y: 8, opacity: 0, rotate: -8, scale: 0.9 }}
+                transition={{ duration: 0.48, ease: [0.25, 0.46, 0.45, 0.94] }}
+                style={{
+                  position: "relative", zIndex: 3,
+                  background: "linear-gradient(145deg, #111827, #0f172a)",
+                  border: "1px solid #1e2d40",
+                  borderRadius: 20,
+                  padding: 20,
+                  cursor: card.slug ? "pointer" : "default",
+                  boxShadow: "0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03)",
+                  transformStyle: "preserve-3d",
+                }}
+                onClick={() => { if (card.slug) router.push(`/products/${card.slug}`); }}
               >
-                View Product →
-              </Link>
-            </motion.div>
-          </motion.div>
+                {/* Badge */}
+                <div style={{ marginBottom: 12 }}>
+                  <span style={{
+                    fontSize: 10, fontWeight: 700, letterSpacing: "0.12em",
+                    textTransform: "uppercase", color: card.badgeColor,
+                    background: `${card.badgeColor}18`,
+                    border: `1px solid ${card.badgeColor}38`,
+                    padding: "3px 10px", borderRadius: 4,
+                  }}>
+                    {card.badge}
+                  </span>
+                </div>
+
+                {/* Image */}
+                <div style={{
+                  width: "100%", height: 200,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  background: "rgba(17,24,39,0.6)", borderRadius: 12,
+                  overflow: "hidden", marginBottom: 16,
+                }}>
+                  <img
+                    src={card.src}
+                    alt={card.name}
+                    style={{
+                      maxHeight: 185, maxWidth: "90%", objectFit: "contain",
+                      filter: `drop-shadow(0 4px 24px ${card.badgeColor}35)`,
+                    }}
+                  />
+                </div>
+
+                {/* Name */}
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>
+                  {card.name}
+                </p>
+
+                {/* Price */}
+                <p style={{
+                  fontSize: 22, fontWeight: 800,
+                  color: card.price ? "#00d4ff" : card.badgeColor,
+                  margin: "0 0 14px",
+                }}>
+                  {card.price ? `₹${card.price.toLocaleString("en-IN")}` : "Coming Soon"}
+                </p>
+
+                {/* Spec chips */}
+                <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+                  {card.specs.map((s) => (
+                    <span key={s} style={{
+                      fontSize: 11, fontWeight: 600, color: "#94a3b8",
+                      background: "rgba(241,245,249,0.05)",
+                      border: "1px solid #1e2d40",
+                      padding: "4px 10px", borderRadius: 6,
+                    }}>
+                      {s}
+                    </span>
+                  ))}
+                </div>
+
+                {/* CTA */}
+                {card.slug ? (
+                  <Link
+                    href={`/products/${card.slug}`}
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}
+                  >
+                    View Product →
+                  </Link>
+                ) : (
+                  <Link
+                    href="/contact?interest=ev-car"
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ fontSize: 12, color: card.badgeColor, textDecoration: "none", fontWeight: 600 }}
+                  >
+                    Register Interest →
+                  </Link>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
           {/* Dot indicators */}
-          <div style={{ display: "flex", gap: 6, justifyContent: "center", marginTop: 12 }}>
-            {featuredProducts.map((_, i) => (
+          <div style={{ display: "flex", gap: 6, justifyContent: "center", marginTop: 14 }}>
+            {DECK.map((_, i) => (
               <div
                 key={i}
-                onClick={() => setCurrentIndex(i)}
+                onClick={() => setCurrent(i)}
                 style={{
-                  width: i === currentIndex ? 20 : 6,
-                  height: 6,
-                  borderRadius: 3,
-                  background: i === currentIndex ? "#00d4ff" : "#1e2d40",
+                  width: i === current ? 20 : 6,
+                  height: 6, borderRadius: 3,
+                  background: i === current ? "#00d4ff" : "#1e2d40",
                   cursor: "pointer",
                   transition: "all 300ms",
                 }}

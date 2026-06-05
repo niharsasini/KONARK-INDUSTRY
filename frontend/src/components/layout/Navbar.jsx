@@ -223,20 +223,20 @@ function ServicesMegaMenu({ onPanelEnter, onPanelLeave }) {
         gap: 0,
       }}
     >
-      {/* Column 1 — Home Services */}
+      {/* Column 1 — Home & EV Services */}
       <div style={{ paddingRight: 20, borderRight: "1px solid #1e2d40" }}>
-        <ColHeader emoji="🏠" title="Home Services" color="#00d4ff" />
-        <SvcItem icon="❄️" iconBg="rgba(0,212,255,0.12)" label="AC Repair" desc="All brands, same day" href="/services/enquiry" />
-        <SvcItem icon="⚡" iconBg="rgba(0,212,255,0.10)" label="EV Charger Install" desc="Home & commercial" href="/services/enquiry" />
-        <SvcItem icon="🏠" iconBg="rgba(0,212,255,0.10)" label="Home Electrical" desc="Wiring & fault repair" href="/services/enquiry" />
+        <ColHeader emoji="🏠" title="Home & EV Services" color="#00d4ff" />
+        <SvcItem icon="❄️" iconBg="rgba(0,212,255,0.12)" label="AC Repair & Service" desc="All brands, same day" href="/services/enquiry" />
+        <SvcItem icon="⚡" iconBg="rgba(0,212,255,0.10)" label="EV Charging Station Install" desc="Home & commercial" href="https://www.soumyashipower.in/" />
+        <SvcItem icon="🔋" iconBg="rgba(124,58,237,0.12)" label="Battery Swap" desc="Fast swap, home pickup" href="/battery-swap" />
       </div>
 
-      {/* Column 2 — Energy Services */}
+      {/* Column 2 — Energy & Power */}
       <div style={{ paddingLeft: 20 }}>
-        <ColHeader emoji="☀️" title="Energy Services" color="#f59e0b" />
-        <SvcItem icon="☀️" iconBg="rgba(245,158,11,0.12)" label="Solar Installation" desc="Rooftop & ground mount" href="/services/enquiry" />
-        <SvcItem icon="🔋" iconBg="rgba(245,158,11,0.10)" label="Battery System Setup" desc="LFP & lead acid" href="/services/enquiry" />
-        <SvcItem icon="🔧" iconBg="rgba(245,158,11,0.10)" label="Annual AMC" desc="Preventive maintenance" href="/services/enquiry" />
+        <ColHeader emoji="🌿" title="Energy & Power" color="#f97316" />
+        <SvcItem icon="☀️" iconBg="rgba(249,115,22,0.12)" label="Solar Power Plant" desc="Rooftop & captive up to 1MW" href="https://www.soumyashipower.in/" />
+        <SvcItem icon="💨" iconBg="rgba(0,212,255,0.10)" label="Wind Power Plant" desc="Hybrid wind-solar systems" href="https://www.soumyashipower.in/" />
+        <SvcItem icon="🔧" iconBg="rgba(16,185,129,0.10)" label="All Services" desc="View the full list" href="/services" />
       </div>
 
       {/* Bottom bar */}
@@ -569,10 +569,11 @@ export default function Navbar() {
             </button>
             {expandedSection === "services" && (
               <div>
-                <Link href="/services/enquiry" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>AC Repair</Link>
-                <Link href="/services/enquiry" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>EV Charger Install</Link>
-                <Link href="/services/enquiry" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>Solar Installation</Link>
+                <Link href="/services/enquiry" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>AC Repair & Service</Link>
+                <a href="https://www.soumyashipower.in/" target="_blank" rel="noopener noreferrer" className="mobile-nav-sub" onClick={() => setMenuOpen(false)} style={{ display: "block" }}>EV Charging Station Install ↗</a>
                 <Link href="/battery-swap" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>Battery Swap</Link>
+                <a href="https://www.soumyashipower.in/" target="_blank" rel="noopener noreferrer" className="mobile-nav-sub" onClick={() => setMenuOpen(false)} style={{ display: "block" }}>Solar Power Plant ↗</a>
+                <a href="https://www.soumyashipower.in/" target="_blank" rel="noopener noreferrer" className="mobile-nav-sub" onClick={() => setMenuOpen(false)} style={{ display: "block" }}>Wind Power Plant ↗</a>
                 <Link href="/services" className="mobile-nav-sub" onClick={() => setMenuOpen(false)}>All Services</Link>
               </div>
             )}

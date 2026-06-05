@@ -6,11 +6,23 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { products } from "@/components/product/ProductData";
 
+const carProducts = [
+  { id: "ev-car-1", name: "Konark EV Sedan", image: "/konark/car-1 (1).png", bodyType: "Sedan" },
+  { id: "ev-car-2", name: "Konark EV Hatchback", image: "/konark/car-2.png", bodyType: "Hatchback" },
+  { id: "ev-car-3", name: "Konark EV SUV", image: "/konark/car-3.png", bodyType: "SUV" },
+  { id: "ev-car-4", name: "Konark EV Compact", image: "/konark/car-4.png", bodyType: "Compact" },
+  { id: "ev-car-5", name: "Konark EV Family", image: "/konark/car-5.png", bodyType: "Family" },
+  { id: "ev-car-6", name: "Konark EV Sport", image: "/konark/car-6.png", bodyType: "Sport" },
+  { id: "ev-car-7", name: "Konark EV Premium", image: "/konark/car-7.png", bodyType: "Premium" },
+  { id: "ev-car-8", name: "Konark EV Pro", image: "/konark/car-8.png", bodyType: "Pro" },
+];
+
 const TABS = [
-  { label: "All", icon: "✦", filter: () => true },
-  { label: "EV Vehicles", icon: "🏍", filter: (p) => p.type === "vehicle" },
-  { label: "Buy Now", icon: "🛒", filter: (p) => p.type === "product" },
-  { label: "Book Service", icon: "🔧", filter: (p) => p.type === "service" },
+  { label: "All", icon: "✦", filter: () => true, isEvCars: false },
+  { label: "EV Vehicles", icon: "🏍", filter: (p) => p.type === "vehicle", isEvCars: false },
+  { label: "EV Cars", icon: "🚗", filter: () => false, isEvCars: true },
+  { label: "Buy Now", icon: "🛒", filter: (p) => p.type === "product", isEvCars: false },
+  { label: "Book Service", icon: "🔧", filter: (p) => p.type === "service", isEvCars: false },
 ];
 
 const CARD_W = 280;
@@ -120,12 +132,80 @@ function TiltCard({ product }) {
   );
 }
 
+function EvCarCard({ car }) {
+  const router = useRouter();
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onClick={() => router.push("/contact?interest=ev-car")}
+      style={{
+        width: "100%", flexShrink: 0,
+        background: "linear-gradient(145deg, #111827, #0f172a)",
+        border: `1px solid ${hovered ? "#7c3aed60" : "#1e2d40"}`,
+        borderRadius: 20, overflow: "hidden",
+        boxShadow: hovered ? "0 30px 60px rgba(0,0,0,0.5), 0 0 30px #7c3aed20" : "0 20px 40px rgba(0,0,0,0.4)",
+        cursor: "pointer",
+        transition: "border-color 0.2s, box-shadow 0.2s",
+        display: "flex", flexDirection: "column",
+      }}
+    >
+      <div style={{
+        height: 200, position: "relative",
+        background: "radial-gradient(ellipse at center, #130a2e 0%, #060d1a 100%)",
+        display: "flex", alignItems: "center", justifyContent: "center", padding: 20,
+        overflow: "hidden",
+      }}>
+        <img
+          src={car.image}
+          alt={car.name}
+          loading="lazy"
+          style={{
+            maxHeight: 160, maxWidth: "85%", objectFit: "contain",
+            filter: hovered ? "drop-shadow(0 0 20px #7c3aed60)" : "none",
+            transition: "filter 0.3s",
+          }}
+        />
+        <span style={{ position: "absolute", top: 12, left: 12, background: "#7c3aed", color: "#fff", fontSize: 9, fontWeight: 800, padding: "2px 8px", borderRadius: 4, textTransform: "uppercase" }}>UPCOMING</span>
+        <span style={{ position: "absolute", top: 12, right: 12, background: "rgba(124,58,237,0.18)", border: "1px solid rgba(124,58,237,0.4)", color: "#a78bfa", fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 4 }}>
+          Electric · {car.bodyType}
+        </span>
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 3, background: "linear-gradient(90deg, #7c3aed, transparent)" }} />
+      </div>
+      <div style={{ padding: "14px 16px", flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
+        <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{car.name}</p>
+        <p style={{ fontSize: 13, fontStyle: "italic", color: "#7c3aed", margin: 0, fontWeight: 700 }}>Coming Soon</p>
+      </div>
+      <div style={{ padding: "12px 16px", borderTop: "1px solid #1e2d40" }}>
+        <Link
+          href="/contact?interest=ev-car"
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: "8px 10px", fontSize: 12, fontWeight: 700,
+            background: "transparent", color: "#7c3aed",
+            border: "1px solid #7c3aed60", borderRadius: 8,
+            textDecoration: "none", transition: "background 0.2s",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(124,58,237,0.18)")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+        >
+          Register Interest →
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function FeaturedProducts() {
   const [activeTab, setActiveTab] = useState(0);
   const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true });
 
-  const filtered = products.filter(TABS[activeTab].filter).slice(0, 8);
-  const displayed = filtered.length > 0 ? filtered : products.slice(0, 8);
+  const isEvCarsTab = TABS[activeTab].isEvCars;
+  const filtered = isEvCarsTab ? [] : products.filter(TABS[activeTab].filter).slice(0, 8);
+  const displayed = isEvCarsTab ? carProducts : (filtered.length > 0 ? filtered : products.slice(0, 8));
   const doubled = [...displayed, ...displayed];
   const trackWidth = doubled.length * (CARD_W + CARD_GAP);
 
@@ -212,7 +292,7 @@ export default function FeaturedProducts() {
         >
           {doubled.map((p, i) => (
             <div key={`${p.id}-${i}`} className="product-card-wrap">
-              <TiltCard product={p} />
+              {isEvCarsTab ? <EvCarCard car={p} /> : <TiltCard product={p} />}
             </div>
           ))}
         </div>

@@ -4,67 +4,52 @@ import Link from "next/link";
 
 const SERVICES = [
   {
-    color: "#f97316",
-    icon: "☀️",
-    title: "Solar Installation",
-    desc: "End-to-end solar solutions from site survey to commissioning.",
-    points: ["Rooftop & ground-mount systems", "On-grid and off-grid options", "Subsidy & financing support"],
+    color: "#00d4ff",
+    icon: "❄️",
+    title: "AC Repair & Service",
+    desc: "Diagnose and fix all brands, same day if booked before noon.",
+    points: ["All brands serviced", "Same-day response", "Certified technicians"],
+    href: "/services/enquiry", external: false,
   },
   {
     color: "#00d4ff",
     icon: "⚡",
-    title: "EV Charging Infrastructure",
-    desc: "Complete EV charger setup for homes, offices, and commercial stations.",
-    points: ["Home charger installation", "Commercial station setup", "Smart billing system"],
-  },
-  {
-    color: "#7c3aed",
-    icon: "🤖",
-    title: "Industrial Automation",
-    desc: "SCADA, PLC, and motor control systems for industrial facilities.",
-    points: ["PLC & SCADA integration", "Motor drive systems", "Remote monitoring & control"],
-  },
-  {
-    color: "#10b981",
-    icon: "📊",
-    title: "Energy Audits",
-    desc: "Identify savings opportunities with a full ROI report within 48 hours.",
-    points: ["Consumption analysis", "Cost optimisation roadmap", "Compliance documentation"],
+    title: "EV Charging Station Installation",
+    desc: "Install commercial and home EV charging stations. Certified installation, 1-year warranty on all equipment.",
+    points: ["Home & commercial setup", "Smart billing system", "1-year equipment warranty"],
+    href: "https://www.soumyashipower.in/", external: true,
   },
   {
     color: "#7c3aed",
     icon: "🔋",
-    title: "Battery System Design",
-    desc: "Custom LFP battery packs engineered for your exact application.",
-    points: ["5kWh to 500kWh capacity", "BMS integration", "10-year design life"],
+    title: "Battery Swap Service",
+    desc: "Exchange your discharged EV battery for a fully charged one. Home pickup available.",
+    points: ["Home pickup available", "Instant swap token", "All Konark EV models"],
+    href: "/battery-swap", external: false,
   },
   {
     color: "#f97316",
-    icon: "🏭",
-    title: "Power Plant Setup",
-    desc: "Turnkey captive solar and hybrid power systems up to 1MW.",
-    points: ["Captive solar plants", "Hybrid grid integration", "Full EPC execution"],
+    icon: "☀️",
+    title: "Solar Power Plant Installation",
+    desc: "Residential and commercial solar power plants. Rooftop, ground-mount, and captive solar up to 1MW.",
+    points: ["Rooftop & ground-mount", "On-grid and off-grid", "Subsidy & financing support"],
+    href: "https://www.soumyashipower.in/", external: true,
   },
   {
     color: "#00d4ff",
-    icon: "🔧",
-    title: "Preventive Maintenance",
-    desc: "AMC contracts keeping your equipment running at peak performance.",
-    points: ["Scheduled preventive visits", "24/7 emergency hotline", "Annual contract pricing"],
+    icon: "💨",
+    title: "Wind Power Plant Installation",
+    desc: "Small and large-scale wind energy solutions. Hybrid wind-solar systems for farms, industries, and institutions.",
+    points: ["Hybrid wind-solar systems", "Farm, industrial & institutional", "Full EPC execution"],
+    href: "https://www.soumyashipower.in/", external: true,
   },
   {
     color: "#10b981",
-    icon: "❄️",
-    title: "Cold Chain Solutions",
-    desc: "Industrial refrigeration and controlled atmosphere storage systems.",
-    points: ["Custom capacity planning", "IoT temperature monitoring", "7-day installation SLA"],
-  },
-  {
-    color: "#7c3aed",
-    icon: "🌐",
-    title: "Smart Grid Integration",
-    desc: "Demand response, load management, and grid analytics solutions.",
-    points: ["Demand response systems", "Load balancing automation", "Energy analytics dashboard"],
+    icon: "🏠",
+    title: "Home Electrical Work",
+    desc: "Wiring, rewiring, fault finding, board upgrades by licensed electricians.",
+    points: ["Licensed electricians", "Fault finding & repair", "Board upgrades"],
+    href: "/services/enquiry", external: false,
   },
 ];
 
@@ -140,9 +125,21 @@ export default function ServicesPage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/contact" style={{ fontSize: 12, color: s.color, textDecoration: "none", fontWeight: 600 }}>
-                  Learn More →
-                </Link>
+                {s.external ? (
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ fontSize: 12, color: s.color, textDecoration: "none", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}
+                  >
+                    Learn More ↗
+                    <span style={{ fontSize: 9, background: s.color + "20", border: `1px solid ${s.color}40`, color: s.color, padding: "1px 5px", borderRadius: 3, fontWeight: 700 }}>External Partner</span>
+                  </a>
+                ) : (
+                  <Link href={s.href} style={{ fontSize: 12, color: s.color, textDecoration: "none", fontWeight: 600 }}>
+                    Book Now →
+                  </Link>
+                )}
               </div>
             ))}
           </div>
