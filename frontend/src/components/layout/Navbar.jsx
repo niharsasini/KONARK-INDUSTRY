@@ -3,7 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { useCartStore } from "@/store";
+import { useCartStore, useWishlistStore } from "@/store";
+import { products as ProductData } from "@/components/product/ProductData";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -264,15 +265,23 @@ function ServicesMegaMenu({ onPanelEnter, onPanelLeave }) {
 export default function Navbar() {
   const router = useRouter();
   const cartCount = useCartStore((s) => s.itemCount());
+  const wishlistCount = useWishlistStore((s) => s.items.length);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [productOpen, setProductOpen] = useState(false);
   const [serviceOpen, setServiceOpen] = useState(false);
   const [expandedSection, setExpandedSection] = useState(null);
   const [user, setUser] = useState(null);
   const productTimer = useRef(null);
   const serviceTimer = useRef(null);
+
+  const searchPreview = searchQuery.length > 1
+    ? ProductData.filter((p) =>
+        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 5)
+    : [];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -389,13 +398,46 @@ export default function Navbar() {
             {/* Search — desktop only */}
             <div style={{ position: "relative" }} className="nav-right-desktop">
               {searchOpen ? (
-                <input
-                  autoFocus
-                  onBlur={() => setSearchOpen(false)}
-                  placeholder="Search products..."
-                  style={{ width: 192, background: "#111827", border: "1px solid #1e2d40", color: "#f1f5f9", fontSize: 13, padding: "7px 12px", borderRadius: 8, outline: "none" }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
-                />
+                <div style={{ position: "relative" }}>
+                  <input
+                    autoFocus
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onBlur={() => setTimeout(() => { setSearchOpen(false); setSearchQuery(""); }, 200)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && searchQuery.trim()) {
+                        router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+                        setSearchOpen(false);
+                        setSearchQuery("");
+                      }
+                      if (e.key === "Escape") { setSearchOpen(false); setSearchQuery(""); }
+                    }}
+                    placeholder="Search products..."
+                    style={{ width: 220, background: "#111827", border: "1px solid #00d4ff", color: "#f1f5f9", fontSize: 13, padding: "7px 12px", borderRadius: 8, outline: "none" }}
+                  />
+                  {searchPreview.length > 0 && (
+                    <div style={{ position: "absolute", top: "calc(100% + 6px)", left: 0, right: 0, background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 12, zIndex: 300, overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }}>
+                      {searchPreview.map((p) => (
+                        <Link
+                          key={p.slug}
+                          href={`/products/${p.slug}`}
+                          style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", textDecoration: "none", transition: "background 150ms" }}
+                          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.06)")}
+                          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                          onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
+                        >
+                          <div style={{ width: 32, height: 32, background: "#111827", borderRadius: 6, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <img src={p.image} alt={p.name} style={{ maxWidth: 28, maxHeight: 28, objectFit: "contain" }} />
+                          </div>
+                          <div>
+                            <p style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9", margin: 0 }}>{p.name}</p>
+                            <p style={{ fontSize: 11, color: "#64748b", margin: 0 }}>{p.category}</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ) : (
                 <button
                   onClick={() => setSearchOpen(true)}
@@ -430,6 +472,22 @@ export default function Navbar() {
               </Link>
             </div>
 
+            {/* Wishlist — always visible */}
+            <Link
+              href="/wishlist"
+              aria-label="Wishlist"
+              style={{ position: "relative", padding: 8, color: "#94a3b8", borderRadius: 8, display: "flex", transition: "color 0.2s", textDecoration: "none" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#ef4444")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 20, height: 20 }}>
+                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+              </svg>
+              {wishlistCount > 0 && (
+                <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "#ef4444", color: "#fff", fontSize: 10, fontWeight: 700, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>{wishlistCount > 9 ? "9+" : wishlistCount}</span>
+              )}
+            </Link>
+
             {/* Cart — always visible */}
             <Link
               href="/cart"
@@ -450,7 +508,7 @@ export default function Navbar() {
             {/* Hamburger — mobile only */}
             <button
               onClick={() => setMenuOpen((o) => !o)}
-              className="nav-hamburger"
+              className={`nav-hamburger${menuOpen ? " open" : ""}`}
               aria-label="Open menu"
             >
               <span />
@@ -522,6 +580,7 @@ export default function Navbar() {
 
           <Link href="/about" className="mobile-nav-item" onClick={() => setMenuOpen(false)}>About</Link>
           <Link href="/contact" className="mobile-nav-item" onClick={() => setMenuOpen(false)}>Contact</Link>
+          <Link href="/wishlist" className="mobile-nav-item" onClick={() => setMenuOpen(false)}>❤️ My Wishlist{wishlistCount > 0 ? ` (${wishlistCount})` : ""}</Link>
 
           {user ? (
             <button

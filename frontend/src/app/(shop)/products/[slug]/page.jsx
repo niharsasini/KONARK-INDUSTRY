@@ -7,6 +7,7 @@ import EnquiryModal from "@/components/forms/EnquiryModal";
 import { getProductReviews, submitReview } from "@/lib/api";
 import { useCartStore, useWishlistStore } from "@/store";
 import toast from "react-hot-toast";
+import { useRecentlyViewed } from "@/hooks/useRecentlyViewed";
 
 /* ─── Shared helpers ─────────────────────────────── */
 
@@ -412,16 +413,39 @@ function ReviewsTab({ slug }) {
   );
 }
 
+function getDeliveryDate() {
+  const today = new Date();
+  const minDate = new Date(today);
+  const maxDate = new Date(today);
+  minDate.setDate(today.getDate() + 5);
+  maxDate.setDate(today.getDate() + 7);
+  while (minDate.getDay() === 0) minDate.setDate(minDate.getDate() + 1);
+  while (maxDate.getDay() === 0) maxDate.setDate(maxDate.getDate() + 1);
+  const fmt = (d) => d.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+  return `${fmt(minDate)} – ${fmt(maxDate)}`;
+}
+
 function ProductDetailPage({ product }) {
   const [qty, setQty] = useState(1);
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const [specsOpen, setSpecsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("description");
+  const [activeImage, setActiveImage] = useState(0);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [emiOpen, setEmiOpen] = useState(false);
   const { addItem } = useCartStore();
   const { toggle, isInWishlist } = useWishlistStore();
+  const { addProduct: addRecentlyViewed, getProducts: getRecentlyViewed } = useRecentlyViewed();
   const badgeColor = BADGE_COLORS[product.category] || "#94a3b8";
   const formattedPrice = product.price ? `₹${product.price.toLocaleString("en-IN")}` : null;
   const specs = product.specifications ? Object.entries(product.specifications) : [];
+  const images = product.images?.length > 0 ? product.images : [product.image];
+  const [recentProducts, setRecentProducts] = useState([]);
+
+  useEffect(() => {
+    addRecentlyViewed(product.slug);
+    setRecentProducts(getRecentlyViewed().filter((p) => p.slug !== product.slug));
+  }, [product.slug]);
 
   const handleAddToCart = () => {
     for (let i = 0; i < qty; i++) {
@@ -451,17 +475,58 @@ function ProductDetailPage({ product }) {
 
       {/* Main two-col */}
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "32px 24px", display: "grid", gridTemplateColumns: "45% 55%", gap: 40, alignItems: "start" }} className="detail-grid">
-        {/* LEFT: image */}
+        {/* LEFT: image gallery */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 20, padding: 32, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 340, position: "relative" }}>
+          <div
+            style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 20, padding: 32, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 340, position: "relative", cursor: "zoom-in" }}
+            onClick={() => setIsZoomed(true)}
+          >
             {product.isNew && (
               <span style={{ position: "absolute", top: 16, left: 16, background: "#00d4ff", color: "#0a0f1e", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 4, textTransform: "uppercase" }}>NEW</span>
             )}
-            {/* In Stock */}
+            <span style={{ position: "absolute", top: 16, right: 16, fontSize: 11, color: "#64748b", background: "rgba(0,0,0,0.3)", padding: "4px 8px", borderRadius: 6 }}>🔍 Click to zoom</span>
             <span style={{ position: "absolute", bottom: 16, left: 16, background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.3)", color: "#10b981", fontSize: 11, fontWeight: 700, padding: "4px 10px", borderRadius: 6 }}>● In Stock</span>
-            <img src={product.image} alt={product.name} style={{ maxHeight: 280, maxWidth: "85%", objectFit: "contain", filter: "drop-shadow(0 4px 20px rgba(0,212,255,0.15))" }} />
+            {images.length > 1 && (
+              <>
+                <button onClick={(e) => { e.stopPropagation(); setActiveImage((i) => (i - 1 + images.length) % images.length); }} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.5)", border: "1px solid #1e2d40", borderRadius: "50%", width: 32, height: 32, color: "#f1f5f9", cursor: "pointer", fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>‹</button>
+                <button onClick={(e) => { e.stopPropagation(); setActiveImage((i) => (i + 1) % images.length); }} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.5)", border: "1px solid #1e2d40", borderRadius: "50%", width: 32, height: 32, color: "#f1f5f9", cursor: "pointer", fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>›</button>
+              </>
+            )}
+            <img src={images[activeImage] || product.image} alt={product.name} style={{ maxHeight: 280, maxWidth: "85%", objectFit: "contain", filter: "drop-shadow(0 4px 20px rgba(0,212,255,0.15))" }} />
           </div>
+
+          {/* Thumbnails */}
+          {images.length > 1 && (
+            <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap" }}>
+              {images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveImage(idx)}
+                  style={{ width: 64, height: 64, borderRadius: 8, border: `2px solid ${activeImage === idx ? "#00d4ff" : "#1e2d40"}`, background: "#111827", cursor: "pointer", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: 4, transition: "border-color 0.2s" }}
+                >
+                  <img src={img} alt={`View ${idx + 1}`} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
+
+        {/* Lightbox */}
+        {isZoomed && (
+          <div
+            style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.9)", display: "flex", alignItems: "center", justifyContent: "center" }}
+            onClick={() => setIsZoomed(false)}
+          >
+            <button onClick={() => setIsZoomed(false)} style={{ position: "absolute", top: 20, right: 24, background: "transparent", border: "1px solid #1e2d40", color: "#f1f5f9", fontSize: 20, width: 40, height: 40, borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+            {images.length > 1 && (
+              <>
+                <button onClick={(e) => { e.stopPropagation(); setActiveImage((i) => (i - 1 + images.length) % images.length); }} style={{ position: "absolute", left: 20, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.6)", border: "1px solid #1e2d40", borderRadius: "50%", width: 44, height: 44, color: "#f1f5f9", cursor: "pointer", fontSize: 22, display: "flex", alignItems: "center", justifyContent: "center" }}>‹</button>
+                <button onClick={(e) => { e.stopPropagation(); setActiveImage((i) => (i + 1) % images.length); }} style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.6)", border: "1px solid #1e2d40", borderRadius: "50%", width: 44, height: 44, color: "#f1f5f9", cursor: "pointer", fontSize: 22, display: "flex", alignItems: "center", justifyContent: "center" }}>›</button>
+              </>
+            )}
+            <img src={images[activeImage] || product.image} alt={product.name} style={{ maxHeight: "85vh", maxWidth: "90vw", objectFit: "contain" }} onClick={(e) => e.stopPropagation()} />
+          </div>
+        )}
 
         {/* RIGHT: details */}
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
@@ -488,7 +553,7 @@ function ProductDetailPage({ product }) {
           {/* Delivery estimate */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 14px", background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.15)", borderRadius: 8 }}>
             <span style={{ fontSize: 14 }}>🚚</span>
-            <p style={{ fontSize: 13, color: "#10b981", margin: 0 }}>Estimated delivery in <strong>5–7 business days</strong></p>
+            <p style={{ fontSize: 13, color: "#10b981", margin: 0 }}>Delivery by <strong>{getDeliveryDate()}</strong></p>
           </div>
 
           {/* Offers */}
@@ -545,6 +610,21 @@ function ProductDetailPage({ product }) {
               <span key={t} style={{ fontSize: 12, color: "#94a3b8", background: "#0f172a", border: "1px solid #1e2d40", padding: "5px 10px", borderRadius: 6 }}>{t}</span>
             ))}
           </div>
+
+          {/* Make in India badge */}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 14px", background: "rgba(255,153,51,0.08)", border: "1px solid rgba(255,153,51,0.2)", borderRadius: 8, fontSize: 12, color: "#FF9933", width: "fit-content" }}>
+            🇮🇳 Manufactured in Bhubaneswar, Odisha, India
+          </div>
+
+          {/* EMI options link */}
+          {product.price > 10000 && (
+            <button
+              onClick={() => setEmiOpen(true)}
+              style={{ background: "transparent", border: "none", color: "#00d4ff", cursor: "pointer", fontSize: 13, fontWeight: 600, textAlign: "left", padding: 0 }}
+            >
+              💳 View EMI options
+            </button>
+          )}
 
           {/* Key specs */}
           {specs.length > 0 && (
@@ -612,8 +692,68 @@ function ProductDetailPage({ product }) {
         {activeTab === "reviews" && <ReviewsTab slug={product.slug} />}
       </div>
 
+      {/* Recently Viewed */}
+      {recentProducts.length > 0 && (
+        <div style={{ maxWidth: 1280, margin: "40px auto 0", padding: "0 24px 40px" }}>
+          <h3 style={{ fontSize: 20, fontWeight: 700, color: "#f1f5f9", marginBottom: 20 }}>Recently Viewed</h3>
+          <div style={{ display: "flex", gap: 16, overflowX: "auto", paddingBottom: 8 }}>
+            {recentProducts.map((p) => (
+              <Link key={p.id} href={`/products/${p.slug}`} style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 12, overflow: "hidden", textDecoration: "none", flexShrink: 0, width: 180, transition: "border-color 0.2s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#2d4a6b")}
+                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+              >
+                <div style={{ background: "#111827", height: 120, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <img src={p.image} alt={p.name} loading="lazy" style={{ maxHeight: 100, maxWidth: "90%", objectFit: "contain" }} />
+                </div>
+                <div style={{ padding: 10 }}>
+                  <p style={{ fontSize: 12, fontWeight: 600, color: "#f1f5f9", margin: "0 0 4px", lineHeight: 1.3 }}>{p.name}</p>
+                  <p style={{ fontSize: 12, color: "#00d4ff", margin: 0, fontWeight: 700 }}>{p.price ? `₹${p.price.toLocaleString("en-IN")}` : "On Request"}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
       <RelatedProducts current={product} />
       <EnquiryModal open={enquiryOpen} onClose={() => setEnquiryOpen(false)} product={product} />
+
+      {/* EMI Modal */}
+      {emiOpen && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }} onClick={() => setEmiOpen(false)}>
+          <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 20, padding: 28, maxWidth: 480, width: "100%", position: "relative" }} onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => setEmiOpen(false)} style={{ position: "absolute", top: 16, right: 16, background: "transparent", border: "1px solid #1e2d40", borderRadius: "50%", width: 32, height: 32, color: "#94a3b8", cursor: "pointer", fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", margin: "0 0 6px" }}>Easy EMI Options</h3>
+            <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 20px" }}>Product price: <strong style={{ color: "#00d4ff" }}>₹{product.price.toLocaleString("en-IN")}</strong></p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {[
+                { months: 3, interest: 0, label: "3 Months", popular: false },
+                { months: 6, interest: 0.01, label: "6 Months", popular: true },
+                { months: 12, interest: 0.05, label: "12 Months", popular: false },
+                { months: 24, interest: 0.10, label: "24 Months", popular: false },
+              ].map((opt) => {
+                const total = product.price * (1 + opt.interest);
+                const monthly = total / opt.months;
+                return (
+                  <div key={opt.months} style={{ background: opt.popular ? "rgba(0,212,255,0.06)" : "#0a0f1e", border: `1px solid ${opt.popular ? "#00d4ff" : "#1e2d40"}`, borderRadius: 10, padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9" }}>{opt.label}</span>
+                        {opt.popular && <span style={{ fontSize: 10, background: "#00d4ff", color: "#0a0f1e", padding: "2px 6px", borderRadius: 4, fontWeight: 700 }}>POPULAR</span>}
+                      </div>
+                      <span style={{ fontSize: 11, color: "#64748b" }}>Total: ₹{total.toLocaleString("en-IN", { maximumFractionDigits: 0 })}{opt.interest > 0 ? ` (${opt.interest * 100}% interest)` : " (0% interest)"}</span>
+                    </div>
+                    <span style={{ fontSize: 16, fontWeight: 800, color: "#00d4ff" }}>₹{monthly.toLocaleString("en-IN", { maximumFractionDigits: 0 })}<span style={{ fontSize: 11, color: "#64748b", fontWeight: 400 }}>/mo</span></span>
+                  </div>
+                );
+              })}
+            </div>
+            <p style={{ fontSize: 11, color: "#475569", marginTop: 16, lineHeight: 1.6 }}>
+              EMI available via Bajaj Finserv, HDFC Bank, ICICI Bank at select outlets. Contact us for details.
+            </p>
+          </div>
+        </div>
+      )}
       <style>{`
         @media (max-width: 768px) {
           .detail-grid { grid-template-columns: 1fr !important; }

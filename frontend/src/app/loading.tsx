@@ -8,7 +8,7 @@ export default function Loading() {
             <circle cx="12" cy="12" r="3" fill="#00d4ff" />
           </svg>
         </div>
-        <span style={{ fontSize: 15, fontWeight: 700, color: "#fff", letterSpacing: "0.05em" }}>KONARK INDUSTRY</span>
+        <span style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", letterSpacing: "0.05em" }}>KONARK INDUSTRY</span>
       </div>
       <div style={{ width: 40, height: 40, borderRadius: "50%", border: "3px solid #1e2d40", borderTopColor: "#00d4ff", animation: "spin 0.8s linear infinite" }} />
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>

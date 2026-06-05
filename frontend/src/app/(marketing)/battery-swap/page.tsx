@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import Breadcrumb from "@/components/ui/Breadcrumb";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
@@ -411,9 +412,12 @@ export default function BatterySwapPage() {
 
   return (
     <main style={{ minHeight: "100vh", background: "#0a0f1e" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px 24px 0" }}>
+        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Battery Swap" }]} />
+      </div>
 
       {/* Hero */}
-      <section style={{ position: "relative", overflow: "hidden", padding: "100px 24px 80px", textAlign: "center" }}>
+      <section style={{ position: "relative", overflow: "hidden", padding: "20px 24px 80px", textAlign: "center" }}>
         <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
           <span style={{

@@ -79,6 +79,13 @@ const ProductCard = ({ product }) => {
         </>
       )}
 
+      {/* Out of Stock overlay */}
+      {product.inStock === false && (
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "flex-start", justifyContent: "flex-start", padding: 12, zIndex: 15, pointerEvents: "none" }}>
+          <span style={{ background: "#ef4444", color: "#fff", fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 4 }}>Out of Stock</span>
+        </div>
+      )}
+
       {/* 🖼️ Product Image (Perfect Fit) */}
       <div className={productImageWrapper}>
         <img
@@ -103,7 +110,11 @@ const ProductCard = ({ product }) => {
         <div className="flex justify-between items-center mt-4">
           <span className={priceTag}>{formattedPrice}</span>
 
-          {product.type === "vehicle" ? (
+          {product.inStock === false ? (
+            <button disabled style={{ ...viewButton, background: "#1e2d40", color: "#64748b", cursor: "not-allowed", border: "none" }}>
+              Out of Stock
+            </button>
+          ) : product.type === "vehicle" ? (
             <button
               className={viewButton}
               style={{ background: "#00d4ff", color: "#0a0f1e", border: "none" }}
@@ -136,6 +147,11 @@ const ProductCard = ({ product }) => {
               </button>
             </div>
           )}
+        </div>
+
+        {/* Make in India */}
+        <div style={{ marginTop: 10, paddingTop: 8, borderTop: "1px solid #1e2d40", fontSize: 10, color: "#FF9933", fontWeight: 600 }}>
+          🇮🇳 Made in India
         </div>
       </div>
     </motion.div>

@@ -132,6 +132,7 @@ export default function ProductsPage() {
   const [minRating, setMinRating] = useState(0);
   const [sortBy, setSortBy] = useState("newest");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [priceRange, setPriceRange] = useState([0, 200000]);
 
   const toggleCategory = (cat) => {
     if (cat === "All") { setSelectedCategories(["All"]); return; }
@@ -145,17 +146,20 @@ export default function ProductsPage() {
     let list = selectedCategories.includes("All") ? allProducts : allProducts.filter((p) => selectedCategories.includes(p.category));
     if (typeFilter !== "all") list = list.filter((p) => p.type === typeFilter);
     if (minRating > 0) list = list.filter((p) => p.rating >= minRating);
+    if (priceRange[0] > 0 || priceRange[1] < 200000) {
+      list = list.filter((p) => p.price === 0 || (p.price >= priceRange[0] && p.price <= priceRange[1]));
+    }
     if (sortBy === "price-asc") list = [...list].sort((a, b) => (a.price || 0) - (b.price || 0));
     else if (sortBy === "price-desc") list = [...list].sort((a, b) => (b.price || 0) - (a.price || 0));
     else if (sortBy === "rating") list = [...list].sort((a, b) => b.rating - a.rating);
     return list;
-  }, [selectedCategories, typeFilter, minRating, sortBy]);
+  }, [selectedCategories, typeFilter, minRating, sortBy, priceRange]);
 
   const Sidebar = () => (
     <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, padding: 20, display: "flex", flexDirection: "column", gap: 20 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <h3 style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Filters</h3>
-        <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setSortBy("newest"); setTypeFilter("all"); }} style={{ fontSize: 12, color: "#00d4ff", background: "transparent", border: "none", cursor: "pointer", fontWeight: 600 }}>Reset</button>
+        <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setSortBy("newest"); setTypeFilter("all"); setPriceRange([0, 200000]); }} style={{ fontSize: 12, color: "#00d4ff", background: "transparent", border: "none", cursor: "pointer", fontWeight: 600 }}>Reset</button>
       </div>
 
       {/* Type filter */}
@@ -193,6 +197,51 @@ export default function ProductsPage() {
             <span style={{ fontSize: 13, color: selectedCategories.includes(cat) || (cat === "All" && selectedCategories.includes("All")) ? "#f1f5f9" : "#94a3b8" }}>{cat}</span>
           </label>
         ))}
+      </div>
+
+      {/* Price Range */}
+      <div>
+        <p style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Price Range</p>
+        <p style={{ fontSize: 12, color: "#00d4ff", fontWeight: 600, marginBottom: 10 }}>
+          ₹{priceRange[0].toLocaleString("en-IN")} — ₹{priceRange[1].toLocaleString("en-IN")}
+        </p>
+        <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+          <div style={{ flex: 1, position: "relative" }}>
+            <span style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "#64748b" }}>₹</span>
+            <input
+              type="number"
+              min={0}
+              max={priceRange[1]}
+              value={priceRange[0]}
+              onChange={(e) => setPriceRange([Math.min(Number(e.target.value), priceRange[1]), priceRange[1]])}
+              style={{ width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40", borderRadius: 6, padding: "6px 8px 6px 20px", color: "#f1f5f9", fontSize: 12, outline: "none", boxSizing: "border-box" }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+            />
+          </div>
+          <div style={{ flex: 1, position: "relative" }}>
+            <span style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "#64748b" }}>₹</span>
+            <input
+              type="number"
+              min={priceRange[0]}
+              max={200000}
+              value={priceRange[1]}
+              onChange={(e) => setPriceRange([priceRange[0], Math.max(Number(e.target.value), priceRange[0])])}
+              style={{ width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40", borderRadius: 6, padding: "6px 8px 6px 20px", color: "#f1f5f9", fontSize: 12, outline: "none", boxSizing: "border-box" }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+            />
+          </div>
+        </div>
+        <input
+          type="range"
+          min={0}
+          max={200000}
+          step={1000}
+          value={priceRange[1]}
+          onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+          style={{ width: "100%", accentColor: "#00d4ff" }}
+        />
       </div>
 
       {/* Rating */}

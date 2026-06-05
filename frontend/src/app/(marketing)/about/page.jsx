@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
+import FAQSection from "@/components/sections/FAQSection";
 
 const TIMELINE = [
   { year: "2014", text: "Founded in Bhubaneswar with 12 employees and a single product line" },
@@ -144,6 +145,8 @@ export default function AboutPage() {
           Get in Touch
         </Link>
       </section>
+
+      <FAQSection />
 
       <style>{`
         @media (max-width: 768px) {

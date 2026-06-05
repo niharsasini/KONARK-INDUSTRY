@@ -115,7 +115,7 @@ export default function RegisterPage() {
             </svg>
           </div>
           <div>
-            <span style={{ display: "block", fontSize: 14, fontWeight: 700, color: "#fff" }}>KONARK</span>
+            <span style={{ display: "block", fontSize: 14, fontWeight: 700, color: "#f1f5f9" }}>KONARK</span>
             <span style={{ display: "block", fontSize: 9, fontWeight: 600, letterSpacing: "0.2em", color: "#00d4ff", textTransform: "uppercase" }}>INDUSTRY</span>
           </div>
         </Link>
@@ -160,20 +160,20 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div>
               <label style={LABEL}>Full Name *</label>
-              <input required value={form.name} onChange={set("name")} placeholder="Rajesh Kumar" style={INPUT} onFocus={focus} onBlur={blur} />
+              <input aria-label="Full name" required value={form.name} onChange={set("name")} placeholder="Rajesh Kumar" style={INPUT} onFocus={focus} onBlur={blur} />
             </div>
 
             <div>
               <label style={LABEL}>Phone Number</label>
               <div style={{ position: "relative" }}>
                 <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", fontSize: 13, color: "#64748b", fontWeight: 600 }}>+91</span>
-                <input type="tel" value={form.phone} onChange={set("phone")} placeholder="98765 43210" style={{ ...INPUT, paddingLeft: 44 }} onFocus={focus} onBlur={blur} />
+                <input aria-label="Phone number" type="tel" value={form.phone} onChange={set("phone")} placeholder="98765 43210" style={{ ...INPUT, paddingLeft: 44 }} onFocus={focus} onBlur={blur} />
               </div>
             </div>
 
             <div>
               <label style={LABEL}>Email Address *</label>
-              <input required type="email" value={form.email} onChange={set("email")} placeholder="you@example.com" style={INPUT} onFocus={focus} onBlur={blur} />
+              <input aria-label="Email address" required type="email" value={form.email} onChange={set("email")} placeholder="you@example.com" style={INPUT} onFocus={focus} onBlur={blur} />
             </div>
 
             <div>
@@ -186,7 +186,7 @@ export default function RegisterPage() {
             <div>
               <label style={LABEL}>Password *</label>
               <div style={{ position: "relative" }}>
-                <input required type={showPw ? "text" : "password"} value={form.password} onChange={set("password")} placeholder="Min. 8 characters" minLength={8} style={{ ...INPUT, paddingRight: 44 }} onFocus={focus} onBlur={blur} />
+                <input aria-label="Password" required type={showPw ? "text" : "password"} value={form.password} onChange={set("password")} placeholder="Min. 8 characters" minLength={8} style={{ ...INPUT, paddingRight: 44 }} onFocus={focus} onBlur={blur} />
                 <button type="button" onClick={() => setShowPw((s) => !s)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8", display: "flex" }}>
                   {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
@@ -197,7 +197,7 @@ export default function RegisterPage() {
             <div>
               <label style={LABEL}>Confirm Password *</label>
               <div style={{ position: "relative" }}>
-                <input required type={showConfirm ? "text" : "password"} value={form.confirmPassword} onChange={set("confirmPassword")} placeholder="Re-enter password" style={{ ...INPUT, paddingRight: 44 }} onFocus={focus} onBlur={blur} />
+                <input aria-label="Confirm password" required type={showConfirm ? "text" : "password"} value={form.confirmPassword} onChange={set("confirmPassword")} placeholder="Re-enter password" style={{ ...INPUT, paddingRight: 44 }} onFocus={focus} onBlur={blur} />
                 <button type="button" onClick={() => setShowConfirm((s) => !s)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8", display: "flex" }}>
                   {showConfirm ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>

@@ -5,6 +5,23 @@ import { useCartStore } from "@/store";
 import { createOrder } from "@/lib/api";
 import toast from "react-hot-toast";
 
+const SERVICEABLE_PINCODES = [
+  '751001','751002','751003','751004','751005',
+  '751006','751007','751008','751009','751010',
+  '751011','751012','751013','751014','751015',
+  '751016','751017','751018','751019','751020',
+  '751021','751022','751023','751024','751025',
+  '753001','753002','753003','753004','753005',
+  '754001','754002','760001','760002','761001',
+  '769001','769002','769003','768001','768002',
+];
+
+const MAJOR_CITIES = [
+  'Bhubaneswar','Cuttack','Puri','Rourkela',
+  'Berhampur','Sambalpur','Balasore','Brahmapur',
+  'Baripada','Jharsuguda','Bargarh',
+];
+
 const INPUT = {
   width: "100%",
   background: "#0f172a",
@@ -31,8 +48,10 @@ const LABEL = {
 export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCartStore();
   const [step, setStep] = useState<"details" | "payment" | "success">("details");
-  const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", city: "", pincode: "", notes: "" });
+  const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", city: "", pincode: "", notes: "", gstin: "" });
   const [payment, setPayment] = useState("cod");
+  const [pincodeStatus, setPincodeStatus] = useState<"none" | "ok" | "warn">("none");
+  const [cityOptions, setCityOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [orderNumber, setOrderNumber] = useState("");
   const [error, setError] = useState("");
@@ -149,21 +168,88 @@ export default function CheckoutPage() {
               <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, padding: "28px" }}>
                 <h2 style={{ fontSize: 17, fontWeight: 700, color: "#f1f5f9", margin: "0 0 24px" }}>Delivery Details</h2>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                  {[
-                    { k: "name", label: "Full Name", type: "text", placeholder: "Rajesh Kumar", full: true },
-                    { k: "phone", label: "Phone Number", type: "tel", placeholder: "+91 98765 43210" },
-                    { k: "email", label: "Email (optional)", type: "email", placeholder: "you@example.com" },
-                    { k: "city", label: "City", type: "text", placeholder: "Bhubaneswar" },
-                    { k: "pincode", label: "PIN Code", type: "text", placeholder: "751024" },
-                  ].map((f) => (
-                    <div key={f.k} style={{ gridColumn: f.full ? "1 / -1" : undefined }}>
-                      <label style={LABEL}>{f.label}</label>
-                      <input type={f.type} value={(form as Record<string, string>)[f.k]} onChange={set(f.k)} required={f.k !== "email"} placeholder={f.placeholder} style={INPUT} onFocus={focus} onBlur={blur} />
-                    </div>
-                  ))}
+                  <div style={{ gridColumn: "1 / -1" }}>
+                    <label style={LABEL}>Full Name</label>
+                    <input aria-label="Full name" type="text" value={form.name} onChange={set("name")} required placeholder="Rajesh Kumar" style={INPUT} onFocus={focus} onBlur={blur} />
+                  </div>
+                  <div>
+                    <label style={LABEL}>Phone Number</label>
+                    <input aria-label="Phone number" type="tel" value={form.phone} onChange={set("phone")} required placeholder="+91 98765 43210" style={INPUT} onFocus={focus} onBlur={blur} />
+                  </div>
+                  <div>
+                    <label style={LABEL}>Email (optional)</label>
+                    <input aria-label="Email address" type="email" value={form.email} onChange={set("email")} placeholder="you@example.com" style={INPUT} onFocus={focus} onBlur={blur} />
+                  </div>
+                  <div style={{ position: "relative" }}>
+                    <label style={LABEL}>City</label>
+                    <input
+                      aria-label="City"
+                      type="text"
+                      value={form.city}
+                      onChange={(e) => {
+                        set("city")(e);
+                        const q = e.target.value.toLowerCase();
+                        setCityOptions(q.length > 0 ? MAJOR_CITIES.filter((c) => c.toLowerCase().startsWith(q)) : []);
+                      }}
+                      onBlur={() => setTimeout(() => setCityOptions([]), 200)}
+                      required
+                      placeholder="Bhubaneswar"
+                      style={INPUT}
+                      onFocus={focus}
+                    />
+                    {cityOptions.length > 0 && (
+                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 100, background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 8, overflow: "hidden", boxShadow: "0 8px 24px rgba(0,0,0,0.3)" }}>
+                        {cityOptions.map((c) => (
+                          <button key={c} type="button" onClick={() => { setForm((f) => ({ ...f, city: c })); setCityOptions([]); }} style={{ display: "block", width: "100%", padding: "10px 14px", background: "transparent", border: "none", color: "#f1f5f9", fontSize: 13, textAlign: "left", cursor: "pointer" }}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.06)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                          >{c}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label style={LABEL}>PIN Code</label>
+                    <input
+                      aria-label="PIN code"
+                      type="text"
+                      value={form.pincode}
+                      maxLength={6}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "");
+                        setForm((f) => ({ ...f, pincode: val }));
+                        if (val.length === 6) {
+                          setPincodeStatus(SERVICEABLE_PINCODES.includes(val) ? "ok" : "warn");
+                        } else {
+                          setPincodeStatus("none");
+                        }
+                      }}
+                      placeholder="751024"
+                      style={INPUT}
+                      onFocus={focus}
+                      onBlur={blur}
+                    />
+                    {pincodeStatus === "ok" && <p style={{ fontSize: 12, color: "#10b981", marginTop: 4 }}>✓ Delivery available</p>}
+                    {pincodeStatus === "warn" && <p style={{ fontSize: 12, color: "#f97316", marginTop: 4 }}>⚠ Delivery may take extra time. Call +91 94376 11129 to confirm.</p>}
+                  </div>
                   <div style={{ gridColumn: "1 / -1" }}>
                     <label style={LABEL}>Full Address</label>
-                    <textarea value={form.address} onChange={set("address")} rows={3} required placeholder="House/Flat No., Street, Area" style={{ ...INPUT, resize: "vertical", fontFamily: "inherit" }} onFocus={focus} onBlur={blur} />
+                    <textarea aria-label="Full delivery address" value={form.address} onChange={set("address")} rows={3} required placeholder="House/Flat No., Street, Area" style={{ ...INPUT, resize: "vertical", fontFamily: "inherit" }} onFocus={focus} onBlur={blur} />
+                  </div>
+                  <div style={{ gridColumn: "1 / -1" }}>
+                    <label style={LABEL}>GSTIN (Optional — for business orders)</label>
+                    <input
+                      aria-label="GSTIN number"
+                      type="text"
+                      value={form.gstin}
+                      onChange={(e) => setForm((f) => ({ ...f, gstin: e.target.value.toUpperCase() }))}
+                      maxLength={15}
+                      placeholder="22AAAAA0000A1Z5"
+                      style={INPUT}
+                      onFocus={focus}
+                      onBlur={blur}
+                    />
+                    <p style={{ fontSize: 11, color: "#475569", marginTop: 4 }}>Add your GSTIN to receive a GST invoice for your order.</p>
                   </div>
                 </div>
                 <button

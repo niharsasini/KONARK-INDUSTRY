@@ -15,6 +15,7 @@ const COMPANY_LINKS = [
   { label: "Services", href: "/services" },
   { label: "Battery Swap", href: "/battery-swap" },
   { label: "Partner With Us", href: "/partner" },
+  { label: "FAQ", href: "/about#faq" },
   { label: "Careers", href: "/contact" },
   { label: "Press", href: "/contact" },
 ];

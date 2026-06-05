@@ -2,6 +2,18 @@
 import Link from "next/link";
 import { useCartStore } from "@/store";
 
+function getDeliveryDate() {
+  const today = new Date();
+  const minDate = new Date(today);
+  const maxDate = new Date(today);
+  minDate.setDate(today.getDate() + 5);
+  maxDate.setDate(today.getDate() + 7);
+  while (minDate.getDay() === 0) minDate.setDate(minDate.getDate() + 1);
+  while (maxDate.getDay() === 0) maxDate.setDate(maxDate.getDate() + 1);
+  const fmt = (d: Date) => d.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+  return `${fmt(minDate)} – ${fmt(maxDate)}`;
+}
+
 export default function CartPage() {
   const { items, removeItem, updateQuantity, subtotal } = useCartStore();
   const sub = subtotal();
@@ -103,6 +115,13 @@ export default function CartPage() {
                   <span style={{ color: "#00d4ff" }}>{sub ? `₹${total.toLocaleString("en-IN")}` : "On Request"}</span>
                 </div>
               </div>
+
+              {sub > 0 && (
+                <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px", background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.15)", borderRadius: 8, marginBottom: 12 }}>
+                  <span style={{ fontSize: 13 }}>🚚</span>
+                  <p style={{ fontSize: 12, color: "#10b981", margin: 0 }}>Delivery by <strong>{getDeliveryDate()}</strong></p>
+                </div>
+              )}
 
               {sub > 0 && sub < 5000 && (
                 <p style={{ fontSize: 11, color: "#10b981", marginBottom: 16 }}>

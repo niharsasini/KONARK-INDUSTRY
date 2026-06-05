@@ -79,7 +79,7 @@ export default function LoginPage() {
             </svg>
           </div>
           <div>
-            <span style={{ display: "block", fontSize: 15, fontWeight: 700, color: "#fff" }}>KONARK</span>
+            <span style={{ display: "block", fontSize: 15, fontWeight: 700, color: "#f1f5f9" }}>KONARK</span>
             <span style={{ display: "block", fontSize: 9, fontWeight: 600, letterSpacing: "0.2em", color: "#00d4ff", textTransform: "uppercase" }}>INDUSTRY</span>
           </div>
         </Link>
@@ -128,7 +128,7 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             <div>
               <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#94a3b8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 7 }}>Email Address</label>
-              <input type="email" value={form.email} onChange={set("email")} required placeholder="you@example.com" style={INPUT} onFocus={focus} onBlur={blur} />
+              <input aria-label="Email address" type="email" value={form.email} onChange={set("email")} required placeholder="you@example.com" style={INPUT} onFocus={focus} onBlur={blur} />
             </div>
 
             <div>
@@ -137,7 +137,7 @@ export default function LoginPage() {
                 <Link href="/contact" style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none" }}>Forgot password?</Link>
               </div>
               <div style={{ position: "relative" }}>
-                <input type={showPw ? "text" : "password"} value={form.password} onChange={set("password")} required placeholder="••••••••" style={{ ...INPUT, paddingRight: 44 }} onFocus={focus} onBlur={blur} />
+                <input aria-label="Password" type={showPw ? "text" : "password"} value={form.password} onChange={set("password")} required placeholder="••••••••" style={{ ...INPUT, paddingRight: 44 }} onFocus={focus} onBlur={blur} />
                 <button type="button" onClick={() => setShowPw((s) => !s)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8", display: "flex", alignItems: "center" }}>
                   {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>

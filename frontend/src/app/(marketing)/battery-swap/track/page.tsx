@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Breadcrumb from "@/components/ui/Breadcrumb";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
@@ -99,8 +100,9 @@ export default function BatterySwapTrackPage() {
   }
 
   return (
-    <main style={{ minHeight: "100vh", background: "#0a0f1e", padding: "100px 24px 80px" }}>
+    <main style={{ minHeight: "100vh", background: "#0a0f1e", padding: "80px 24px 80px" }}>
       <div style={{ maxWidth: 600, margin: "0 auto" }}>
+        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Battery Swap", href: "/battery-swap" }, { label: "Track My Swap" }]} />
 
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 40 }}>
