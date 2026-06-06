@@ -39,12 +39,6 @@ const SERVICES = [
     link: "https://www.soumyashipower.in/", external: true, cta: "Explore Wind Energy →",
     partner: "Partner Service",
   },
-  {
-    icon: "🏠", color: "#10b981",
-    title: "Home Electrical Work",
-    desc: "Wiring, rewiring, fault finding, board upgrades by licensed electricians.",
-    link: "/services/enquiry", external: false, cta: "Book →",
-  },
 ];
 
 function ServiceCard({ service, index, inView }) {
@@ -171,7 +165,7 @@ export default function ServicesPreview() {
         </motion.div>
 
         {/* RIGHT */}
-        <div ref={rightRef} className="services-grid-right services-right-grid">
+        <div ref={rightRef} className="services-grid-right services-right-grid" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))" }}>
           {SERVICES.map((s, i) => (
             <ServiceCard key={s.title} service={s} index={i} inView={rightIn} />
           ))}

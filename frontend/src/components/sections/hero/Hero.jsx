@@ -297,16 +297,23 @@ export default function Hero() {
                   background: "linear-gradient(145deg, #111827, #0f172a)",
                   border: "1px solid #1e2d40",
                   borderRadius: 20,
-                  padding: 20,
+                  padding: 24,
                   cursor: card.slug ? "pointer" : "default",
-                  boxShadow: "0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03)",
+                  boxShadow: "0 0 30px rgba(0,212,255,0.15), 0 20px 60px rgba(0,0,0,0.5)",
                   transformStyle: "preserve-3d",
                 }}
                 onClick={() => { if (card.slug) router.push(`/products/${card.slug}`); }}
               >
-                {/* Badge */}
-                <div style={{ marginBottom: 12 }}>
+                {/* Image with badge inside */}
+                <div style={{
+                  width: "100%", height: 240,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  background: "#060d1a", borderRadius: 12,
+                  overflow: "hidden", marginBottom: 16,
+                  position: "relative",
+                }}>
                   <span style={{
+                    position: "absolute", top: 12, left: 12, zIndex: 1,
                     fontSize: 10, fontWeight: 700, letterSpacing: "0.12em",
                     textTransform: "uppercase", color: card.badgeColor,
                     background: `${card.badgeColor}18`,
@@ -315,34 +322,25 @@ export default function Hero() {
                   }}>
                     {card.badge}
                   </span>
-                </div>
-
-                {/* Image */}
-                <div style={{
-                  width: "100%", height: 200,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "rgba(17,24,39,0.6)", borderRadius: 12,
-                  overflow: "hidden", marginBottom: 16,
-                }}>
                   <img
                     src={card.src}
                     alt={card.name}
                     style={{
-                      maxHeight: 185, maxWidth: "90%", objectFit: "contain",
+                      maxHeight: 220, maxWidth: "90%", objectFit: "contain",
                       filter: `drop-shadow(0 4px 24px ${card.badgeColor}35)`,
                     }}
                   />
                 </div>
 
                 {/* Name */}
-                <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>
+                <p style={{ fontSize: 17, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>
                   {card.name}
                 </p>
 
                 {/* Price */}
                 <p style={{
                   fontSize: 22, fontWeight: 800,
-                  color: card.price ? "#00d4ff" : card.badgeColor,
+                  color: "#00d4ff",
                   margin: "0 0 14px",
                 }}>
                   {card.price ? `₹${card.price.toLocaleString("en-IN")}` : "Coming Soon"}
@@ -352,9 +350,9 @@ export default function Hero() {
                 <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
                   {card.specs.map((s) => (
                     <span key={s} style={{
-                      fontSize: 11, fontWeight: 600, color: "#94a3b8",
-                      background: "rgba(241,245,249,0.05)",
-                      border: "1px solid #1e2d40",
+                      fontSize: 11, fontWeight: 600, color: "#a78bfa",
+                      background: "rgba(124,58,237,0.15)",
+                      border: "1px solid rgba(124,58,237,0.3)",
                       padding: "4px 10px", borderRadius: 6,
                     }}>
                       {s}
@@ -391,8 +389,8 @@ export default function Hero() {
                 key={i}
                 onClick={() => setCurrent(i)}
                 style={{
-                  width: i === current ? 20 : 6,
-                  height: 6, borderRadius: 3,
+                  width: i === current ? 24 : 8,
+                  height: 8, borderRadius: 4,
                   background: i === current ? "#00d4ff" : "#1e2d40",
                   cursor: "pointer",
                   transition: "all 300ms",
@@ -413,7 +411,7 @@ export default function Hero() {
                 key={c.label}
                 href={c.href}
                 style={{
-                  flex: 1, display: "flex", flexDirection: "column",
+                  flex: 1, minWidth: 0, display: "flex", flexDirection: "column",
                   alignItems: "center", gap: 4, padding: "10px 8px",
                   background: "rgba(15,23,42,0.8)",
                   border: "1px solid #1e2d40", borderRadius: 10,

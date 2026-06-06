@@ -7,18 +7,18 @@ import { useRouter } from "next/navigation";
 import { products } from "@/components/product/ProductData";
 
 const carProducts = [
-  { id: "ev-car-1", name: "Konark EV Sedan", image: "/konark/car-1 (1).png", bodyType: "Sedan" },
-  { id: "ev-car-2", name: "Konark EV Hatchback", image: "/konark/car-2.png", bodyType: "Hatchback" },
-  { id: "ev-car-3", name: "Konark EV SUV", image: "/konark/car-3.png", bodyType: "SUV" },
-  { id: "ev-car-4", name: "Konark EV Compact", image: "/konark/car-4.png", bodyType: "Compact" },
-  { id: "ev-car-5", name: "Konark EV Family", image: "/konark/car-5.png", bodyType: "Family" },
-  { id: "ev-car-6", name: "Konark EV Sport", image: "/konark/car-6.png", bodyType: "Sport" },
-  { id: "ev-car-7", name: "Konark EV Premium", image: "/konark/car-7.png", bodyType: "Premium" },
-  { id: "ev-car-8", name: "Konark EV Pro", image: "/konark/car-8.png", bodyType: "Pro" },
+  { id: "ev-car-1", name: "Konark EV Sedan", image: "/konark/car-1 (1).png", bodyType: "Sedan", isEvCar: true },
+  { id: "ev-car-2", name: "Konark EV Hatchback", image: "/konark/car-2.png", bodyType: "Hatchback", isEvCar: true },
+  { id: "ev-car-3", name: "Konark EV SUV", image: "/konark/car-3.png", bodyType: "SUV", isEvCar: true },
+  { id: "ev-car-4", name: "Konark EV Compact", image: "/konark/car-4.png", bodyType: "Compact", isEvCar: true },
+  { id: "ev-car-5", name: "Konark EV Family", image: "/konark/car-5.png", bodyType: "Family", isEvCar: true },
+  { id: "ev-car-6", name: "Konark EV Sport", image: "/konark/car-6.png", bodyType: "Sport", isEvCar: true },
+  { id: "ev-car-7", name: "Konark EV Premium", image: "/konark/car-7.png", bodyType: "Premium", isEvCar: true },
+  { id: "ev-car-8", name: "Konark EV Pro", image: "/konark/car-8.png", bodyType: "Pro", isEvCar: true },
 ];
 
 const TABS = [
-  { label: "All", icon: "✦", filter: () => true, isEvCars: false },
+  { label: "All", icon: "✦", filter: () => true, isEvCars: false, includesCars: true },
   { label: "EV Vehicles", icon: "🏍", filter: (p) => p.type === "vehicle", isEvCars: false },
   { label: "EV Cars", icon: "🚗", filter: () => false, isEvCars: true },
   { label: "Buy Now", icon: "🛒", filter: (p) => p.type === "product", isEvCars: false },
@@ -203,9 +203,11 @@ export default function FeaturedProducts() {
   const [activeTab, setActiveTab] = useState(0);
   const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true });
 
-  const isEvCarsTab = TABS[activeTab].isEvCars;
-  const filtered = isEvCarsTab ? [] : products.filter(TABS[activeTab].filter).slice(0, 8);
-  const displayed = isEvCarsTab ? carProducts : (filtered.length > 0 ? filtered : products.slice(0, 8));
+  const tab = TABS[activeTab];
+  const regularProducts = tab.isEvCars ? [] : products.filter(tab.filter).slice(0, 8);
+  const carsToShow = (tab.isEvCars || tab.includesCars) ? carProducts : [];
+  const baseDisplayed = [...regularProducts, ...carsToShow];
+  const displayed = baseDisplayed.length > 0 ? baseDisplayed : products.slice(0, 8);
   const doubled = [...displayed, ...displayed];
   const trackWidth = doubled.length * (CARD_W + CARD_GAP);
 
@@ -292,7 +294,7 @@ export default function FeaturedProducts() {
         >
           {doubled.map((p, i) => (
             <div key={`${p.id}-${i}`} className="product-card-wrap">
-              {isEvCarsTab ? <EvCarCard car={p} /> : <TiltCard product={p} />}
+              {p.isEvCar ? <EvCarCard car={p} /> : <TiltCard product={p} />}
             </div>
           ))}
         </div>
