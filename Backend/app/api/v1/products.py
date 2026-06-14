@@ -104,7 +104,7 @@ def _to_response(p: Product) -> ProductResponse:
 async def list_products(
     category: Optional[str] = Query(None, description="Filter by product category"),
     type: Optional[str] = Query(None, description="vehicle | product | service"),
-    search: Optional[str] = Query(None, description="Search in product name"),
+    search: Optional[str] = Query(None, description="Search in product name, category, and description"),
     min_price: Optional[float] = Query(None, ge=0, description="Minimum price in INR"),
     max_price: Optional[float] = Query(None, ge=0, description="Maximum price in INR"),
     in_stock: Optional[bool] = Query(None, description="Filter by stock availability"),
@@ -133,8 +133,13 @@ async def list_products(
     if max_price is not None:
         query_filter.setdefault("price", {})["$lte"] = max_price
     if search:
-        # Case-insensitive regex search on the name field
-        query_filter["name"] = {"$regex": search, "$options": "i"}
+        # Case-insensitive search across name, category, and description
+        regex = {"$regex": search, "$options": "i"}
+        query_filter["$or"] = [
+            {"name": regex},
+            {"category": regex},
+            {"description": regex},
+        ]
 
     products = (
         await Product.find(query_filter)
