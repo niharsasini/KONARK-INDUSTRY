@@ -1,0 +1,262 @@
+/* ===================================== */
+/* ===== ALL MEDIA QUERIES BELOW ======= */
+/* ===================================== */
+
+@media (max-width: 1024px) {
+  .stats-inner { padding: 0 24px; }
+  .products-header { padding: 0 24px; }
+  .products-track { padding: 20px 24px; }
+  .services-inner { padding: 0 24px; gap: 40px; }
+  .why-grid { padding: 0 24px; }
+  .certs-inner { padding: 0 24px; }
+  .testimonials-inner { padding: 0 24px; }
+  .footer-main { padding: 48px 24px; grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  /* NAVBAR */
+  .nav-links-desktop { display: none !important; }
+  .nav-right-desktop { display: none !important; }
+  .nav-hamburger { display: flex !important; }
+
+  /* HERO */
+  .hero-container {
+    grid-template-columns: 1fr !important;
+    padding: 88px 16px 48px !important;
+    gap: 28px !important;
+  }
+
+  .hero-left {
+    order: 1 !important;
+  }
+
+  .hero-right-col {
+    order: 2 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .hero-product-card-inner {
+    max-width: 300px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 16px !important;
+  }
+
+  .hero-product-card-inner img {
+    height: 160px !important;
+    object-fit: contain !important;
+  }
+
+  .hero-headline { font-size: 34px !important; margin-bottom: 12px !important; }
+  .hero-subtitle { font-size: 15px !important; margin-bottom: 20px !important; line-height: 1.7 !important; }
+  .hero-btn-row { flex-direction: column !important; gap: 10px !important; }
+  .hero-btn-primary, .hero-btn-ghost {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 14px !important;
+  }
+  .hero-trust-row { gap: 6px !important; }
+  .hero-trust-pill { font-size: 11px !important; }
+
+  /* STATS */
+  .stats-section { padding: 48px 0 !important; }
+  .stats-inner {
+    grid-template-columns: 1fr 1fr !important;
+    padding: 0 !important;
+  }
+  .stat-item {
+    padding: 24px 16px !important;
+    border-right: none !important;
+    border-bottom: 1px solid #1e2d40 !important;
+  }
+  .stat-item:nth-child(odd) { border-right: 1px solid #1e2d40 !important; }
+  .stat-item:nth-child(3),
+  .stat-item:nth-child(4) { border-bottom: none !important; }
+  .stat-number { font-size: 36px !important; }
+  .stat-label { font-size: 11px !important; }
+  .stat-desc { display: none !important; }
+
+  /* PRODUCTS */
+  .products-section { padding: 60px 0 !important; }
+  .products-header {
+    flex-direction: column !important;
+    padding: 0 16px !important;
+    gap: 12px !important;
+  }
+  .products-carousel-wrap::before,
+  .products-carousel-wrap::after { display: none !important; }
+  .products-track {
+    animation: none !important;
+    overflow-x: auto !important;
+    padding: 16px !important;
+    gap: 12px !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+  }
+  .products-track::-webkit-scrollbar { display: none !important; }
+  .product-card-wrap { width: 220px !important; flex-shrink: 0 !important; }
+
+  /* SERVICES */
+  .services-section { padding: 60px 0 !important; }
+  .services-inner {
+    grid-template-columns: 1fr !important;
+    padding: 0 16px !important;
+    gap: 32px !important;
+  }
+  .services-left { position: static !important; }
+  .services-grid-right { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .service-glass-card { padding: 16px !important; }
+
+  /* WHY KONARK */
+  .why-section { padding: 60px 0 !important; }
+  .why-grid {
+    grid-template-columns: 1fr !important;
+    padding: 0 16px !important;
+    gap: 16px !important;
+  }
+  .why-card { padding: 28px 24px !important; border-radius: 16px !important; }
+  .why-card-number { font-size: 60px !important; }
+
+  /* CERTIFICATIONS */
+  .certs-section { padding: 60px 0 !important; }
+  .certs-inner {
+    grid-template-columns: 1fr !important;
+    padding: 0 16px !important;
+    gap: 32px !important;
+  }
+  .cert-card { padding: 16px !important; gap: 12px !important; }
+  .cert-card:hover { transform: none !important; }
+  .cert-icon { width: 44px !important; height: 44px !important; font-size: 10px !important; }
+
+  /* SOLUTIONS */
+  .solutions-content-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+    padding: 0 !important;
+  }
+  .solutions-stat-num { font-size: 40px !important; }
+  .solutions-features-list li { font-size: 14px !important; }
+
+  /* TESTIMONIALS */
+  .testimonials-section { padding: 60px 0 !important; }
+  .testimonials-inner { padding: 0 16px !important; }
+  .testimonial-featured {
+    flex-direction: column !important;
+    padding: 24px !important;
+    gap: 16px !important;
+  }
+  .testimonial-featured-text { font-size: 15px !important; line-height: 1.8 !important; }
+  .testimonial-small-row { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .testimonial-small { padding: 20px !important; }
+
+  /* PARTNERS */
+  .partners-grid { grid-template-columns: 1fr 1fr !important; padding: 0 16px !important; gap: 12px !important; }
+  .partner-card { padding: 20px 16px !important; }
+
+  /* CTA BANNER */
+  .cta-section { padding: 60px 16px !important; }
+  .cta-buttons {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+  .cta-buttons a, .cta-buttons button {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+  .cta-phone { font-size: 20px !important; }
+
+  /* FOOTER */
+  .footer-top { padding: 40px 16px !important; }
+  .footer-top-buttons { flex-direction: column !important; gap: 10px !important; }
+  .footer-top-buttons a { width: 100% !important; text-align: center !important; }
+  .footer-main {
+    grid-template-columns: 1fr 1fr !important;
+    padding: 40px 16px !important;
+    gap: 32px !important;
+  }
+  .footer-bottom-bar {
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 20px 16px !important;
+    gap: 8px !important;
+  }
+
+  /* SECTION HEADERS */
+  .section-header { padding: 0 16px; margin-bottom: 28px; }
+  .section-header h2 { font-size: 26px !important; }
+  .section-header p { font-size: 14px !important; }
+}
+
+@media (max-width: 400px) {
+  .hero-headline { font-size: 30px !important; }
+  .stat-number { font-size: 30px !important; }
+  .footer-main { grid-template-columns: 1fr !important; }
+  .partners-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ===== HERO DECORATIVE ELEMENTS MOBILE ===== */
+@media (max-width: 768px) {
+  .hero-ring-1,
+  .hero-ring-2,
+  .hero-ring-3 {
+    display: none !important;
+  }
+
+  .hero-orb-cyan,
+  .hero-orb-purple {
+    width: 200px !important;
+    height: 200px !important;
+    opacity: 0.04 !important;
+  }
+}
+
+/* ===== NAVBAR INNER MOBILE ===== */
+@media (max-width: 768px) {
+  .navbar-inner {
+    padding: 0 16px !important;
+    height: 60px !important;
+  }
+
+  .nav-hamburger {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+}
+
+/* ===== AUTH PROMPT MODAL MOBILE ===== */
+@media (max-width: 768px) {
+  .auth-prompt-modal {
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+}
+
+/* ===== SECTION PADDINGS MOBILE ===== */
+@media (max-width: 768px) {
+  .stats-section { padding: 40px 0 !important; }
+  .products-section { padding: 48px 0 !important; }
+  .services-section { padding: 48px 0 !important; }
+  .why-section { padding: 48px 0 !important; }
+  .certs-section { padding: 48px 0 !important; }
+  .testimonials-section { padding: 48px 0 !important; }
+  .cta-section { padding: 48px 20px !important; }
+
+  .section-header-inner {
+    padding: 0 20px !important;
+  }
+}
