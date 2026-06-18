@@ -7,7 +7,8 @@ DELETE /reviews/{id}                 — admin: hide / remove a review
 GET  /admin/reviews                  — admin: all reviews (including pending)
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query
+from fastapi import APIRouter, HTTPException, status, Depends, Query, Request
+from app.core.limiter import limiter
 from pydantic import BaseModel, Field
 from typing import Optional, List
 from datetime import datetime
@@ -94,7 +95,9 @@ async def list_product_reviews(
 
 
 @router.post("/products/{slug}/reviews", response_model=ReviewResponse, status_code=status.HTTP_201_CREATED)
+@limiter.limit("3/minute")
 async def submit_review(
+    request: Request,
     slug: str,
     body: ReviewCreateRequest,
     current_user: Optional[User] = Depends(get_optional_user),

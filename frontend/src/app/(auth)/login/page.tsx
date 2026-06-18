@@ -134,7 +134,7 @@ export default function LoginPage() {
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 7 }}>
                 <label style={{ fontSize: 11, fontWeight: 600, color: "#94a3b8", letterSpacing: "0.08em", textTransform: "uppercase" }}>Password</label>
-                <Link href="/contact" style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none" }}>Forgot password?</Link>
+                <Link href="/forgot-password" style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none" }}>Forgot password?</Link>
               </div>
               <div style={{ position: "relative" }}>
                 <input aria-label="Password" type={showPw ? "text" : "password"} value={form.password} onChange={set("password")} required placeholder="••••••••" style={{ ...INPUT, paddingRight: 44 }} onFocus={focus} onBlur={blur} />

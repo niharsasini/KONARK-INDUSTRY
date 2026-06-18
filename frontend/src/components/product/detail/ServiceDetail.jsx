@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import { RelatedProducts } from "./shared";
@@ -7,7 +6,6 @@ import { RelatedProducts } from "./shared";
 /* ─── SERVICE detail (Urban Company style) ─────────── */
 
 export default function ServiceDetail({ product }) {
-  const router = useRouter();
   const [form, setForm] = useState({ name: "", phone: "", city: "", problem: "" });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -109,6 +107,41 @@ export default function ServiceDetail({ product }) {
 
         {/* Right: booking form */}
         <div style={{ background: "#0f172a", border: "1px solid rgba(167,139,250,0.2)", borderRadius: 20, padding: "28px", position: "sticky", top: 80 }}>
+          {product.externalLink ? (
+            <>
+              <div style={{ marginBottom: 20 }}>
+                <p style={{ fontSize: 13, color: "#a78bfa", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>Delivered by our partner</p>
+                <h3 style={{ fontSize: 20, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>Soumya Shi Power</h3>
+                <p style={{ fontSize: 13, color: "#64748b", margin: "6px 0 0" }}>This service is fulfilled by our trusted energy partner.</p>
+              </div>
+              <a
+                href={product.externalLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "#7c3aed", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
+              >
+                Visit Partner Site →
+              </a>
+              <p style={{ fontSize: 12, color: "#475569", textAlign: "center", margin: "12px 0 0" }}>
+                Or call: <a href="tel:+919437611129" style={{ color: "#a78bfa", textDecoration: "none", fontWeight: 600 }}>+91 94376 11129</a>
+              </p>
+            </>
+          ) : product.internalLink ? (
+            <>
+              <div style={{ marginBottom: 20 }}>
+                <p style={{ fontSize: 13, color: "#a78bfa", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>Battery Swap</p>
+                <h3 style={{ fontSize: 20, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>Book a Swap</h3>
+                <p style={{ fontSize: 13, color: "#64748b", margin: "6px 0 0" }}>Track your swap with a real-time token.</p>
+              </div>
+              <Link
+                href={product.internalLink}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "#7c3aed", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
+              >
+                Book a Swap →
+              </Link>
+            </>
+          ) : (
+          <>
           <div style={{ marginBottom: 20 }}>
             <p style={{ fontSize: 13, color: "#a78bfa", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>Book This Service</p>
             <h3 style={{ fontSize: 20, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>Get a Free Quote</h3>
@@ -169,6 +202,8 @@ export default function ServiceDetail({ product }) {
                 Or call: <a href="tel:+919437611129" style={{ color: "#a78bfa", textDecoration: "none", fontWeight: 600 }}>+91 94376 11129</a>
               </p>
             </form>
+          )}
+          </>
           )}
         </div>
       </div>

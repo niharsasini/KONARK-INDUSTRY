@@ -1,21 +1,25 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard, Package, ShoppingBag, Mail, Wrench,
   Users, FileEdit, Settings, LogOut, Menu, X,
-  Bell, ExternalLink, ChevronRight, Battery,
+  Bell, ExternalLink, ChevronRight, Battery, Star, BarChart3,
 } from "lucide-react";
+import { getStats, getNotifications, markNotificationRead } from "@/lib/adminApi";
 
 const NAV = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Products", href: "/products", icon: Package },
-  { label: "Orders", href: "/orders", icon: ShoppingBag, badge: 3 },
-  { label: "Enquiries", href: "/enquiries", icon: Mail, badge: 8 },
-  { label: "Services", href: "/services", icon: Wrench, badge: 12 },
+  { label: "Orders", href: "/orders", icon: ShoppingBag, statKey: "pending_orders" as const },
+  { label: "Enquiries", href: "/enquiries", icon: Mail, statKey: "unread_enquiries" as const },
+  { label: "Services", href: "/services", icon: Wrench, statKey: "service_bookings_today" as const },
   { label: "Battery Swap", href: "/battery-swap", icon: Battery },
   { label: "Customers", href: "/customers", icon: Users },
+  { label: "Reviews", href: "/reviews", icon: Star },
+  { label: "Notifications", href: "/notifications", icon: Bell, statKey: "unread_notifications" as const },
+  { label: "Reports", href: "/reports", icon: BarChart3 },
   { label: "Content", href: "/content", icon: FileEdit },
   { label: "Settings", href: "/settings", icon: Settings },
 ];
@@ -28,17 +32,30 @@ const PAGE_TITLES: Record<string, string> = {
   "/enquiries": "Enquiries",
   "/services": "Service Bookings",
   "/customers": "Customers",
+  "/reviews": "Reviews",
+  "/notifications": "Notifications",
+  "/reports": "Reports & Analytics",
   "/content": "Content Management",
   "/settings": "Settings",
 };
 
-const NOTIFICATIONS = [
-  { id: 1, text: "New test ride booking from Rahul Panda, Bhubaneswar", time: "2 min ago", dot: "cyan" },
-  { id: 2, text: "Service enquiry: AC Repair from Sunita Das, Cuttack", time: "18 min ago", dot: "orange" },
-  { id: 3, text: "New product enquiry: LFP Battery from Pradeep Sahoo", time: "1 hr ago", dot: "purple" },
-];
+type DashboardStats = {
+  pending_orders: number;
+  unread_enquiries: number;
+  service_bookings_today: number;
+  unread_notifications: number;
+};
 
-const DOT_COLORS: Record<string, string> = { cyan: "#00d4ff", orange: "#f97316", purple: "#a78bfa" };
+type Notification = { id: string; title: string; message: string; is_read: boolean; created_at: string };
+
+function timeAgo(dateStr: string) {
+  const mins = Math.floor((Date.now() - new Date(dateStr).getTime()) / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins} min ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs} hr ago`;
+  return `${Math.floor(hrs / 24)} day(s) ago`;
+}
 
 const SIDEBAR_W = 260;
 
@@ -47,13 +64,39 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
-  const [readIds, setReadIds] = useState<number[]>([]);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    getStats().then((s) => setStats(s as DashboardStats)).catch(() => {});
+    getNotifications()
+      .then((data) => {
+        const res = data as { unread_count: number; notifications: Notification[] };
+        setNotifications(res.notifications || []);
+        setUnreadCount(res.unread_count || 0);
+      })
+      .catch(() => {});
+  }, []);
 
   const isActive = (href: string) => pathname === href || (href !== "/dashboard" && pathname.startsWith(href + "/"));
 
   const pageTitle = PAGE_TITLES[pathname] || "Admin";
 
-  const unreadCount = NOTIFICATIONS.filter((n) => !readIds.includes(n.id)).length;
+  const handleBellOpen = () => {
+    setBellOpen((o) => !o);
+  };
+
+  const handleNotifClick = async (n: Notification) => {
+    if (n.is_read) return;
+    setNotifications((prev) => prev.map((x) => (x.id === n.id ? { ...x, is_read: true } : x)));
+    setUnreadCount((c) => Math.max(0, c - 1));
+    try {
+      await markNotificationRead(n.id);
+    } catch {
+      // best-effort
+    }
+  };
 
   const signOut = () => {
     document.cookie = "admin_auth=; path=/; max-age=0";
@@ -97,8 +140,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Nav */}
         <nav style={{ flex: 1, padding: "10px 6px", display: "flex", flexDirection: "column", gap: 2, overflowY: "auto" }}>
-          {NAV.map(({ label, href, icon: Icon, badge }) => {
+          {NAV.map(({ label, href, icon: Icon, statKey }) => {
             const active = isActive(href);
+            const badge = statKey && stats ? stats[statKey] : undefined;
             return (
               <Link key={href} href={href} title={collapsed ? label : undefined}
                 style={{
@@ -167,7 +211,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             {/* Bell */}
             <div style={{ position: "relative" }}>
-              <button onClick={() => { setBellOpen((o) => !o); setReadIds(NOTIFICATIONS.map((n) => n.id)); }}
+              <button onClick={handleBellOpen}
                 style={{ position: "relative", background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8", display: "flex", alignItems: "center", padding: 6, borderRadius: 8, transition: "color 0.15s" }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "#f1f5f9")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
@@ -186,15 +230,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <p style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Notifications</p>
                     <button onClick={() => setBellOpen(false)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8" }}><X size={14} /></button>
                   </div>
-                  {NOTIFICATIONS.map((n) => (
-                    <div key={n.id} style={{ padding: "14px 16px", borderBottom: "1px solid #1e2d4060", display: "flex", gap: 10, alignItems: "flex-start" }}>
-                      <div style={{ width: 8, height: 8, borderRadius: "50%", background: DOT_COLORS[n.dot], flexShrink: 0, marginTop: 4 }} />
-                      <div>
-                        <p style={{ fontSize: 12, color: "#f1f5f9", margin: "0 0 4px", lineHeight: 1.5 }}>{n.text}</p>
-                        <p style={{ fontSize: 11, color: "#475569", margin: 0 }}>{n.time}</p>
+                  {notifications.length === 0 ? (
+                    <p style={{ padding: "20px 16px", fontSize: 12, color: "#64748b", textAlign: "center", margin: 0 }}>No notifications</p>
+                  ) : (
+                    notifications.slice(0, 8).map((n) => (
+                      <div
+                        key={n.id}
+                        onClick={() => handleNotifClick(n)}
+                        style={{ padding: "14px 16px", borderBottom: "1px solid #1e2d4060", display: "flex", gap: 10, alignItems: "flex-start", cursor: n.is_read ? "default" : "pointer", background: n.is_read ? "transparent" : "rgba(0,212,255,0.03)" }}
+                      >
+                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: n.is_read ? "#1e2d40" : "#00d4ff", flexShrink: 0, marginTop: 4 }} />
+                        <div>
+                          <p style={{ fontSize: 12, color: "#f1f5f9", margin: "0 0 4px", lineHeight: 1.5 }}>{n.message}</p>
+                          <p style={{ fontSize: 11, color: "#475569", margin: 0 }}>{timeAgo(n.created_at)}</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
+                  <Link href="/notifications" onClick={() => setBellOpen(false)} style={{ display: "block", padding: "12px 16px", textAlign: "center", fontSize: 12, color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}>
+                    View all
+                  </Link>
                 </div>
               )}
             </div>

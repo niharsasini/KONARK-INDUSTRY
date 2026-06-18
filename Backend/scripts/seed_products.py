@@ -403,6 +403,156 @@ PRODUCTS = [
             "ServiceType": "PCB Assembly & Soldering",
         },
     },
+
+    # ---- Additional services (type=service) ----
+    {
+        "slug": "ac-repair-service",
+        "name": "AC Repair & Service",
+        "category": "Industrial Services",
+        "type": "service",
+        "price": 0,
+        "rating": 4.7,
+        "is_new": False,
+        "short_description": "Expert AC repair for all brands. Same-day service across Bhubaneswar.",
+        "description": (
+            "Our certified technicians handle all AC brands — split, window, cassette. "
+            "Diagnosis, gas refill, PCB repair, and deep cleaning, backed by a 90-day service warranty."
+        ),
+        "images": ["/konark/ac.png"],
+        "specs": {
+            "ResponseTime": "Within 2 hours",
+            "Warranty": "90 days on service",
+            "BrandsCovered": "All brands",
+            "ServiceArea": "Bhubaneswar, Cuttack, Puri",
+        },
+    },
+    {
+        "slug": "ev-charging-station-installation",
+        "name": "EV Charging Station Installation",
+        "category": "Industrial Services",
+        "type": "service",
+        "price": 0,
+        "rating": 4.8,
+        "is_new": False,
+        "short_description": "Install home and commercial EV charging stations. Certified installation.",
+        "description": (
+            "Complete EV charging station setup for homes, offices, and commercial spaces. "
+            "AC and DC fast chargers, fully approved installation with all electrical work included."
+        ),
+        "images": ["/konark/evcharge solution.png"],
+        "specs": {
+            "ChargerTypes": "AC 3.3kW / 7.4kW / DC 15kW+",
+            "InstallationTime": "1-2 days",
+            "Warranty": "1 year on installation",
+        },
+    },
+    {
+        "slug": "solar-power-plant-installation",
+        "name": "Solar Power Plant Installation",
+        "category": "Industrial Services",
+        "type": "service",
+        "price": 0,
+        "rating": 4.9,
+        "is_new": False,
+        "short_description": "Residential and commercial solar power plants. Rooftop to utility scale.",
+        "description": (
+            "Complete solar power plant installation from design to commissioning. "
+            "Grid-tied, off-grid, and hybrid systems, with government subsidy assistance "
+            "and a 25-year panel warranty."
+        ),
+        "images": ["/konark/solarpannel solutions.png"],
+        "specs": {
+            "CapacityRange": "1kW to 1MW+",
+            "SystemTypes": "Grid-tied / Off-grid / Hybrid",
+            "PanelWarranty": "25 years",
+        },
+    },
+    {
+        "slug": "wind-power-plant-installation",
+        "name": "Wind Power Plant Installation",
+        "category": "Industrial Services",
+        "type": "service",
+        "price": 0,
+        "rating": 4.7,
+        "is_new": True,
+        "short_description": "Small and large-scale wind energy solutions for farms and industries.",
+        "description": (
+            "Wind power plant installation for agricultural, industrial, and institutional use, "
+            "with hybrid wind-solar systems available and complete civil and electrical work."
+        ),
+        "images": ["/konark/productenergystored.png"],
+        "specs": {
+            "CapacityRange": "1kW to 500kW",
+            "Types": "Horizontal / Vertical axis",
+            "Hybrid": "Wind + Solar available",
+        },
+    },
+    {
+        "slug": "battery-swap-service",
+        "name": "Battery Swap Service",
+        "category": "Industrial Services",
+        "type": "service",
+        "price": 150,
+        "rating": 4.8,
+        "is_new": False,
+        "short_description": "Exchange your discharged EV battery for a fully charged one. Home pickup available.",
+        "description": (
+            "Hand us your discharged LFP or lead-acid EV battery and drive away with a fully "
+            "charged replacement. Home pickup available across Bhubaneswar with real-time token tracking."
+        ),
+        "images": ["/konark/productevbatterie.png"],
+        "specs": {
+            "SwapFee": "From ₹150",
+            "Turnaround": "Same day",
+            "BatteryTypes": "LFP / Lead Acid / NMC",
+        },
+    },
+
+    # ---- EV Cars, upcoming (type=vehicle) ----
+    {
+        "slug": "konark-ev-car-x1",
+        "name": "Konark EV Car X1",
+        "category": "Electric Vehicles",
+        "type": "vehicle",
+        "price": 0,
+        "rating": 0,
+        "is_new": True,
+        "in_stock": False,
+        "short_description": "Upcoming electric car from Konark Industry. Register your interest today.",
+        "description": (
+            "The Konark EV Car X1 is our upcoming electric sedan designed for Indian roads. "
+            "Spacious 5-seater, 300+ km range, with fast charging support. Expected launch 2025-26."
+        ),
+        "images": ["/konark/car-1 (1).png"],
+        "specs": {
+            "Status": "Upcoming",
+            "ExpectedLaunch": "2025-26",
+            "Range": "300+ km (estimated)",
+            "Seating": "5 passengers",
+        },
+    },
+    {
+        "slug": "konark-ev-car-x2",
+        "name": "Konark EV Car X2",
+        "category": "Electric Vehicles",
+        "type": "vehicle",
+        "price": 0,
+        "rating": 0,
+        "is_new": True,
+        "in_stock": False,
+        "short_description": "Upcoming electric SUV. Designed for Odisha terrain.",
+        "description": (
+            "The Konark EV Car X2 SUV is built for both city roads and Odisha terrain. "
+            "7-seater capacity with high ground clearance and an estimated 280km range."
+        ),
+        "images": ["/konark/car-2.png"],
+        "specs": {
+            "Status": "Upcoming",
+            "Type": "Electric SUV",
+            "Seating": "7 passengers",
+            "Range": "280 km (estimated)",
+        },
+    },
 ]
 
 

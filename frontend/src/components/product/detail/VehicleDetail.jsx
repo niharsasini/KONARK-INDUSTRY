@@ -10,6 +10,7 @@ export default function VehicleDetail({ product }) {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const specs = product.specifications ? Object.entries(product.specifications) : [];
+  const isUpcoming = product.isUpcoming === true || product.specifications?.Status === "Upcoming";
 
   const VEHICLE_HIGHLIGHTS = [
     { icon: "⚡", label: "Range", value: product.specifications?.Range || "Up to 200 km" },
@@ -105,7 +106,7 @@ export default function VehicleDetail({ product }) {
 
           {/* CTAs */}
           <div style={{ display: "flex", gap: 12, marginBottom: 32, flexWrap: "wrap" }}>
-            <a href="#book-test-ride" style={{
+            <a href={isUpcoming ? "/contact?interest=upcoming" : "#book-test-ride"} style={{
               padding: "14px 32px", background: "#00d4ff", color: "#0a0f1e",
               fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none",
               transition: "background 0.2s", display: "inline-block",
@@ -113,7 +114,7 @@ export default function VehicleDetail({ product }) {
               onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
               onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
             >
-              Book Test Ride
+              {isUpcoming ? "Register Interest" : "Book Test Ride"}
             </a>
             <a href="tel:+919437611129" style={{
               padding: "14px 32px", border: "1px solid rgba(0,212,255,0.35)",
@@ -163,7 +164,7 @@ export default function VehicleDetail({ product }) {
           </div>
 
           {/* Upcoming model banner */}
-          {product.inStock === false && product.type === "vehicle" && (
+          {isUpcoming && (
             <div style={{
               background: "rgba(124,58,237,0.1)",
               border: "1px solid rgba(124,58,237,0.3)",
@@ -193,9 +194,7 @@ export default function VehicleDetail({ product }) {
           {specs.length > 0 && (
             <div style={{ borderTop: "1px solid #1e2d40", paddingTop: 24 }}>
               <h3 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", marginBottom: 14 }}>
-                {product.inStock === false && product.type === "vehicle"
-                  ? "🚀 Upcoming New Model — Specifications"
-                  : "Full Specifications"}
+                {isUpcoming ? "🚀 Upcoming New Model — Specifications" : "Full Specifications"}
               </h3>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 40px" }}>
                 {specs.map(([k, v], i) => (
@@ -212,9 +211,13 @@ export default function VehicleDetail({ product }) {
         {/* Right: Book test ride form */}
         <div id="book-test-ride" style={{ background: "#0f172a", border: "1px solid rgba(0,212,255,0.2)", borderRadius: 20, padding: "28px", position: "sticky", top: 80 }}>
           <div style={{ marginBottom: 20 }}>
-            <p style={{ fontSize: 13, color: "#00d4ff", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>Book a Test Ride</p>
-            <h3 style={{ fontSize: 20, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>Experience it yourself</h3>
-            <p style={{ fontSize: 13, color: "#64748b", margin: "6px 0 0", lineHeight: 1.6 }}>Come to our Bhubaneswar showroom. No pressure, just drive.</p>
+            <p style={{ fontSize: 13, color: "#00d4ff", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>
+              {isUpcoming ? "Register Your Interest" : "Book a Test Ride"}
+            </p>
+            <h3 style={{ fontSize: 20, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>{isUpcoming ? "Be the first to know" : "Experience it yourself"}</h3>
+            <p style={{ fontSize: 13, color: "#64748b", margin: "6px 0 0", lineHeight: 1.6 }}>
+              {isUpcoming ? "We'll notify you the moment it launches and bookings open." : "Come to our Bhubaneswar showroom. No pressure, just drive."}
+            </p>
           </div>
 
           {success ? (

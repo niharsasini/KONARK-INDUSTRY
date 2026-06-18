@@ -78,6 +78,20 @@ export async function loginUser(email: string, password: string) {
   return data;
 }
 
+export async function forgotPassword(email: string) {
+  return request("/api/v1/auth/forgot-password", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+}
+
+export async function resetPassword(token: string, newPassword: string) {
+  return request("/api/v1/auth/reset-password", {
+    method: "POST",
+    body: JSON.stringify({ token, new_password: newPassword }),
+  });
+}
+
 export function logoutUser() {
   if (typeof window !== "undefined") {
     localStorage.removeItem("konark_token");
@@ -171,6 +185,10 @@ export async function getMyOrders() {
 
 export async function getOrder(orderNumber: string) {
   return request(`/api/v1/orders/${orderNumber}`);
+}
+
+export async function cancelOrder(orderNumber: string) {
+  return request(`/api/v1/orders/${orderNumber}/cancel`, { method: "POST" });
 }
 
 // ─── BATTERY SWAP ─────────────────────────────────────────────────────────────

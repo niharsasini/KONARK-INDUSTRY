@@ -7,7 +7,8 @@ PATCH /services/bookings/{id}    — admin: assign technician, update status
 DELETE /services/bookings/{id}   — admin: hard delete
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query
+from fastapi import APIRouter, HTTPException, status, Depends, Query, Request
+from app.core.limiter import limiter
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List
 from datetime import datetime, date
@@ -89,7 +90,8 @@ def _to_response(b: ServiceBooking) -> BookingResponse:
 # ---------- Endpoints ----------
 
 @router.post("/bookings", response_model=BookingResponse, status_code=status.HTTP_201_CREATED)
-async def create_booking(body: BookingCreateRequest):
+@limiter.limit("5/minute")
+async def create_booking(request: Request, body: BookingCreateRequest):
     """
     Public endpoint: create a service booking.
     Generates a sequential booking number (KB-YYYY-NNNNN).

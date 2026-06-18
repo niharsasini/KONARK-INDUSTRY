@@ -8,10 +8,11 @@ PUT  /auth/me        — update profile (name, phone, city)
 POST /auth/logout    — client-side: just discard tokens; placeholder endpoint
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends, Request
+import uuid
+from fastapi import APIRouter, HTTPException, status, Depends, Request, Body
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 from app.core.limiter import limiter
 
 from app.models.user import User, UserRole
@@ -23,7 +24,7 @@ from app.core.security import (
     decode_token,
 )
 from app.core.dependencies import get_current_user
-from app.services.email_service import send_welcome_email
+from app.services.email_service import send_welcome_email, send_password_reset_email
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -256,3 +257,54 @@ async def logout():
     This endpoint exists so clients have a consistent place to call.
     """
     return {"message": "Logged out successfully. Please delete your tokens on the client."}
+
+
+@router.post("/forgot-password")
+@limiter.limit("3/minute")
+async def forgot_password(request: Request, email: EmailStr = Body(..., embed=True)):
+    """
+    Request a password reset link.
+    Always returns the same message whether or not the email exists,
+    so attackers cannot use this endpoint to enumerate registered accounts.
+    """
+    user = await User.find_one(User.email == email)
+    if not user:
+        return {"message": "If this email exists, a reset link was sent."}
+
+    reset_token = str(uuid.uuid4())
+    user.reset_token = reset_token
+    user.reset_token_expires = datetime.utcnow() + timedelta(hours=1)
+    await user.save()
+
+    try:
+        await send_password_reset_email({
+            "email": user.email,
+            "name": user.name,
+            "reset_token": reset_token,
+        })
+    except Exception:
+        pass  # Email failure must not leak whether the account exists
+
+    return {"message": "If this email exists, a reset link was sent."}
+
+
+@router.post("/reset-password")
+async def reset_password(token: str = Body(...), new_password: str = Body(..., min_length=6)):
+    """
+    Complete a password reset using the token emailed to the user.
+    Token must not be expired. Clears the token after use so it cannot be replayed.
+    """
+    user = await User.find_one(User.reset_token == token)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid reset token")
+
+    if not user.reset_token_expires or user.reset_token_expires < datetime.utcnow():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Reset token expired")
+
+    user.password_hash = hash_password(new_password)
+    user.reset_token = None
+    user.reset_token_expires = None
+    user.updated_at = datetime.utcnow()
+    await user.save()
+
+    return {"message": "Password reset successfully"}

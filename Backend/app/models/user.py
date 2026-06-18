@@ -57,6 +57,10 @@ class User(Document):
     # Recorded after each successful login
     last_login: Optional[datetime] = None
 
+    # Set when a password reset is requested; cleared after use or expiry
+    reset_token: Optional[str] = None
+    reset_token_expires: Optional[datetime] = None
+
     class Settings:
         # MongoDB collection name
         name = "users"

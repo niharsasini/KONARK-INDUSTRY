@@ -13,8 +13,8 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime
 
 from app.models.order import Order, OrderStatus, PaymentMethod, PaymentStatus
-from app.core.dependencies import get_admin_user, get_optional_user
-from app.models.user import User
+from app.core.dependencies import get_admin_user, get_optional_user, get_current_user
+from app.models.user import User, UserRole
 from app.services.email_service import send_order_confirmation
 from app.utils.helpers import generate_order_number, calculate_order_totals
 
@@ -294,6 +294,41 @@ async def update_order_status(
         )
     except Exception:
         pass
+
+    return _to_response(order)
+
+
+@router.post("/{order_number}/cancel", response_model=OrderResponse)
+async def cancel_order(
+    order_number: str,
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Cancel an order. Customers can cancel their own orders; admins can cancel any.
+    Orders that are already shipped or delivered cannot be cancelled.
+    """
+    order = await Order.find_one({"order_number": order_number})
+    if not order:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Order {order_number} not found",
+        )
+
+    if current_user.role != UserRole.ADMIN and order.user_id != str(current_user.id):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access denied: this order belongs to another account",
+        )
+
+    if order.order_status in (OrderStatus.SHIPPED, OrderStatus.DELIVERED):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot cancel an order that has already shipped or been delivered",
+        )
+
+    order.order_status = OrderStatus.CANCELLED
+    order.updated_at = datetime.utcnow()
+    await order.save()
 
     return _to_response(order)
 

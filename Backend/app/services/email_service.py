@@ -117,6 +117,37 @@ async def send_welcome_email(user_data: dict) -> bool:
     )
 
 
+async def send_password_reset_email(data: dict) -> bool:
+    """
+    Send a password reset link to a user who requested it.
+    The link contains a one-time token valid for 1 hour.
+    """
+    if not data.get("email"):
+        return False
+
+    content = f"""
+      <h2 style="color:#00d4ff;margin:0 0 16px;">Reset Your Password</h2>
+      <p style="color:#94a3b8;line-height:1.7;">Hi {data.get('name', 'there')},</p>
+      <p style="color:#94a3b8;line-height:1.7;">
+        Click below to reset your password. This link expires in 1 hour.
+      </p>
+      <a href="https://www.konarkindustry.com/reset-password?token={data.get('reset_token')}"
+         style="display:inline-block;background:#00d4ff;color:#0a0f1e;
+                padding:12px 28px;border-radius:8px;font-weight:bold;
+                text-decoration:none;margin-top:8px;">
+        Reset Password &rarr;
+      </a>
+      <p style="color:#64748b;font-size:12px;margin-top:16px;">
+        If you didn't request this, you can safely ignore this email.
+      </p>
+    """
+    return await send_email(
+        data["email"],
+        "Reset your Konark Industry password",
+        _base_template(content),
+    )
+
+
 async def send_enquiry_confirmation(enquiry_data: dict) -> bool:
     """
     Confirm receipt of a customer enquiry.

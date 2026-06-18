@@ -58,6 +58,12 @@ export async function markNotificationRead(id: string) {
   });
 }
 
+export async function markAllNotificationsRead() {
+  return adminRequest("/api/v1/admin/notifications/mark-all-read", {
+    method: "POST",
+  });
+}
+
 // ─── PRODUCTS ────────────────────────────────────────────────────────────────
 
 export async function getAdminProducts(
@@ -310,12 +316,18 @@ export async function getProductReviews(slug: string) {
   return adminRequest(`/api/v1/products/${slug}/reviews`);
 }
 
+export async function getAllReviews(filters: Record<string, string> = {}) {
+  const params = new URLSearchParams(filters);
+  const qs = params.toString();
+  return adminRequest(`/api/v1/admin/reviews${qs ? `?${qs}` : ""}`);
+}
+
 export async function approveReview(id: string) {
-  return adminRequest(`/api/v1/admin/reviews/${id}/approve`, {
+  return adminRequest(`/api/v1/reviews/${id}/approve`, {
     method: "PATCH",
   });
 }
 
 export async function deleteReview(id: string) {
-  return adminRequest(`/api/v1/admin/reviews/${id}`, { method: "DELETE" });
+  return adminRequest(`/api/v1/reviews/${id}`, { method: "DELETE" });
 }

@@ -482,7 +482,8 @@ async def delete_swap(swap_id: str, admin: User = Depends(get_admin_user)):
 
 
 @router.post("/upload-photo")
-async def upload_battery_photo(file: UploadFile = File(...)):
+@limiter.limit("10/minute")
+async def upload_battery_photo(request: Request, file: UploadFile = File(...)):
     """
     Public: upload a battery photo before submitting the swap form.
     Validates MIME type and file size, saves to the uploads directory,
