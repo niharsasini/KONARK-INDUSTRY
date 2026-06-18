@@ -117,11 +117,11 @@ export async function toggleFeatured(slug: string) {
 export async function getEnquiries(filters: Record<string, string> = {}) {
   const params = new URLSearchParams(filters);
   const qs = params.toString();
-  return adminRequest(`/api/v1/admin/enquiries${qs ? `?${qs}` : ""}`);
+  return adminRequest(`/api/v1/enquiries${qs ? `?${qs}` : ""}`);
 }
 
 export async function getEnquiry(id: string) {
-  return adminRequest(`/api/v1/admin/enquiries/${id}`);
+  return adminRequest(`/api/v1/enquiries/${id}`);
 }
 
 export async function updateEnquiryStatus(
@@ -129,21 +129,21 @@ export async function updateEnquiryStatus(
   status: string,
   notes?: string
 ) {
-  return adminRequest(`/api/v1/admin/enquiries/${id}/status`, {
+  return adminRequest(`/api/v1/enquiries/${id}`, {
     method: "PATCH",
-    body: JSON.stringify({ status, notes }),
+    body: JSON.stringify({ status, admin_notes: notes }),
   });
 }
 
 export async function markEnquiriesRead(ids: string[]) {
-  return adminRequest("/api/v1/admin/enquiries/mark-read", {
+  return adminRequest("/api/v1/enquiries/bulk-read", {
     method: "POST",
-    body: JSON.stringify({ ids }),
+    body: JSON.stringify({ enquiry_ids: ids }),
   });
 }
 
 export async function deleteEnquiry(id: string) {
-  return adminRequest(`/api/v1/admin/enquiries/${id}`, { method: "DELETE" });
+  return adminRequest(`/api/v1/enquiries/${id}`, { method: "DELETE" });
 }
 
 // ─── ORDERS ──────────────────────────────────────────────────────────────────
@@ -151,20 +151,20 @@ export async function deleteEnquiry(id: string) {
 export async function getOrders(filters: Record<string, string> = {}) {
   const params = new URLSearchParams(filters);
   const qs = params.toString();
-  return adminRequest(`/api/v1/admin/orders${qs ? `?${qs}` : ""}`);
+  return adminRequest(`/api/v1/orders${qs ? `?${qs}` : ""}`);
 }
 
 export async function getOrder(orderNumber: string) {
-  return adminRequest(`/api/v1/admin/orders/${orderNumber}`);
+  return adminRequest(`/api/v1/orders/${orderNumber}`);
 }
 
 export async function updateOrderStatus(
   orderNumber: string,
   status: string
 ) {
-  return adminRequest(`/api/v1/admin/orders/${orderNumber}/status`, {
+  return adminRequest(`/api/v1/orders/${orderNumber}/status`, {
     method: "PATCH",
-    body: JSON.stringify({ status }),
+    body: JSON.stringify({ order_status: status }),
   });
 }
 
@@ -173,7 +173,7 @@ export async function exportOrders() {
     typeof window !== "undefined"
       ? localStorage.getItem("konark_admin_token")
       : null;
-  const res = await fetch(`${BASE_URL}/api/v1/admin/orders/export`, {
+  const res = await fetch(`${BASE_URL}/api/v1/orders/export`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
   const blob = await res.blob();
@@ -192,18 +192,18 @@ export async function getServiceBookings(
 ) {
   const params = new URLSearchParams(filters);
   const qs = params.toString();
-  return adminRequest(`/api/v1/admin/services${qs ? `?${qs}` : ""}`);
+  return adminRequest(`/api/v1/services/bookings${qs ? `?${qs}` : ""}`);
 }
 
 export async function getServiceBooking(id: string) {
-  return adminRequest(`/api/v1/admin/services/${id}`);
+  return adminRequest(`/api/v1/services/bookings/${id}`);
 }
 
 export async function updateServiceBooking(
   id: string,
   data: Record<string, unknown>
 ) {
-  return adminRequest(`/api/v1/admin/services/${id}`, {
+  return adminRequest(`/api/v1/services/bookings/${id}`, {
     method: "PATCH",
     body: JSON.stringify(data),
   });
@@ -214,7 +214,7 @@ export async function exportServiceBookings() {
     typeof window !== "undefined"
       ? localStorage.getItem("konark_admin_token")
       : null;
-  const res = await fetch(`${BASE_URL}/api/v1/admin/services/export`, {
+  const res = await fetch(`${BASE_URL}/api/v1/services/bookings/export`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
   const blob = await res.blob();
@@ -239,7 +239,7 @@ export async function getCustomer(id: string) {
 }
 
 export async function toggleCustomerStatus(id: string) {
-  return adminRequest(`/api/v1/admin/customers/${id}/toggle-status`, {
+  return adminRequest(`/api/v1/admin/customers/${id}/toggle`, {
     method: "PATCH",
   });
 }
