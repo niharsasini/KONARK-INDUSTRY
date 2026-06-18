@@ -220,6 +220,34 @@ async def list_orders(
     return [_to_response(o) for o in orders]
 
 
+@router.get("/export")
+async def export_orders_csv(
+    order_status: Optional[str] = Query(None),
+    admin: User = Depends(get_admin_user),
+):
+    """
+    Admin: download all orders (optionally filtered by status) as a CSV file.
+    Returns a StreamingResponse so large order lists don't block memory.
+    Registered before /{order_number} so "export" is never matched as an order number.
+    """
+    from fastapi.responses import StreamingResponse
+    from app.services.order_service import export_orders_to_csv
+    import io
+
+    query_filter = {}
+    if order_status:
+        query_filter["order_status"] = order_status
+
+    orders = await Order.find(query_filter).sort(-Order.created_at).to_list()
+    csv_content = await export_orders_to_csv(orders)
+
+    return StreamingResponse(
+        io.StringIO(csv_content),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=konark_orders.csv"},
+    )
+
+
 @router.get("/{order_number}", response_model=OrderResponse)
 async def get_order(
     order_number: str,
@@ -331,30 +359,3 @@ async def cancel_order(
     await order.save()
 
     return _to_response(order)
-
-
-@router.get("/export")
-async def export_orders_csv(
-    order_status: Optional[str] = Query(None),
-    admin: User = Depends(get_admin_user),
-):
-    """
-    Admin: download all orders (optionally filtered by status) as a CSV file.
-    Returns a StreamingResponse so large order lists don't block memory.
-    """
-    from fastapi.responses import StreamingResponse
-    from app.services.order_service import export_orders_to_csv
-    import io
-
-    query_filter = {}
-    if order_status:
-        query_filter["order_status"] = order_status
-
-    orders = await Order.find(query_filter).sort(-Order.created_at).to_list()
-    csv_content = await export_orders_to_csv(orders)
-
-    return StreamingResponse(
-        io.StringIO(csv_content),
-        media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=konark_orders.csv"},
-    )
