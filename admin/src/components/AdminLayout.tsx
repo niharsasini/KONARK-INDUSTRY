@@ -62,13 +62,35 @@ const SIDEBAR_W = 260;
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const isLoginPage = pathname === "/admin-login";
   const [collapsed, setCollapsed] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  // Auth guard: the login page is public and renders standalone (no sidebar,
+  // no authenticated API calls below). Every other page requires both a
+  // token AND the admin_auth cookie — if either is missing, clear both and
+  // hard-redirect to login. Clearing the cookie here (not just the token)
+  // is what prevents the middleware from bouncing an authenticated-looking
+  // but token-less session back and forth between /admin-login and /dashboard.
   useEffect(() => {
+    if (isLoginPage) return;
+
+    const token = localStorage.getItem("konark_admin_token");
+    const authCookie = document.cookie.includes("admin_auth=true");
+
+    if (!token || !authCookie) {
+      localStorage.removeItem("konark_admin_token");
+      localStorage.removeItem("konark_admin_user");
+      document.cookie = "admin_auth=; path=/; max-age=0";
+      window.location.href = "/admin-login";
+    }
+  }, [isLoginPage, pathname]);
+
+  useEffect(() => {
+    if (isLoginPage) return;
     getStats().then((s) => setStats(s as DashboardStats)).catch(() => {});
     getNotifications()
       .then((data) => {
@@ -77,7 +99,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         setUnreadCount(res.unread_count || 0);
       })
       .catch(() => {});
-  }, []);
+  }, [isLoginPage]);
+
+  // The login page is a standalone public screen — render it without the
+  // authenticated sidebar/header chrome.
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
 
   const isActive = (href: string) => pathname === href || (href !== "/dashboard" && pathname.startsWith(href + "/"));
 

@@ -1,26 +1,49 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const isAuthenticated = request.cookies.get("admin_auth")?.value === "true";
-  const { pathname } = request.nextUrl;
+  const { pathname } = request.nextUrl
 
-  const isLoginPage = pathname === "/admin-login";
-  const isPublicAsset = pathname.startsWith("/_next") || pathname.startsWith("/favicon");
+  // These paths are always public - never redirect
+  const publicPaths = [
+    '/admin-login',
+    '/_next',
+    '/favicon.ico',
+    '/api',
+  ]
 
-  if (isPublicAsset) return NextResponse.next();
+  // Check if current path is public
+  const isPublic = publicPaths.some(path =>
+    pathname.startsWith(path)
+  )
 
-  if (!isAuthenticated && !isLoginPage) {
-    return NextResponse.redirect(new URL("/admin-login", request.url));
+  // If public path, always allow through
+  if (isPublic) {
+    return NextResponse.next()
   }
 
-  if (isAuthenticated && isLoginPage) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+  // Check for auth cookie
+  const adminAuth = request.cookies.get('admin_auth')
+
+  // If no auth cookie and trying to access protected route
+  if (!adminAuth || adminAuth.value !== 'true') {
+    const loginUrl = new URL('/admin-login', request.url)
+    return NextResponse.redirect(loginUrl)
   }
 
-  return NextResponse.next();
+  // Has valid cookie - allow through
+  return NextResponse.next()
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
-};
+  matcher: [
+    /*
+     * Match all paths except:
+     * - _next/static (static files)
+     * - _next/image (image optimization)
+     * - favicon.ico
+     * - public files
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\..*).+)',
+  ],
+}

@@ -24,6 +24,11 @@ async function adminRequest<T>(
   if (res.status === 401) {
     if (typeof window !== "undefined") {
       localStorage.removeItem("konark_admin_token");
+      localStorage.removeItem("konark_admin_user");
+      // Also clear the auth cookie — otherwise middleware still thinks this
+      // session is authenticated and bounces /admin-login back to /dashboard,
+      // which 401s again and redirects back here, looping forever.
+      document.cookie = "admin_auth=; path=/; max-age=0";
       window.location.href = "/admin-login";
     }
     throw new Error("Unauthorised. Please log in again.");

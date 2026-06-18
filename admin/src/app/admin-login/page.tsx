@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Shield } from "lucide-react";
 
@@ -16,6 +16,19 @@ export default function AdminLoginPage() {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    // If a valid token AND auth cookie are both already present, skip the login form.
+    // Checking the token too (not just the cookie) avoids bouncing back here in a loop
+    // if the cookie is stale but the token was cleared (e.g. after a 401).
+    const token = localStorage.getItem("konark_admin_token");
+    const hasAuthCookie = document.cookie
+      .split(";")
+      .some((c) => c.trim().startsWith("admin_auth=true"));
+    if (token && hasAuthCookie) {
+      router.replace("/dashboard");
+    }
+  }, [router]);
 
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -46,21 +59,29 @@ export default function AdminLoginPage() {
 
       if (!res.ok) {
         setError(data.detail || data.message || "Invalid credentials.");
+        setLoading(false);
         return;
       }
 
       if (data.user?.role !== "admin") {
         setError("Access denied. Admin account required.");
+        setLoading(false);
         return;
       }
 
       localStorage.setItem("konark_admin_token", data.access_token);
       localStorage.setItem("konark_admin_user", JSON.stringify(data.user));
-      document.cookie = `admin_auth=true; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Strict`;
-      router.push("/dashboard");
+
+      // Set cookie with proper attributes
+      document.cookie = "admin_auth=true; path=/; max-age=86400; SameSite=Lax";
+
+      // Small delay to ensure the cookie is set before the middleware sees the
+      // next navigation request
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 100);
     } catch {
       setError("Connection error. Please try again.");
-    } finally {
       setLoading(false);
     }
   };
