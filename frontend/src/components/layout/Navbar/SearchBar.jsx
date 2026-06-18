@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 /* Desktop search box + live preview dropdown */
 export default function SearchBar({ searchOpen, setSearchOpen, searchQuery, setSearchQuery, searchPreview, router }) {
@@ -33,8 +34,8 @@ export default function SearchBar({ searchOpen, setSearchOpen, searchQuery, setS
                   onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                   onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
                 >
-                  <div style={{ width: 32, height: 32, background: "#111827", borderRadius: 6, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <img src={p.image} alt={p.name} style={{ maxWidth: 28, maxHeight: 28, objectFit: "contain" }} />
+                  <div style={{ width: 32, height: 32, background: "#111827", borderRadius: 6, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                    <Image src={p.image} alt={p.name} fill style={{ objectFit: "contain", padding: 2 }} />
                   </div>
                   <div>
                     <p style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9", margin: 0 }}>{p.name}</p>

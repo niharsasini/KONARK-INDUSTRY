@@ -5,6 +5,7 @@ import { Suspense, useState, useEffect } from 'react'
 import { products as ProductData } from '@/components/product/ProductData'
 import { getProducts } from '@/lib/api'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useCartStore } from '@/store'
 
@@ -37,7 +38,7 @@ function ProductCard({ product }: { product: any }) {
       }}
     >
       <div style={{ background: '#111827', height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-        <img src={product.image} alt={product.name} loading="lazy" style={{ maxHeight: 160, maxWidth: '90%', objectFit: 'contain' }} />
+        <Image src={product.image} alt={product.name} fill style={{ objectFit: 'contain', padding: 20 }} sizes="(max-width: 768px) 50vw, 25vw" />
         {product.isNew && (
           <span style={{ position: 'absolute', top: 8, left: 8, background: '#00d4ff', color: '#0a0f1e', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>NEW</span>
         )}

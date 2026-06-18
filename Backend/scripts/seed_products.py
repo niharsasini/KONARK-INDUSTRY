@@ -116,6 +116,12 @@ PRODUCTS = [
         ),
         "images": ["/productimg/Utility Vehicle.png"],
         "specs": {
+            "Payload": "Up to 500kg",
+            "Range": "Up to 80km per charge",
+            "Motor": "2000W BLDC",
+            "Battery": "48V 100Ah LFP",
+            "MaxSpeed": "25 km/h",
+            "ChargingTime": "6-8 hours",
             "Usage": "Industrial Transport",
             "Customization": "Available",
         },
@@ -180,8 +186,12 @@ PRODUCTS = [
         ),
         "images": ["/productimg/BLDC Motor .png"],
         "specs": {
-            "PowerOptions": "250W – 2000W",
-            "Type": "Hub & Mid Drive",
+            "PowerRating": "250W - 5000W",
+            "Voltage": "24V / 48V / 72V",
+            "RPM": "300 - 3000 RPM",
+            "Efficiency": ">85%",
+            "Cooling": "Air cooled",
+            "Applications": "EV, Industrial, Agriculture",
         },
     },
     {
@@ -230,7 +240,12 @@ PRODUCTS = [
         "description": "Effectively removes impurities and improves taste, ensuring safe water for households.",
         "images": ["/productimg/Water Purifier.png"],
         "specs": {
-            "Stages": "6 Layer RO",
+            "Purification": "RO + UV + UF",
+            "Capacity": "10 litres/hour",
+            "TDSReduction": "Up to 2000 ppm",
+            "StorageTank": "7 litres",
+            "Power": "36W",
+            "Warranty": "1 year comprehensive",
         },
     },
     {
@@ -298,6 +313,10 @@ PRODUCTS = [
             "TinMaterial": "Aluminium",
             "BodyMaterial": "Steel",
             "Coating": "Bronze",
+            "Compatible": "All split AC brands",
+            "CapacityRange": "1 ton to 5 ton",
+            "Warranty": "6 months",
+            "Availability": "In stock for major brands",
         },
     },
     {
@@ -313,6 +332,11 @@ PRODUCTS = [
         "images": ["/productimg/Condenser Coil.png"],
         "specs": {
             "Pricing": "₹300 per running inch",
+            "Compatible": "All split AC brands",
+            "CapacityRange": "1 ton to 5 ton",
+            "Material": "Copper / Aluminium",
+            "Warranty": "6 months",
+            "Availability": "In stock for major brands",
         },
     },
     {
@@ -329,6 +353,10 @@ PRODUCTS = [
         "specs": {
             "Material": "Steel",
             "Usage": "OEM Manufacturing",
+            "Compatible": "All split AC brands",
+            "CapacityRange": "1 ton to 5 ton",
+            "Warranty": "6 months",
+            "Availability": "In stock for major brands",
         },
     },
 
@@ -368,7 +396,12 @@ PRODUCTS = [
         "description": "Protects batteries from overcharge, discharge, overheating, and cell imbalance.",
         "images": ["/productimg/BMS.png"],
         "specs": {
-            "VoltageSupport": "Up to 60V",
+            "VoltageRange": "24V - 96V",
+            "CurrentRating": "Up to 200A",
+            "CellChemistry": "LFP / NMC / LTO",
+            "Protection": "Overcharge, Over-discharge, Short circuit",
+            "Communication": "UART / CAN Bus",
+            "OperatingTemp": "-20°C to 60°C",
         },
     },
     {
@@ -383,7 +416,12 @@ PRODUCTS = [
         "description": "Supports various current ratings with adjustable voltage control.",
         "images": ["/productimg/Battery Charger.png"],
         "specs": {
-            "CurrentOptions": "1A – 20A",
+            "InputVoltage": "180-260V AC",
+            "OutputVoltage": "48V / 60V / 72V",
+            "ChargingCurrent": "10A / 20A / 30A",
+            "Efficiency": ">92%",
+            "Protection": "Short circuit, Over voltage",
+            "Connector": "Anderson / XT60",
         },
     },
 
@@ -401,6 +439,11 @@ PRODUCTS = [
         "images": ["/productimg/PCB and Soldering.png"],
         "specs": {
             "ServiceType": "PCB Assembly & Soldering",
+            "Services": "PCB repair, component replacement",
+            "Equipment": "AC PCB, washing machine PCB, TV board",
+            "Turnaround": "24-48 hours",
+            "Warranty": "3 months on repair",
+            "OnSite": "Available for bulk orders",
         },
     },
 

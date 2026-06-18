@@ -47,6 +47,18 @@ class SiteSettings(Document):
     show_marquee: bool = True
     # Hero section tagline override
     hero_tagline: Optional[str] = None
+    # Footer tagline shown under the logo in the site footer
+    footer_tagline: Optional[str] = None
+
+    # --- Announcement Banner ---
+    # Whether the top-of-site announcement banner is visible
+    announcement_banner_enabled: bool = False
+    # Text shown in the announcement banner
+    announcement_banner_text: str = ""
+
+    # --- WhatsApp ---
+    # Pre-filled message template used by the floating WhatsApp button
+    whatsapp_message_template: str = "Hi Konark Industry, I have a query"
 
     # --- Maintenance Mode ---
     # True shows a maintenance banner — API still works but frontend shows warning

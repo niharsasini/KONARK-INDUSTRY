@@ -7,6 +7,7 @@ import { getProduct } from "@/lib/api";
 import VehicleDetail from "@/components/product/detail/VehicleDetail";
 import ProductDetail from "@/components/product/detail/ProductDetail";
 import ServiceDetail from "@/components/product/detail/ServiceDetail";
+import { ProductJsonLd, BreadcrumbJsonLd } from "@/components/ui/JsonLd";
 
 /* ─── Router ─────────────────────────────────────── */
 
@@ -57,7 +58,36 @@ export default function ProductPage() {
     );
   }
 
-  if (product.type === "vehicle") return <VehicleDetail product={product} />;
-  if (product.type === "service") return <ServiceDetail product={product} />;
-  return <ProductDetail product={product} />;
+  const jsonLdProduct = {
+    id: product.id,
+    name: product.name,
+    description: product.description,
+    images: product.images,
+    image: product.image,
+    price: product.price,
+    in_stock: product.inStock,
+    rating: product.rating,
+    review_count: product.review_count,
+    slug: product.slug,
+  };
+
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Products", href: "/products" },
+    { label: product.name },
+  ];
+
+  return (
+    <>
+      <ProductJsonLd product={jsonLdProduct} />
+      <BreadcrumbJsonLd items={breadcrumbItems} />
+      {product.type === "vehicle" ? (
+        <VehicleDetail product={product} />
+      ) : product.type === "service" ? (
+        <ServiceDetail product={product} />
+      ) : (
+        <ProductDetail product={product} />
+      )}
+    </>
+  );
 }

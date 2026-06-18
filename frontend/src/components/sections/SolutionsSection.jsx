@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
+import Image from "next/image";
 
 const TABS = [
   {
@@ -118,8 +119,8 @@ function TabContent({ tab }) {
               <span key={p} style={{ fontSize: 10, padding: "3px 10px", borderRadius: 100, background: `${tab.color}12`, color: tab.color, border: `1px solid ${tab.color}30`, fontWeight: 600 }}>{p}</span>
             ))}
           </div>
-          <div style={{ background: "#060d1a", borderRadius: 16, padding: 24, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, minHeight: 180 }}>
-            <img src={tab.image} alt={tab.label} loading="lazy" style={{ maxWidth: "80%", maxHeight: 160, objectFit: "contain", filter: `drop-shadow(0 0 20px ${tab.color}40)` }} />
+          <div style={{ background: "#060d1a", borderRadius: 16, padding: 24, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, minHeight: 180, position: "relative" }}>
+            <Image src={tab.image} alt={tab.label} fill style={{ objectFit: "contain", padding: 24, filter: `drop-shadow(0 0 20px ${tab.color}40)` }} />
           </div>
           <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>{tab.heading}</p>
           <p style={{ fontSize: 13, color: "#64748b", margin: 0 }}>Engineered in Bhubaneswar, Odisha</p>

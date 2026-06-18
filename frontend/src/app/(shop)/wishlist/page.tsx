@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useWishlistStore, useCartStore } from '@/store'
 import { products as ProductData } from '@/components/product/ProductData'
 import toast from 'react-hot-toast'
@@ -84,8 +85,8 @@ export default function WishlistPage() {
                   ✕
                 </button>
                 <Link href={`/products/${product.slug}`} style={{ textDecoration: 'none' }}>
-                  <div style={{ background: '#111827', height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <img src={product.image} alt={product.name} loading="lazy" style={{ maxHeight: 160, maxWidth: '90%', objectFit: 'contain' }} />
+                  <div style={{ background: '#111827', height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                    <Image src={product.image} alt={product.name} fill style={{ objectFit: 'contain', padding: 16 }} />
                   </div>
                   <div style={{ padding: 14 }}>
                     <p style={{ fontSize: 11, color: '#64748b', margin: '0 0 4px' }}>{product.category}</p>

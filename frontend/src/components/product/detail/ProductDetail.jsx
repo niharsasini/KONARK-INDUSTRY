@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import EnquiryModal from "@/components/forms/EnquiryModal";
 import { useCartStore, useWishlistStore } from "@/store";
 import toast from "react-hot-toast";
@@ -248,8 +249,8 @@ export default function ProductDetail({ product }) {
                 onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#2d4a6b")}
                 onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
               >
-                <div style={{ background: "#111827", height: 120, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <img src={p.image} alt={p.name} loading="lazy" style={{ maxHeight: 100, maxWidth: "90%", objectFit: "contain" }} />
+                <div style={{ background: "#111827", height: 120, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                  <Image src={p.image} alt={p.name} fill style={{ objectFit: "contain", padding: 10 }} />
                 </div>
                 <div style={{ padding: 10 }}>
                   <p style={{ fontSize: 12, fontWeight: 600, color: "#f1f5f9", margin: "0 0 4px", lineHeight: 1.3 }}>{p.name}</p>

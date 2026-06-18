@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useCartStore } from "@/store";
 import { createOrder } from "@/lib/api";
 import toast from "react-hot-toast";
@@ -308,8 +309,8 @@ export default function CheckoutPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16, maxHeight: 200, overflowY: "auto" }}>
               {items.map((item) => (
                 <div key={item.slug} style={{ display: "flex", alignItems: "center", gap: 10, paddingBottom: 10, borderBottom: "1px solid #1e2d40" }}>
-                  <div style={{ width: 44, height: 44, background: "#111827", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <img src={item.image} alt={item.name} style={{ maxWidth: 40, maxHeight: 40, objectFit: "contain" }} />
+                  <div style={{ width: 44, height: 44, background: "#111827", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, position: "relative" }}>
+                    <Image src={item.image} alt={item.name} fill style={{ objectFit: "contain", padding: 3 }} />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ fontSize: 12, fontWeight: 600, color: "#f1f5f9", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.name}</p>

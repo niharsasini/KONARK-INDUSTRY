@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useCartStore } from "@/store";
 
 function getDeliveryDate() {
@@ -55,8 +56,8 @@ export default function CartPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {items.map((item) => (
                 <div key={item.slug} style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, padding: "16px 20px", display: "flex", alignItems: "center", gap: 16 }}>
-                  <div style={{ width: 64, height: 64, background: "#111827", borderRadius: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                    <img src={item.image} alt={item.name} style={{ maxWidth: 56, maxHeight: 56, objectFit: "contain" }} />
+                  <div style={{ width: 64, height: 64, background: "#111827", borderRadius: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", position: "relative" }}>
+                    <Image src={item.image} alt={item.name} fill style={{ objectFit: "contain", padding: 4 }} />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 2px" }}>{item.name}</p>

@@ -1,0 +1,119 @@
+"use client";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Bell, ShoppingBag, Wrench, Battery } from "lucide-react";
+import { getMyNotifications } from "@/lib/api";
+
+type Notification = {
+  id: string;
+  type: "order" | "booking" | "battery_swap";
+  title: string;
+  message: string;
+  created_at: string;
+};
+
+const TYPE_ICON = { order: ShoppingBag, booking: Wrench, battery_swap: Battery };
+const TYPE_COLOR = { order: "#10b981", booking: "#a78bfa", battery_swap: "#00d4ff" };
+const LAST_SEEN_KEY = "konark_notifications_last_seen";
+const POLL_MS = 60000;
+
+function timeAgo(dateStr: string) {
+  const mins = Math.floor((Date.now() - new Date(dateStr).getTime()) / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins} min ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs} hr ago`;
+  return `${Math.floor(hrs / 24)} day(s) ago`;
+}
+
+export default function NotificationBell() {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [open, setOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const fetchNotifications = useCallback(() => {
+    getMyNotifications()
+      .then((data) => {
+        const res = data as { notifications: Notification[] };
+        const items = res.notifications || [];
+        setNotifications(items);
+        const lastSeen = localStorage.getItem(LAST_SEEN_KEY);
+        const lastSeenTime = lastSeen ? new Date(lastSeen).getTime() : 0;
+        setUnreadCount(items.filter((n) => new Date(n.created_at).getTime() > lastSeenTime).length);
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, POLL_MS);
+    return () => clearInterval(interval);
+  }, [fetchNotifications]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleToggle = () => {
+    setOpen((o) => !o);
+    if (!open) {
+      localStorage.setItem(LAST_SEEN_KEY, new Date().toISOString());
+      setUnreadCount(0);
+    }
+  };
+
+  return (
+    <div ref={wrapperRef} style={{ position: "relative" }}>
+      <button
+        onClick={handleToggle}
+        aria-label="Notifications"
+        style={{ position: "relative", padding: 8, color: "#94a3b8", borderRadius: 8, display: "flex", border: "none", background: "transparent", cursor: "pointer", transition: "color 0.2s" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
+      >
+        <Bell size={20} />
+        {unreadCount > 0 && (
+          <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "#ef4444", color: "#fff", fontSize: 10, fontWeight: 700, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {unreadCount > 9 ? "9+" : unreadCount}
+          </span>
+        )}
+      </button>
+
+      {open && (
+        <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 320, maxHeight: 400, overflowY: "auto", background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, boxShadow: "0 20px 48px rgba(0,0,0,0.5)", zIndex: 300 }}>
+          <div style={{ padding: "14px 16px", borderBottom: "1px solid #1e2d40" }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Notifications</p>
+          </div>
+          {notifications.length === 0 ? (
+            <p style={{ padding: "24px 16px", fontSize: 12, color: "#64748b", textAlign: "center", margin: 0 }}>
+              No notifications yet
+            </p>
+          ) : (
+            notifications.map((n) => {
+              const Icon = TYPE_ICON[n.type] || Bell;
+              const color = TYPE_COLOR[n.type] || "#94a3b8";
+              return (
+                <div key={n.id} style={{ padding: "12px 16px", borderBottom: "1px solid #1e2d4060", display: "flex", gap: 10, alignItems: "flex-start" }}>
+                  <div style={{ width: 28, height: 28, borderRadius: 8, background: `${color}15`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <Icon size={13} color={color} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: "#f1f5f9", margin: "0 0 2px" }}>{n.title}</p>
+                    <p style={{ fontSize: 11, color: "#94a3b8", margin: "0 0 4px", lineHeight: 1.4 }}>{n.message}</p>
+                    <p style={{ fontSize: 10, color: "#475569", margin: 0 }}>{timeAgo(n.created_at)}</p>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      )}
+    </div>
+  );
+}

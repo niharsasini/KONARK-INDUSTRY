@@ -183,6 +183,10 @@ export async function getMyOrders() {
   return request("/api/v1/orders");
 }
 
+export async function getMyNotifications() {
+  return request("/api/v1/users/notifications");
+}
+
 export async function getOrder(orderNumber: string) {
   return request(`/api/v1/orders/${orderNumber}`);
 }

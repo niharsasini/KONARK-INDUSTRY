@@ -1,16 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getMyOrders } from "@/lib/api";
+import Image from "next/image";
+import toast from "react-hot-toast";
+import { getMyOrders, cancelOrder } from "@/lib/api";
 
 const STATUS_COLORS: Record<string, string> = {
   pending: "#f59e0b",
   confirmed: "#00d4ff",
-  processing: "#a78bfa",
+  packed: "#a78bfa",
   shipped: "#00d4ff",
   delivered: "#10b981",
   cancelled: "#ef4444",
 };
+
+const CANCELLABLE_STATUSES = ["pending", "confirmed"];
 
 function Skeleton() {
   return (
@@ -27,15 +31,35 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
 
-  useEffect(() => {
+  const fetchOrders = () => {
     const token = typeof window !== "undefined" ? localStorage.getItem("konark_token") : null;
     if (!token) { setLoading(false); return; }
+    setLoading(true);
     getMyOrders()
       .then((data: any) => setOrders(Array.isArray(data) ? data : data?.orders || []))
       .catch(() => setError("Could not load orders. Please try again."))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchOrders();
   }, []);
+
+  const handleCancel = async (orderNumber: string) => {
+    if (!confirm("Are you sure you want to cancel this order?")) return;
+    setCancellingId(orderNumber);
+    try {
+      await cancelOrder(orderNumber);
+      toast.success("Order cancelled successfully");
+      fetchOrders();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Cannot cancel this order");
+    } finally {
+      setCancellingId(null);
+    }
+  };
 
   return (
     <div style={{ background: "#0a0f1e", minHeight: "100vh", paddingTop: 64 }}>
@@ -64,8 +88,10 @@ export default function OrdersPage() {
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {orders.map((order: any) => {
-              const statusColor = STATUS_COLORS[order.status?.toLowerCase()] || "#94a3b8";
+              const orderStatus = (order.order_status || "pending").toLowerCase();
+              const statusColor = STATUS_COLORS[orderStatus] || "#94a3b8";
               const firstItem = order.items?.[0];
+              const canCancel = CANCELLABLE_STATUSES.includes(orderStatus);
               return (
                 <div key={order.id || order.order_number} style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, padding: "20px 24px" }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
@@ -78,13 +104,13 @@ export default function OrdersPage() {
                       </span>
                     </div>
                     <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: `${statusColor}18`, color: statusColor, border: `1px solid ${statusColor}30` }}>
-                      {order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : "Processing"}
+                      {orderStatus.charAt(0).toUpperCase() + orderStatus.slice(1)}
                     </span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                     {firstItem && (
-                      <div style={{ width: 56, height: 56, background: "#111827", borderRadius: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                        <img src={firstItem.image || "/productimg/Electric Scooter.png"} alt={firstItem.name} style={{ maxWidth: 48, maxHeight: 48, objectFit: "contain" }} />
+                      <div style={{ width: 56, height: 56, background: "#111827", borderRadius: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", position: "relative" }}>
+                        <Image src={firstItem.image || "/productimg/Electric Scooter.png"} alt={firstItem.name} fill style={{ objectFit: "contain", padding: 4 }} />
                       </div>
                     )}
                     <div style={{ flex: 1, minWidth: 0 }}>
@@ -100,6 +126,15 @@ export default function OrdersPage() {
                       <p style={{ fontSize: 15, fontWeight: 700, color: "#00d4ff", margin: "0 0 6px" }}>
                         {order.total_amount ? `₹${Number(order.total_amount).toLocaleString("en-IN")}` : "—"}
                       </p>
+                      {canCancel && (
+                        <button
+                          onClick={() => handleCancel(order.order_number)}
+                          disabled={cancellingId === order.order_number}
+                          style={{ padding: "5px 12px", borderRadius: 7, border: "1px solid rgba(239,68,68,0.4)", background: "transparent", color: "#ef4444", fontSize: 11, fontWeight: 600, cursor: cancellingId === order.order_number ? "not-allowed" : "pointer", opacity: cancellingId === order.order_number ? 0.6 : 1 }}
+                        >
+                          {cancellingId === order.order_number ? "Cancelling..." : "Cancel Order"}
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>

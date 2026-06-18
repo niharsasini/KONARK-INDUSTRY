@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { products } from "@/components/product/ProductData";
 
 /* ─── Shared helpers used across Vehicle / Product / Service detail pages ─── */
@@ -38,8 +39,8 @@ export function RelatedProducts({ current }) {
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#2d4a6b")}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
           >
-            <div style={{ background: "#111827", height: 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <img src={p.image} alt={p.name} loading="lazy" style={{ maxHeight: 120, maxWidth: "90%", objectFit: "contain" }} />
+            <div style={{ background: "#111827", height: 140, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+              <Image src={p.image} alt={p.name} fill style={{ objectFit: "contain", padding: 10 }} />
             </div>
             <div style={{ padding: 12 }}>
               <p style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9", margin: "0 0 4px" }}>{p.name}</p>

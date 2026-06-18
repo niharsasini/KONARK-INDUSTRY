@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { DROPDOWN_VARIANTS } from "./constants";
 import { ColHeader, ProdItem } from "./MegaMenuItems";
@@ -67,7 +68,7 @@ export default function ProductsMegaMenu({ onPanelEnter, onPanelLeave }) {
           onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
         >
           <div style={{ background: "#0d1424", display: "flex", alignItems: "center", justifyContent: "center", padding: "12px 8px", height: 90 }}>
-            <img src="/productimg/Electric Scooter.png" alt="EV Scooter" style={{ maxHeight: 80, maxWidth: "100%", objectFit: "contain" }} />
+            <Image src="/productimg/Electric Scooter.png" alt="EV Scooter" width={140} height={80} style={{ maxHeight: 80, width: "auto", objectFit: "contain" }} />
           </div>
           <div style={{ padding: "10px 10px 12px" }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: "#f1f5f9", marginBottom: 2 }}>EV Scooter Pro</div>

@@ -114,6 +114,12 @@ export const products = [
     description:
       "Custom-built utility EV designed for factories, warehouses, and industrial campuses with flexible build options.",
     specifications: {
+      Payload: "Up to 500kg",
+      Range: "Up to 80km per charge",
+      Motor: "2000W BLDC",
+      Battery: "48V 100Ah LFP",
+      MaxSpeed: "25 km/h",
+      ChargingTime: "6-8 hours",
       Usage: "Industrial Transport",
       Customization: "Available",
     },
@@ -177,8 +183,12 @@ export const products = [
     description:
       "Made-in-India(odisha) BLDC motor available in multiple power ratings for electric vehicles and automation systems.",
     specifications: {
-      PowerOptions: "250W – 2000W",
-      Type: "Hub & Mid Drive",
+      PowerRating: "250W - 5000W",
+      Voltage: "24V / 48V / 72V",
+      RPM: "300 - 3000 RPM",
+      Efficiency: ">85%",
+      Cooling: "Air cooled",
+      Applications: "EV, Industrial, Agriculture",
     },
   },
 
@@ -236,7 +246,12 @@ export const products = [
     description:
       "Effectively removes impurities and improves taste, ensuring safe water for households.",
     specifications: {
-      Stages: "6 Layer RO",
+      Purification: "RO + UV + UF",
+      Capacity: "10 litres/hour",
+      TDSReduction: "Up to 2000 ppm",
+      StorageTank: "7 litres",
+      Power: "36W",
+      Warranty: "1 year comprehensive",
     },
   },
 
@@ -305,11 +320,14 @@ export const products = [
       "Manufactured using copper pipes and aluminium fins for superior heat transfer.",
     specifications: {
       Pricing: "₹300 per running inch",
-
       PipeMaterial: "Copper",
       TinMaterial: "Aluminium",
       BodyMaterial: "Steel",
       Coating: "Bronze",
+      Compatible: "All split AC brands",
+      CapacityRange: "1 ton to 5 ton",
+      Warranty: "6 months",
+      Availability: "In stock for major brands",
     },
   },
 
@@ -328,6 +346,11 @@ export const products = [
       "Designed for high thermal efficiency and long operational life.",
     specifications: {
       Pricing: "₹300 per running inch",
+      Compatible: "All split AC brands",
+      CapacityRange: "1 ton to 5 ton",
+      Material: "Copper / Aluminium",
+      Warranty: "6 months",
+      Availability: "In stock for major brands",
     },
   },
 
@@ -347,6 +370,10 @@ export const products = [
     specifications: {
       Material: "Steel",
       Usage: "OEM Manufacturing",
+      Compatible: "All split AC brands",
+      CapacityRange: "1 ton to 5 ton",
+      Warranty: "6 months",
+      Availability: "In stock for major brands",
     },
   },
 
@@ -388,7 +415,12 @@ export const products = [
     description:
       "Protects batteries from overcharge, discharge, overheating, and imbalance.",
     specifications: {
-      VoltageSupport: "Up to 60V",
+      VoltageRange: "24V - 96V",
+      CurrentRating: "Up to 200A",
+      CellChemistry: "LFP / NMC / LTO",
+      Protection: "Overcharge, Over-discharge, Short circuit",
+      Communication: "UART / CAN Bus",
+      OperatingTemp: "-20°C to 60°C",
     },
   },
 
@@ -406,7 +438,12 @@ export const products = [
     description:
       "Supports various current ratings with adjustable voltage control.",
     specifications: {
-      CurrentOptions: "1A – 20A",
+      InputVoltage: "180-260V AC",
+      OutputVoltage: "48V / 60V / 72V",
+      ChargingCurrent: "10A / 20A / 30A",
+      Efficiency: ">92%",
+      Protection: "Short circuit, Over voltage",
+      Connector: "Anderson / XT60",
     },
   },
 
@@ -425,6 +462,11 @@ export const products = [
       "Reliable PCB manufacturing, assembly, and soldering for industrial and electronic products.",
     specifications: {
       ServiceType: "PCB Assembly & Soldering",
+      Services: "PCB repair, component replacement",
+      Equipment: "AC PCB, washing machine PCB, TV board",
+      Turnaround: "24-48 hours",
+      Warranty: "3 months on repair",
+      OnSite: "Available for bulk orders",
     },
   },
 

@@ -93,6 +93,10 @@ class SiteSettingsUpdate(BaseModel):
     gst_rate: Optional[float] = None
     show_marquee: Optional[bool] = None
     hero_tagline: Optional[str] = None
+    footer_tagline: Optional[str] = None
+    announcement_banner_enabled: Optional[bool] = None
+    announcement_banner_text: Optional[str] = None
+    whatsapp_message_template: Optional[str] = None
     maintenance_mode: Optional[bool] = None
     maintenance_message: Optional[str] = None
     notify_admin_on_enquiry: Optional[bool] = None

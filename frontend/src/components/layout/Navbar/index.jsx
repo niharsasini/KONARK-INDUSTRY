@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import { useCartStore, useWishlistStore } from "@/store";
 import { products as ProductData } from "@/components/product/ProductData";
+import NotificationBell from "@/components/ui/NotificationBell";
 import { NAV_LINKS } from "./constants";
 import PowerLogo from "./PowerLogo";
 import ProductsMegaMenu from "./ProductsMegaMenu";
@@ -174,6 +175,9 @@ export default function Navbar() {
                 Shop Now
               </Link>
             </div>
+
+            {/* Notifications — logged-in users only */}
+            {user && <NotificationBell />}
 
             {/* Wishlist — always visible */}
             <Link
