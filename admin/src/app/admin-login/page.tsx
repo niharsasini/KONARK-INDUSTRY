@@ -47,30 +47,49 @@ export default function AdminLoginPage() {
     setError("");
     setLoading(true);
 
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
       const res = await fetch(`${backendUrl}/api/v1/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email, password: form.password }),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        setError(data.detail || data.message || "Invalid credentials.");
-        setLoading(false);
-        return;
+        const data = await res.json();
+        throw new Error(data.detail || data.message || "Invalid credentials.");
       }
 
-      if (data.user?.role !== "admin") {
-        setError("Access denied. Admin account required.");
-        setLoading(false);
-        return;
+      const data = await res.json();
+      const token = data.access_token;
+
+      if (!token) {
+        throw new Error("No token received.");
       }
 
-      localStorage.setItem("konark_admin_token", data.access_token);
-      localStorage.setItem("konark_admin_user", JSON.stringify(data.user));
+      // Store token temporarily so the /me request below can authenticate.
+      localStorage.setItem("konark_admin_token", token);
+
+      // The login response only contains tokens, not a user object —
+      // fetch the profile separately to verify the admin role.
+      const meRes = await fetch(`${backendUrl}/api/v1/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!meRes.ok) {
+        localStorage.removeItem("konark_admin_token");
+        throw new Error("Failed to verify account.");
+      }
+
+      const userData = await meRes.json();
+
+      if (userData.role !== "admin") {
+        localStorage.removeItem("konark_admin_token");
+        throw new Error("Access denied. Admin account required.");
+      }
+
+      localStorage.setItem("konark_admin_user", JSON.stringify(userData));
 
       // Set cookie with proper attributes
       document.cookie = "admin_auth=true; path=/; max-age=86400; SameSite=Lax";
@@ -80,8 +99,8 @@ export default function AdminLoginPage() {
       setTimeout(() => {
         router.push("/dashboard");
       }, 100);
-    } catch {
-      setError("Connection error. Please try again.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Connection error. Please try again.");
       setLoading(false);
     }
   };
