@@ -29,6 +29,7 @@ type Enquiry = {
   date?: string;
   status: string;
   urgent?: boolean;
+  admin_notes?: string;
 };
 
 export default function EnquiriesPage() {
@@ -40,7 +41,8 @@ export default function EnquiriesPage() {
   const [viewItem, setViewItem] = useState<Enquiry | null>(null);
   const [replyOpen, setReplyOpen] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
-  const [replies, setReplies] = useState<Record<string, string>>({});
+  const [replySaving, setReplySaving] = useState(false);
+  const [noteSaved, setNoteSaved] = useState<string | null>(null);
 
   const fetchEnquiries = useCallback(async () => {
     setLoading(true);
@@ -88,11 +90,22 @@ export default function EnquiriesPage() {
     a.click();
   };
 
-  const sendReply = () => {
-    if (replyOpen && replyText.trim()) {
-      setReplies((r) => ({ ...r, [replyOpen]: replyText }));
+  const sendReply = async () => {
+    if (!replyOpen) return;
+    const id = replyOpen;
+    const current = enquiries.find((e) => getId(e) === id);
+    setReplySaving(true);
+    try {
+      await updateEnquiryStatus(id, current?.status ?? "New", replyText);
+      setEnquiries((es) => es.map((e) => getId(e) === id ? { ...e, admin_notes: replyText } : e));
       setReplyOpen(null);
       setReplyText("");
+      setNoteSaved(id);
+      setTimeout(() => setNoteSaved(null), 2500);
+    } catch {
+      // leave modal open so admin can retry
+    } finally {
+      setReplySaving(false);
     }
   };
 
@@ -186,13 +199,16 @@ export default function EnquiriesPage() {
                           >
                             <Eye size={11} /> View
                           </button>
-                          <button onClick={() => { setReplyOpen(id); setReplyText(replies[id] || ""); }}
+                          <button onClick={() => { setReplyOpen(id); setReplyText(row.admin_notes || ""); }}
                             style={{ display: "flex", alignItems: "center", gap: 4, padding: "5px 10px", background: "transparent", border: "1px solid #1e2d40", borderRadius: 6, color: "#94a3b8", fontSize: 11, cursor: "pointer" }}
                             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#a78bfa")}
                             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
                           >
                             <MessageSquare size={11} />
                           </button>
+                          {noteSaved === id && (
+                            <span style={{ fontSize: 11, color: "#10b981", fontWeight: 600, alignSelf: "center" }}>Saved ✓</span>
+                          )}
                           <button onClick={() => setEnquiries((es) => es.map((e) => getId(e) === id ? { ...e, urgent: !e.urgent } : e))}
                             style={{ display: "flex", alignItems: "center", padding: "5px 8px", background: row.urgent ? "rgba(239,68,68,0.1)" : "transparent", border: `1px solid ${row.urgent ? "rgba(239,68,68,0.4)" : "#1e2d40"}`, borderRadius: 6, color: row.urgent ? "#ef4444" : "#94a3b8", fontSize: 11, cursor: "pointer" }}>
                             <Flag size={11} />
@@ -214,9 +230,9 @@ export default function EnquiriesPage() {
                                 <p style={{ fontSize: 12, color: "#f1f5f9", margin: "0 0 4px" }}>📧 {row.email}</p>
                                 <p style={{ fontSize: 12, color: "#f1f5f9", margin: "0 0 4px" }}>📞 {row.phone}</p>
                               </div>
-                              {replies[id] && (
+                              {row.admin_notes && (
                                 <div style={{ marginTop: 8, padding: "10px 14px", background: "rgba(0,212,255,0.04)", border: "1px solid rgba(0,212,255,0.15)", borderRadius: 8, fontSize: 12, color: "#94a3b8" }}>
-                                  <span style={{ color: "#00d4ff", fontWeight: 600 }}>Note: </span>{replies[id]}
+                                  <span style={{ color: "#00d4ff", fontWeight: 600 }}>Note: </span>{row.admin_notes}
                                 </div>
                               )}
                             </div>
@@ -268,7 +284,7 @@ export default function EnquiriesPage() {
               onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
             />
             <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
-              <button onClick={sendReply} style={{ flex: 1, padding: "11px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 8, border: "none", cursor: "pointer" }}>Save Note</button>
+              <button onClick={sendReply} disabled={replySaving} style={{ flex: 1, padding: "11px", background: replySaving ? "#1e2d40" : "#00d4ff", color: replySaving ? "#94a3b8" : "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 8, border: "none", cursor: replySaving ? "not-allowed" : "pointer" }}>{replySaving ? "Saving..." : "Save Note"}</button>
               <button onClick={() => setReplyOpen(null)} style={{ padding: "11px 20px", background: "transparent", border: "1px solid #1e2d40", color: "#94a3b8", fontSize: 13, borderRadius: 8, cursor: "pointer" }}>Cancel</button>
             </div>
           </div>

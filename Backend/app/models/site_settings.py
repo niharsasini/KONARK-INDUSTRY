@@ -65,6 +65,15 @@ class SiteSettings(Document):
     maintenance_mode: bool = False
     maintenance_message: str = "We'll be back shortly. Thank you for your patience."
 
+    # --- Technicians ---
+    # Names available for assignment in Service Bookings and Battery Swap admin pages
+    technicians: list = Field(default_factory=lambda: [
+        "Ramesh Kumar",
+        "Bikash Patel",
+        "Sanjay Nayak",
+        "Dilip Sahoo",
+    ])
+
     # --- Email Notifications ---
     # Whether to send alert emails to admin on new enquiries
     notify_admin_on_enquiry: bool = True

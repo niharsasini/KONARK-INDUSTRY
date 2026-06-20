@@ -6,12 +6,12 @@ import {
   updateBatterySwap,
   deleteBatterySwap,
   getBatterySwapStats,
+  getSettings,
 } from "@/lib/adminApi";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
 const STATUS_OPTIONS = ["pending", "confirmed", "assigned", "in_progress", "completed", "cancelled"];
-const TECHNICIANS = ["Unassigned", "Ramesh Kumar", "Bikash Patel", "Sanjay Nayak", "Dilip Sahoo"];
 const TIME_SLOT_OPTIONS = ["Morning 9-12", "Afternoon 12-4", "Evening 4-7"];
 const CITIES = ["Bhubaneswar", "Cuttack", "Puri", "Rourkela", "Berhampur", "Sambalpur", "Balasore", "Other"];
 
@@ -85,6 +85,16 @@ export default function BatterySwapAdminPage() {
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState("");
   const [photoOpen, setPhotoOpen] = useState(false);
+  const [technicians, setTechnicians] = useState<string[]>(["Unassigned", "Ramesh Kumar", "Bikash Patel", "Sanjay Nayak", "Dilip Sahoo"]);
+
+  useEffect(() => {
+    getSettings()
+      .then((data) => {
+        const list = (data as Record<string, unknown>).technicians;
+        if (Array.isArray(list)) setTechnicians(["Unassigned", ...(list as string[])]);
+      })
+      .catch(() => {});
+  }, []);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -407,7 +417,7 @@ export default function BatterySwapAdminPage() {
                       { label: "Assign Technician", content: (
                         <select value={updateTech} onChange={(e) => setUpdateTech(e.target.value)}
                           style={{ width: "100%", background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 6, color: "#f1f5f9", fontSize: 13, padding: "8px 10px" }}>
-                          {TECHNICIANS.map((t) => <option key={t} value={t}>{t}</option>)}
+                          {technicians.map((t) => <option key={t} value={t}>{t}</option>)}
                         </select>
                       )},
                       { label: "Confirmed Date", content: (

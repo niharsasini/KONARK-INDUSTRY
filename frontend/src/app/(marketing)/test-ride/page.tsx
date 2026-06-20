@@ -46,6 +46,7 @@ export default function TestRidePage() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -62,11 +63,16 @@ export default function TestRidePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setError("");
     try {
       await submitTestRide(form);
       setSuccess(true);
-    } catch {
-      setSuccess(true);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to submit booking. Please call us at +91 94376 11129."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -134,6 +140,14 @@ export default function TestRidePage() {
           <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 20, padding: "36px" }}>
             <h2 style={{ fontSize: 20, fontWeight: 700, color: "#f1f5f9", margin: "0 0 28px" }}>Your Details</h2>
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              {error && (
+                <div style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 10, padding: "12px 16px" }}>
+                  <p style={{ color: "#ef4444", fontSize: 13, margin: "0 0 6px" }}>{error}</p>
+                  <a href="tel:+919437611129" style={{ color: "#00d4ff", fontSize: 13, fontWeight: 600, textDecoration: "none" }}>
+                    Or call us directly: +91 94376 11129
+                  </a>
+                </div>
+              )}
               <div>
                 <label style={LABEL_STYLE}>Full Name</label>
                 <input type="text" value={form.name} onChange={set("name")} required placeholder="Rajesh Kumar" style={INPUT_STYLE} onFocus={focus} onBlur={blur} />

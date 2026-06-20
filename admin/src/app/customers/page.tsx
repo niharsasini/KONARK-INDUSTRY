@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { Search, Download, ChevronDown, ChevronUp } from "lucide-react";
-import { getCustomers } from "@/lib/adminApi";
+import { getCustomers, toggleCustomerStatus } from "@/lib/adminApi";
 import SkeletonLoader from "@/components/SkeletonLoader";
 import ErrorState from "@/components/ErrorState";
 
@@ -33,6 +33,7 @@ function getJoinDate(c: Customer) {
   const d = c.join_date ?? c.joinDate ?? c.created_at;
   return d ? new Date(d).toLocaleDateString("en-IN") : "—";
 }
+function isActive(c: Customer) { return c.is_active !== false; }
 
 export default function CustomersPage() {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -61,6 +62,15 @@ export default function CustomersPage() {
       c.name.toLowerCase().includes(search.toLowerCase()) ||
       (c.phone ?? "").includes(search)
   );
+
+  const handleToggleStatus = async (id: string, currentlyActive: boolean) => {
+    try {
+      await toggleCustomerStatus(id);
+      setCustomers((cs) => cs.map((c) => getId(c) === id ? { ...c, is_active: !currentlyActive } : c));
+    } catch {
+      // ignore — UI stays unchanged on failure
+    }
+  };
 
   const exportTxt = () => {
     const lines = customers.map(
@@ -105,7 +115,7 @@ export default function CustomersPage() {
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ borderBottom: "1px solid #1e2d40", background: "#0f172a" }}>
-                {["Customer", "Phone", "City", "Orders", "Last Active", ""].map((h, i) => (
+                {["Customer", "Phone", "City", "Orders", "Last Active", "Status", ""].map((h, i) => (
                   <th key={i} style={{ padding: "12px 16px", textAlign: "left", fontSize: 11, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>{h}</th>
                 ))}
               </tr>
@@ -140,13 +150,31 @@ export default function CustomersPage() {
                         <span style={{ fontSize: 13, fontWeight: 700, color: orders > 0 ? "#10b981" : "#64748b" }}>{orders}</span>
                       </td>
                       <td style={{ padding: "14px 16px", fontSize: 12, color: "#94a3b8", whiteSpace: "nowrap" }}>{getLastActive(c)}</td>
+                      <td style={{ padding: "14px 16px" }} onClick={(e) => e.stopPropagation()}>
+                        <button
+                          onClick={() => handleToggleStatus(id, isActive(c))}
+                          style={{
+                            background: isActive(c) ? "rgba(239,68,68,0.1)" : "rgba(16,185,129,0.1)",
+                            border: `1px solid ${isActive(c) ? "#ef4444" : "#10b981"}`,
+                            color: isActive(c) ? "#ef4444" : "#10b981",
+                            padding: "4px 12px",
+                            borderRadius: 6,
+                            fontSize: 12,
+                            cursor: "pointer",
+                            fontWeight: 600,
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {isActive(c) ? "Deactivate" : "Activate"}
+                        </button>
+                      </td>
                       <td style={{ padding: "14px 16px" }}>
                         {expanded ? <ChevronUp size={14} color="#00d4ff" /> : <ChevronDown size={14} color="#64748b" />}
                       </td>
                     </tr>
                     {expanded && (
                       <tr key={`${id}-exp`} style={{ borderBottom: "1px solid #1e2d4060" }}>
-                        <td colSpan={6} style={{ padding: "0 16px 16px 60px", background: "rgba(0,212,255,0.02)" }}>
+                        <td colSpan={7} style={{ padding: "0 16px 16px 60px", background: "rgba(0,212,255,0.02)" }}>
                           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
                             <div>
                               <p style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 8px", fontWeight: 600 }}>Recent Enquiries</p>

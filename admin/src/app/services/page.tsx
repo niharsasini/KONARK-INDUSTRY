@@ -1,11 +1,10 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { Calendar, List, X, ChevronDown } from "lucide-react";
-import { getServiceBookings, updateServiceBooking } from "@/lib/adminApi";
+import { getServiceBookings, updateServiceBooking, getSettings } from "@/lib/adminApi";
 import SkeletonLoader from "@/components/SkeletonLoader";
 import ErrorState from "@/components/ErrorState";
 
-const TECHNICIANS = ["Unassigned", "Ramesh Kumar", "Bikash Patel", "Sanjay Nayak", "Dilip Sahoo"];
 const STATUS_FLOW = ["Booked", "Technician Assigned", "In Progress", "Completed"];
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
   Booked: { bg: "rgba(0,212,255,0.1)", color: "#00d4ff" },
@@ -45,6 +44,16 @@ export default function ServicesPage() {
   const [error, setError] = useState<string | null>(null);
   const [view, setView] = useState<"list" | "calendar">("list");
   const [detailId, setDetailId] = useState<string | null>(null);
+  const [technicians, setTechnicians] = useState<string[]>(["Unassigned", "Ramesh Kumar", "Bikash Patel", "Sanjay Nayak", "Dilip Sahoo"]);
+
+  useEffect(() => {
+    getSettings()
+      .then((data) => {
+        const list = (data as Record<string, unknown>).technicians;
+        if (Array.isArray(list)) setTechnicians(["Unassigned", ...(list as string[])]);
+      })
+      .catch(() => {});
+  }, []);
 
   const fetchBookings = useCallback(async () => {
     setLoading(true);
@@ -126,7 +135,7 @@ export default function ServicesPage() {
                         update(getId(b), { technician: tech, assigned_technician: tech, status: tech !== "Unassigned" && b.status === "Booked" ? "Technician Assigned" : b.status });
                       }}
                         style={{ appearance: "none", background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 6, padding: "6px 28px 6px 10px", color: getTech(b) === "Unassigned" ? "#64748b" : "#f1f5f9", fontSize: 12, cursor: "pointer", width: "100%", outline: "none" }}>
-                        {TECHNICIANS.map((t) => <option key={t} value={t}>{t}</option>)}
+                        {technicians.map((t) => <option key={t} value={t}>{t}</option>)}
                       </select>
                       <ChevronDown size={12} style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", color: "#64748b", pointerEvents: "none" }} />
                     </div>
@@ -199,7 +208,7 @@ export default function ServicesPage() {
                 update(getId(detail), { technician: tech, assigned_technician: tech, status: tech !== "Unassigned" && detail.status === "Booked" ? "Technician Assigned" : detail.status });
               }}
                 style={{ width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40", borderRadius: 8, padding: "10px 14px", color: "#f1f5f9", fontSize: 13, outline: "none" }}>
-                {TECHNICIANS.map((t) => <option key={t} value={t}>{t}</option>)}
+                {technicians.map((t) => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
             {detail.notes && (

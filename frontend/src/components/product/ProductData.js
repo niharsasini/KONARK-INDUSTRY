@@ -129,6 +129,32 @@ export const products = [
     },
   },
 
+  {
+    id: 27,
+    slug: "electric-bike",
+    name: "Electric Bike",
+    type: "vehicle",
+    category: CATEGORIES.EV,
+    price: 32000,
+    rating: 4.5,
+    isNew: true,
+    image: "/konark/bike.png",
+    shortDescription:
+      "Lightweight electric bike for daily commuting with removable battery.",
+    description:
+      "The Konark Electric Bike combines style with efficiency. Designed for city commuters, it features a lightweight aluminium frame, removable lithium battery, and regenerative braking. Perfect for college students and office-goers.",
+    specifications: {
+      Motor: "250W BLDC Hub Motor",
+      Range: "Up to 60km per charge",
+      MaxSpeed: "25 km/h",
+      Battery: "36V 10Ah Lithium",
+      ChargingTime: "3-4 hours",
+      Frame: "Aluminium alloy",
+      Brakes: "Disc front, V-brake rear",
+      Weight: "18 kg",
+    },
+  },
+
   /* ================= HOME APPLIANCES ================= */
 
   {
@@ -148,6 +174,10 @@ export const products = [
       Capacity: "1 / 1.5 / 2 Ton",
       Coolant: "R32",
       Voltage: "180V – 265V",
+      EnergyRating: "3 Star / 5 Star BEE",
+      NoiseLevel: "<40 dB (indoor unit)",
+      Warranty: "1 year comprehensive, 5 year compressor",
+      CoolingArea: "Up to 150 sq.ft (1.5 ton)",
     },
   },
 
@@ -213,6 +243,9 @@ export const products = [
       Power: "1000 – 1500W",
       Voltage: "240V",
       Warranty: "6 Months",
+      HeatingTechnology: "Electromagnetic induction",
+      Safety: "Auto shut-off, child lock",
+      Cookware: "Iron, steel, cast iron compatible",
     },
   },
 
@@ -233,6 +266,9 @@ export const products = [
       Power: "1000 – 1500W",
       Voltage: "240V",
       Warranty: "6 Months",
+      HeatingTechnology: "Infrared radiation",
+      Surface: "Crystal glass top",
+      Cookware: "All cookware compatible",
     },
   },
 
@@ -269,7 +305,7 @@ export const products = [
     rating: 4.5,
     isNew: true,
     image: "/productimg/Android TV.png",
-    shortDescription: "Smart Android TV with 4K display support.",
+    shortDescription: "Smart Android TV with 4K display. Price varies by screen size — contact us for a quote.",
     description:
       "Enjoy immersive entertainment with Android OS, high-resolution visuals, and powerful audio.",
     specifications: {
@@ -415,7 +451,7 @@ export const products = [
     rating: 4.6,
     isNew: true,
     image: "/productimg/BMS.png",
-    shortDescription: "Battery Management System for LFP batteries.",
+    shortDescription: "Battery Management System for LFP batteries. Price on request — contact for bulk pricing.",
     description:
       "Protects batteries from overcharge, discharge, overheating, and imbalance.",
     specifications: {
@@ -438,7 +474,7 @@ export const products = [
     rating: 4.5,
     isNew: false,
     image: "/productimg/Battery Charger.png",
-    shortDescription: "Adjustable charger for multiple battery capacities.",
+    shortDescription: "Adjustable charger for multiple battery capacities. Price varies by output — contact for pricing.",
     description:
       "Supports various current ratings with adjustable voltage control.",
     specifications: {
@@ -448,6 +484,32 @@ export const products = [
       Efficiency: ">92%",
       Protection: "Short circuit, Over voltage",
       Connector: "Anderson / XT60",
+    },
+  },
+
+  {
+    id: 28,
+    slug: "solar-inverter",
+    name: "Solar Inverter",
+    type: "product",
+    category: CATEGORIES.ELECTRONICS,
+    price: 8500,
+    rating: 4.6,
+    isNew: false,
+    image: "/konark/solarpannel solutions.png",
+    shortDescription:
+      "Pure sine wave solar inverter for home and commercial solar systems.",
+    description:
+      "High-efficiency pure sine wave inverter designed for rooftop and ground-mount solar power systems. Compatible with all major solar panel brands. Built-in MPPT charge controller, LCD display, and overload protection.",
+    specifications: {
+      Type: "Pure Sine Wave",
+      Capacity: "1kVA to 10kVA",
+      InputVoltage: "12V / 24V / 48V DC",
+      OutputVoltage: "230V AC",
+      Efficiency: ">93%",
+      MPPT: "Built-in charge controller",
+      Display: "LCD with battery/load status",
+      Protection: "Overload, short circuit, overheat",
     },
   },
 

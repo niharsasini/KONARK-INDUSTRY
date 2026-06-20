@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { submitEnquiry } from "@/lib/api";
 
 const BENEFITS = [
   { title: "High Margins", desc: "Competitive pricing models with sustainable long-term profitability.", color: "#00d4ff" },
@@ -42,21 +43,29 @@ export default function PartnerPage() {
   const [form, setForm] = useState({ company: "", contact: "", phone: "", email: "", city: "", state: "", partnerType: "Retail Distributor", message: "" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     try {
-      await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, type: "partner_application" }),
+      await submitEnquiry({
+        name: form.contact,
+        phone: form.phone,
+        email: form.email,
+        enquiry_type: "partner",
+        message: `Partner Application:\nCompany: ${form.company}\nPartner Type: ${form.partnerType}\nState: ${form.state || ""}\nMessage: ${form.message || ""}`,
+        city: form.city,
       });
       setSuccess(true);
-    } catch {}
-    setLoading(false);
+    } catch (err) {
+      setError(err.message || "Failed to submit. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -151,6 +160,11 @@ export default function PartnerPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                {error && (
+                  <div style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.3)", color: "#ef4444", fontSize: 13, padding: "10px 14px", borderRadius: 8 }}>
+                    {error}
+                  </div>
+                )}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                   <div>
                     <label style={{ fontSize: 12, color: "#94a3b8", display: "block", marginBottom: 5 }}>Company Name *</label>

@@ -292,6 +292,19 @@ export async function updateSettings(data: Record<string, unknown>) {
   });
 }
 
+export async function changePassword(
+  currentPassword: string,
+  newPassword: string
+) {
+  return adminRequest("/api/v1/auth/change-password", {
+    method: "POST",
+    body: JSON.stringify({
+      current_password: currentPassword,
+      new_password: newPassword,
+    }),
+  });
+}
+
 // ─── BATTERY SWAP ─────────────────────────────────────────────────────────────
 
 export async function getBatterySwaps(filters: Record<string, string> = {}) {

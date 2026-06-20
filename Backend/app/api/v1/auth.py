@@ -289,7 +289,8 @@ async def forgot_password(request: Request, email: EmailStr = Body(..., embed=Tr
 
 
 @router.post("/reset-password")
-async def reset_password(token: str = Body(...), new_password: str = Body(..., min_length=6)):
+@limiter.limit("3/hour")
+async def reset_password(request: Request, token: str = Body(...), new_password: str = Body(..., min_length=6)):
     """
     Complete a password reset using the token emailed to the user.
     Token must not be expired. Clears the token after use so it cannot be replayed.
@@ -308,3 +309,25 @@ async def reset_password(token: str = Body(...), new_password: str = Body(..., m
     await user.save()
 
     return {"message": "Password reset successfully"}
+
+
+@router.post("/change-password")
+@limiter.limit("5/hour")
+async def change_password(
+    request: Request,
+    current_password: str = Body(...),
+    new_password: str = Body(..., min_length=8),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Change the authenticated user's password.
+    Requires the correct current password before allowing the change.
+    """
+    if not verify_password(current_password, current_user.password_hash):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Current password is incorrect")
+
+    current_user.password_hash = hash_password(new_password)
+    current_user.updated_at = datetime.utcnow()
+    await current_user.save()
+
+    return {"message": "Password changed successfully"}

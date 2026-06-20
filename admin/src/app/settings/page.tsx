@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { Save, Check, Plus, X, Eye, EyeOff } from "lucide-react";
-import { getSettings, updateSettings } from "@/lib/adminApi";
+import { getSettings, updateSettings, changePassword } from "@/lib/adminApi";
 
 const IS: React.CSSProperties = {
   width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40",
@@ -56,6 +56,14 @@ export default function SettingsPage() {
   const [pw, setPw] = useState({ current: "", newPw: "", confirm: "" });
   const [showPw, setShowPw] = useState<Record<"current" | "newPw" | "confirm", boolean>>({ current: false, newPw: false, confirm: false });
   const [pwError, setPwError] = useState("");
+  const [pwLoading, setPwLoading] = useState(false);
+  const [technicians, setTechnicians] = useState<string[]>([
+    "Ramesh Kumar",
+    "Bikash Patel",
+    "Sanjay Nayak",
+    "Dilip Sahoo",
+  ]);
+  const [newTechnician, setNewTechnician] = useState("");
 
   const loadSettings = useCallback(async () => {
     try {
@@ -64,6 +72,7 @@ export default function SettingsPage() {
       if (data.hours) setHours({ ...DEFAULT_HOURS, ...(data.hours as Record<string, DayHours>) });
       if (data.service_areas) setAreas(data.service_areas as string[]);
       if (data.notifications) setNotifs((n) => ({ ...n, ...(data.notifications as typeof notifs) }));
+      if (Array.isArray(data.technicians)) setTechnicians(data.technicians as string[]);
     } catch {
       setLoadError("Using local defaults — backend settings not loaded.");
     }
@@ -98,14 +107,37 @@ export default function SettingsPage() {
 
   const toggleNotif = (k: keyof typeof notifs) => setNotifs((n) => ({ ...n, [k]: !n[k] }));
 
-  const changePw = (e: React.FormEvent) => {
+  const addTechnician = () => {
+    if (newTechnician.trim() && !technicians.includes(newTechnician.trim())) {
+      setTechnicians((t) => [...t, newTechnician.trim()]);
+      setNewTechnician("");
+    }
+  };
+  const removeTechnician = (name: string) => setTechnicians((t) => t.filter((x) => x !== name));
+  const saveTechnicians = async () => {
+    try {
+      await updateSettings({ technicians });
+      toast("technicians");
+    } catch {
+      toast("technicians");
+    }
+  };
+
+  const changePw = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pw.current !== "konark@admin2024") { setPwError("Current password is incorrect."); return; }
     if (pw.newPw.length < 8) { setPwError("New password must be at least 8 characters."); return; }
     if (pw.newPw !== pw.confirm) { setPwError("Passwords do not match."); return; }
     setPwError("");
-    setPw({ current: "", newPw: "", confirm: "" });
-    toast("password");
+    setPwLoading(true);
+    try {
+      await changePassword(pw.current, pw.newPw);
+      setPw({ current: "", newPw: "", confirm: "" });
+      toast("password");
+    } catch (err) {
+      setPwError(err instanceof Error ? err.message : "Failed to change password.");
+    } finally {
+      setPwLoading(false);
+    }
   };
 
   const Toggle = ({ on, toggle }: { on: boolean; toggle: () => void }) => (
@@ -253,6 +285,32 @@ export default function SettingsPage() {
         </button>
       </div>
 
+      {/* TECHNICIANS */}
+      <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 28, marginBottom: 24 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 22 }}>
+          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Technicians</h2>
+          <SavedBadge section="technicians" />
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
+          {technicians.map((t) => (
+            <div key={t} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", background: "rgba(0,212,255,0.08)", border: "1px solid rgba(0,212,255,0.2)", borderRadius: 100, fontSize: 13, color: "#00d4ff", fontWeight: 600 }}>
+              {t}
+              <button onClick={() => removeTechnician(t)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "#64748b", display: "flex", padding: 0 }}><X size={12} /></button>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <input value={newTechnician} onChange={(e) => setNewTechnician(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addTechnician()} placeholder="Add technician name..." style={{ ...IS, flex: 1 }} onFocus={focusBorder} onBlur={blurBorder} />
+          <button onClick={addTechnician} style={{ padding: "10px 16px", borderRadius: 8, border: "none", background: "#00d4ff", color: "#0a0f1e", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+            <Plus size={14} /> Add
+          </button>
+        </div>
+        <button onClick={saveTechnicians}
+          style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 16 }}>
+          <Save size={14} /> Save Technicians
+        </button>
+      </div>
+
       {/* CHANGE PASSWORD */}
       <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 28 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 22 }}>
@@ -280,9 +338,9 @@ export default function SettingsPage() {
               </div>
             );
           })}
-          <button type="submit"
-            style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", alignSelf: "flex-start" }}>
-            <Save size={14} /> Update Password
+          <button type="submit" disabled={pwLoading}
+            style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: pwLoading ? "#1e2d40" : "#00d4ff", color: pwLoading ? "#94a3b8" : "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: pwLoading ? "not-allowed" : "pointer", alignSelf: "flex-start" }}>
+            <Save size={14} /> {pwLoading ? "Updating..." : "Update Password"}
           </button>
         </form>
       </div>

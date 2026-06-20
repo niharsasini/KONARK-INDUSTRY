@@ -102,6 +102,7 @@ class SiteSettingsUpdate(BaseModel):
     notify_admin_on_enquiry: Optional[bool] = None
     notify_admin_on_order: Optional[bool] = None
     notify_admin_on_booking: Optional[bool] = None
+    technicians: Optional[List[str]] = None
 
 
 # ---------- Dashboard ----------
