@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
-import { createProduct } from "@/lib/adminApi";
+import { getProduct, updateProduct } from "@/lib/adminApi";
 
 const CATEGORIES = [
   "Electric Vehicles",
@@ -28,28 +28,63 @@ const labelStyle: React.CSSProperties = {
 
 type SpecRow = { key: string; val: string };
 
-export default function NewProductPage() {
+type ProductResponse = {
+  slug: string;
+  name: string;
+  category: string;
+  type: string;
+  price: number;
+  short_description: string;
+  description: string;
+  images: string[];
+  specs: Record<string, string>;
+  in_stock: boolean;
+  is_new: boolean;
+  is_featured: boolean;
+};
+
+export default function EditProductPage() {
   const router = useRouter();
+  const params = useParams<{ slug: string }>();
+  const slug = params.slug;
+
   const [form, setForm] = useState({
-    name: "", slug: "", category: CATEGORIES[0], type: "product",
+    name: "", category: CATEGORIES[0], type: "product",
     price: "0", shortDescription: "", description: "",
     inStock: true, isNew: false, isFeatured: false,
   });
-  const [slugEdited, setSlugEdited] = useState(false);
   const [images, setImages] = useState<string[]>([""]);
   const [specs, setSpecs] = useState<SpecRow[]>([{ key: "", val: "" }]);
+  const [fetching, setFetching] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    if (form.name && !slugEdited) {
-      setForm((f) => ({
-        ...f,
-        slug: f.name.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
-      }));
-    }
-  }, [form.name, slugEdited]);
+    (async () => {
+      try {
+        const product = (await getProduct(slug)) as ProductResponse;
+        setForm({
+          name: product.name,
+          category: product.category,
+          type: product.type,
+          price: String(product.price),
+          shortDescription: product.short_description,
+          description: product.description,
+          inStock: product.in_stock,
+          isNew: product.is_new,
+          isFeatured: product.is_featured,
+        });
+        setImages(product.images?.length ? product.images : [""]);
+        const specRows = Object.entries(product.specs ?? {}).map(([key, val]) => ({ key, val: String(val) }));
+        setSpecs(specRows.length ? specRows : [{ key: "", val: "" }]);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load product");
+      } finally {
+        setFetching(false);
+      }
+    })();
+  }, [slug]);
 
   const set = (key: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
@@ -74,8 +109,7 @@ export default function NewProductPage() {
         if (key.trim()) specsObj[key.trim()] = val.trim();
       });
 
-      await createProduct({
-        slug: form.slug,
+      await updateProduct(slug, {
         name: form.name,
         category: form.category,
         type: form.type,
@@ -92,11 +126,15 @@ export default function NewProductPage() {
       setSaved(true);
       setTimeout(() => router.push("/products"), 1200);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create product");
+      setError(err instanceof Error ? err.message : "Failed to update product");
     } finally {
       setLoading(false);
     }
   };
+
+  if (fetching) {
+    return <div style={{ padding: "32px 40px", color: "#94a3b8" }}>Loading product...</div>;
+  }
 
   return (
     <div style={{ padding: "32px 40px", maxWidth: 800 }}>
@@ -104,12 +142,12 @@ export default function NewProductPage() {
         <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "#94a3b8", textDecoration: "none", marginBottom: 16 }}>
           <ArrowLeft size={14} /> Back to Products
         </Link>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>Add New Product</h1>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>Edit Product</h1>
       </div>
 
       {saved && (
         <div style={{ padding: "14px 20px", background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", borderRadius: 10, marginBottom: 24, fontSize: 13, color: "#10b981", fontWeight: 600 }}>
-          ✅ Product created successfully! Redirecting...
+          ✅ Product updated successfully! Redirecting...
         </div>
       )}
       {error && (
@@ -123,17 +161,6 @@ export default function NewProductPage() {
           <div style={{ gridColumn: "1 / -1" }}>
             <label style={labelStyle}>Product Name *</label>
             <input required value={form.name} onChange={set("name")} placeholder="e.g. Electric Scooter Pro" style={inputStyle} />
-          </div>
-
-          <div>
-            <label style={labelStyle}>Slug *</label>
-            <input
-              required
-              value={form.slug}
-              onChange={(e) => { setSlugEdited(true); setForm((f) => ({ ...f, slug: e.target.value })); }}
-              placeholder="electric-scooter-pro"
-              style={inputStyle}
-            />
           </div>
 
           <div>
@@ -255,7 +282,7 @@ export default function NewProductPage() {
 
         <div style={{ display: "flex", gap: 12, paddingTop: 20, borderTop: "1px solid #1e2d40" }}>
           <button type="submit" disabled={loading} style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 28px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 14, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1 }}>
-            <Save size={15} /> {loading ? "Saving..." : "Save Product"}
+            <Save size={15} /> {loading ? "Saving..." : "Save Changes"}
           </button>
           <Link href="/products" style={{ display: "flex", alignItems: "center", padding: "12px 24px", background: "transparent", border: "1px solid #1e2d40", borderRadius: 10, color: "#94a3b8", fontSize: 14, textDecoration: "none" }}>
             Cancel

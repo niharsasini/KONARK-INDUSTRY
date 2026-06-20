@@ -79,6 +79,10 @@ export async function getAdminProducts(
   return adminRequest(`/api/v1/products${qs ? `?${qs}` : ""}`);
 }
 
+export async function getProduct(slug: string) {
+  return adminRequest(`/api/v1/products/${slug}`);
+}
+
 export async function createProduct(data: Record<string, unknown>) {
   return adminRequest("/api/v1/products", {
     method: "POST",

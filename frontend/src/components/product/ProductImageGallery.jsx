@@ -17,6 +17,9 @@ export default function ProductImageGallery({ images, productName, isNew }) {
           <span style={{ position: "absolute", top: 16, left: 16, background: "#00d4ff", color: "#0a0f1e", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 4, textTransform: "uppercase" }}>NEW</span>
         )}
         <span style={{ position: "absolute", top: 16, right: 16, fontSize: 11, color: "#64748b", background: "rgba(0,0,0,0.3)", padding: "4px 8px", borderRadius: 6 }}>🔍 Click to zoom</span>
+        {images.length > 1 && (
+          <span style={{ position: "absolute", bottom: 16, right: 16, fontSize: 11, color: "#94a3b8", background: "rgba(0,0,0,0.4)", padding: "4px 10px", borderRadius: 6, fontWeight: 600 }}>{activeImage + 1} / {images.length}</span>
+        )}
         <span style={{ position: "absolute", bottom: 16, left: 16, background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.3)", color: "#10b981", fontSize: 11, fontWeight: 700, padding: "4px 10px", borderRadius: 6 }}>● In Stock</span>
         {images.length > 1 && (
           <>

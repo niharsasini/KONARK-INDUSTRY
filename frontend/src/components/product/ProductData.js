@@ -25,6 +25,10 @@ export const products = [
     rating: 4.6,
     isNew: true,
     image: "/productimg/Electric Scooter.png",
+    images: [
+      "/productimg/Electric Scooter.png",
+      "/productimg/Electric Scooter.png",
+    ],
     shortDescription:
       "Smart electric scooter for efficient daily city commuting.",
     description:
