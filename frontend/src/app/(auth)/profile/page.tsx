@@ -30,10 +30,13 @@ export default function ProfilePage() {
   const [orderCount, setOrderCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const wishlistCount = useWishlistStore((s) => s.items.length);
+  const syncWishlist = useWishlistStore((s) => s.syncFromBackend);
 
   useEffect(() => {
     const token = typeof window !== "undefined" ? localStorage.getItem("konark_token") : null;
     if (!token) { router.replace("/login"); return; }
+
+    syncWishlist();
 
     Promise.all([getCurrentUser(), getMyOrders()])
       .then(([userData, ordersData]: any[]) => {

@@ -4,14 +4,15 @@ Reusable dependencies injected into route handlers via Depends().
 These handle authentication verification and role-based authorization.
 """
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 from app.core.security import decode_token
 from app.models.user import User, UserRole
 from typing import Optional
 
-# Extracts the Bearer token from the Authorization header
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+# Extracts the Bearer token from the Authorization header — does not error
+# if absent, since the httpOnly cookie (set at login) is checked as a fallback.
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=False)
 
 # Same scheme but does not error if the header is absent — for optional auth
 oauth2_scheme_optional = OAuth2PasswordBearer(
@@ -20,13 +21,25 @@ oauth2_scheme_optional = OAuth2PasswordBearer(
 )
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
+async def get_current_user(
+    request: Request,
+    token: Optional[str] = Depends(oauth2_scheme),
+) -> User:
     """
     Dependency: Resolve the currently authenticated user from the JWT.
-    Raises HTTP 401 if the token is missing, invalid, or the user is inactive.
+    Checks the Authorization header first, then falls back to the
+    httpOnly access_token cookie set at login.
+    Raises HTTP 401 if no token is found, it's invalid, or the user is inactive.
     """
+    auth_token = token or request.cookies.get("access_token")
+    if not auth_token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not authenticated",
+        )
+
     # Verify the token signature and expiry
-    payload = decode_token(token)
+    payload = decode_token(auth_token)
 
     # The "sub" claim holds the MongoDB document ID string
     user_id = payload.get("sub")
@@ -64,6 +77,7 @@ async def get_admin_user(
 
 
 async def get_optional_user(
+    request: Request,
     token: Optional[str] = Depends(oauth2_scheme_optional),
 ) -> Optional[User]:
     """
@@ -71,10 +85,11 @@ async def get_optional_user(
     or None if the request is unauthenticated.
     Used on endpoints that serve both guests and logged-in users.
     """
-    if not token:
+    auth_token = token or request.cookies.get("access_token")
+    if not auth_token:
         return None
     try:
-        payload = decode_token(token)
+        payload = decode_token(auth_token)
         user_id = payload.get("sub")
         if user_id:
             user = await User.get(user_id)

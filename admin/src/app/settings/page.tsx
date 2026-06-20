@@ -68,10 +68,27 @@ export default function SettingsPage() {
   const loadSettings = useCallback(async () => {
     try {
       const data = await getSettings() as Record<string, unknown>;
-      if (data.company) setCompany({ ...DEFAULT_COMPANY, ...(data.company as typeof DEFAULT_COMPANY) });
-      if (data.hours) setHours({ ...DEFAULT_HOURS, ...(data.hours as Record<string, DayHours>) });
-      if (data.service_areas) setAreas(data.service_areas as string[]);
-      if (data.notifications) setNotifs((n) => ({ ...n, ...(data.notifications as typeof notifs) }));
+      setCompany({
+        name: (data.company_name as string) ?? DEFAULT_COMPANY.name,
+        address: (data.company_address as string) ?? DEFAULT_COMPANY.address,
+        phone: (data.company_phone as string) ?? DEFAULT_COMPANY.phone,
+        email: (data.company_email as string) ?? DEFAULT_COMPANY.email,
+        about: (data.company_about as string) ?? DEFAULT_COMPANY.about,
+        instagram: (data.instagram_url as string) ?? "",
+        linkedin: (data.linkedin_url as string) ?? "",
+        youtube: (data.youtube_url as string) ?? "",
+      });
+      if (data.business_hours && Object.keys(data.business_hours as object).length > 0) {
+        setHours({ ...DEFAULT_HOURS, ...(data.business_hours as Record<string, DayHours>) });
+      }
+      if (Array.isArray(data.service_areas)) setAreas(data.service_areas as string[]);
+      setNotifs({
+        newEnquiry: (data.notify_admin_on_enquiry as boolean) ?? true,
+        newBooking: (data.notify_admin_on_booking as boolean) ?? true,
+        newOrder: (data.notify_admin_on_order as boolean) ?? true,
+        dailySummary: (data.notify_daily_summary as boolean) ?? false,
+        weeklyReport: (data.notify_weekly_report as boolean) ?? true,
+      });
       if (Array.isArray(data.technicians)) setTechnicians(data.technicians as string[]);
     } catch {
       setLoadError("Using local defaults — backend settings not loaded.");
@@ -82,13 +99,55 @@ export default function SettingsPage() {
 
   const toast = (section: string) => { setSaved(section); setTimeout(() => setSaved(null), 2500); };
 
-  const saveSection = async (section: string, payload: Record<string, unknown>) => {
+  const saveCompany = async () => {
     try {
-      await updateSettings({ [section]: payload });
-      toast(section);
+      await updateSettings({
+        company_name: company.name,
+        company_address: company.address,
+        company_phone: company.phone,
+        company_email: company.email,
+        company_about: company.about,
+        instagram_url: company.instagram,
+        linkedin_url: company.linkedin,
+        youtube_url: company.youtube,
+      });
     } catch {
-      toast(section);
+      // best-effort — still show the badge so the admin gets feedback either way
     }
+    toast("company");
+  };
+
+  const saveHours = async () => {
+    try {
+      await updateSettings({ business_hours: hours });
+    } catch {
+      // ignore
+    }
+    toast("hours");
+  };
+
+  const saveAreas = async () => {
+    try {
+      await updateSettings({ service_areas: areas });
+    } catch {
+      // ignore
+    }
+    toast("areas");
+  };
+
+  const saveNotifications = async () => {
+    try {
+      await updateSettings({
+        notify_admin_on_enquiry: notifs.newEnquiry,
+        notify_admin_on_booking: notifs.newBooking,
+        notify_admin_on_order: notifs.newOrder,
+        notify_daily_summary: notifs.dailySummary,
+        notify_weekly_report: notifs.weeklyReport,
+      });
+    } catch {
+      // ignore
+    }
+    toast("notifs");
   };
 
   const setC = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -198,7 +257,7 @@ export default function SettingsPage() {
             </div>
           ))}
         </div>
-        <button onClick={() => saveSection("company", company)}
+        <button onClick={saveCompany}
           style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 20 }}>
           <Save size={14} /> Save Company Info
         </button>
@@ -229,7 +288,7 @@ export default function SettingsPage() {
             </div>
           ))}
         </div>
-        <button onClick={() => saveSection("hours", hours)}
+        <button onClick={saveHours}
           style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 20 }}>
           <Save size={14} /> Save Hours
         </button>
@@ -255,7 +314,7 @@ export default function SettingsPage() {
             <Plus size={14} /> Add
           </button>
         </div>
-        <button onClick={() => saveSection("service_areas", { areas })}
+        <button onClick={saveAreas}
           style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 16 }}>
           <Save size={14} /> Save Areas
         </button>
@@ -279,7 +338,7 @@ export default function SettingsPage() {
             <Toggle on={notifs[key]} toggle={() => toggleNotif(key)} />
           </div>
         ))}
-        <button onClick={() => saveSection("notifications", notifs)}
+        <button onClick={saveNotifications}
           style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 20 }}>
           <Save size={14} /> Save Notifications
         </button>

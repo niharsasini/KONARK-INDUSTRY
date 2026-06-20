@@ -9,11 +9,12 @@ POST /auth/logout    — client-side: just discard tokens; placeholder endpoint
 """
 
 import uuid
-from fastapi import APIRouter, HTTPException, status, Depends, Request, Body
+from fastapi import APIRouter, HTTPException, status, Depends, Request, Response, Body
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 from datetime import datetime, timedelta
 from app.core.limiter import limiter
+from app.config import get_settings
 
 from app.models.user import User, UserRole
 from app.core.security import (
@@ -27,6 +28,33 @@ from app.core.dependencies import get_current_user
 from app.services.email_service import send_welcome_email, send_password_reset_email
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
+
+
+def _set_auth_cookies(response: Response, access_token: str, refresh_token: str) -> None:
+    """
+    Set the access/refresh JWTs as httpOnly cookies so they cannot be read
+    or stolen by injected/XSS JavaScript. secure=False only in local debug
+    mode (plain http://localhost) — production always requires HTTPS.
+    """
+    secure = not get_settings().debug
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=secure,
+        samesite="lax",
+        max_age=3600,
+        path="/",
+    )
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        secure=secure,
+        samesite="lax",
+        max_age=30 * 24 * 3600,
+        path="/",
+    )
 
 
 # ---------- Request / Response schemas ----------
@@ -81,7 +109,7 @@ class UserResponse(BaseModel):
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("3/minute")
-async def register(request: Request, body: RegisterRequest):
+async def register(request: Request, response: Response, body: RegisterRequest):
     """
     Create a new customer account.
     Checks for duplicate email and phone before saving.
@@ -125,16 +153,17 @@ async def register(request: Request, body: RegisterRequest):
     except Exception:
         pass  # Email failure must not block successful registration
 
+    _set_auth_cookies(response, access_token, refresh_token)
     return TokenResponse(access_token=access_token, refresh_token=refresh_token)
 
 
 @router.post("/login", response_model=TokenResponse)
 @limiter.limit("5/minute")
-async def login(request: Request, body: LoginRequest):
+async def login(request: Request, response: Response, body: LoginRequest):
     """
     Authenticate with email and password.
     Updates last_login timestamp on success.
-    Returns JWT access + refresh tokens.
+    Returns JWT access + refresh tokens and sets them as httpOnly cookies.
     """
     # Look up user by email
     user = await User.find_one(User.email == body.email)
@@ -157,14 +186,15 @@ async def login(request: Request, body: LoginRequest):
     await user.save()
 
     token_data = {"sub": str(user.id)}
-    return TokenResponse(
-        access_token=create_access_token(token_data),
-        refresh_token=create_refresh_token(token_data),
-    )
+    access_token = create_access_token(token_data)
+    refresh_token = create_refresh_token(token_data)
+
+    _set_auth_cookies(response, access_token, refresh_token)
+    return TokenResponse(access_token=access_token, refresh_token=refresh_token)
 
 
 @router.post("/refresh", response_model=TokenResponse)
-async def refresh_token(body: RefreshRequest):
+async def refresh_token(response: Response, body: RefreshRequest):
     """
     Issue a new access token using a valid refresh token.
     Verifies the token type claim to prevent access tokens being used as refresh tokens.
@@ -187,10 +217,11 @@ async def refresh_token(body: RefreshRequest):
         )
 
     token_data = {"sub": str(user.id)}
-    return TokenResponse(
-        access_token=create_access_token(token_data),
-        refresh_token=create_refresh_token(token_data),
-    )
+    access_token = create_access_token(token_data)
+    new_refresh_token = create_refresh_token(token_data)
+
+    _set_auth_cookies(response, access_token, new_refresh_token)
+    return TokenResponse(access_token=access_token, refresh_token=new_refresh_token)
 
 
 @router.get("/me", response_model=UserResponse)
@@ -250,13 +281,16 @@ async def update_profile(
 
 
 @router.post("/logout")
-async def logout():
+async def logout(response: Response):
     """
-    Logout endpoint — JWTs are stateless so the actual invalidation
-    happens on the client by deleting the stored tokens.
-    This endpoint exists so clients have a consistent place to call.
+    Logout endpoint — clears the httpOnly auth cookies set at login.
+    JWTs are stateless so any token still held by the client (e.g. a
+    cached Authorization header) is no longer valid once the cookie is
+    gone; clients should also discard any tokens stored locally.
     """
-    return {"message": "Logged out successfully. Please delete your tokens on the client."}
+    response.delete_cookie("access_token", path="/")
+    response.delete_cookie("refresh_token", path="/")
+    return {"message": "Logged out successfully."}
 
 
 @router.post("/forgot-password")
@@ -331,3 +365,36 @@ async def change_password(
     await current_user.save()
 
     return {"message": "Password changed successfully"}
+
+
+@router.get("/me/wishlist")
+async def get_wishlist(current_user: User = Depends(get_current_user)):
+    """Return the authenticated user's saved product slugs."""
+    return {"wishlist": current_user.wishlist or []}
+
+
+@router.post("/me/wishlist/{slug}")
+async def toggle_wishlist(slug: str, current_user: User = Depends(get_current_user)):
+    """Add or remove a product slug from the authenticated user's wishlist."""
+    wishlist = current_user.wishlist or []
+    if slug in wishlist:
+        wishlist.remove(slug)
+        action = "removed"
+    else:
+        wishlist.append(slug)
+        action = "added"
+
+    current_user.wishlist = wishlist
+    current_user.updated_at = datetime.utcnow()
+    await current_user.save()
+
+    return {"wishlist": wishlist, "action": action, "slug": slug}
+
+
+@router.delete("/me/wishlist")
+async def clear_wishlist(current_user: User = Depends(get_current_user)):
+    """Remove all items from the authenticated user's wishlist."""
+    current_user.wishlist = []
+    current_user.updated_at = datetime.utcnow()
+    await current_user.save()
+    return {"message": "Wishlist cleared"}

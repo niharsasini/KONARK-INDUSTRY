@@ -61,6 +61,9 @@ class User(Document):
     reset_token: Optional[str] = None
     reset_token_expires: Optional[datetime] = None
 
+    # Product slugs the user has saved to their wishlist
+    wishlist: list = Field(default_factory=list)
+
     class Settings:
         # MongoDB collection name
         name = "users"

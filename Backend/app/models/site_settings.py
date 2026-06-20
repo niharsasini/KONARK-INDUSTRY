@@ -25,12 +25,25 @@ class SiteSettings(Document):
     company_email: str = "konarkindustrie@gmail.com"
     company_address: str = "Bhimatangi Housing Colony, Bhubaneswar, Odisha 751002"
     company_tagline: str = "Powering Odisha's Green Future"
+    # Long-form "About" text shown in the admin Company Info section
+    company_about: Optional[str] = None
 
     # --- Social Links ---
     facebook_url: Optional[str] = None
     instagram_url: Optional[str] = None
+    linkedin_url: Optional[str] = None
     youtube_url: Optional[str] = None
     whatsapp_number: str = "919437611129"
+
+    # --- Business Hours ---
+    # Per-day schedule: { "Monday": {"open": true, "from": "09:00", "to": "18:00"}, ... }
+    business_hours: dict = Field(default_factory=dict)
+
+    # --- Service Areas ---
+    # Cities where Konark offers service/installation
+    service_areas: list = Field(default_factory=lambda: [
+        "Bhubaneswar", "Cuttack", "Puri", "Rourkela", "Berhampur", "Sambalpur",
+    ])
 
     # --- Business Rules ---
     # Free delivery threshold in INR
@@ -79,6 +92,8 @@ class SiteSettings(Document):
     notify_admin_on_enquiry: bool = True
     notify_admin_on_order: bool = True
     notify_admin_on_booking: bool = True
+    notify_daily_summary: bool = False
+    notify_weekly_report: bool = True
 
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 

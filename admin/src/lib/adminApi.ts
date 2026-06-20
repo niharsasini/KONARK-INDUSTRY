@@ -19,7 +19,11 @@ async function adminRequest<T>(
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${BASE_URL}${path}`, { ...options, headers });
+  const res = await fetch(`${BASE_URL}${path}`, {
+    ...options,
+    headers,
+    credentials: "include",
+  });
 
   if (res.status === 401) {
     if (typeof window !== "undefined") {
@@ -179,6 +183,7 @@ export async function exportOrders() {
       : null;
   const res = await fetch(`${BASE_URL}/api/v1/orders/export`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
+    credentials: "include",
   });
   const blob = await res.blob();
   const url = URL.createObjectURL(blob);
@@ -220,6 +225,7 @@ export async function exportServiceBookings() {
       : null;
   const res = await fetch(`${BASE_URL}/api/v1/services/bookings/export`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
+    credentials: "include",
   });
   const blob = await res.blob();
   const url = URL.createObjectURL(blob);
@@ -255,6 +261,7 @@ export async function exportCustomers() {
       : null;
   const res = await fetch(`${BASE_URL}/api/v1/admin/customers/export`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
+    credentials: "include",
   });
   const blob = await res.blob();
   const url = URL.createObjectURL(blob);

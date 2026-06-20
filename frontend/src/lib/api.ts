@@ -19,7 +19,11 @@ async function request<T>(
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${BASE_URL}${path}`, { ...options, headers });
+  const res = await fetch(`${BASE_URL}${path}`, {
+    ...options,
+    headers,
+    credentials: "include",
+  });
 
   if (res.status === 401) {
     if (typeof window !== "undefined") {
@@ -94,6 +98,10 @@ export async function resetPassword(token: string, newPassword: string) {
 
 export function logoutUser() {
   if (typeof window !== "undefined") {
+    fetch(`${BASE_URL}/api/v1/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    }).catch(() => {});
     localStorage.removeItem("konark_token");
     localStorage.removeItem("konark_user");
     localStorage.removeItem("konark_auth_prompt_last_shown");
@@ -109,6 +117,23 @@ export async function updateProfile(data: Record<string, unknown>) {
     method: "PUT",
     body: JSON.stringify(data),
   });
+}
+
+// ─── WISHLIST ────────────────────────────────────────────────────────────────
+
+export async function getWishlist() {
+  return request<{ wishlist: string[] }>("/api/v1/auth/me/wishlist");
+}
+
+export async function toggleWishlistItem(slug: string) {
+  return request<{ wishlist: string[]; action: string; slug: string }>(
+    `/api/v1/auth/me/wishlist/${slug}`,
+    { method: "POST" }
+  );
+}
+
+export async function clearWishlist() {
+  return request("/api/v1/auth/me/wishlist", { method: "DELETE" });
 }
 
 // ─── PRODUCTS ────────────────────────────────────────────────────────────────

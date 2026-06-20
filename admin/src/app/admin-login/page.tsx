@@ -54,6 +54,7 @@ export default function AdminLoginPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email, password: form.password }),
+        credentials: "include",
       });
 
       if (!res.ok) {
@@ -75,6 +76,7 @@ export default function AdminLoginPage() {
       // fetch the profile separately to verify the admin role.
       const meRes = await fetch(`${backendUrl}/api/v1/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
+        credentials: "include",
       });
 
       if (!meRes.ok) {

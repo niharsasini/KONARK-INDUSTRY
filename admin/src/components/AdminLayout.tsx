@@ -126,7 +126,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   };
 
-  const signOut = () => {
+  const signOut = async () => {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+    try {
+      await fetch(`${backendUrl}/api/v1/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch {
+      // best-effort — still clear local state below even if the request fails
+    }
     document.cookie = "admin_auth=; path=/; max-age=0";
     localStorage.removeItem("konark_admin_token");
     localStorage.removeItem("konark_admin_user");

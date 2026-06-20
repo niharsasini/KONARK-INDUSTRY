@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { getWishlist, toggleWishlistItem } from "@/lib/api";
 
 // ─── Cart ─────────────────────────────────────────────────────────────────────
 
@@ -72,8 +73,16 @@ export const useCartStore = create<CartState>()(
 
 interface WishlistState {
   items: string[]; // array of slugs
-  toggle: (slug: string) => void;
+  toggle: (slug: string) => Promise<void>;
   isInWishlist: (slug: string) => boolean;
+  syncFromBackend: () => Promise<void>;
+  clear: () => void;
+}
+
+function localToggle(items: string[], slug: string) {
+  return items.includes(slug)
+    ? items.filter((s) => s !== slug)
+    : [...items, slug];
 }
 
 export const useWishlistStore = create<WishlistState>()(
@@ -81,14 +90,37 @@ export const useWishlistStore = create<WishlistState>()(
     (set, get) => ({
       items: [],
 
-      toggle: (slug) =>
-        set((state) =>
-          state.items.includes(slug)
-            ? { items: state.items.filter((s) => s !== slug) }
-            : { items: [...state.items, slug] }
-        ),
+      toggle: async (slug) => {
+        const loggedIn =
+          typeof window !== "undefined" && !!localStorage.getItem("konark_token");
+
+        if (!loggedIn) {
+          set({ items: localToggle(get().items, slug) });
+          return;
+        }
+
+        try {
+          const data = await toggleWishlistItem(slug);
+          set({ items: data.wishlist });
+        } catch {
+          // Backend unreachable — fall back to a local-only toggle
+          set({ items: localToggle(get().items, slug) });
+        }
+      },
 
       isInWishlist: (slug) => get().items.includes(slug),
+
+      syncFromBackend: async () => {
+        if (typeof window === "undefined" || !localStorage.getItem("konark_token")) return;
+        try {
+          const data = await getWishlist();
+          if (data.wishlist) set({ items: data.wishlist });
+        } catch {
+          // keep whatever is currently in local storage
+        }
+      },
+
+      clear: () => set({ items: [] }),
     }),
     { name: "konark-wishlist" }
   )

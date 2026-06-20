@@ -84,10 +84,14 @@ class SiteSettingsUpdate(BaseModel):
     company_email: Optional[str] = None
     company_address: Optional[str] = None
     company_tagline: Optional[str] = None
+    company_about: Optional[str] = None
     facebook_url: Optional[str] = None
     instagram_url: Optional[str] = None
+    linkedin_url: Optional[str] = None
     youtube_url: Optional[str] = None
     whatsapp_number: Optional[str] = None
+    business_hours: Optional[dict] = None
+    service_areas: Optional[List[str]] = None
     free_delivery_above: Optional[float] = None
     delivery_charge: Optional[float] = None
     gst_rate: Optional[float] = None
@@ -102,6 +106,8 @@ class SiteSettingsUpdate(BaseModel):
     notify_admin_on_enquiry: Optional[bool] = None
     notify_admin_on_order: Optional[bool] = None
     notify_admin_on_booking: Optional[bool] = None
+    notify_daily_summary: Optional[bool] = None
+    notify_weekly_report: Optional[bool] = None
     technicians: Optional[List[str]] = None
 
 
