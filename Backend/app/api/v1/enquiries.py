@@ -7,7 +7,7 @@ PATCH /enquiries/{id}        — admin: update status / add notes
 DELETE /enquiries/{id}       — admin: hard delete old enquiry
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query, Request
+from fastapi import APIRouter, HTTPException, status, Depends, Query, Request, Response
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List
 from fastapi.responses import StreamingResponse
@@ -138,9 +138,11 @@ async def create_enquiry(request: Request, body: EnquiryCreateRequest):
 
 @router.get("", response_model=List[EnquiryResponse])
 async def list_enquiries(
+    response: Response,
     enquiry_type: Optional[str] = Query(None),
     status: Optional[str] = Query(None),
     is_read: Optional[bool] = Query(None),
+    search: Optional[str] = Query(None),
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=200),
     admin: User = Depends(get_admin_user),
@@ -157,6 +159,16 @@ async def list_enquiries(
         query_filter["status"] = status
     if is_read is not None:
         query_filter["is_read"] = is_read
+    if search:
+        regex = {"$regex": search, "$options": "i"}
+        query_filter["$or"] = [
+            {"name": regex},
+            {"phone": regex},
+            {"email": regex},
+        ]
+
+    total = await Enquiry.find(query_filter).count()
+    response.headers["X-Total-Count"] = str(total)
 
     enquiries = (
         await Enquiry.find(query_filter)

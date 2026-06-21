@@ -1,10 +1,12 @@
 const BASE_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
-async function adminRequest<T>(
+export type Paginated<T> = { items: T; total: number };
+
+async function adminRequestRaw(
   path: string,
   options: RequestInit = {}
-): Promise<T> {
+): Promise<{ data: unknown; res: Response }> {
   const token =
     typeof window !== "undefined"
       ? localStorage.getItem("konark_admin_token")
@@ -44,7 +46,27 @@ async function adminRequest<T>(
     throw new Error(data.detail || data.message || "Request failed");
   }
 
+  return { data, res };
+}
+
+async function adminRequest<T>(
+  path: string,
+  options: RequestInit = {}
+): Promise<T> {
+  const { data } = await adminRequestRaw(path, options);
   return data as T;
+}
+
+/** Like adminRequest, but also returns the X-Total-Count header for pagination. */
+async function adminRequestPaginated<T>(
+  path: string,
+  options: RequestInit = {}
+): Promise<Paginated<T>> {
+  const { data, res } = await adminRequestRaw(path, options);
+  const totalHeader = res.headers.get("X-Total-Count");
+  const items = data as T;
+  const total = totalHeader ? parseInt(totalHeader, 10) : Array.isArray(items) ? items.length : 0;
+  return { items, total };
 }
 
 // ─── DASHBOARD ───────────────────────────────────────────────────────────────
@@ -80,7 +102,7 @@ export async function getAdminProducts(
 ) {
   const params = new URLSearchParams(filters);
   const qs = params.toString();
-  return adminRequest(`/api/v1/products${qs ? `?${qs}` : ""}`);
+  return adminRequestPaginated(`/api/v1/products${qs ? `?${qs}` : ""}`);
 }
 
 export async function getProduct(slug: string) {
@@ -125,7 +147,7 @@ export async function toggleFeatured(slug: string) {
 export async function getEnquiries(filters: Record<string, string> = {}) {
   const params = new URLSearchParams(filters);
   const qs = params.toString();
-  return adminRequest(`/api/v1/enquiries${qs ? `?${qs}` : ""}`);
+  return adminRequestPaginated(`/api/v1/enquiries${qs ? `?${qs}` : ""}`);
 }
 
 export async function getEnquiry(id: string) {
@@ -159,7 +181,7 @@ export async function deleteEnquiry(id: string) {
 export async function getOrders(filters: Record<string, string> = {}) {
   const params = new URLSearchParams(filters);
   const qs = params.toString();
-  return adminRequest(`/api/v1/orders${qs ? `?${qs}` : ""}`);
+  return adminRequestPaginated(`/api/v1/orders${qs ? `?${qs}` : ""}`);
 }
 
 export async function getOrder(orderNumber: string) {
@@ -173,6 +195,12 @@ export async function updateOrderStatus(
   return adminRequest(`/api/v1/orders/${orderNumber}/status`, {
     method: "PATCH",
     body: JSON.stringify({ order_status: status }),
+  });
+}
+
+export async function cancelOrder(orderNumber: string) {
+  return adminRequest(`/api/v1/orders/${orderNumber}/cancel`, {
+    method: "POST",
   });
 }
 
@@ -201,7 +229,7 @@ export async function getServiceBookings(
 ) {
   const params = new URLSearchParams(filters);
   const qs = params.toString();
-  return adminRequest(`/api/v1/services/bookings${qs ? `?${qs}` : ""}`);
+  return adminRequestPaginated(`/api/v1/services/bookings${qs ? `?${qs}` : ""}`);
 }
 
 export async function getServiceBooking(id: string) {
@@ -241,7 +269,7 @@ export async function exportServiceBookings() {
 export async function getCustomers(filters: Record<string, string> = {}) {
   const params = new URLSearchParams(filters);
   const qs = params.toString();
-  return adminRequest(`/api/v1/admin/customers${qs ? `?${qs}` : ""}`);
+  return adminRequestPaginated(`/api/v1/admin/customers${qs ? `?${qs}` : ""}`);
 }
 
 export async function getCustomer(id: string) {
@@ -286,6 +314,14 @@ export async function getRevenueAnalytics() {
   return adminRequest("/api/v1/admin/analytics/revenue");
 }
 
+export async function getOrdersByStatus() {
+  return adminRequest("/api/v1/admin/analytics/orders-by-status");
+}
+
+export async function getEnquiriesByType() {
+  return adminRequest("/api/v1/admin/analytics/enquiries-by-type");
+}
+
 // ─── SETTINGS ────────────────────────────────────────────────────────────────
 
 export async function getSettings() {
@@ -317,7 +353,7 @@ export async function changePassword(
 export async function getBatterySwaps(filters: Record<string, string> = {}) {
   const params = new URLSearchParams(filters);
   const qs = params.toString();
-  return adminRequest(`/api/v1/battery-swap${qs ? `?${qs}` : ""}`);
+  return adminRequestPaginated(`/api/v1/battery-swap${qs ? `?${qs}` : ""}`);
 }
 
 export async function getBatterySwap(id: string) {
@@ -348,7 +384,7 @@ export async function getProductReviews(slug: string) {
 export async function getAllReviews(filters: Record<string, string> = {}) {
   const params = new URLSearchParams(filters);
   const qs = params.toString();
-  return adminRequest(`/api/v1/admin/reviews${qs ? `?${qs}` : ""}`);
+  return adminRequestPaginated(`/api/v1/admin/reviews${qs ? `?${qs}` : ""}`);
 }
 
 export async function approveReview(id: string) {

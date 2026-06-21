@@ -7,7 +7,7 @@ PATCH /services/bookings/{id}    — admin: assign technician, update status
 DELETE /services/bookings/{id}   — admin: hard delete
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query, Request
+from fastapi import APIRouter, HTTPException, status, Depends, Query, Request, Response
 from app.core.limiter import limiter
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List
@@ -137,9 +137,11 @@ async def create_booking(request: Request, body: BookingCreateRequest):
 
 @router.get("/bookings", response_model=List[BookingResponse])
 async def list_bookings(
+    response: Response,
     status_filter: Optional[str] = Query(None, alias="status"),
     city: Optional[str] = Query(None),
     service_type: Optional[str] = Query(None),
+    search: Optional[str] = Query(None),
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=200),
     admin: User = Depends(get_admin_user),
@@ -157,6 +159,15 @@ async def list_bookings(
     if service_type:
         # Case-insensitive partial match on service_type
         query_filter["service_type"] = {"$regex": service_type, "$options": "i"}
+    if search:
+        regex = {"$regex": search, "$options": "i"}
+        query_filter["$or"] = [
+            {"name": regex},
+            {"phone": regex},
+        ]
+
+    total = await ServiceBooking.find(query_filter).count()
+    response.headers["X-Total-Count"] = str(total)
 
     bookings = (
         await ServiceBooking.find(query_filter)

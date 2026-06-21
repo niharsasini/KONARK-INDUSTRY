@@ -46,6 +46,7 @@ const DEFAULT_AREAS = ["Bhubaneswar", "Cuttack", "Puri", "Rourkela", "Berhampur"
 
 export default function SettingsPage() {
   const [saved, setSaved] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<{ section: string; message: string } | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   const [company, setCompany] = useState(DEFAULT_COMPANY);
@@ -97,7 +98,12 @@ export default function SettingsPage() {
 
   useEffect(() => { loadSettings(); }, [loadSettings]);
 
-  const toast = (section: string) => { setSaved(section); setTimeout(() => setSaved(null), 2500); };
+  const toast = (section: string) => { setSaveError(null); setSaved(section); setTimeout(() => setSaved(null), 2500); };
+  const toastError = (section: string, err: unknown) => {
+    setSaved(null);
+    setSaveError({ section, message: err instanceof Error ? err.message : "Failed to save. Please try again." });
+    setTimeout(() => setSaveError(null), 4000);
+  };
 
   const saveCompany = async () => {
     try {
@@ -111,28 +117,28 @@ export default function SettingsPage() {
         linkedin_url: company.linkedin,
         youtube_url: company.youtube,
       });
-    } catch {
-      // best-effort — still show the badge so the admin gets feedback either way
+      toast("company");
+    } catch (err) {
+      toastError("company", err);
     }
-    toast("company");
   };
 
   const saveHours = async () => {
     try {
       await updateSettings({ business_hours: hours });
-    } catch {
-      // ignore
+      toast("hours");
+    } catch (err) {
+      toastError("hours", err);
     }
-    toast("hours");
   };
 
   const saveAreas = async () => {
     try {
       await updateSettings({ service_areas: areas });
-    } catch {
-      // ignore
+      toast("areas");
+    } catch (err) {
+      toastError("areas", err);
     }
-    toast("areas");
   };
 
   const saveNotifications = async () => {
@@ -144,10 +150,10 @@ export default function SettingsPage() {
         notify_daily_summary: notifs.dailySummary,
         notify_weekly_report: notifs.weeklyReport,
       });
-    } catch {
-      // ignore
+      toast("notifs");
+    } catch (err) {
+      toastError("notifs", err);
     }
-    toast("notifs");
   };
 
   const setC = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -177,8 +183,8 @@ export default function SettingsPage() {
     try {
       await updateSettings({ technicians });
       toast("technicians");
-    } catch {
-      toast("technicians");
+    } catch (err) {
+      toastError("technicians", err);
     }
   };
 
@@ -206,12 +212,23 @@ export default function SettingsPage() {
     </button>
   );
 
-  const SavedBadge = ({ section }: { section: string }) =>
-    saved === section ? (
-      <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", borderRadius: 8, fontSize: 12, color: "#10b981", fontWeight: 600 }}>
-        <Check size={13} /> Saved!
-      </div>
-    ) : null;
+  const SavedBadge = ({ section }: { section: string }) => {
+    if (saveError?.section === section) {
+      return (
+        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 8, fontSize: 12, color: "#ef4444", fontWeight: 600 }}>
+          <X size={13} /> {saveError.message}
+        </div>
+      );
+    }
+    if (saved === section) {
+      return (
+        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", borderRadius: 8, fontSize: 12, color: "#10b981", fontWeight: 600 }}>
+          <Check size={13} /> Saved!
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <div style={{ padding: "32px 40px", maxWidth: 900 }}>

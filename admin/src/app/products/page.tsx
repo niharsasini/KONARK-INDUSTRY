@@ -1,10 +1,13 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Search, Edit2, Trash2 } from "lucide-react";
-import { getAdminProducts, deleteProduct } from "@/lib/adminApi";
+import { Plus, Search, Edit2, Trash2, Star } from "lucide-react";
+import { getAdminProducts, deleteProduct, toggleStock, toggleFeatured } from "@/lib/adminApi";
 import SkeletonLoader from "@/components/SkeletonLoader";
 import ErrorState from "@/components/ErrorState";
+import { Pagination } from "@/components/Pagination";
+
+const LIMIT = 20;
 
 const TYPE_COLORS: Record<string, string> = {
   vehicle: "#00d4ff",
@@ -27,33 +30,51 @@ type Product = {
 export default function ProductsPage() {
   const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [typeFilter, setTypeFilter] = useState("All");
   const [deleteSlug, setDeleteSlug] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [selected, setSelected] = useState<string[]>([]);
+  const [bulkBusy, setBulkBusy] = useState(false);
+  const [toastMsg, setToastMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    const t = setTimeout(() => setSearch(searchInput), 350);
+    return () => clearTimeout(t);
+  }, [searchInput]);
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getAdminProducts();
-      setProducts(Array.isArray(data) ? data : (data as Record<string, Product[]>).products ?? []);
+      const filters: Record<string, string> = {
+        skip: String((page - 1) * LIMIT),
+        limit: String(LIMIT),
+      };
+      if (search) filters.search = search;
+      if (typeFilter !== "All") filters.type = typeFilter.toLowerCase();
+      const { items, total } = await getAdminProducts(filters);
+      setProducts(Array.isArray(items) ? items : []);
+      setTotal(total);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Failed to load products.");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, search, typeFilter]);
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
+  useEffect(() => { setPage(1); }, [search, typeFilter]);
 
-  const filtered = products.filter((p) => {
-    const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
-    const matchType = typeFilter === "All" || p.type === typeFilter.toLowerCase();
-    return matchSearch && matchType;
-  });
+  const showToast = (text: string) => {
+    setToastMsg(text);
+    setTimeout(() => setToastMsg(null), 2500);
+  };
 
   const confirmDelete = async () => {
     if (!deleteSlug) return;
@@ -61,11 +82,73 @@ export default function ProductsPage() {
     try {
       await deleteProduct(deleteSlug);
       setProducts((ps) => ps.filter((p) => p.slug !== deleteSlug));
+      setTotal((t) => t - 1);
       setDeleteSlug(null);
     } catch (err: unknown) {
       alert(err instanceof Error ? err.message : "Delete failed.");
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const handleToggleStock = async (slug: string) => {
+    try {
+      await toggleStock(slug);
+      setProducts((ps) => ps.map((p) => (p.slug === slug ? { ...p, in_stock: !p.in_stock } : p)));
+    } catch {
+      showToast("Failed to toggle stock status");
+    }
+  };
+
+  const handleToggleFeatured = async (slug: string) => {
+    try {
+      await toggleFeatured(slug);
+      setProducts((ps) => ps.map((p) => (p.slug === slug ? { ...p, is_featured: !p.is_featured } : p)));
+    } catch {
+      showToast("Failed to toggle featured status");
+    }
+  };
+
+  const toggleSelected = (slug: string) => {
+    setSelected((s) => (s.includes(slug) ? s.filter((x) => x !== slug) : [...s, slug]));
+  };
+
+  const toggleSelectAll = () => {
+    setSelected((s) => (s.length === products.length ? [] : products.map((p) => p.slug)));
+  };
+
+  const handleBulkDelete = async () => {
+    if (!confirm(`Delete ${selected.length} products? This cannot be undone.`)) return;
+    setBulkBusy(true);
+    try {
+      for (const slug of selected) {
+        await deleteProduct(slug);
+      }
+      setProducts((ps) => ps.filter((p) => !selected.includes(p.slug)));
+      setTotal((t) => t - selected.length);
+      showToast(`${selected.length} products deleted`);
+      setSelected([]);
+    } catch {
+      showToast("Bulk delete failed partway — please refresh and check.");
+    } finally {
+      setBulkBusy(false);
+    }
+  };
+
+  const handleBulkStock = async (makeInStock: boolean) => {
+    setBulkBusy(true);
+    try {
+      for (const slug of selected) {
+        const p = products.find((x) => x.slug === slug);
+        if (p && p.in_stock !== makeInStock) await toggleStock(slug);
+      }
+      setProducts((ps) => ps.map((p) => (selected.includes(p.slug) ? { ...p, in_stock: makeInStock } : p)));
+      showToast(`${selected.length} products marked ${makeInStock ? "in stock" : "out of stock"}`);
+      setSelected([]);
+    } catch {
+      showToast("Bulk update failed partway — please refresh and check.");
+    } finally {
+      setBulkBusy(false);
     }
   };
 
@@ -75,6 +158,8 @@ export default function ProductsPage() {
     fontSize: 13, outline: "none", boxSizing: "border-box",
   };
 
+  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+
   if (loading) return <div style={{ padding: "32px 40px" }}><SkeletonLoader variant="table" /></div>;
   if (error) return <div style={{ padding: "32px 40px" }}><ErrorState message={error} onRetry={fetchProducts} /></div>;
 
@@ -83,7 +168,7 @@ export default function ProductsPage() {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
         <div>
           <h1 style={{ fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>Products</h1>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{products.length} products in catalogue</p>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{total} products in catalogue</p>
         </div>
         <button onClick={() => router.push("/products/new")}
           style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 20px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 10, border: "none", cursor: "pointer" }}>
@@ -91,11 +176,17 @@ export default function ProductsPage() {
         </button>
       </div>
 
+      {toastMsg && (
+        <div style={{ padding: "10px 16px", marginBottom: 16, borderRadius: 8, fontSize: 13, fontWeight: 600, background: "rgba(0,212,255,0.1)", color: "#00d4ff", border: "1px solid rgba(0,212,255,0.3)" }}>
+          {toastMsg}
+        </div>
+      )}
+
       {/* Filters */}
       <div style={{ display: "flex", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
         <div style={{ position: "relative", flex: 1, minWidth: 200 }}>
           <Search size={14} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
-          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search products..." style={{ ...inputStyle, paddingLeft: 36 }} />
+          <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="Search products..." style={{ ...inputStyle, paddingLeft: 36 }} />
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           {["All", "Vehicle", "Product", "Service"].map((t) => (
@@ -107,8 +198,19 @@ export default function ProductsPage() {
         </div>
       </div>
 
+      {/* Bulk action bar */}
+      {selected.length > 0 && (
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, padding: "10px 16px", background: "rgba(0,212,255,0.06)", border: "1px solid rgba(0,212,255,0.2)", borderRadius: 10 }}>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#00d4ff" }}>{selected.length} selected</span>
+          <button disabled={bulkBusy} onClick={handleBulkDelete} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid rgba(239,68,68,0.4)", background: "rgba(239,68,68,0.1)", color: "#ef4444", fontSize: 12, fontWeight: 600, cursor: bulkBusy ? "not-allowed" : "pointer" }}>Delete Selected</button>
+          <button disabled={bulkBusy} onClick={() => handleBulkStock(true)} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #1e2d40", background: "transparent", color: "#10b981", fontSize: 12, fontWeight: 600, cursor: bulkBusy ? "not-allowed" : "pointer" }}>Mark In Stock</button>
+          <button disabled={bulkBusy} onClick={() => handleBulkStock(false)} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #1e2d40", background: "transparent", color: "#94a3b8", fontSize: 12, fontWeight: 600, cursor: bulkBusy ? "not-allowed" : "pointer" }}>Mark Out of Stock</button>
+          <button onClick={() => setSelected([])} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #1e2d40", background: "transparent", color: "#64748b", fontSize: 12, fontWeight: 600, cursor: "pointer", marginLeft: "auto" }}>Clear Selection</button>
+        </div>
+      )}
+
       {/* Empty state */}
-      {filtered.length === 0 && (
+      {products.length === 0 && (
         <div style={{ textAlign: "center", padding: "60px 0", color: "#475569" }}>
           <p style={{ fontSize: 32, margin: "0 0 12px" }}>📦</p>
           <p style={{ fontSize: 14, fontWeight: 600, color: "#94a3b8", marginBottom: 16 }}>No products found</p>
@@ -117,23 +219,29 @@ export default function ProductsPage() {
       )}
 
       {/* Table */}
-      {filtered.length > 0 && (
+      {products.length > 0 && (
         <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, overflow: "hidden" }}>
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead style={{ background: "#0f172a" }}>
                 <tr>
-                  {["Image", "Name", "Category", "Type", "Price", "Stock", "Actions"].map((h) => (
+                  <th style={{ padding: "14px 16px" }}>
+                    <input type="checkbox" checked={selected.length === products.length} onChange={toggleSelectAll} />
+                  </th>
+                  {["Image", "Name", "Category", "Type", "Price", "Stock", "Featured", "Actions"].map((h) => (
                     <th key={h} style={{ padding: "14px 16px", textAlign: "left", fontSize: 11, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((p) => (
+                {products.map((p) => (
                   <tr key={p.slug} style={{ borderTop: "1px solid #1e2d40" }}
                     onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.02)")}
                     onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                   >
+                    <td style={{ padding: "12px 16px" }}>
+                      <input type="checkbox" checked={selected.includes(p.slug)} onChange={() => toggleSelected(p.slug)} />
+                    </td>
                     <td style={{ padding: "12px 16px" }}>
                       <img
                         src={p.images?.[0] || "/placeholder.svg"}
@@ -154,9 +262,17 @@ export default function ProductsPage() {
                       {p.price > 0 ? `₹${p.price.toLocaleString("en-IN")}` : "On Request"}
                     </td>
                     <td style={{ padding: "12px 16px" }}>
-                      <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: p.in_stock ? "rgba(16,185,129,0.1)" : "rgba(239,68,68,0.1)", color: p.in_stock ? "#10b981" : "#ef4444" }}>
+                      <button onClick={() => handleToggleStock(p.slug)}
+                        style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: p.in_stock ? "rgba(16,185,129,0.1)" : "rgba(239,68,68,0.1)", color: p.in_stock ? "#10b981" : "#ef4444", border: "none", cursor: "pointer" }}>
                         {p.in_stock ? "In Stock" : "Out of Stock"}
-                      </span>
+                      </button>
+                    </td>
+                    <td style={{ padding: "12px 16px" }}>
+                      <button onClick={() => handleToggleFeatured(p.slug)}
+                        style={{ background: "transparent", border: "none", cursor: "pointer", display: "flex" }}
+                        title={p.is_featured ? "Unfeature" : "Mark as featured"}>
+                        <Star size={16} color={p.is_featured ? "#f97316" : "#475569"} fill={p.is_featured ? "#f97316" : "none"} />
+                      </button>
                     </td>
                     <td style={{ padding: "12px 16px" }}>
                       <div style={{ display: "flex", gap: 8 }}>
@@ -183,6 +299,8 @@ export default function ProductsPage() {
           </div>
         </div>
       )}
+
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={total} itemsPerPage={LIMIT} />
 
       {/* Delete confirm */}
       {deleteSlug !== null && (

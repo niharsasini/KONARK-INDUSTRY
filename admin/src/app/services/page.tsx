@@ -1,16 +1,21 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { Calendar, List, X, ChevronDown } from "lucide-react";
-import { getServiceBookings, updateServiceBooking, getSettings } from "@/lib/adminApi";
+import { Calendar, List, X, ChevronDown, Search, Download } from "lucide-react";
+import { getServiceBookings, updateServiceBooking, getSettings, exportServiceBookings } from "@/lib/adminApi";
 import SkeletonLoader from "@/components/SkeletonLoader";
 import ErrorState from "@/components/ErrorState";
+import { Pagination } from "@/components/Pagination";
+
+const LIMIT = 20;
 
 const STATUS_FLOW = ["Booked", "Technician Assigned", "In Progress", "Completed"];
+const ALL_STATUSES = ["Booked", "Technician Assigned", "In Progress", "Completed", "Cancelled"];
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
   Booked: { bg: "rgba(0,212,255,0.1)", color: "#00d4ff" },
   "Technician Assigned": { bg: "rgba(249,115,22,0.1)", color: "#f97316" },
   "In Progress": { bg: "rgba(124,58,237,0.1)", color: "#a78bfa" },
   Completed: { bg: "rgba(16,185,129,0.1)", color: "#10b981" },
+  Cancelled: { bg: "rgba(239,68,68,0.1)", color: "#ef4444" },
 };
 
 type Booking = {
@@ -18,6 +23,7 @@ type Booking = {
   id?: string;
   customer?: string;
   customer_name?: string;
+  name?: string;
   phone?: string;
   service?: string;
   service_type?: string;
@@ -33,18 +39,24 @@ type Booking = {
 };
 
 function getId(b: Booking) { return String(b._id ?? b.id ?? ""); }
-function getName(b: Booking) { return b.customer ?? b.customer_name ?? ""; }
+function getName(b: Booking) { return b.customer ?? b.customer_name ?? b.name ?? ""; }
 function getService(b: Booking) { return b.service ?? b.service_type ?? ""; }
 function getDate(b: Booking) { return b.date ?? b.preferred_date ?? ""; }
 function getTech(b: Booking) { return b.technician ?? b.assigned_technician ?? "Unassigned"; }
 
 export default function ServicesPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [view, setView] = useState<"list" | "calendar">("list");
   const [detailId, setDetailId] = useState<string | null>(null);
   const [technicians, setTechnicians] = useState<string[]>(["Unassigned", "Ramesh Kumar", "Bikash Patel", "Sanjay Nayak", "Dilip Sahoo"]);
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("");
+  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
     getSettings()
@@ -55,20 +67,34 @@ export default function ServicesPage() {
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    const t = setTimeout(() => setSearch(searchInput), 350);
+    return () => clearTimeout(t);
+  }, [searchInput]);
+
   const fetchBookings = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getServiceBookings();
-      setBookings(Array.isArray(data) ? data : (data as Record<string, Booking[]>).bookings ?? []);
+      const filters: Record<string, string> = {
+        skip: String((page - 1) * LIMIT),
+        limit: String(LIMIT),
+      };
+      if (statusFilter !== "all") filters.status = statusFilter;
+      if (typeFilter) filters.service_type = typeFilter;
+      if (search) filters.search = search;
+      const { items, total } = await getServiceBookings(filters);
+      setBookings(Array.isArray(items) ? items : []);
+      setTotal(total);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Failed to load service bookings.");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, statusFilter, typeFilter, search]);
 
   useEffect(() => { fetchBookings(); }, [fetchBookings]);
+  useEffect(() => { setPage(1); }, [statusFilter, typeFilter, search]);
 
   const update = async (id: string, patch: Partial<Booking>) => {
     setBookings((bs) => bs.map((b) => getId(b) === id ? { ...b, ...patch } : b));
@@ -81,6 +107,13 @@ export default function ServicesPage() {
   };
 
   const detail = bookings.find((b) => getId(b) === detailId);
+  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const serviceTypes = Array.from(new Set(bookings.map(getService).filter(Boolean)));
+
+  const INPUT: React.CSSProperties = {
+    background: "#0a0f1e", border: "1px solid #1e2d40", borderRadius: 8,
+    padding: "9px 14px", color: "#f1f5f9", fontSize: 13, outline: "none",
+  };
 
   if (loading) return <div style={{ padding: "32px 40px" }}><SkeletonLoader variant="table" /></div>;
   if (error) return <div style={{ padding: "32px 40px" }}><ErrorState message={error} onRetry={fetchBookings} /></div>;
@@ -90,9 +123,13 @@ export default function ServicesPage() {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
         <div>
           <h1 style={{ fontSize: 22, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>Service Bookings</h1>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{bookings.length} bookings</p>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{total} bookings</p>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
+          <button onClick={() => exportServiceBookings()}
+            style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 8, border: "1px solid #1e2d40", background: "transparent", color: "#94a3b8", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+            <Download size={13} /> Export CSV
+          </button>
           <button onClick={() => setView("list")}
             style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 8, border: "1px solid #1e2d40", background: view === "list" ? "#00d4ff" : "transparent", color: view === "list" ? "#0a0f1e" : "#94a3b8", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
             <List size={14} /> List
@@ -104,10 +141,27 @@ export default function ServicesPage() {
         </div>
       </div>
 
+      {/* Filters */}
+      <div style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
+        <div style={{ position: "relative", flex: 1, minWidth: 220 }}>
+          <Search size={14} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#64748b" }} />
+          <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="Search by customer name or phone..."
+            style={{ ...INPUT, paddingLeft: 36, width: "100%", boxSizing: "border-box" }} />
+        </div>
+        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} style={{ ...INPUT, cursor: "pointer" }}>
+          <option value="all">All Statuses</option>
+          {ALL_STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+        </select>
+        <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} style={{ ...INPUT, cursor: "pointer" }}>
+          <option value="">All Service Types</option>
+          {serviceTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+        </select>
+      </div>
+
       {bookings.length === 0 ? (
         <div style={{ textAlign: "center", padding: "60px 0", color: "#475569" }}>
           <p style={{ fontSize: 32, margin: "0 0 12px" }}>🛠</p>
-          <p style={{ fontSize: 14, fontWeight: 600, color: "#94a3b8" }}>No service bookings yet</p>
+          <p style={{ fontSize: 14, fontWeight: 600, color: "#94a3b8" }}>No service bookings found</p>
         </div>
       ) : view === "list" ? (
         <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, overflow: "hidden" }}>
@@ -179,6 +233,8 @@ export default function ServicesPage() {
           </div>
         </div>
       )}
+
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={total} itemsPerPage={LIMIT} />
 
       {/* Detail modal */}
       {detail && (

@@ -1,62 +1,68 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { Package, Mail, ShoppingBag, Users, TrendingUp, Plus, ExternalLink, Download } from "lucide-react";
-import { getStats, getRecentActivity, getNotifications } from "@/lib/adminApi";
+import { useRouter } from "next/navigation";
+import { Package, Mail, ShoppingBag, Users, TrendingUp, Plus, ExternalLink, Download, IndianRupee, Battery, Wrench } from "lucide-react";
+import { getStats, exportOrders } from "@/lib/adminApi";
 import SkeletonLoader from "@/components/SkeletonLoader";
 import ErrorState from "@/components/ErrorState";
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
+  pending: { bg: "rgba(249,115,22,0.1)", color: "#f97316" },
+  confirmed: { bg: "rgba(0,212,255,0.1)", color: "#00d4ff" },
+  packed: { bg: "rgba(124,58,237,0.1)", color: "#a78bfa" },
+  shipped: { bg: "rgba(59,130,246,0.1)", color: "#60a5fa" },
+  delivered: { bg: "rgba(16,185,129,0.1)", color: "#10b981" },
+  cancelled: { bg: "rgba(239,68,68,0.1)", color: "#ef4444" },
   New: { bg: "rgba(0,212,255,0.1)", color: "#00d4ff" },
-  "In Progress": { bg: "rgba(249,115,22,0.1)", color: "#f97316" },
-  Done: { bg: "rgba(16,185,129,0.1)", color: "#10b981" },
   Contacted: { bg: "rgba(124,58,237,0.1)", color: "#a78bfa" },
+  "In Progress": { bg: "rgba(249,115,22,0.1)", color: "#f97316" },
   Resolved: { bg: "rgba(16,185,129,0.1)", color: "#10b981" },
 };
 
+type RecentOrder = { order_number: string; customer_name: string; total_amount: number; order_status: string; created_at: string };
+type RecentEnquiry = { id: string; name: string; enquiry_type: string; phone: string; status: string; created_at: string };
+
+type DashboardStats = {
+  total_products: number;
+  total_customers: number;
+  pending_enquiries: number;
+  unread_enquiries: number;
+  pending_orders: number;
+  confirmed_orders: number;
+  total_orders: number;
+  today_orders: number;
+  month_orders: number;
+  service_bookings_today: number;
+  total_service_bookings: number;
+  pending_service_bookings: number;
+  revenue_this_month: number;
+  revenue_today: number;
+  revenue_total: number;
+  new_customers_today: number;
+  new_customers_month: number;
+  total_battery_swaps: number;
+  pending_battery_swaps: number;
+  unread_notifications: number;
+  recent_orders: RecentOrder[];
+  recent_enquiries: RecentEnquiry[];
+};
+
 const QUICK_ACTIONS = [
-  { label: "Add New Product", href: "/products/new", icon: Plus, primary: true },
-  { label: "View All Enquiries", href: "/enquiries", icon: Mail, primary: false },
-  { label: "Export Orders CSV", href: "#", icon: Download, primary: false, disabled: true },
+  { label: "View Orders", href: "/orders", icon: ShoppingBag, primary: true },
+  { label: "View Enquiries", href: "/enquiries", icon: Mail, primary: false },
+  { label: "Add New Product", href: "/products/new", icon: Plus, primary: false },
+  { label: "View Battery Swaps", href: "/battery-swap", icon: Battery, primary: false },
   { label: "Go to Live Site", href: "http://localhost:3000", icon: ExternalLink, primary: false, external: true },
 ];
 
-function RevenueChart({ data }: { data: { day: string; value: number }[] }) {
-  const H = 120;
-  const W = 400;
-  const BAR_W = 34;
-  const MAX_VAL = Math.max(...data.map((d) => d.value), 1);
-  const GAP = (W - data.length * BAR_W) / (data.length + 1);
-
-  return (
-    <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: "24px" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-        <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Enquiries This Week</h2>
-        <span style={{ fontSize: 11, color: "#94a3b8", background: "#0f172a", padding: "4px 10px", borderRadius: 100, border: "1px solid #1e2d40" }}>Last 7 days</span>
-      </div>
-      <svg viewBox={`0 0 ${W} ${H + 30}`} style={{ width: "100%", height: "auto" }}>
-        {data.map((d, i) => {
-          const barH = (d.value / MAX_VAL) * H;
-          const x = GAP + i * (BAR_W + GAP);
-          const y = H - barH;
-          return (
-            <g key={d.day}>
-              <rect x={x} y={y} width={BAR_W} height={barH} rx={4} fill="rgba(0,212,255,0.15)" />
-              <rect x={x} y={y} width={BAR_W} height={4} rx={2} fill="#00d4ff" />
-              <text x={x + BAR_W / 2} y={H + 18} textAnchor="middle" fill="#64748b" fontSize={10}>{d.day}</text>
-              <text x={x + BAR_W / 2} y={y - 6} textAnchor="middle" fill="#94a3b8" fontSize={9}>{d.value}</text>
-            </g>
-          );
-        })}
-      </svg>
-    </div>
-  );
+function fmtCurrency(n: number) {
+  return `₹${Math.round(n).toLocaleString("en-IN")}`;
 }
 
 export default function DashboardPage() {
-  const [stats, setStats] = useState<Record<string, unknown> | null>(null);
-  const [activity, setActivity] = useState<unknown[]>([]);
-  const [chartData, setChartData] = useState<{ day: string; value: number }[]>([]);
+  const router = useRouter();
+  const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -64,15 +70,8 @@ export default function DashboardPage() {
     setLoading(true);
     setError(null);
     try {
-      const [statsRes, activityRes] = await Promise.all([
-        getStats(),
-        getRecentActivity(),
-      ]);
-      setStats(statsRes as Record<string, unknown>);
-      const actArr = Array.isArray(activityRes) ? activityRes : (activityRes as Record<string, unknown[]>).enquiries ?? [];
-      setActivity(actArr.slice(0, 5) as unknown[]);
-      const chart = (activityRes as Record<string, unknown>).weekly_chart;
-      if (Array.isArray(chart)) setChartData(chart as { day: string; value: number }[]);
+      const data = await getStats();
+      setStats(data as DashboardStats);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Could not load dashboard data.");
     } finally {
@@ -83,101 +82,137 @@ export default function DashboardPage() {
   useEffect(() => { fetchData(); }, [fetchData]);
 
   if (loading) return <div style={{ padding: "32px 40px" }}><SkeletonLoader variant="dashboard" /></div>;
-  if (error) return <div style={{ padding: "32px 40px" }}><ErrorState message={error} onRetry={fetchData} /></div>;
+  if (error || !stats) return <div style={{ padding: "32px 40px" }}><ErrorState message={error || "No data"} onRetry={fetchData} /></div>;
 
-  const statCards = [
-    { label: "Total Products", value: String((stats as Record<string, unknown>)?.total_products ?? "—"), trend: "In catalogue", icon: Package, color: "#00d4ff" },
-    { label: "Pending Enquiries", value: String((stats as Record<string, unknown>)?.pending_enquiries ?? "—"), trend: "Awaiting response", icon: Mail, color: "#f97316" },
-    { label: "Test Ride Bookings", value: String((stats as Record<string, unknown>)?.test_ride_bookings ?? "—"), trend: "This week", icon: ShoppingBag, color: "#10b981" },
-    { label: "Service Bookings", value: String((stats as Record<string, unknown>)?.service_bookings ?? "—"), trend: "This month", icon: Users, color: "#7c3aed" },
+  const revenueCards = [
+    { label: "Today's Revenue", value: fmtCurrency(stats.revenue_today), icon: IndianRupee, color: "#10b981" },
+    { label: "This Month's Revenue", value: fmtCurrency(stats.revenue_this_month), icon: TrendingUp, color: "#00d4ff" },
+    { label: "Total Revenue", value: fmtCurrency(stats.revenue_total), icon: IndianRupee, color: "#7c3aed" },
+    { label: "Avg Order Value", value: fmtCurrency(stats.total_orders > 0 ? stats.revenue_total / stats.total_orders : 0), icon: TrendingUp, color: "#f97316" },
   ];
 
-  const fallbackChart = chartData.length > 0
-    ? chartData
-    : [
-        { day: "Mon", value: 0 }, { day: "Tue", value: 0 }, { day: "Wed", value: 0 },
-        { day: "Thu", value: 0 }, { day: "Fri", value: 0 }, { day: "Sat", value: 0 }, { day: "Sun", value: 0 },
-      ];
+  const orderCards = [
+    { label: "Total Orders", value: stats.total_orders, icon: ShoppingBag, color: "#00d4ff" },
+    { label: "Pending Orders", value: stats.pending_orders, icon: ShoppingBag, color: "#f97316" },
+    { label: "Today's Orders", value: stats.today_orders, icon: ShoppingBag, color: "#10b981" },
+    { label: "This Month's Orders", value: stats.month_orders, icon: ShoppingBag, color: "#7c3aed" },
+  ];
+
+  const otherCards = [
+    { label: "Total Customers", value: stats.total_customers, icon: Users, color: "#00d4ff" },
+    { label: "New Customers Today", value: stats.new_customers_today, icon: Users, color: "#10b981" },
+    { label: "Pending Enquiries", value: stats.pending_enquiries, icon: Mail, color: "#f97316" },
+    { label: "Pending Services", value: stats.pending_service_bookings, icon: Wrench, color: "#7c3aed" },
+  ];
 
   return (
     <div style={{ padding: "32px 40px", maxWidth: 1400 }}>
-      <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>Good morning, Admin</h1>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Here's what's happening at Konark Industry today.</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28, flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <h1 style={{ fontSize: 24, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>Good morning, Admin</h1>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Here's what's happening at Konark Industry today.</p>
+        </div>
+        <button onClick={() => exportOrders()}
+          style={{ display: "flex", alignItems: "center", gap: 7, padding: "9px 16px", borderRadius: 8, border: "1px solid #1e2d40", background: "transparent", color: "#94a3b8", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+          <Download size={13} /> Export Orders CSV
+        </button>
       </div>
 
-      {/* Stat cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18, marginBottom: 32 }}>
-        {statCards.map(({ label, value, trend, icon: Icon, color }) => (
-          <div key={label} style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: "20px 22px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-              <p style={{ fontSize: 11, color: "#94a3b8", margin: 0, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600 }}>{label}</p>
-              <div style={{ width: 34, height: 34, borderRadius: 8, background: `${color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Icon size={15} color={color} />
-              </div>
-            </div>
-            <p style={{ fontSize: 34, fontWeight: 800, color: "#f1f5f9", margin: "0 0 6px", lineHeight: 1 }}>{value}</p>
-            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <TrendingUp size={11} color="#10b981" />
-              <p style={{ fontSize: 11, color: "#64748b", margin: 0 }}>{trend}</p>
-            </div>
-          </div>
-        ))}
+      {/* Row 1: Revenue */}
+      <CardRow cards={revenueCards} />
+      {/* Row 2: Orders */}
+      <CardRow cards={orderCards} />
+      {/* Row 3: Other */}
+      <CardRow cards={otherCards} />
+
+      {/* Quick actions */}
+      <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: "24px", marginBottom: 28 }}>
+        <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 18px" }}>Quick Actions</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10 }}>
+          {QUICK_ACTIONS.map(({ label, href, icon: Icon, primary, external }) => (
+            <Link key={label} href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "11px 14px", borderRadius: 10, textDecoration: "none", background: primary ? "#00d4ff" : "transparent", border: primary ? "none" : "1px solid #1e2d40", color: primary ? "#0a0f1e" : "#f1f5f9", fontSize: 12, fontWeight: 600, cursor: "pointer", textAlign: "center" }}
+            >
+              <Icon size={14} /> {label}
+            </Link>
+          ))}
+        </div>
       </div>
 
-      {/* Chart + Quick actions */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20, marginBottom: 28 }}>
-        <RevenueChart data={fallbackChart} />
+      {/* Recent activity: orders + enquiries */}
+      <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 20 }}>
         <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: "24px" }}>
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 18px" }}>Quick Actions</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {QUICK_ACTIONS.map(({ label, href, icon: Icon, primary, disabled, external }) => (
-              <Link key={label} href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}
-                style={{ display: "flex", alignItems: "center", gap: 10, padding: "11px 14px", borderRadius: 10, textDecoration: "none", background: primary ? "#00d4ff" : "transparent", border: primary ? "none" : "1px solid #1e2d40", color: primary ? "#0a0f1e" : disabled ? "#475569" : "#f1f5f9", fontSize: 13, fontWeight: 600, cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.5 : 1, transition: "all 0.15s", pointerEvents: disabled ? "none" : "auto" }}
-                onMouseEnter={(e) => { if (!disabled && !primary) e.currentTarget.style.borderColor = "#00d4ff"; }}
-                onMouseLeave={(e) => { if (!disabled && !primary) e.currentTarget.style.borderColor = "#1e2d40"; }}
-              >
-                <Icon size={14} /> {label}
-              </Link>
-            ))}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+            <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Recent Orders</h2>
+            <Link href="/orders" style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}>View all →</Link>
           </div>
-        </div>
-      </div>
-
-      {/* Recent enquiries */}
-      <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: "24px" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Recent Enquiries</h2>
-          <Link href="/enquiries" style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}>View all →</Link>
-        </div>
-
-        {activity.length === 0 ? (
-          <p style={{ fontSize: 13, color: "#475569", textAlign: "center", padding: "24px 0" }}>No enquiries yet.</p>
-        ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ borderBottom: "1px solid #1e2d40" }}>
-                {["Name", "Type", "Phone", "Date", "Status"].map((h) => (
-                  <th key={h} style={{ padding: "0 12px 12px 0", textAlign: "left", fontSize: 11, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {(activity as Record<string, string>[]).map((row, i) => (
-                <tr key={i} style={{ borderBottom: "1px solid #1e2d4060" }}>
-                  <td style={{ padding: "13px 12px 13px 0", fontSize: 13, fontWeight: 600, color: "#f1f5f9" }}>{row.name}</td>
-                  <td style={{ padding: "13px 12px 13px 0", fontSize: 12, color: "#94a3b8" }}>{row.enquiry_type ?? row.type}</td>
-                  <td style={{ padding: "13px 12px 13px 0", fontSize: 12, color: "#94a3b8" }}>{row.phone}</td>
-                  <td style={{ padding: "13px 12px 13px 0", fontSize: 12, color: "#94a3b8", whiteSpace: "nowrap" }}>{row.created_at ? new Date(row.created_at).toLocaleDateString("en-IN") : row.date}</td>
-                  <td style={{ padding: "13px 0" }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: STATUS_COLORS[row.status]?.bg ?? "rgba(0,212,255,0.1)", color: STATUS_COLORS[row.status]?.color ?? "#00d4ff" }}>{row.status ?? "New"}</span>
-                  </td>
+          {stats.recent_orders.length === 0 ? (
+            <p style={{ fontSize: 13, color: "#475569", textAlign: "center", padding: "24px 0" }}>No orders yet.</p>
+          ) : (
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid #1e2d40" }}>
+                  {["Order #", "Customer", "Amount", "Status"].map((h) => (
+                    <th key={h} style={{ padding: "0 10px 10px 0", textAlign: "left", fontSize: 11, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em" }}>{h}</th>
+                  ))}
                 </tr>
+              </thead>
+              <tbody>
+                {stats.recent_orders.map((o) => (
+                  <tr key={o.order_number} style={{ borderBottom: "1px solid #1e2d4060", cursor: "pointer" }} onClick={() => router.push(`/orders/${o.order_number}`)}>
+                    <td style={{ padding: "11px 10px 11px 0", fontSize: 12, color: "#00d4ff", fontFamily: "monospace", fontWeight: 600 }}>{o.order_number}</td>
+                    <td style={{ padding: "11px 10px 11px 0", fontSize: 13, color: "#f1f5f9" }}>{o.customer_name}</td>
+                    <td style={{ padding: "11px 10px 11px 0", fontSize: 13, color: "#f1f5f9", fontWeight: 700 }}>{fmtCurrency(o.total_amount)}</td>
+                    <td style={{ padding: "11px 0" }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 9px", borderRadius: 100, background: STATUS_COLORS[o.order_status]?.bg ?? "rgba(0,212,255,0.1)", color: STATUS_COLORS[o.order_status]?.color ?? "#00d4ff", textTransform: "capitalize" }}>{o.order_status}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+
+        <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: "24px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+            <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Recent Enquiries</h2>
+            <Link href="/enquiries" style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}>View all →</Link>
+          </div>
+          {stats.recent_enquiries.length === 0 ? (
+            <p style={{ fontSize: 13, color: "#475569", textAlign: "center", padding: "24px 0" }}>No enquiries yet.</p>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {stats.recent_enquiries.map((e) => (
+                <div key={e.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 12px", background: "#0f172a", borderRadius: 8 }}>
+                  <div>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9", margin: "0 0 2px" }}>{e.name}</p>
+                    <p style={{ fontSize: 11, color: "#64748b", margin: 0 }}>{e.enquiry_type?.replace(/_/g, " ")}</p>
+                  </div>
+                  <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 9px", borderRadius: 100, background: STATUS_COLORS[e.status]?.bg ?? "rgba(0,212,255,0.1)", color: STATUS_COLORS[e.status]?.color ?? "#00d4ff" }}>{e.status ?? "New"}</span>
+                </div>
               ))}
-            </tbody>
-          </table>
-        )}
+            </div>
+          )}
+        </div>
       </div>
+    </div>
+  );
+}
+
+function CardRow({ cards }: { cards: { label: string; value: string | number; icon: typeof Package; color: string }[] }) {
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18, marginBottom: 18 }}>
+      {cards.map(({ label, value, icon: Icon, color }) => (
+        <div key={label} style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: "20px 22px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+            <p style={{ fontSize: 11, color: "#94a3b8", margin: 0, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600 }}>{label}</p>
+            <div style={{ width: 34, height: 34, borderRadius: 8, background: `${color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Icon size={15} color={color} />
+            </div>
+          </div>
+          <p style={{ fontSize: 28, fontWeight: 800, color: "#f1f5f9", margin: 0, lineHeight: 1 }}>{value}</p>
+        </div>
+      ))}
     </div>
   );
 }

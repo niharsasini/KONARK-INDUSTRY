@@ -1,7 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { getOrders, updateOrderStatus, exportOrders } from "@/lib/adminApi";
+import { Pagination } from "@/components/Pagination";
+
+const LIMIT = 20;
 
 const STATUSES = ["pending", "confirmed", "packed", "shipped", "delivered", "cancelled"];
 
@@ -31,27 +34,50 @@ type Order = {
 };
 
 export default function OrdersPage() {
+  const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState("all");
   const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [detailId, setDetailId] = useState<string | null>(null);
   const [toastMsg, setToastMsg] = useState<{ text: string; ok: boolean } | null>(null);
 
-  const fetchOrders = () => {
+  // Debounce search input -> search
+  useEffect(() => {
+    const t = setTimeout(() => setSearch(searchInput), 350);
+    return () => clearTimeout(t);
+  }, [searchInput]);
+
+  const fetchOrders = useCallback(() => {
     setLoading(true);
     setError(null);
-    getOrders()
-      .then((data) => setOrders(Array.isArray(data) ? (data as Order[]) : []))
+    const filters: Record<string, string> = {
+      skip: String((page - 1) * LIMIT),
+      limit: String(LIMIT),
+    };
+    if (statusFilter !== "all") filters.order_status = statusFilter;
+    if (search) filters.search = search;
+    getOrders(filters)
+      .then(({ items, total }) => {
+        setOrders(Array.isArray(items) ? (items as Order[]) : []);
+        setTotal(total);
+      })
       .catch((err) => setError(err.message || "Failed to load orders"))
       .finally(() => setLoading(false));
-  };
+  }, [page, statusFilter, search]);
 
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [fetchOrders]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [statusFilter, search]);
 
   const showToast = (text: string, ok: boolean) => {
     setToastMsg({ text, ok });
@@ -73,18 +99,8 @@ export default function OrdersPage() {
     }
   };
 
-  const filtered = orders.filter((o) => {
-    const matchStatus = statusFilter === "all" || o.order_status === statusFilter;
-    const matchSearch =
-      !search ||
-      o.order_number.toLowerCase().includes(search.toLowerCase()) ||
-      o.customer_name?.toLowerCase().includes(search.toLowerCase()) ||
-      o.customer_phone?.includes(search);
-    return matchStatus && matchSearch;
-  });
-
   const statusCount = (s: string) => orders.filter((o) => o.order_status === s).length;
-  const detail = orders.find((o) => o.order_number === detailId);
+  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
 
   const INPUT: React.CSSProperties = {
     background: "#0a0f1e",
@@ -101,7 +117,7 @@ export default function OrdersPage() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28 }}>
         <div>
           <h1 style={{ fontSize: 22, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>Orders</h1>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{orders.length} total orders</p>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{total} total orders</p>
         </div>
         <button
           onClick={() => exportOrders()}
@@ -128,14 +144,14 @@ export default function OrdersPage() {
         </div>
       )}
 
-      {/* Stats row */}
+      {/* Stats row (counts within current page only) */}
       <div style={{ display: "flex", gap: 10, marginBottom: 24, flexWrap: "wrap" }}>
         <div style={{ padding: "7px 14px", borderRadius: 100, background: "#111827", border: "1px solid #1e2d40", fontSize: 12, fontWeight: 700, color: "#f1f5f9" }}>
-          Total: {orders.length}
+          Total: {total}
         </div>
         {STATUSES.map((s) => (
           <div key={s} style={{ padding: "7px 14px", borderRadius: 100, background: STATUS_COLORS[s].bg, border: `1px solid ${STATUS_COLORS[s].color}30`, fontSize: 12, fontWeight: 700, color: STATUS_COLORS[s].color, textTransform: "capitalize" }}>
-            {s}: {statusCount(s)}
+            {s}: {statusCount(s)} (this page)
           </div>
         ))}
       </div>
@@ -143,8 +159,8 @@ export default function OrdersPage() {
       {/* Filter bar */}
       <div style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
         <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
           placeholder="Search order #, customer, phone..."
           style={{ ...INPUT, flex: 1, minWidth: 240 }}
         />
@@ -171,9 +187,9 @@ export default function OrdersPage() {
             Retry
           </button>
         </div>
-      ) : filtered.length === 0 ? (
+      ) : orders.length === 0 ? (
         <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 48, textAlign: "center" }}>
-          <p style={{ fontSize: 14, color: "#64748b" }}>No orders yet</p>
+          <p style={{ fontSize: 14, color: "#64748b" }}>No orders found</p>
         </div>
       ) : (
         <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, overflow: "hidden" }}>
@@ -188,7 +204,7 @@ export default function OrdersPage() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((o) => (
+              {orders.map((o) => (
                 <tr key={o.order_number} style={{ borderBottom: "1px solid #1e2d4060" }}>
                   <td style={{ padding: "14px 16px", fontSize: 12, color: "#00d4ff", fontFamily: "monospace", fontWeight: 600 }}>{o.order_number}</td>
                   <td style={{ padding: "14px 16px" }}>
@@ -236,10 +252,10 @@ export default function OrdersPage() {
                   </td>
                   <td style={{ padding: "14px 16px" }}>
                     <button
-                      onClick={() => setDetailId(o.order_number)}
+                      onClick={() => router.push(`/orders/${o.order_number}`)}
                       style={{ padding: "5px 10px", borderRadius: 6, border: "1px solid #1e2d40", background: "transparent", color: "#94a3b8", fontSize: 11, cursor: "pointer", fontWeight: 500 }}
                     >
-                      View
+                      View →
                     </button>
                   </td>
                 </tr>
@@ -249,63 +265,7 @@ export default function OrdersPage() {
         </div>
       )}
 
-      {detail && (
-        <div
-          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}
-          onClick={() => setDetailId(null)}
-        >
-          <div
-            style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 18, padding: 32, width: "100%", maxWidth: 500 }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 24 }}>
-              <div>
-                <p style={{ fontSize: 12, color: "#64748b", fontFamily: "monospace", margin: "0 0 6px" }}>{detail.order_number}</p>
-                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }}>{detail.customer_name}</h3>
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    padding: "3px 10px",
-                    borderRadius: 100,
-                    background: STATUS_COLORS[detail.order_status]?.bg,
-                    color: STATUS_COLORS[detail.order_status]?.color,
-                    textTransform: "capitalize",
-                  }}
-                >
-                  {detail.order_status}
-                </span>
-              </div>
-              <button onClick={() => setDetailId(null)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "#64748b" }}>
-                <X size={18} />
-              </button>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
-              {[
-                ["Phone", detail.customer_phone],
-                ["City", detail.city],
-                ["Payment", detail.payment_method],
-                ["Total", `₹${detail.total_amount?.toLocaleString("en-IN")}`],
-              ].map(([k, v]) => (
-                <div key={k}>
-                  <p style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 4px", fontWeight: 600 }}>{k}</p>
-                  <p style={{ fontSize: 13, color: "#f1f5f9", margin: 0, fontWeight: 500 }}>{v}</p>
-                </div>
-              ))}
-            </div>
-
-            <div style={{ padding: "14px", background: "rgba(0,212,255,0.03)", border: "1px solid #1e2d40", borderRadius: 10 }}>
-              <p style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 10px", fontWeight: 600 }}>Products Ordered</p>
-              {detail.items.map((it, i) => (
-                <p key={i} style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 6px" }}>
-                  • {it.name} x{it.qty} — ₹{(it.price * it.qty).toLocaleString("en-IN")}
-                </p>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={total} itemsPerPage={LIMIT} />
     </div>
   );
 }

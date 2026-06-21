@@ -1,9 +1,12 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { Download, Eye, X, Flag, MessageSquare, CheckSquare } from "lucide-react";
-import { getEnquiries, updateEnquiryStatus, markEnquiriesRead } from "@/lib/adminApi";
+import { Download, Eye, X, Flag, MessageSquare, CheckSquare, Trash2, Search } from "lucide-react";
+import { getEnquiries, updateEnquiryStatus, markEnquiriesRead, deleteEnquiry } from "@/lib/adminApi";
 import SkeletonLoader from "@/components/SkeletonLoader";
 import ErrorState from "@/components/ErrorState";
+import { Pagination } from "@/components/Pagination";
+
+const LIMIT = 20;
 
 const ALL_STATUSES = ["New", "Contacted", "In Progress", "Resolved", "Closed"];
 const TABS = ["All", "Test Ride", "Product Enquiry", "Service Booking", "Contact"];
@@ -34,39 +37,70 @@ type Enquiry = {
 
 export default function EnquiriesPage() {
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("All");
+  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [viewItem, setViewItem] = useState<Enquiry | null>(null);
   const [replyOpen, setReplyOpen] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
   const [replySaving, setReplySaving] = useState(false);
   const [noteSaved, setNoteSaved] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setSearch(searchInput), 350);
+    return () => clearTimeout(t);
+  }, [searchInput]);
 
   const fetchEnquiries = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getEnquiries();
-      setEnquiries(Array.isArray(data) ? data : (data as Record<string, Enquiry[]>).enquiries ?? []);
+      const filters: Record<string, string> = {
+        skip: String((page - 1) * LIMIT),
+        limit: String(LIMIT),
+      };
+      if (search) filters.search = search;
+      if (activeTab !== "All") filters.enquiry_type = activeTab.toLowerCase().replace(/ /g, "_");
+      const { items, total } = await getEnquiries(filters);
+      setEnquiries(Array.isArray(items) ? items : []);
+      setTotal(total);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Failed to load enquiries.");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, search, activeTab]);
 
   useEffect(() => { fetchEnquiries(); }, [fetchEnquiries]);
+  useEffect(() => { setPage(1); }, [search, activeTab]);
 
   const getType = (e: Enquiry) => e.enquiry_type ?? e.type ?? "";
   const getId = (e: Enquiry) => String(e._id ?? e.id ?? "");
 
-  const filtered = enquiries.filter((e) => {
-    if (activeTab === "All") return true;
-    const t = getType(e).toLowerCase().replace(/_/g, " ");
-    return t === activeTab.toLowerCase();
-  });
+  const filtered = enquiries;
+  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
+    try {
+      await deleteEnquiry(deleteId);
+      setEnquiries((es) => es.filter((e) => getId(e) !== deleteId));
+      setTotal((t) => t - 1);
+      setDeleteId(null);
+    } catch {
+      alert("Failed to delete enquiry.");
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   const changeStatus = async (id: string, status: string) => {
     setEnquiries((es) => es.map((e) => getId(e) === id ? { ...e, status } : e));
@@ -117,7 +151,7 @@ export default function EnquiriesPage() {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
         <div>
           <h1 style={{ fontSize: 24, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>Enquiries</h1>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{enquiries.length} total · {enquiries.filter((e) => e.status === "New").length} new</p>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{total} total</p>
         </div>
         <div style={{ display: "flex", gap: 10 }}>
           <button onClick={markAllRead} style={{ display: "flex", alignItems: "center", gap: 7, padding: "9px 16px", background: "transparent", border: "1px solid #1e2d40", color: "#94a3b8", fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: "pointer" }}>
@@ -129,17 +163,21 @@ export default function EnquiriesPage() {
         </div>
       </div>
 
+      {/* Search */}
+      <div style={{ position: "relative", marginBottom: 16, maxWidth: 360 }}>
+        <Search size={14} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#64748b" }} />
+        <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="Search by name, phone, or email..."
+          style={{ width: "100%", background: "#111827", border: "1px solid #1e2d40", borderRadius: 9, padding: "10px 14px 10px 36px", color: "#f1f5f9", fontSize: 13, outline: "none", boxSizing: "border-box" }} />
+      </div>
+
       {/* Tabs */}
       <div style={{ display: "flex", gap: 0, marginBottom: 20, borderBottom: "1px solid #1e2d40" }}>
-        {TABS.map((tab) => {
-          const count = tab === "All" ? enquiries.length : enquiries.filter((e) => getType(e).toLowerCase().replace(/_/g, " ") === tab.toLowerCase()).length;
-          return (
-            <button key={tab} onClick={() => setActiveTab(tab)}
-              style={{ padding: "9px 16px", background: "transparent", border: "none", borderBottom: `2px solid ${activeTab === tab ? "#00d4ff" : "transparent"}`, color: activeTab === tab ? "#00d4ff" : "#94a3b8", fontSize: 13, fontWeight: activeTab === tab ? 600 : 400, cursor: "pointer", whiteSpace: "nowrap", marginBottom: -1 }}>
-              {tab} <span style={{ fontSize: 11, marginLeft: 4, background: activeTab === tab ? "rgba(0,212,255,0.12)" : "#1e2d40", color: activeTab === tab ? "#00d4ff" : "#64748b", padding: "1px 7px", borderRadius: 100 }}>{count}</span>
-            </button>
-          );
-        })}
+        {TABS.map((tab) => (
+          <button key={tab} onClick={() => setActiveTab(tab)}
+            style={{ padding: "9px 16px", background: "transparent", border: "none", borderBottom: `2px solid ${activeTab === tab ? "#00d4ff" : "transparent"}`, color: activeTab === tab ? "#00d4ff" : "#94a3b8", fontSize: 13, fontWeight: activeTab === tab ? 600 : 400, cursor: "pointer", whiteSpace: "nowrap", marginBottom: -1 }}>
+            {tab}
+          </button>
+        ))}
       </div>
 
       {filtered.length === 0 ? (
@@ -213,6 +251,13 @@ export default function EnquiriesPage() {
                             style={{ display: "flex", alignItems: "center", padding: "5px 8px", background: row.urgent ? "rgba(239,68,68,0.1)" : "transparent", border: `1px solid ${row.urgent ? "rgba(239,68,68,0.4)" : "#1e2d40"}`, borderRadius: 6, color: row.urgent ? "#ef4444" : "#94a3b8", fontSize: 11, cursor: "pointer" }}>
                             <Flag size={11} />
                           </button>
+                          <button onClick={() => setDeleteId(id)}
+                            style={{ display: "flex", alignItems: "center", padding: "5px 8px", background: "transparent", border: "1px solid #1e2d40", borderRadius: 6, color: "#94a3b8", fontSize: 11, cursor: "pointer" }}
+                            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#ef4444"; e.currentTarget.style.color = "#ef4444"; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
+                          >
+                            <Trash2 size={11} />
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -245,6 +290,26 @@ export default function EnquiriesPage() {
               })}
             </tbody>
           </table>
+        </div>
+      )}
+
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={total} itemsPerPage={LIMIT} />
+
+      {/* Delete confirm */}
+      {deleteId !== null && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 300, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.7)" }}>
+          <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, padding: "32px", maxWidth: 360, width: "90%", textAlign: "center" }}>
+            <Trash2 size={32} color="#ef4444" style={{ margin: "0 auto 16px" }} />
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", margin: "0 0 8px" }}>Delete Enquiry?</h3>
+            <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 24px" }}>This action cannot be undone.</p>
+            <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+              <button onClick={() => setDeleteId(null)} style={{ padding: "10px 24px", background: "transparent", border: "1px solid #1e2d40", borderRadius: 8, color: "#94a3b8", fontSize: 13, cursor: "pointer" }}>Cancel</button>
+              <button onClick={confirmDelete} disabled={deleting}
+                style={{ padding: "10px 24px", background: "#ef4444", border: "none", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 700, cursor: deleting ? "not-allowed" : "pointer" }}>
+                {deleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

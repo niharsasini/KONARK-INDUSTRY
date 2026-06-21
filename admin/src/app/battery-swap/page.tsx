@@ -8,6 +8,9 @@ import {
   getBatterySwapStats,
   getSettings,
 } from "@/lib/adminApi";
+import { Pagination } from "@/components/Pagination";
+
+const LIMIT = 20;
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
@@ -63,6 +66,8 @@ interface Stats {
 
 export default function BatterySwapAdminPage() {
   const [swaps, setSwaps] = useState<SwapItem[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -99,24 +104,29 @@ export default function BatterySwapAdminPage() {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const filters: Record<string, string> = {};
+      const filters: Record<string, string> = {
+        skip: String((page - 1) * LIMIT),
+        limit: String(LIMIT),
+      };
       if (statusFilter) filters.status = statusFilter;
       if (cityFilter) filters.city = cityFilter;
       if (search) filters.search = search;
-      const [swapData, statsData] = await Promise.all([
-        getBatterySwaps(filters) as Promise<SwapItem[]>,
+      const [{ items, total }, statsData] = await Promise.all([
+        getBatterySwaps(filters) as Promise<{ items: SwapItem[]; total: number }>,
         getBatterySwapStats() as Promise<Stats>,
       ]);
-      setSwaps(swapData);
+      setSwaps(items);
+      setTotal(total);
       setStats(statsData);
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
     }
-  }, [statusFilter, cityFilter, search]);
+  }, [statusFilter, cityFilter, search, page]);
 
   useEffect(() => { loadData(); }, [loadData]);
+  useEffect(() => { setPage(1); }, [statusFilter, cityFilter, search]);
 
   async function openDetail(id: string) {
     setSelectedId(id);
@@ -313,6 +323,7 @@ export default function BatterySwapAdminPage() {
               </table>
             )}
           </div>
+          <Pagination page={page} totalPages={Math.max(1, Math.ceil(total / LIMIT))} onPageChange={setPage} totalItems={total} itemsPerPage={LIMIT} />
         </div>
 
         {/* Detail panel */}

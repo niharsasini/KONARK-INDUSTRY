@@ -7,7 +7,7 @@ PUT  /products/{slug}     — update product (admin only)
 DELETE /products/{slug}   — soft delete product (admin only)
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query, Request
+from fastapi import APIRouter, HTTPException, status, Depends, Query, Request, Response
 from app.core.limiter import limiter
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
@@ -102,6 +102,7 @@ def _to_response(p: Product) -> ProductResponse:
 
 @router.get("", response_model=List[ProductResponse])
 async def list_products(
+    response: Response,
     category: Optional[str] = Query(None, description="Filter by product category"),
     type: Optional[str] = Query(None, description="vehicle | product | service"),
     search: Optional[str] = Query(None, description="Search in product name, category, and description"),
@@ -140,6 +141,9 @@ async def list_products(
             {"category": regex},
             {"description": regex},
         ]
+
+    total = await Product.find(query_filter).count()
+    response.headers["X-Total-Count"] = str(total)
 
     products = (
         await Product.find(query_filter)

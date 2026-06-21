@@ -16,7 +16,7 @@ import asyncio
 from datetime import datetime, date
 from typing import Optional, List
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query, UploadFile, File, Request
+from fastapi import APIRouter, HTTPException, status, Depends, Query, UploadFile, File, Request, Response
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
@@ -336,6 +336,7 @@ async def get_swap_stats(admin: User = Depends(get_admin_user)):
 
 @router.get("", response_model=List[SwapListItem])
 async def list_swaps(
+    response: Response,
     status_filter: Optional[str] = Query(None, alias="status"),
     city: Optional[str] = Query(None),
     search: Optional[str] = Query(None),
@@ -352,6 +353,9 @@ async def list_swaps(
         query_filter["status"] = status_filter
     if city:
         query_filter["city"] = city
+
+    total = await BatterySwap.find(query_filter).count()
+    response.headers["X-Total-Count"] = str(total)
 
     swaps = (
         await BatterySwap.find(query_filter)

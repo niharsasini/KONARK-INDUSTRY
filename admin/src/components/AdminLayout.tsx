@@ -46,7 +46,8 @@ type DashboardStats = {
   unread_notifications: number;
 };
 
-type Notification = { id: string; title: string; message: string; is_read: boolean; created_at: string };
+type Notification = { id: string; type: string; title: string; message: string; entity_id?: string | null; is_read: boolean; created_at: string };
+type AdminUser = { name?: string; email?: string };
 
 function timeAgo(dateStr: string) {
   const mins = Math.floor((Date.now() - new Date(dateStr).getTime()) / 60000);
@@ -57,6 +58,18 @@ function timeAgo(dateStr: string) {
   return `${Math.floor(hrs / 24)} day(s) ago`;
 }
 
+/** Order notifications carry the mongo _id as entity_id, but the order detail
+ * route needs the human-readable order_number — which is embedded in the title. */
+function getNotificationLink(n: Notification): string {
+  if (n.type === "order") {
+    const match = n.title.match(/KI-\d{4}-\d+/);
+    return match ? `/orders/${match[0]}` : "/orders";
+  }
+  if (n.type === "enquiry" || n.type === "test_ride" || n.type === "partner") return "/enquiries";
+  if (n.type === "booking") return "/services";
+  return "/dashboard";
+}
+
 const SIDEBAR_W = 260;
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -64,10 +77,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const isLoginPage = pathname === "/admin-login";
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    if (isLoginPage) return;
+    try {
+      const raw = localStorage.getItem("konark_admin_user");
+      if (raw) setAdminUser(JSON.parse(raw));
+    } catch {
+      // ignore malformed stored user
+    }
+  }, [isLoginPage]);
+
+  // Close the mobile drawer whenever the route changes
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
 
   // Auth guard: the login page is public and renders standalone (no sidebar,
   // no authenticated API calls below). Every other page requires both a
@@ -116,14 +152,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   const handleNotifClick = async (n: Notification) => {
-    if (n.is_read) return;
-    setNotifications((prev) => prev.map((x) => (x.id === n.id ? { ...x, is_read: true } : x)));
-    setUnreadCount((c) => Math.max(0, c - 1));
-    try {
-      await markNotificationRead(n.id);
-    } catch {
-      // best-effort
+    if (!n.is_read) {
+      setNotifications((prev) => prev.map((x) => (x.id === n.id ? { ...x, is_read: true } : x)));
+      setUnreadCount((c) => Math.max(0, c - 1));
+      try {
+        await markNotificationRead(n.id);
+      } catch {
+        // best-effort
+      }
     }
+    setBellOpen(false);
+    router.push(getNotificationLink(n));
   };
 
   const signOut = async () => {
@@ -144,14 +183,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "#0a0f1e" }}>
+      {/* Mobile overlay backdrop */}
+      {isMobile && mobileOpen && (
+        <div onClick={() => setMobileOpen(false)}
+          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 45 }} />
+      )}
+
       {/* Sidebar */}
       <aside style={{
-        width: collapsed ? 64 : SIDEBAR_W,
+        width: isMobile ? SIDEBAR_W : collapsed ? 64 : SIDEBAR_W,
         background: "#0f172a",
         borderRight: "1px solid #1e2d40",
         display: "flex", flexDirection: "column",
         position: "fixed", top: 0, left: 0, bottom: 0,
-        zIndex: 50, transition: "width 0.2s ease", overflowX: "hidden",
+        zIndex: 50,
+        transition: "width 0.2s ease, transform 0.2s ease",
+        overflowX: "hidden",
+        transform: isMobile ? `translateX(${mobileOpen ? "0" : "-100%"})` : "translateX(0)",
       }}>
         {/* Logo */}
         <div style={{ padding: "18px 14px", borderBottom: "1px solid #1e2d40", display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 64, gap: 8 }}>
@@ -225,7 +273,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {!collapsed && (
             <div style={{ padding: "8px 10px", marginBottom: 4 }}>
               <p style={{ fontSize: 10, color: "#94a3b8", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.08em" }}>Logged in as</p>
-              <p style={{ fontSize: 11, color: "#f1f5f9", margin: 0, fontWeight: 600 }}>admin@konarkindustry.com</p>
+              <p style={{ fontSize: 11, color: "#f1f5f9", margin: 0, fontWeight: 600 }}>{adminUser?.email || adminUser?.name || "Admin"}</p>
             </div>
           )}
           <button onClick={signOut}
@@ -240,10 +288,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main area */}
-      <div style={{ marginLeft: collapsed ? 64 : SIDEBAR_W, flex: 1, display: "flex", flexDirection: "column", transition: "margin-left 0.2s ease", minWidth: 0 }}>
+      <div style={{ marginLeft: isMobile ? 0 : collapsed ? 64 : SIDEBAR_W, flex: 1, display: "flex", flexDirection: "column", transition: "margin-left 0.2s ease", minWidth: 0 }}>
         {/* Top header */}
-        <header style={{ height: 64, background: "#0f172a", borderBottom: "1px solid #1e2d40", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", position: "sticky", top: 0, zIndex: 40 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{pageTitle}</h2>
+        <header style={{ height: 64, background: "#0f172a", borderBottom: "1px solid #1e2d40", display: "flex", alignItems: "center", justifyContent: "space-between", padding: isMobile ? "0 16px" : "0 32px", position: "sticky", top: 0, zIndex: 40 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            {isMobile && (
+              <button onClick={() => setMobileOpen((o) => !o)}
+                style={{ background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8", display: "flex", padding: 4 }}>
+                <Menu size={20} />
+              </button>
+            )}
+            <h2 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{pageTitle}</h2>
+          </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             {/* Bell */}
@@ -274,7 +330,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       <div
                         key={n.id}
                         onClick={() => handleNotifClick(n)}
-                        style={{ padding: "14px 16px", borderBottom: "1px solid #1e2d4060", display: "flex", gap: 10, alignItems: "flex-start", cursor: n.is_read ? "default" : "pointer", background: n.is_read ? "transparent" : "rgba(0,212,255,0.03)" }}
+                        style={{ padding: "14px 16px", borderBottom: "1px solid #1e2d4060", display: "flex", gap: 10, alignItems: "flex-start", cursor: "pointer", background: n.is_read ? "transparent" : "rgba(0,212,255,0.03)" }}
                       >
                         <div style={{ width: 8, height: 8, borderRadius: "50%", background: n.is_read ? "#1e2d40" : "#00d4ff", flexShrink: 0, marginTop: 4 }} />
                         <div>
@@ -292,12 +348,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
 
             {/* Admin avatar */}
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ width: 34, height: 34, borderRadius: "50%", background: "rgba(0,212,255,0.12)", border: "2px solid rgba(0,212,255,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, color: "#00d4ff" }}>
-                AD
+            {!isMobile && (
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 34, height: 34, borderRadius: "50%", background: "rgba(0,212,255,0.12)", border: "2px solid rgba(0,212,255,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, color: "#00d4ff" }}>
+                  {(adminUser?.name || adminUser?.email || "Admin").split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase()}
+                </div>
+                <span style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500 }}>{adminUser?.name || "Admin"}</span>
               </div>
-              <span style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500 }}>Admin</span>
-            </div>
+            )}
           </div>
         </header>
 

@@ -6,7 +6,7 @@ GET  /orders/{order_number}           — detail for a single order
 PATCH /orders/{order_number}/status   — admin: update fulfilment status + email customer
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query, Request
+from fastapi import APIRouter, HTTPException, status, Depends, Query, Request, Response
 from app.core.limiter import limiter
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List, Dict, Any
@@ -183,7 +183,9 @@ async def place_order(
 
 @router.get("", response_model=List[OrderResponse])
 async def list_orders(
+    response: Response,
     order_status: Optional[str] = Query(None),
+    search: Optional[str] = Query(None),
     skip: int = Query(0, ge=0),
     limit: int = Query(20, ge=1, le=100),
     current_user: Optional[User] = Depends(get_optional_user),
@@ -209,6 +211,16 @@ async def list_orders(
 
     if order_status:
         query_filter["order_status"] = order_status
+    if search:
+        regex = {"$regex": search, "$options": "i"}
+        query_filter["$or"] = [
+            {"order_number": regex},
+            {"customer_name": regex},
+            {"customer_phone": regex},
+        ]
+
+    total = await Order.find(query_filter).count()
+    response.headers["X-Total-Count"] = str(total)
 
     orders = (
         await Order.find(query_filter)

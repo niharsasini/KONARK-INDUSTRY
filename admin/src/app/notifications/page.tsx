@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Mail, ShoppingBag, Wrench, Bike, Handshake, Bell } from "lucide-react";
 import { getNotifications, markNotificationRead, markAllNotificationsRead } from "@/lib/adminApi";
 
@@ -8,9 +9,22 @@ type Notification = {
   type: "enquiry" | "order" | "booking" | "test_ride" | "partner" | "system";
   title: string;
   message: string;
+  entity_id?: string | null;
   is_read: boolean;
   created_at: string;
 };
+
+/** Order notifications carry the mongo _id as entity_id, but the order detail
+ * route needs the human-readable order_number — which is embedded in the title. */
+function getNotificationLink(n: Notification): string {
+  if (n.type === "order") {
+    const match = n.title.match(/KI-\d{4}-\d+/);
+    return match ? `/orders/${match[0]}` : "/orders";
+  }
+  if (n.type === "enquiry" || n.type === "test_ride" || n.type === "partner") return "/enquiries";
+  if (n.type === "booking") return "/services";
+  return "/dashboard";
+}
 
 type Filter = "all" | "unread" | "enquiry" | "order" | "booking" | "test_ride" | "partner";
 
@@ -53,6 +67,7 @@ function timeAgo(dateStr: string) {
 }
 
 export default function NotificationsPage() {
+  const router = useRouter();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -77,14 +92,16 @@ export default function NotificationsPage() {
   }, []);
 
   const handleClick = async (n: Notification) => {
-    if (n.is_read) return;
-    setNotifications((prev) => prev.map((x) => (x.id === n.id ? { ...x, is_read: true } : x)));
-    setUnreadCount((c) => Math.max(0, c - 1));
-    try {
-      await markNotificationRead(n.id);
-    } catch {
-      // best-effort
+    if (!n.is_read) {
+      setNotifications((prev) => prev.map((x) => (x.id === n.id ? { ...x, is_read: true } : x)));
+      setUnreadCount((c) => Math.max(0, c - 1));
+      try {
+        await markNotificationRead(n.id);
+      } catch {
+        // best-effort
+      }
     }
+    router.push(getNotificationLink(n));
   };
 
   const handleMarkAllRead = async () => {
@@ -161,7 +178,7 @@ export default function NotificationsPage() {
                   display: "flex", gap: 14, alignItems: "flex-start", padding: "16px 18px",
                   background: n.is_read ? "#111827" : "#15233a",
                   border: `1px solid ${n.is_read ? "#1e2d40" : `${color}30`}`,
-                  borderRadius: 12, cursor: n.is_read ? "default" : "pointer", position: "relative",
+                  borderRadius: 12, cursor: "pointer", position: "relative",
                 }}
               >
                 <div style={{ width: 36, height: 36, borderRadius: 10, background: `${color}15`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>

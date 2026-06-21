@@ -24,7 +24,7 @@ POST  /admin/notifications/mark-all-read — mark all as read
 
 import csv
 import io
-from fastapi import APIRouter, Depends, HTTPException, status as http_status, Query
+from fastapi import APIRouter, Depends, HTTPException, status as http_status, Query, Response
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 from typing import List, Optional, Any
@@ -38,6 +38,7 @@ from app.models.order import Order, OrderStatus
 from app.models.service_booking import ServiceBooking
 from app.models.notification import Notification, NotificationType
 from app.models.site_settings import SiteSettings
+from app.models.battery_swap import BatterySwap, SwapStatus
 
 router = APIRouter(prefix="/admin", tags=["Admin"])
 
@@ -52,10 +53,22 @@ class DashboardStats(BaseModel):
     unread_enquiries: int
     pending_orders: int
     total_orders: int
+    confirmed_orders: int
+    today_orders: int
+    month_orders: int
     service_bookings_today: int
     total_service_bookings: int
+    pending_service_bookings: int
     revenue_this_month: float
+    revenue_today: float
+    revenue_total: float
+    new_customers_today: int
+    new_customers_month: int
+    total_battery_swaps: int
+    pending_battery_swaps: int
     unread_notifications: int
+    recent_orders: List[dict] = []
+    recent_enquiries: List[dict] = []
 
 
 class ActivityItem(BaseModel):
@@ -132,30 +145,52 @@ async def get_dashboard_stats(admin: User = Depends(get_admin_user)):
         pending_enquiries,
         unread_enquiries,
         pending_orders,
+        confirmed_orders,
         total_orders,
+        today_orders,
+        month_orders,
         bookings_today,
         total_bookings,
+        pending_bookings,
         unread_notifications,
+        new_customers_today,
+        new_customers_month,
+        total_swaps,
+        pending_swaps,
     ) = await asyncio.gather(
         Product.find({"is_active": True}).count(),
         User.find({"role": UserRole.CUSTOMER.value}).count(),
         Enquiry.find({"status": EnquiryStatus.NEW.value}).count(),
         Enquiry.find({"is_read": False}).count(),
         Order.find({"order_status": OrderStatus.PENDING.value}).count(),
+        Order.find({"order_status": OrderStatus.CONFIRMED.value}).count(),
         Order.count(),
+        Order.find({"created_at": {"$gte": today_start, "$lte": today_end}}).count(),
+        Order.find({"created_at": {"$gte": month_start}}).count(),
         ServiceBooking.find({
             "created_at": {"$gte": today_start, "$lte": today_end}
         }).count(),
         ServiceBooking.count(),
+        ServiceBooking.find({"status": "Booked"}).count(),
         Notification.find({"is_read": False}).count(),
+        User.find({"role": UserRole.CUSTOMER.value, "created_at": {"$gte": today_start}}).count(),
+        User.find({"role": UserRole.CUSTOMER.value, "created_at": {"$gte": month_start}}).count(),
+        BatterySwap.find({"is_deleted": False}).count(),
+        BatterySwap.find({"is_deleted": False, "status": SwapStatus.PENDING.value}).count(),
     )
 
-    # Revenue: sum delivered orders created this month
-    delivered = await Order.find({
-        "order_status": OrderStatus.DELIVERED.value,
-        "created_at": {"$gte": month_start},
-    }).to_list()
-    revenue_this_month = sum(o.total_amount for o in delivered)
+    # Revenue: sum delivered orders (all-time, this month, today)
+    delivered_all = await Order.find({"order_status": OrderStatus.DELIVERED.value}).to_list()
+    revenue_total = sum(o.total_amount for o in delivered_all)
+    revenue_this_month = sum(
+        o.total_amount for o in delivered_all if o.created_at >= month_start
+    )
+    revenue_today = sum(
+        o.total_amount for o in delivered_all if today_start <= o.created_at <= today_end
+    )
+
+    recent_orders_docs = await Order.find().sort(-Order.created_at).limit(10).to_list()
+    recent_enquiries_docs = await Enquiry.find().sort(-Enquiry.created_at).limit(5).to_list()
 
     return DashboardStats(
         total_products=total_products,
@@ -163,11 +198,42 @@ async def get_dashboard_stats(admin: User = Depends(get_admin_user)):
         pending_enquiries=pending_enquiries,
         unread_enquiries=unread_enquiries,
         pending_orders=pending_orders,
+        confirmed_orders=confirmed_orders,
         total_orders=total_orders,
+        today_orders=today_orders,
+        month_orders=month_orders,
         service_bookings_today=bookings_today,
         total_service_bookings=total_bookings,
+        pending_service_bookings=pending_bookings,
         revenue_this_month=revenue_this_month,
+        revenue_today=revenue_today,
+        revenue_total=revenue_total,
+        new_customers_today=new_customers_today,
+        new_customers_month=new_customers_month,
+        total_battery_swaps=total_swaps,
+        pending_battery_swaps=pending_swaps,
         unread_notifications=unread_notifications,
+        recent_orders=[
+            {
+                "order_number": o.order_number,
+                "customer_name": o.customer_name,
+                "total_amount": o.total_amount,
+                "order_status": o.order_status.value,
+                "created_at": o.created_at.isoformat(),
+            }
+            for o in recent_orders_docs
+        ],
+        recent_enquiries=[
+            {
+                "id": str(e.id),
+                "name": e.name,
+                "enquiry_type": e.enquiry_type.value,
+                "phone": e.phone,
+                "status": e.status.value,
+                "created_at": e.created_at.isoformat(),
+            }
+            for e in recent_enquiries_docs
+        ],
     )
 
 
@@ -219,6 +285,9 @@ async def get_recent_activity(admin: User = Depends(get_admin_user)):
 
 @router.get("/customers", response_model=List[dict])
 async def list_customers(
+    response: Response,
+    search: Optional[str] = Query(None),
+    is_active: Optional[bool] = Query(None),
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=200),
     admin: User = Depends(get_admin_user),
@@ -226,8 +295,22 @@ async def list_customers(
     """
     Admin: list all registered customer accounts, newest first.
     """
+    query_filter: dict = {"role": UserRole.CUSTOMER.value}
+    if is_active is not None:
+        query_filter["is_active"] = is_active
+    if search:
+        regex = {"$regex": search, "$options": "i"}
+        query_filter["$or"] = [
+            {"name": regex},
+            {"email": regex},
+            {"phone": regex},
+        ]
+
+    total = await User.find(query_filter).count()
+    response.headers["X-Total-Count"] = str(total)
+
     customers = (
-        await User.find({"role": UserRole.CUSTOMER.value})
+        await User.find(query_filter)
         .sort(-User.created_at)
         .skip(skip)
         .limit(limit)
@@ -442,6 +525,31 @@ async def analytics_revenue(
         })
 
     return result
+
+
+@router.get("/analytics/orders-by-status")
+async def analytics_orders_by_status(admin: User = Depends(get_admin_user)):
+    """Return order counts grouped by status, for the Reports page bar chart."""
+    import asyncio
+
+    statuses = [s.value for s in OrderStatus]
+    counts = await asyncio.gather(*[
+        Order.find({"order_status": s}).count() for s in statuses
+    ])
+    return [{"status": s, "count": c} for s, c in zip(statuses, counts)]
+
+
+@router.get("/analytics/enquiries-by-type")
+async def analytics_enquiries_by_type(admin: User = Depends(get_admin_user)):
+    """Return enquiry counts grouped by type, for the Reports page breakdown."""
+    import asyncio
+    from app.models.enquiry import EnquiryType
+
+    types = [t.value for t in EnquiryType]
+    counts = await asyncio.gather(*[
+        Enquiry.find({"enquiry_type": t}).count() for t in types
+    ])
+    return [{"type": t, "count": c} for t, c in zip(types, counts)]
 
 
 # ---------- Settings ----------

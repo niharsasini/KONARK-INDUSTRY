@@ -7,7 +7,7 @@ DELETE /reviews/{id}                 — admin: hide / remove a review
 GET  /admin/reviews                  — admin: all reviews (including pending)
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query, Request
+from fastapi import APIRouter, HTTPException, status, Depends, Query, Request, Response
 from app.core.limiter import limiter
 from pydantic import BaseModel, Field
 from typing import Optional, List
@@ -190,8 +190,10 @@ async def delete_review(review_id: str, admin: User = Depends(get_admin_user)):
 
 @router.get("/admin/reviews", response_model=List[ReviewResponse])
 async def admin_list_reviews(
+    response: Response,
     product_slug: Optional[str] = Query(None),
     approved: Optional[bool] = Query(None),
+    rating: Optional[int] = Query(None, ge=1, le=5),
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=200),
     admin: User = Depends(get_admin_user),
@@ -206,6 +208,11 @@ async def admin_list_reviews(
         query_filter["product_slug"] = product_slug
     if approved is not None:
         query_filter["is_approved"] = approved
+    if rating is not None:
+        query_filter["rating"] = rating
+
+    total = await Review.find(query_filter).count()
+    response.headers["X-Total-Count"] = str(total)
 
     reviews = (
         await Review.find(query_filter)

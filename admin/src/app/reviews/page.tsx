@@ -1,6 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { getAllReviews, approveReview, deleteReview } from "@/lib/adminApi";
+import { Pagination } from "@/components/Pagination";
+
+const LIMIT = 20;
 
 type Review = {
   id: string;
@@ -17,19 +20,29 @@ type Filter = "all" | "pending" | "approved";
 
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
+  const [ratingFilter, setRatingFilter] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
 
   const fetchReviews = () => {
     setLoading(true);
     setError(null);
-    const params: Record<string, string> = {};
+    const params: Record<string, string> = {
+      skip: String((page - 1) * LIMIT),
+      limit: String(LIMIT),
+    };
     if (filter === "pending") params.approved = "false";
     if (filter === "approved") params.approved = "true";
+    if (ratingFilter) params.rating = ratingFilter;
     getAllReviews(params)
-      .then((data) => setReviews(Array.isArray(data) ? (data as Review[]) : []))
+      .then(({ items, total }) => {
+        setReviews(Array.isArray(items) ? items : []);
+        setTotal(total);
+      })
       .catch((err) => setError(err.message || "Failed to load reviews"))
       .finally(() => setLoading(false));
   };
@@ -37,7 +50,9 @@ export default function ReviewsPage() {
   useEffect(() => {
     fetchReviews();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter]);
+  }, [filter, ratingFilter, page]);
+
+  useEffect(() => { setPage(1); }, [filter, ratingFilter]);
 
   const handleApprove = async (id: string) => {
     setBusyId(id);
@@ -56,6 +71,7 @@ export default function ReviewsPage() {
     try {
       await deleteReview(id);
       setReviews((prev) => prev.filter((r) => r.id !== id));
+      setTotal((t) => t - 1);
     } catch {
       // no-op
     } finally {
@@ -63,9 +79,9 @@ export default function ReviewsPage() {
     }
   };
 
-  const total = reviews.length;
   const pending = reviews.filter((r) => !r.is_approved).length;
-  const avgRating = total ? (reviews.reduce((s, r) => s + r.rating, 0) / total).toFixed(1) : "0.0";
+  const avgRating = reviews.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : "0.0";
+  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
 
   const FILTERS: { key: Filter; label: string }[] = [
     { key: "all", label: "All" },
@@ -92,16 +108,23 @@ export default function ReviewsPage() {
         </div>
       </div>
 
-      <div style={{ display: "flex", gap: 4, marginBottom: 20, borderBottom: "1px solid #1e2d40" }}>
-        {FILTERS.map(({ key, label }) => (
-          <button
-            key={key}
-            onClick={() => setFilter(key)}
-            style={{ padding: "10px 18px", background: "transparent", border: "none", borderBottom: filter === key ? "2px solid #00d4ff" : "2px solid transparent", color: filter === key ? "#00d4ff" : "#94a3b8", fontSize: 13, fontWeight: filter === key ? 700 : 400, cursor: "pointer", marginBottom: -1 }}
-          >
-            {label}
-          </button>
-        ))}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+        <div style={{ display: "flex", gap: 4, borderBottom: "1px solid #1e2d40" }}>
+          {FILTERS.map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setFilter(key)}
+              style={{ padding: "10px 18px", background: "transparent", border: "none", borderBottom: filter === key ? "2px solid #00d4ff" : "2px solid transparent", color: filter === key ? "#00d4ff" : "#94a3b8", fontSize: 13, fontWeight: filter === key ? 700 : 400, cursor: "pointer", marginBottom: -1 }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <select value={ratingFilter} onChange={(e) => setRatingFilter(e.target.value)}
+          style={{ padding: "9px 14px", borderRadius: 8, border: "1px solid #1e2d40", background: "#0a0f1e", color: "#f1f5f9", fontSize: 12, fontWeight: 600, cursor: "pointer", outline: "none" }}>
+          <option value="">All Ratings</option>
+          {[5, 4, 3, 2, 1].map((r) => <option key={r} value={r}>{r} ★</option>)}
+        </select>
       </div>
 
       {loading ? (
@@ -172,6 +195,8 @@ export default function ReviewsPage() {
           </table>
         </div>
       )}
+
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={total} itemsPerPage={LIMIT} />
     </div>
   );
 }
