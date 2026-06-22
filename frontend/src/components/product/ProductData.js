@@ -703,4 +703,40 @@ export const products = [
       GroundClearance: "High clearance",
     },
   },
+
+  /* ================= INDUSTRIAL EQUIPMENT ================= */
+
+  {
+    id: 29,
+    slug: "industrial-floor-sweeper-vol-2300",
+    name: "Industrial Floor Sweeper VOL-2300",
+    type: "vehicle",
+    category: CATEGORIES.INDUSTRIAL,
+    price: 1440000,
+    rating: 4.8,
+    isNew: true,
+    image: "/konark/sweeper-main.png",
+    images: ["/konark/sweeper-main.png"],
+    shortDescription:
+      "Heavy-duty electric floor sweeper for industrial and municipal cleaning. 22,000 m²/h efficiency.",
+    description:
+      "The Konark Industry VOL-2300 Industrial Floor Sweeper is a powerful battery-operated cleaning machine designed for large industrial and municipal areas. Features sweep and suction combo, HD reversing camera, industrial grade dust filtration, and water spray dust suppression system. Ideal for warehouses, factory premises, industrial parks, roads and municipal cleaning.",
+    specifications: {
+      Model: "VOL-2300",
+      ProductSize: "3200 × 2100 × 2950 mm",
+      SweepingWidth: "2000 - 2200 mm",
+      MainBrushWidth: "800 mm",
+      SideBrushWidth: "550 mm",
+      DustTankCapacity: "260 L",
+      WaterTankCapacity: "300 L",
+      MachineWeight: "1580 kg",
+      Battery: "48V / 200Ah",
+      DriveMotor: "3000W",
+      BrushMotor: "1000W",
+      WorkingTime: "6 - 8 hours",
+      WorkingEfficiency: "22,000 m²/h",
+      TravelSpeed: "12 - 16 km/h",
+      AirFilter: "Industrial Grade Dust Filter",
+    },
+  },
 ];
