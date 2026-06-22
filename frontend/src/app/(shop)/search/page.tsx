@@ -81,7 +81,11 @@ function SearchResults() {
     )
     setResults(local)
     getProducts({ search: query || undefined })
-      .then((data: any) => { if (Array.isArray(data)) setResults(data) })
+      .then((data: any) => {
+        if (Array.isArray(data)) {
+          setResults(data.map((p: any) => ({ ...p, image: p.images?.[0] || p.image })))
+        }
+      })
       .catch(() => {})
   }, [query])
 

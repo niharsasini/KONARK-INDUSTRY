@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
@@ -201,7 +201,16 @@ function EvCarCard({ car }) {
 
 export default function FeaturedProducts() {
   const [activeTab, setActiveTab] = useState(0);
+  const [productCount, setProductCount] = useState(products.length);
   const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true });
+
+  useEffect(() => {
+    const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+    fetch(`${BACKEND}/api/v1/products?limit=100`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => { if (Array.isArray(data) && data.length > 0) setProductCount(data.length); })
+      .catch(() => {});
+  }, []);
 
   const tab = TABS[activeTab];
   const regularProducts = tab.isEvCars ? [] : products.filter(tab.filter).slice(0, 8);
@@ -255,7 +264,7 @@ export default function FeaturedProducts() {
             onMouseEnter={e => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
           >
-            View all 50+ →
+            View all {productCount}+ →
           </Link>
         </motion.div>
 
@@ -305,7 +314,7 @@ export default function FeaturedProducts() {
           onMouseEnter={e => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
           onMouseLeave={e => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
         >
-          View All 50+ Products →
+          View All {productCount}+ Products →
         </Link>
       </div>
     </section>

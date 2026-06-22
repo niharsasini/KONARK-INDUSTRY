@@ -10,7 +10,7 @@ const TIMELINE = [
   { year: "2018", text: "Crossed 5,000 customers and expanded to pan-India delivery" },
   { year: "2020", text: "Entered EV space with Konark X1 scooter" },
   { year: "2022", text: "Opened second factory, launched BLDC appliance line" },
-  { year: "2024", text: "25,000+ customers, 50+ products, 8+ states" },
+  { year: "2024", text: "25,000+ customers, 28+ products, 8+ states" },
 ];
 
 const VALUES = [
@@ -23,7 +23,7 @@ const VALUES = [
 const STATS = [
   { value: "10+", label: "Years of Experience" },
   { value: "25000+", label: "Customers Served" },
-  { value: "50+", label: "Products & Solutions" },
+  { value: "28+", label: "Products & Solutions" },
   { value: "99%", label: "Client Satisfaction" },
 ];
 

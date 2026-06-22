@@ -86,7 +86,7 @@ export default function ProductsMegaMenu({ onPanelEnter, onPanelLeave }) {
           onMouseEnter={(e) => (e.currentTarget.style.color = "#f1f5f9")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
         >
-          Browse all 50+ products →
+          Browse all products →
         </Link>
         <Link
           href="/battery-swap"
