@@ -69,7 +69,7 @@ export default function PartnerPage() {
   };
 
   return (
-    <div style={{ background: "#0a0f1e", minHeight: "100vh", paddingTop: 64 }}>
+    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: 64 }}>
       {/* Hero */}
       <div style={{ background: "#0f172a", borderBottom: "1px solid #1e2d40", padding: "80px 24px 60px", textAlign: "center" }}>
         <div style={{ display: "flex", gap: 6, alignItems: "center", justifyContent: "center", marginBottom: 20, fontSize: 12, color: "#94a3b8" }}>

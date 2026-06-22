@@ -2,10 +2,9 @@
 
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { products as staticProducts } from "@/components/product/ProductData";
 import { getProducts } from "@/lib/api";
+import ProductCard from "@/components/product/ProductCard";
 
 const CATEGORIES = ["All", "Electric Vehicles", "Batteries", "Home Appliances", "Industrial Equipment", "Industrial Components", "Electronics"];
 const TYPE_FILTERS = [
@@ -15,16 +14,6 @@ const TYPE_FILTERS = [
   { value: "service", label: "🔧 Services" },
 ];
 
-const BADGE_COLORS = {
-  "Electric Vehicles": "#00d4ff",
-  Batteries: "#7c3aed",
-  "Home Appliances": "#10b981",
-  "Industrial Equipment": "#f97316",
-  "Industrial Components": "#f97316",
-  Electronics: "#94a3b8",
-  "Industrial Services": "#a78bfa",
-};
-
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest" },
   { value: "price-asc", label: "Price: Low–High" },
@@ -32,109 +21,15 @@ const SORT_OPTIONS = [
   { value: "rating", label: "Most Popular" },
 ];
 
-function StarRating({ rating }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-      {[1, 2, 3, 4, 5].map((s) => (
-        <svg key={s} viewBox="0 0 20 20" fill={s <= Math.round(rating) ? "#f97316" : "none"} stroke="#f97316" strokeWidth={1.5} style={{ width: 11, height: 11 }}>
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-      <span style={{ fontSize: 11, color: "#94a3b8" }}>{rating}</span>
-    </div>
-  );
-}
-
-function ProductCard({ product }) {
-  const router = useRouter();
-  const [hovered, setHovered] = useState(false);
-  const badgeColor = BADGE_COLORS[product.category] || "#94a3b8";
-  const isVehicle = product.type === "vehicle";
-  const isService = product.type === "service";
-
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: "linear-gradient(145deg, #0d1424, #111827)",
-        border: `1px solid ${hovered
-          ? isVehicle ? "rgba(0,212,255,0.4)" : isService ? "rgba(167,139,250,0.4)" : "rgba(16,185,129,0.35)"
-          : "#1a2740"}`,
-        borderRadius: 16, overflow: "hidden",
-        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-        transform: hovered ? "translateY(-6px)" : "none",
-        boxShadow: hovered ? "0 16px 40px rgba(0,0,0,0.35)" : "none",
-        display: "flex", flexDirection: "column",
-      }}
-    >
-      <div style={{ background: "#111827", height: 180, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-        {(() => {
-          const src = product.images?.[0] || product.image;
-          const isLocal = src?.startsWith("/productimg/") || src?.startsWith("/konark/");
-          return isLocal ? (
-            <img src={src} alt={product.name} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", padding: 20, boxSizing: "border-box" }} />
-          ) : (
-            <Image src={src} alt={product.name} fill style={{ objectFit: "contain", padding: 20 }} sizes="(max-width: 768px) 50vw, 25vw" />
-          );
-        })()}
-        {product.isNew && (
-          <span style={{ position: "absolute", top: 8, left: 8, background: "#00d4ff", color: "#0a0f1e", fontSize: 10, fontWeight: 700, padding: "2px 7px", borderRadius: 4 }}>NEW</span>
-        )}
-        {/* Type badge */}
-        {isVehicle && (
-          <span style={{ position: "absolute", bottom: 8, right: 8, background: "rgba(0,212,255,0.12)", border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff", fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 4 }}>⚡ EV</span>
-        )}
-        {isService && (
-          <span style={{ position: "absolute", bottom: 8, right: 8, background: "rgba(167,139,250,0.12)", border: "1px solid rgba(167,139,250,0.3)", color: "#a78bfa", fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 4 }}>Free Quote</span>
-        )}
-        {!isVehicle && !isService && (
-          <span style={{ position: "absolute", bottom: 8, right: 8, background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.25)", color: "#10b981", fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 4 }}>● In Stock</span>
-        )}
-      </div>
-      <div style={{ padding: 14, flex: 1, display: "flex", flexDirection: "column", gap: 7 }}>
-        <span style={{ display: "inline-block", fontSize: 10, fontWeight: 600, padding: "2px 7px", borderRadius: 4, background: `${badgeColor}18`, color: badgeColor, border: `1px solid ${badgeColor}30`, textTransform: "uppercase", letterSpacing: "0.08em" }}>
-          {product.category}
-        </span>
-        <p style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9", margin: 0, lineHeight: 1.4 }}>{product.name}</p>
-        {!isService && <StarRating rating={product.rating} />}
-
-        {/* Price / CTA label */}
-        {isService ? (
-          <p style={{ fontSize: 12, color: "#a78bfa", fontWeight: 600, margin: 0 }}>💜 Free inspection · Then quote</p>
-        ) : isVehicle ? (
-          <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>
-            {product.price ? <><span style={{ fontSize: 11, color: "#64748b" }}>from </span><span style={{ color: "#00d4ff" }}>₹{product.price.toLocaleString("en-IN")}</span></> : <span style={{ color: "#64748b", fontWeight: 400, fontSize: 12 }}>Price on Request</span>}
-          </p>
-        ) : (
-          <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>
-            {product.price ? `₹${product.price.toLocaleString("en-IN")}` : <span style={{ color: "#94a3b8", fontWeight: 400, fontSize: 12 }}>Price on Request</span>}
-          </p>
-        )}
-
-        {/* Action button */}
-        {isVehicle ? (
-          <Link href={`/products/${product.slug}`}
-            style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px", background: "#00d4ff", color: "#0a0f1e", fontSize: 12, fontWeight: 700, borderRadius: 7, textDecoration: "none", marginTop: "auto" }}>
-            Book Test Ride →
-          </Link>
-        ) : isService ? (
-          <Link href="/services/enquiry"
-            style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px", background: "#7c3aed", color: "#fff", fontSize: 12, fontWeight: 700, borderRadius: 7, textDecoration: "none", marginTop: "auto" }}>
-            Book Service →
-          </Link>
-        ) : (
-          <Link href={`/products/${product.slug}`}
-            style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px", border: "1px solid #00d4ff", color: "#00d4ff", fontSize: 12, fontWeight: 600, borderRadius: 7, textDecoration: "none", transition: "all 0.2s", marginTop: "auto" }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = "#00d4ff"; e.currentTarget.style.color = "#0a0f1e"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#00d4ff"; }}
-          >
-            View Details
-          </Link>
-        )}
-      </div>
-    </div>
-  );
+/** Normalizes a backend ProductResponse (snake_case) to the camelCase shape ProductCard expects. */
+function normalizeProduct(p) {
+  return {
+    ...p,
+    isNew: p.is_new ?? p.isNew ?? false,
+    inStock: p.in_stock ?? p.inStock ?? true,
+    shortDescription: p.short_description ?? p.shortDescription,
+    image: p.images?.[0] || p.image,
+  };
 }
 
 export default function ProductsPage() {
@@ -148,7 +43,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     getProducts()
-      .then((data) => setProductsList(Array.isArray(data) ? data : null))
+      .then((data) => setProductsList(Array.isArray(data) ? data.map(normalizeProduct) : null))
       .catch(() => {});
   }, []);
 

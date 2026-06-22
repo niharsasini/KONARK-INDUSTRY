@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Error({ reset }: { reset: () => void }) {
   return (
-    <div style={{ background: "#0a0f1e", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 24px" }}>
+    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 24px" }}>
       <div style={{ textAlign: "center", maxWidth: 480 }}>
         <p style={{ fontSize: 72, margin: "0 0 16px" }}>⚠️</p>
         <h1 style={{ fontSize: 24, fontWeight: 800, color: "#f1f5f9", margin: "0 0 12px" }}>Something went wrong</h1>

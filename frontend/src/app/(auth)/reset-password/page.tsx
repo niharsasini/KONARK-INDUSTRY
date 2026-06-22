@@ -21,7 +21,7 @@ const INPUT: React.CSSProperties = {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={<div style={{ background: "#0a0f1e", minHeight: "100vh" }} />}>
+    <Suspense fallback={<div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh" }} />}>
       <ResetPasswordForm />
     </Suspense>
   );
@@ -78,7 +78,7 @@ function ResetPasswordForm() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0a0f1e", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
       <div style={{ width: "100%", maxWidth: 420, background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 20, padding: 40 }}>
         <h1 style={{ fontSize: 22, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }}>Reset Password</h1>
         <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 28px", lineHeight: 1.6 }}>

@@ -14,7 +14,7 @@ function Shimmer({ style }: { style: React.CSSProperties }) {
 
 export default function Loading() {
   return (
-    <div style={{ background: "#0a0f1e", minHeight: "100vh", paddingTop: 64 }}>
+    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: 64 }}>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px" }}>
         <Shimmer style={{ height: 28, width: 160, marginBottom: 32, borderRadius: 8 }} />
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>

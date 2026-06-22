@@ -100,7 +100,7 @@ export default function BatterySwapTrackPage() {
   }
 
   return (
-    <main style={{ minHeight: "100vh", background: "#0a0f1e", padding: "80px 24px 80px" }}>
+    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", padding: "80px 24px 80px" }}>
       <div style={{ maxWidth: 600, margin: "0 auto" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Battery Swap", href: "/battery-swap" }, { label: "Track My Swap" }]} />
 

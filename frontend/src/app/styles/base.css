@@ -16,8 +16,9 @@ body {
 }
 
 body {
-  background: linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%);
-  background-attachment: fixed;
+  background: linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%) !important;
+  background-attachment: fixed !important;
+  min-height: 100vh;
   color: var(--k-text);
   font-family: 'Inter', system-ui, sans-serif;
   margin: 0;

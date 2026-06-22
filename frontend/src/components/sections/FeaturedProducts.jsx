@@ -1,10 +1,11 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { products } from "@/components/product/ProductData";
+import ProductCard from "@/components/product/ProductCard";
 
 const carProducts = [
   { id: "ev-car-1", name: "Konark EV Sedan", image: "/konark/car-1 (1).png", bodyType: "Sedan", isEvCar: true },
@@ -27,136 +28,6 @@ const TABS = [
 
 const CARD_W = 280;
 const CARD_GAP = 20;
-
-function TiltCard({ product }) {
-  const router = useRouter();
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [hovered, setHovered] = useState(false);
-  const [imgIndex, setImgIndex] = useState(0);
-  const intervalRef = useRef(null);
-
-  const images = product.images?.length > 0 ? product.images : [product.image];
-  const hasMultipleImages = images.length > 1;
-
-  const catColor = {
-    "Electric Vehicles": "#00d4ff",
-    Batteries: "#7c3aed",
-    "Home Appliances": "#10b981",
-    "Industrial Equipment": "#f97316",
-    "Industrial Services": "#a78bfa",
-  }[product.category] || "#64748b";
-
-  function onMove(e) {
-    const r = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientY - r.top) / r.height - 0.5) * -10;
-    const y = ((e.clientX - r.left) / r.width - 0.5) * 10;
-    setTilt({ x, y });
-  }
-
-  const ctaLabel = product.type === "vehicle" ? "Book Test Ride" : product.type === "service" ? "Book Now" : "Add to Cart";
-  const ctaColor = product.type === "service" ? "#7c3aed" : "#00d4ff";
-
-  const handleMouseEnter = () => {
-    setHovered(true);
-    if (!hasMultipleImages) return;
-    intervalRef.current = setInterval(() => {
-      setImgIndex((i) => (i + 1) % images.length);
-    }, 1200);
-  };
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
-    setHovered(false);
-    clearInterval(intervalRef.current);
-    setImgIndex(0);
-  };
-
-  return (
-    <motion.div
-      onMouseMove={onMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      animate={{ rotateX: tilt.x, rotateY: tilt.y }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      onClick={() => router.push(`/products/${product.slug}`)}
-      style={{
-        width: "100%", flexShrink: 0,
-        background: "linear-gradient(145deg, #111827, #0f172a)",
-        border: `1px solid ${hovered ? `${catColor}60` : "#1e2d40"}`,
-        borderRadius: 20, overflow: "hidden",
-        boxShadow: hovered ? `0 30px 60px rgba(0,0,0,0.5), 0 0 30px ${catColor}20` : "0 20px 40px rgba(0,0,0,0.4)",
-        cursor: "pointer", transformStyle: "preserve-3d",
-        transition: "border-color 0.2s, box-shadow 0.2s",
-        display: "flex", flexDirection: "column",
-      }}
-    >
-      {/* Image */}
-      <div style={{
-        height: 200, position: "relative",
-        background: "radial-gradient(ellipse at center, #0f172a 0%, #060d1a 100%)",
-        display: "flex", alignItems: "center", justifyContent: "center", padding: 20,
-        overflow: "hidden",
-      }}>
-        <img
-          src={images[imgIndex]} alt={product.name} loading="lazy"
-          style={{ maxHeight: 160, maxWidth: "85%", objectFit: "contain",
-            filter: hovered ? `drop-shadow(0 0 20px ${catColor}60)` : "none",
-            transition: "filter 0.3s, opacity 0.3s",
-          }}
-        />
-        {product.isNew && (
-          <span style={{ position: "absolute", top: 12, left: 12, background: "#00d4ff", color: "#0a0f1e", fontSize: 9, fontWeight: 800, padding: "2px 8px", borderRadius: 4, textTransform: "uppercase" }}>NEW</span>
-        )}
-        <span style={{ position: "absolute", top: 12, right: 12, background: `${catColor}18`, border: `1px solid ${catColor}40`, color: catColor, fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 4, textTransform: "uppercase" }}>
-          {product.category.replace("Electric Vehicles", "EV").replace("Home Appliances", "Home").replace("Industrial Equipment", "Industrial")}
-        </span>
-        {hasMultipleImages && (
-          <div style={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 4, zIndex: 5 }}>
-            {images.map((_, i) => (
-              <div key={i} style={{ width: i === imgIndex ? 14 : 5, height: 5, borderRadius: 3, background: i === imgIndex ? catColor : "rgba(255,255,255,0.35)", transition: "all 0.3s ease" }} />
-            ))}
-          </div>
-        )}
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${catColor}, transparent)` }} />
-      </div>
-
-      {/* Body */}
-      <div style={{ padding: "14px 16px", flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
-        <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{product.name}</p>
-        <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-          {[1,2,3,4,5].map(s => (
-            <svg key={s} viewBox="0 0 12 12" fill={s <= Math.round(product.rating) ? "#f97316" : "none"} stroke="#f97316" strokeWidth={1.5} style={{ width: 10, height: 10 }}>
-              <path d="M6 1l1.24 2.51L10 3.86 8 5.82l.47 2.76L6 7.25 3.53 8.58 4 5.82 2 3.86l2.76-.35L6 1z" />
-            </svg>
-          ))}
-          <span style={{ fontSize: 10, color: "#64748b", marginLeft: 2 }}>({product.rating})</span>
-        </div>
-        <p style={{ fontSize: 18, fontWeight: 800, color: product.price > 0 ? catColor : "#64748b", margin: 0 }}>
-          {product.price > 0 ? `₹${product.price.toLocaleString("en-IN")}` : <span style={{ fontSize: 13, fontStyle: "italic" }}>Price on Request</span>}
-        </p>
-      </div>
-
-      {/* Footer */}
-      <div style={{ padding: "12px 16px", borderTop: "1px solid #1e2d40", display: "flex", gap: 8, alignItems: "center" }}>
-        <Link
-          href={`/products/${product.slug}`}
-          onClick={e => e.stopPropagation()}
-          style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "8px 10px", fontSize: 12, fontWeight: 700, background: "transparent", color: ctaColor, border: `1px solid ${ctaColor}60`, borderRadius: 8, textDecoration: "none", transition: "background 0.2s" }}
-          onMouseEnter={e => (e.currentTarget.style.background = `${ctaColor}18`)}
-          onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-        >
-          {ctaLabel} →
-        </Link>
-        <button
-          onClick={e => e.stopPropagation()}
-          style={{ width: 34, height: 34, borderRadius: 8, background: "transparent", border: "1px solid #1e2d40", color: "#64748b", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.2s", fontSize: 14 }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = "#ef4444"; e.currentTarget.style.color = "#ef4444"; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#64748b"; }}
-          title="Add to wishlist"
-        >♡</button>
-      </div>
-    </motion.div>
-  );
-}
 
 function EvCarCard({ car }) {
   const router = useRouter();
@@ -329,7 +200,7 @@ export default function FeaturedProducts() {
         >
           {doubled.map((p, i) => (
             <div key={`${p.id}-${i}`} className="product-card-wrap">
-              {p.isEvCar ? <EvCarCard car={p} /> : <TiltCard product={p} />}
+              {p.isEvCar ? <EvCarCard car={p} /> : <ProductCard product={p} />}
             </div>
           ))}
         </div>

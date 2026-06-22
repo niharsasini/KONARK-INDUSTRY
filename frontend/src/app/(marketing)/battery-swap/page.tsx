@@ -205,7 +205,7 @@ export default function BatterySwapPage() {
   };
 
   return (
-    <main style={{ minHeight: "100vh", background: "#0a0f1e" }}>
+    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px 24px 0" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Battery Swap" }]} />
       </div>

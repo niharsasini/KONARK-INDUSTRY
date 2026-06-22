@@ -98,7 +98,7 @@ function SearchResults() {
   }, [query])
 
   return (
-    <div style={{ background: '#0a0f1e', minHeight: '100vh', paddingTop: '80px' }}>
+    <div style={{ background: 'linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)', minHeight: '100vh', paddingTop: '80px' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 24px' }}>
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Search Results' }]} />
         <div style={{ marginBottom: '32px' }}>
@@ -166,7 +166,7 @@ function SearchResults() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div style={{ background: '#0a0f1e', minHeight: '100vh', paddingTop: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ color: '#94a3b8' }}>Searching...</span></div>}>
+    <Suspense fallback={<div style={{ background: 'linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)', minHeight: '100vh', paddingTop: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ color: '#94a3b8' }}>Searching...</span></div>}>
       <SearchResults />
     </Suspense>
   )
