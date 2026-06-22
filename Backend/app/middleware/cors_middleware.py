@@ -25,11 +25,13 @@ def get_allowed_origins() -> list:
         "https://konarkindustry.com",
         "https://www.konarkindustry.com",
         "https://api.konarkindustry.com",
+        "https://admin.konarkindustry.net",
         # Always allow localhost variants for local development
         "http://localhost:3000",
         "http://localhost:3001",
         "http://localhost:8000",
         "http://127.0.0.1:3000",
+        "http://127.0.0.1:3001",
     ]
     # Extra origins from env (comma-separated)
     extra = os.getenv("ALLOWED_ORIGINS", "")
