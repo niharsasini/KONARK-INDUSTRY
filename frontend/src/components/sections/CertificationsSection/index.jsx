@@ -14,7 +14,7 @@ export default function CertificationsSection() {
     <>
       <section className="certs-section" style={{
         padding: '80px 0',
-        background: '#0a0f1e',
+        background: 'transparent',
         position: 'relative',
       }}>
         <div ref={ref} style={{

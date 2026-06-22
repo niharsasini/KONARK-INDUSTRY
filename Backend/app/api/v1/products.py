@@ -7,15 +7,20 @@ PUT  /products/{slug}     — update product (admin only)
 DELETE /products/{slug}   — soft delete product (admin only)
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends, Query, Request, Response
+from fastapi import APIRouter, HTTPException, status, Depends, Query, Request, Response, UploadFile, File, Form
 from app.core.limiter import limiter
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime
+import uuid
 
 from app.models.product import Product, ProductType
 from app.core.dependencies import get_admin_user, get_optional_user
+from app.core.cloudinary_config import upload_to_cloudinary
 from app.models.user import User
+
+ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/jpg", "image/png", "image/webp"}
+MAX_IMAGE_BYTES = 5 * 1024 * 1024  # 5MB
 
 router = APIRouter(prefix="/products", tags=["Products"])
 
@@ -276,3 +281,37 @@ async def toggle_featured(slug: str, admin: User = Depends(get_admin_user)):
     product.updated_at = datetime.utcnow()
     await product.save()
     return _to_response(product)
+
+
+@router.post("/upload-image")
+async def upload_product_image(file: UploadFile = File(...), admin: User = Depends(get_admin_user)):
+    """Admin: upload a product image to Cloudinary, returns the CDN URL."""
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Invalid file type. Use JPEG, PNG or WebP.")
+
+    contents = await file.read()
+    if len(contents) > MAX_IMAGE_BYTES:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "File too large. Max size is 5MB.")
+
+    filename = f"product_{uuid.uuid4().hex[:8]}"
+    url = await upload_to_cloudinary(contents, filename, folder="konark-products")
+    return {"url": url, "filename": filename}
+
+
+@router.post("/upload-image/general")
+async def upload_general_image(
+    file: UploadFile = File(...),
+    folder: str = Form(default="konark-general"),
+    admin: User = Depends(get_admin_user),
+):
+    """Admin: upload an image for non-product content (testimonials, FAQ, etc) to Cloudinary."""
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Invalid file type. Use JPEG, PNG or WebP.")
+
+    contents = await file.read()
+    if len(contents) > MAX_IMAGE_BYTES:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "File too large. Max size is 5MB.")
+
+    filename = f"img_{uuid.uuid4().hex[:8]}"
+    url = await upload_to_cloudinary(contents, filename, folder=folder)
+    return {"url": url}

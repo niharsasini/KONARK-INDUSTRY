@@ -1,6 +1,7 @@
 "use client";
 import React, { memo, useState, useRef } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Star, Heart } from "lucide-react";
 import { useCartStore, useWishlistStore } from "@/store";
@@ -129,16 +130,30 @@ const ProductCard = ({ product }) => {
         position: "relative", height: 220, overflow: "hidden",
         background: "linear-gradient(145deg, #0a1628, #0d1a2e)",
       }}>
-        <img
-          src={images[imgIndex]}
-          alt={`${product.name} - ${product.category}`}
-          style={{
-            width: "100%", height: "100%", objectFit: "contain", padding: 20,
-            boxSizing: "border-box",
-            transform: hovered ? "scale(1.05)" : "scale(1)",
-            transition: "transform 0.4s ease, opacity 0.3s ease",
-          }}
-        />
+        {images[imgIndex]?.startsWith("http") ? (
+          <Image
+            src={images[imgIndex]}
+            alt={`${product.name} - ${product.category}`}
+            fill
+            style={{
+              objectFit: "contain", padding: 20,
+              transform: hovered ? "scale(1.05)" : "scale(1)",
+              transition: "transform 0.4s ease, opacity 0.3s ease",
+            }}
+            sizes="(max-width: 768px) 100vw, 400px"
+          />
+        ) : (
+          <img
+            src={images[imgIndex]}
+            alt={`${product.name} - ${product.category}`}
+            style={{
+              width: "100%", height: "100%", objectFit: "contain", padding: 20,
+              boxSizing: "border-box",
+              transform: hovered ? "scale(1.05)" : "scale(1)",
+              transition: "transform 0.4s ease, opacity 0.3s ease",
+            }}
+          />
+        )}
         {product.category && (
           <span style={{
             position: "absolute", bottom: 10, left: 10, zIndex: 5,

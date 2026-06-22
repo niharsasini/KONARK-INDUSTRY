@@ -54,7 +54,7 @@ export default function FAQSection() {
   }, [])
 
   return (
-    <section style={{ background: '#0a0f1e', padding: '80px 24px' }}>
+    <section style={{ background: 'transparent', padding: '80px 24px' }}>
       <div style={{ maxWidth: 800, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, color: '#00d4ff', textTransform: 'uppercase', letterSpacing: '0.14em', background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.25)', padding: '4px 14px', borderRadius: 999, marginBottom: 16 }}>

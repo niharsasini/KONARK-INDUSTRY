@@ -54,18 +54,19 @@ export default function Testimonials() {
     fetch(`${BACKEND}/api/v1/testimonials`)
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
-        if (Array.isArray(data) && data.length >= 3) {
-          setTestimonials(
-            data.slice(0, 3).map((t, i) => ({
-              name: t.name,
-              location: t.location,
-              product: t.product_used,
-              rating: t.rating,
-              initials: t.avatar_initials || t.name.charAt(0),
-              color: CARD_COLORS[i % CARD_COLORS.length],
-              text: t.comment,
-            }))
-          );
+        if (Array.isArray(data) && data.length >= 1) {
+          const real = data.slice(0, 3).map((t, i) => ({
+            name: t.name,
+            location: t.location,
+            product: t.product_used,
+            rating: t.rating,
+            initials: t.avatar_initials || t.name.charAt(0),
+            color: CARD_COLORS[i % CARD_COLORS.length],
+            text: t.comment,
+          }));
+          // Bento grid needs exactly 3 cards — pad with fallbacks if admin has added fewer.
+          const padded = [...real, ...FALLBACK_TESTIMONIALS].slice(0, 3);
+          setTestimonials(padded);
         }
       })
       .catch(() => {});

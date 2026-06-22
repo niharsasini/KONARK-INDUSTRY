@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import toast from "react-hot-toast";
 import { StarRating, RelatedProducts } from "./shared";
 
@@ -78,11 +79,21 @@ export default function VehicleDetail({ product }) {
           <span style={{ position: "absolute", top: 24, left: 24, background: "#00d4ff", color: "#0a0f1e", fontSize: 11, fontWeight: 800, padding: "4px 12px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>NEW</span>
         )}
         <span style={{ position: "absolute", top: 24, right: 24, background: "rgba(0,212,255,0.12)", border: "1px solid rgba(0,212,255,0.35)", color: "#00d4ff", fontSize: 11, fontWeight: 800, padding: "4px 12px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>⚡ EV Vehicle</span>
-        <img
-          src={product.image}
-          alt={product.name}
-          style={{ maxHeight: 380, maxWidth: "70%", objectFit: "contain", filter: "drop-shadow(0 8px 40px rgba(0,212,255,0.2))", position: "relative", zIndex: 1 }}
-        />
+        {product.image?.startsWith("http") ? (
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            style={{ objectFit: "contain", padding: "40px 15%", filter: "drop-shadow(0 8px 40px rgba(0,212,255,0.2))", zIndex: 1 }}
+            sizes="(max-width: 768px) 90vw, 600px"
+          />
+        ) : (
+          <img
+            src={product.image}
+            alt={product.name}
+            style={{ maxHeight: 380, maxWidth: "70%", objectFit: "contain", filter: "drop-shadow(0 8px 40px rgba(0,212,255,0.2))", position: "relative", zIndex: 1 }}
+          />
+        )}
       </div>
 
       {/* Spec strip */}

@@ -715,8 +715,9 @@ export const products = [
     price: 1440000,
     rating: 4.8,
     isNew: true,
-    image: "/konark/sweeper-main.png",
-    images: ["/konark/sweeper-main.png"],
+    // TODO: Replace with real sweeper image via admin
+    image: "/productimg/Utility Vehicle.png",
+    images: ["/productimg/Utility Vehicle.png"],
     shortDescription:
       "Heavy-duty electric floor sweeper for industrial and municipal cleaning. 22,000 m²/h efficiency.",
     description:

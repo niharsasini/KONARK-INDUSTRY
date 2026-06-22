@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
 import { createProduct } from "@/lib/adminApi";
+import { ImageUpload } from "@/components/ImageUpload";
 
 const CATEGORIES = [
   "Electric Vehicles",
@@ -179,32 +180,20 @@ export default function NewProductPage() {
             </label>
 
             {images.map((img, i) => (
-              <div key={i} style={{ display: "flex", gap: 8, marginBottom: 8, alignItems: "center" }}>
-                <span style={{ color: "#64748b", fontSize: 13, minWidth: 20 }}>{i + 1}.</span>
-                <input
-                  type="text"
-                  value={img}
-                  onChange={(e) => updateImage(i, e.target.value)}
-                  placeholder="/productimg/product-name.png"
-                  style={{ ...inputStyle, flex: 1 }}
-                />
-                {img && (
-                  <img
-                    src={img}
-                    alt="preview"
-                    style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 8, border: "1px solid #1e2d40", background: "#0f172a" }}
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-                  />
-                )}
-                {images.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeImageField(i)}
-                    style={{ background: "transparent", border: "1px solid #ef4444", color: "#ef4444", borderRadius: 8, padding: "6px 10px", cursor: "pointer", fontSize: 16 }}
-                  >
-                    ✕
-                  </button>
-                )}
+              <div key={i} style={{ marginBottom: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                  <span style={{ color: "#64748b", fontSize: 13 }}>Image {i + 1}</span>
+                  {images.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeImageField(i)}
+                      style={{ background: "transparent", border: "1px solid #ef4444", color: "#ef4444", borderRadius: 6, padding: "2px 8px", cursor: "pointer", fontSize: 12 }}
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+                <ImageUpload value={img} onChange={(url) => updateImage(i, url)} />
               </div>
             ))}
 

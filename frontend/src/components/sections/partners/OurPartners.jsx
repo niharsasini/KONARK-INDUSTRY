@@ -55,7 +55,7 @@ export default function OurPartners() {
   const { ref: gridRef, inView: gridIn } = useInView({ threshold: 0.05, triggerOnce: true });
 
   return (
-    <section style={{ background: "#0a0f1e", padding: "100px 24px" }}>
+    <section style={{ background: "transparent", padding: "100px 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <motion.div
           ref={headRef}
