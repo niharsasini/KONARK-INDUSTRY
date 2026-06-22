@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-const faqs = [
+const FALLBACK_FAQS = [
   {
     q: "Do you deliver outside Odisha?",
     a: "Yes, we deliver pan-India. Standard delivery takes 5-7 business days. For remote locations, please call +91 94376 11129 to confirm availability.",
@@ -39,6 +39,19 @@ const faqs = [
 
 export default function FAQSection() {
   const [openIdx, setOpenIdx] = useState(null)
+  const [faqs, setFaqs] = useState(FALLBACK_FAQS)
+
+  useEffect(() => {
+    const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
+    fetch(`${BACKEND}/api/v1/faqs`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setFaqs(data.map((f) => ({ q: f.question, a: f.answer })))
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   return (
     <section style={{ background: '#0a0f1e', padding: '80px 24px' }}>

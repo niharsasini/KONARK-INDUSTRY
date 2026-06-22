@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 import { StarRating, RelatedProducts } from "./shared";
 
 /* ─── VEHICLE detail (Tesla / Ola style) ──────────── */
@@ -9,6 +10,23 @@ export default function VehicleDetail({ product }) {
   const [form, setForm] = useState({ name: "", phone: "", city: "", date: "" });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    const text = `Check out ${product.name} on Konark Industry`;
+    if (navigator.share) {
+      try { await navigator.share({ title: product.name, text, url }); } catch {}
+    } else {
+      await navigator.clipboard.writeText(url);
+      toast.success("Link copied to clipboard!");
+    }
+  };
+
+  const handleWhatsAppShare = () => {
+    const url = window.location.href;
+    const text = `Hi, I'm interested in *${product.name}* from Konark Industry.\n${url}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+  };
   const specs = product.specifications ? Object.entries(product.specifications) : [];
   const isUpcoming = product.isUpcoming === true || product.specifications?.Status === "Upcoming";
 
@@ -126,6 +144,22 @@ export default function VehicleDetail({ product }) {
             >
               Get Best Price
             </a>
+          </div>
+
+          {/* Share buttons */}
+          <div style={{ display: "flex", gap: 8, marginBottom: 32 }}>
+            <button
+              onClick={handleShare}
+              style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 16px", background: "transparent", border: "1px solid #1e2d40", color: "#94a3b8", fontSize: 13, fontWeight: 600, borderRadius: 8, cursor: "pointer" }}
+            >
+              🔗 Share
+            </button>
+            <button
+              onClick={handleWhatsAppShare}
+              style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 16px", background: "#25D366", color: "#fff", fontSize: 13, fontWeight: 600, borderRadius: 8, border: "none", cursor: "pointer" }}
+            >
+              📱 WhatsApp
+            </button>
           </div>
 
           {/* Why choose */}

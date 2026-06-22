@@ -1,8 +1,11 @@
 "use client";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
-const TESTIMONIALS = [
+const CARD_COLORS = ["#00d4ff", "#7c3aed", "#f97316"];
+
+const FALLBACK_TESTIMONIALS = [
   {
     name: "Rajesh Kumar Panda", location: "Bhubaneswar, Odisha",
     product: "EV Scooter X1", rating: 5, initials: "RKP", color: "#00d4ff",
@@ -44,7 +47,31 @@ export default function Testimonials() {
   const { ref: gridRef, inView: gridIn } = useInView({ threshold: 0.05, triggerOnce: true });
   const { ref: statsRef, inView: statsIn } = useInView({ threshold: 0.1, triggerOnce: true });
 
-  const [featured, card2, card3] = TESTIMONIALS;
+  const [testimonials, setTestimonials] = useState(FALLBACK_TESTIMONIALS);
+
+  useEffect(() => {
+    const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+    fetch(`${BACKEND}/api/v1/testimonials`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (Array.isArray(data) && data.length >= 3) {
+          setTestimonials(
+            data.slice(0, 3).map((t, i) => ({
+              name: t.name,
+              location: t.location,
+              product: t.product_used,
+              rating: t.rating,
+              initials: t.avatar_initials || t.name.charAt(0),
+              color: CARD_COLORS[i % CARD_COLORS.length],
+              text: t.comment,
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const [featured, card2, card3] = testimonials;
 
   return (
     <section style={{ background: "#060d1a", padding: "96px 0", position: "relative", overflow: "hidden" }}>

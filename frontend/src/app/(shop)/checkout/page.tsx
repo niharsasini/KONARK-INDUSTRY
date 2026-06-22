@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCartStore } from "@/store";
 import { createOrder } from "@/lib/api";
 import toast from "react-hot-toast";
+import Breadcrumb from "@/components/ui/Breadcrumb";
 
 const SERVICEABLE_PINCODES = [
   '751001','751002','751003','751004','751005',
@@ -145,6 +146,7 @@ export default function CheckoutPage() {
   return (
     <div style={{ background: "#0a0f1e", minHeight: "100vh", paddingTop: 64 }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px" }}>
+        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Cart", href: "/cart" }, { label: "Checkout" }]} />
         <h1 style={{ fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }}>Checkout</h1>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
           {["Delivery Details", "Payment"].map((s, i) => (

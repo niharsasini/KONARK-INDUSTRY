@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Breadcrumb from "@/components/ui/Breadcrumb";
 
 const SERVICES = [
   {
@@ -59,11 +60,7 @@ export default function ServicesPage() {
       {/* Hero */}
       <div style={{ background: "#0f172a", borderBottom: "1px solid #1e2d40", padding: "80px 24px 60px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 20, fontSize: 12, color: "#94a3b8" }}>
-            <Link href="/" style={{ color: "#94a3b8", textDecoration: "none" }}>Home</Link>
-            <span>/</span>
-            <span style={{ color: "#00d4ff" }}>Services</span>
-          </div>
+          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Services" }]} />
           <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(0,212,255,0.08)", marginBottom: 20 }}>
             Our Services
           </span>

@@ -403,3 +403,55 @@ export async function approveReview(id: string) {
 export async function deleteReview(id: string) {
   return adminRequest(`/api/v1/reviews/${id}`, { method: "DELETE" });
 }
+
+// ─── TESTIMONIALS ────────────────────────────────────────────────────────────
+
+export async function getAllTestimonials() {
+  return adminRequest("/api/v1/testimonials/admin");
+}
+
+export async function createTestimonial(data: Record<string, unknown>) {
+  return adminRequest("/api/v1/testimonials", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateTestimonial(id: string, data: Record<string, unknown>) {
+  return adminRequest(`/api/v1/testimonials/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteTestimonial(id: string) {
+  return adminRequest(`/api/v1/testimonials/${id}`, { method: "DELETE" });
+}
+
+export async function toggleTestimonial(id: string) {
+  return adminRequest(`/api/v1/testimonials/${id}/toggle`, { method: "PATCH" });
+}
+
+// ─── FAQS ────────────────────────────────────────────────────────────────────
+
+export async function getAllFaqs() {
+  return adminRequest("/api/v1/faqs/admin");
+}
+
+export async function createFaq(data: Record<string, unknown>) {
+  return adminRequest("/api/v1/faqs", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateFaq(id: string, data: Record<string, unknown>) {
+  return adminRequest(`/api/v1/faqs/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteFaq(id: string) {
+  return adminRequest(`/api/v1/faqs/${id}`, { method: "DELETE" });
+}

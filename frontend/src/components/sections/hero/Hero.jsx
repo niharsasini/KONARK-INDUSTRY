@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { products } from "@/components/product/ProductData";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const TRUST_PILLS = ["✓ ISI Certified", "✓ 2-Year Warranty", "✓ Doorstep Service"];
 
@@ -51,6 +52,8 @@ const DECK = [
 
 export default function Hero() {
   const router = useRouter();
+  const settings = useSiteSettings();
+  const heroTagline = settings?.hero_tagline || "Powering Odisha since 2014";
   const [current, setCurrent] = useState(0);
   const touchStartX = useRef(null);
 
@@ -143,7 +146,7 @@ export default function Hero() {
                 animation: "pulse-glow 2s infinite",
                 display: "inline-block",
               }} />
-              Powering Odisha since 2014
+              {heroTagline}
             </span>
           </motion.div>
 

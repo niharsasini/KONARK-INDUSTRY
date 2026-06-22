@@ -1,22 +1,37 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useWishlistStore, useCartStore } from '@/store'
-import { products as ProductData } from '@/components/product/ProductData'
+import { getProduct } from '@/lib/api'
 import toast from 'react-hot-toast'
+import Breadcrumb from '@/components/ui/Breadcrumb'
 
 export default function WishlistPage() {
   const wishlistSlugs = useWishlistStore((s) => s.items)
   const toggle = useWishlistStore((s) => s.toggle)
   const { addItem } = useCartStore()
 
-  const wishlistProducts = ProductData.filter((p: any) => wishlistSlugs.includes(p.slug))
+  const [wishlistProducts, setWishlistProducts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (wishlistSlugs.length === 0) {
+      setWishlistProducts([])
+      setLoading(false)
+      return
+    }
+    setLoading(true)
+    Promise.all(wishlistSlugs.map((slug: string) => getProduct(slug).catch(() => null)))
+      .then((results) => setWishlistProducts(results.filter(Boolean)))
+      .finally(() => setLoading(false))
+  }, [wishlistSlugs])
 
   const handleAddAllToCart = () => {
     wishlistProducts.forEach((p: any) => {
       if (p.price && p.type !== 'service') {
-        addItem({ id: p.id || p.slug, slug: p.slug, name: p.name, price: p.price, image: p.image || '', category: p.category || '', type: p.type || 'product' })
+        addItem({ id: p.id || p.slug, slug: p.slug, name: p.name, price: p.price, image: p.images?.[0] || p.image || '', category: p.category || '', type: p.type || 'product' })
       }
     })
     toast.success('All items added to cart!')
@@ -27,11 +42,7 @@ export default function WishlistPage() {
       {/* Hero */}
       <div style={{ background: '#0f172a', borderBottom: '1px solid #1e2d40', padding: '64px 24px 40px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12, fontSize: 12, color: '#94a3b8' }}>
-            <Link href="/" style={{ color: '#94a3b8', textDecoration: 'none' }}>Home</Link>
-            <span>/</span>
-            <span style={{ color: '#00d4ff' }}>Wishlist</span>
-          </div>
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'My Wishlist' }]} />
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
             <div>
               <h1 style={{ fontSize: 'clamp(24px,4vw,40px)', fontWeight: 800, color: '#f1f5f9', margin: '0 0 8px' }}>
@@ -54,7 +65,14 @@ export default function WishlistPage() {
       </div>
 
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px 24px' }}>
-        {wishlistProducts.length === 0 ? (
+        {loading ? (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 20 }}>
+            {[...Array(4)].map((_, i) => (
+              <div key={i} style={{ height: 280, background: '#0f172a', border: '1px solid #1e2d40', borderRadius: 14, animation: 'pulse 1.5s infinite' }} />
+            ))}
+            <style>{`@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }`}</style>
+          </div>
+        ) : wishlistProducts.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '80px 24px' }}>
             <div style={{ fontSize: 64, marginBottom: 20, opacity: 0.3 }}>❤️</div>
             <h2 style={{ color: '#f1f5f9', fontSize: 22, fontWeight: 700, marginBottom: 8 }}>
@@ -86,7 +104,7 @@ export default function WishlistPage() {
                 </button>
                 <Link href={`/products/${product.slug}`} style={{ textDecoration: 'none' }}>
                   <div style={{ background: '#111827', height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                    <Image src={product.image} alt={product.name} fill style={{ objectFit: 'contain', padding: 16 }} />
+                    <Image src={product.images?.[0] || product.image} alt={product.name} fill style={{ objectFit: 'contain', padding: 16 }} />
                   </div>
                   <div style={{ padding: 14 }}>
                     <p style={{ fontSize: 11, color: '#64748b', margin: '0 0 4px' }}>{product.category}</p>
@@ -99,7 +117,7 @@ export default function WishlistPage() {
                 {product.price && product.type !== 'service' && (
                   <button
                     onClick={() => {
-                      addItem({ id: product.id || product.slug, slug: product.slug, name: product.name, price: product.price, image: product.image || '', category: product.category || '', type: product.type || 'product' })
+                      addItem({ id: product.id || product.slug, slug: product.slug, name: product.name, price: product.price, image: product.images?.[0] || product.image || '', category: product.category || '', type: product.type || 'product' })
                       toast.success(`${product.name} added to cart!`)
                     }}
                     style={{ margin: '0 14px 14px', padding: '8px', background: '#00d4ff', color: '#0a0f1e', fontWeight: 700, fontSize: 13, borderRadius: 8, border: 'none', cursor: 'pointer' }}

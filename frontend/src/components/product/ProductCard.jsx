@@ -1,5 +1,5 @@
 "use client";
-import React, { memo, useState } from "react";
+import React, { memo, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Star } from "lucide-react";
@@ -22,6 +22,22 @@ const ProductCard = ({ product }) => {
   const { addItem } = useCartStore();
   const { toggle, isInWishlist } = useWishlistStore();
   const [added, setAdded] = useState(false);
+  const [imgIndex, setImgIndex] = useState(0);
+  const intervalRef = useRef(null);
+
+  const images = product.images?.length > 0 ? product.images : [product.image];
+  const hasMultipleImages = images.length > 1;
+
+  const handleMouseEnter = () => {
+    if (!hasMultipleImages) return;
+    intervalRef.current = setInterval(() => {
+      setImgIndex((i) => (i + 1) % images.length);
+    }, 1200);
+  };
+  const handleMouseLeave = () => {
+    clearInterval(intervalRef.current);
+    setImgIndex(0);
+  };
 
   const formattedPrice =
     typeof product.price === "number" && product.price > 0
@@ -87,12 +103,36 @@ const ProductCard = ({ product }) => {
       )}
 
       {/* 🖼️ Product Image (Perfect Fit) */}
-      <div className={productImageWrapper}>
+      <div
+        className={productImageWrapper}
+        style={{ position: "relative" }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <img
-          src={product.image}
+          src={images[imgIndex]}
           alt={`${product.name} - ${product.category}`}
           className={productImage}
+          style={{ transition: "opacity 0.3s ease" }}
         />
+        {hasMultipleImages && (
+          <div style={{ position: "absolute", bottom: 8, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 4, zIndex: 5 }}>
+            {images.map((_, i) => (
+              <div
+                key={i}
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); setImgIndex(i); }}
+                style={{
+                  width: i === imgIndex ? 16 : 6,
+                  height: 6,
+                  borderRadius: 3,
+                  background: i === imgIndex ? "#00d4ff" : "rgba(255,255,255,0.4)",
+                  transition: "all 0.3s ease",
+                  cursor: "pointer",
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* 📦 Content */}

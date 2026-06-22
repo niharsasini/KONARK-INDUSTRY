@@ -8,6 +8,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useCartStore } from '@/store'
+import Breadcrumb from '@/components/ui/Breadcrumb'
 
 function ProductCard({ product }: { product: any }) {
   const router = useRouter()
@@ -87,6 +88,7 @@ function SearchResults() {
   return (
     <div style={{ background: '#0a0f1e', minHeight: '100vh', paddingTop: '80px' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 24px' }}>
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Search Results' }]} />
         <div style={{ marginBottom: '32px' }}>
           <p style={{ color: '#64748b', fontSize: '14px' }}>
             <Link href="/" style={{ color: '#64748b', textDecoration: 'none' }}>Home</Link>

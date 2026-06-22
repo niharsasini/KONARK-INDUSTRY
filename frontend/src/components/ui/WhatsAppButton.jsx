@@ -1,12 +1,18 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 export default function WhatsAppButton() {
+  const settings = useSiteSettings();
   const [showTooltip, setShowTooltip] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
   if (!mounted) return null;
+
+  const phone = settings?.whatsapp_number || "919437611129";
+  const message = settings?.whatsapp_message_template || "Hi Konark Industry, I have a query";
+  const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
   return (
     <div
@@ -20,7 +26,7 @@ export default function WhatsAppButton() {
         </div>
       )}
       <a
-        href="https://wa.me/919437611129?text=Hi%20Konark%20Industry%2C%20I%20have%20a%20query"
+        href={waUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"

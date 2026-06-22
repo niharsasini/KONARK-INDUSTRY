@@ -59,6 +59,23 @@ export default function ProductDetail({ product }) {
     toast.success(`${product.name} added to cart!`);
   };
 
+  const handleShare = async () => {
+    const url = window.location.href;
+    const text = `Check out ${product.name} on Konark Industry`;
+    if (navigator.share) {
+      try { await navigator.share({ title: product.name, text, url }); } catch {}
+    } else {
+      await navigator.clipboard.writeText(url);
+      toast.success("Link copied to clipboard!");
+    }
+  };
+
+  const handleWhatsAppShare = () => {
+    const url = window.location.href;
+    const text = `Hi, I'm interested in *${product.name}* from Konark Industry.\n${url}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+  };
+
   return (
     <div style={{ background: "#0a0f1e", minHeight: "100vh", paddingTop: 64 }}>
       {/* Breadcrumb */}
@@ -161,6 +178,22 @@ export default function ProductDetail({ product }) {
           {/* Make in India badge */}
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 14px", background: "rgba(255,153,51,0.08)", border: "1px solid rgba(255,153,51,0.2)", borderRadius: 8, fontSize: 12, color: "#FF9933", width: "fit-content" }}>
             🇮🇳 Manufactured in Bhubaneswar, Odisha, India
+          </div>
+
+          {/* Share buttons */}
+          <div style={{ display: "flex", gap: 8 }}>
+            <button
+              onClick={handleShare}
+              style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 16px", background: "transparent", border: "1px solid #1e2d40", color: "#94a3b8", fontSize: 13, fontWeight: 600, borderRadius: 8, cursor: "pointer" }}
+            >
+              🔗 Share
+            </button>
+            <button
+              onClick={handleWhatsAppShare}
+              style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 16px", background: "#25D366", color: "#fff", fontSize: 13, fontWeight: 600, borderRadius: 8, border: "none", cursor: "pointer" }}
+            >
+              📱 WhatsApp
+            </button>
           </div>
 
           {/* EMI options link */}

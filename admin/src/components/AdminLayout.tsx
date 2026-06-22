@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard, Package, ShoppingBag, Mail, Wrench,
   Users, FileEdit, Settings, LogOut, Menu, X,
-  Bell, ExternalLink, ChevronRight, Battery, Star, BarChart3,
+  Bell, ExternalLink, ChevronRight, Battery, Star, BarChart3, MessageSquareQuote, HelpCircle,
 } from "lucide-react";
 import { getStats, getNotifications, markNotificationRead } from "@/lib/adminApi";
 
@@ -18,6 +18,8 @@ const NAV = [
   { label: "Battery Swap", href: "/battery-swap", icon: Battery },
   { label: "Customers", href: "/customers", icon: Users },
   { label: "Reviews", href: "/reviews", icon: Star },
+  { label: "Testimonials", href: "/testimonials", icon: MessageSquareQuote },
+  { label: "FAQ", href: "/faq", icon: HelpCircle },
   { label: "Notifications", href: "/notifications", icon: Bell, statKey: "unread_notifications" as const },
   { label: "Reports", href: "/reports", icon: BarChart3 },
   { label: "Content", href: "/content", icon: FileEdit },
@@ -33,6 +35,8 @@ const PAGE_TITLES: Record<string, string> = {
   "/services": "Service Bookings",
   "/customers": "Customers",
   "/reviews": "Reviews",
+  "/testimonials": "Testimonials",
+  "/faq": "FAQ",
   "/notifications": "Notifications",
   "/reports": "Reports & Analytics",
   "/content": "Content Management",

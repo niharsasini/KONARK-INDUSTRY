@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getCurrentUser, getMyOrders, logoutUser } from "@/lib/api";
 import { useWishlistStore } from "@/store";
+import Breadcrumb from "@/components/ui/Breadcrumb";
 
 const QUICK_LINKS = [
   { icon: "📦", label: "My Orders", href: "/orders", desc: "Track and manage your orders" },
@@ -74,6 +75,7 @@ export default function ProfilePage() {
   return (
     <div style={{ background: "#0a0f1e", minHeight: "100vh", paddingTop: 64 }}>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px" }}>
+        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "My Profile" }]} />
 
         {/* Profile header */}
         <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 20, padding: "32px", display: "flex", alignItems: "center", gap: 24, marginBottom: 24, flexWrap: "wrap" }}>

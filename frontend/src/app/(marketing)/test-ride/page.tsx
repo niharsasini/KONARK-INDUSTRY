@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { submitTestRide } from "@/lib/api";
+import Breadcrumb from "@/components/ui/Breadcrumb";
 
 const VEHICLES = [
   "Konark X1 Electric Scooter",
@@ -109,6 +110,7 @@ export default function TestRidePage() {
   return (
     <div style={{ background: "#0a0f1e", minHeight: "100vh", paddingTop: 64 }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "60px 24px" }}>
+        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Test Ride" }]} />
         {/* Header */}
         <div style={{ maxWidth: 600, marginBottom: 60 }}>
           <span style={{
