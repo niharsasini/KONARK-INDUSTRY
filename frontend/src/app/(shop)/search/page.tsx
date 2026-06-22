@@ -39,7 +39,15 @@ function ProductCard({ product }: { product: any }) {
       }}
     >
       <div style={{ background: '#111827', height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-        <Image src={product.image} alt={product.name} fill style={{ objectFit: 'contain', padding: 20 }} sizes="(max-width: 768px) 50vw, 25vw" />
+        {(() => {
+          const src = product.image
+          const isLocal = src?.startsWith('/productimg/') || src?.startsWith('/konark/')
+          return isLocal ? (
+            <img src={src} alt={product.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', padding: 20, boxSizing: 'border-box' }} />
+          ) : (
+            <Image src={src} alt={product.name} fill style={{ objectFit: 'contain', padding: 20 }} sizes="(max-width: 768px) 50vw, 25vw" />
+          )
+        })()}
         {product.isNew && (
           <span style={{ position: 'absolute', top: 8, left: 8, background: '#00d4ff', color: '#0a0f1e', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>NEW</span>
         )}

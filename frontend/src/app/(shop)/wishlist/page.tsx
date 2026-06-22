@@ -104,7 +104,15 @@ export default function WishlistPage() {
                 </button>
                 <Link href={`/products/${product.slug}`} style={{ textDecoration: 'none' }}>
                   <div style={{ background: '#111827', height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                    <Image src={product.images?.[0] || product.image} alt={product.name} fill style={{ objectFit: 'contain', padding: 16 }} />
+                    {(() => {
+                      const src = product.images?.[0] || product.image
+                      const isLocal = src?.startsWith('/productimg/') || src?.startsWith('/konark/')
+                      return isLocal ? (
+                        <img src={src} alt={product.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', padding: 16, boxSizing: 'border-box' }} />
+                      ) : (
+                        <Image src={src} alt={product.name} fill style={{ objectFit: 'contain', padding: 16 }} />
+                      )
+                    })()}
                   </div>
                   <div style={{ padding: 14 }}>
                     <p style={{ fontSize: 11, color: '#64748b', margin: '0 0 4px' }}>{product.category}</p>

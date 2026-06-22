@@ -27,6 +27,8 @@ const CAR_IMAGES = [
 
 const vehicleProducts = products.filter((p) => p.type === "vehicle").slice(0, 4);
 
+const ROTATING_WORDS = ["Konark.", "Innovation.", "Sustainability."];
+
 const DECK = [
   ...vehicleProducts.map((p) => ({
     type: "product",
@@ -55,6 +57,7 @@ export default function Hero() {
   const settings = useSiteSettings();
   const heroTagline = settings?.hero_tagline || "Powering Odisha since 2014";
   const [current, setCurrent] = useState(0);
+  const [wordIndex, setWordIndex] = useState(0);
   const touchStartX = useRef(null);
 
   useEffect(() => {
@@ -62,6 +65,13 @@ export default function Hero() {
       setCurrent((prev) => (prev + 1) % DECK.length);
     }, 3000);
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const wordTimer = setInterval(() => {
+      setWordIndex((i) => (i + 1) % ROTATING_WORDS.length);
+    }, 2600);
+    return () => clearInterval(wordTimer);
   }, []);
 
   const advance = () => setCurrent((prev) => (prev + 1) % DECK.length);
@@ -155,7 +165,6 @@ export default function Hero() {
             {[
               { text: "Power Your", gradient: false },
               { text: "World With", gradient: false },
-              { text: "Konark.", gradient: true },
             ].map((line, i) => (
               <motion.div
                 key={line.text}
@@ -163,18 +172,37 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 + i * 0.1, ease: "easeOut" }}
               >
-                <h1 className="hero-headline" style={{
-                  ...(line.gradient ? {
-                    background: "linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  } : { color: "#f1f5f9" }),
-                }}>
+                <h1 className="hero-headline" style={{ color: "#f1f5f9" }}>
                   {line.text}
                 </h1>
               </motion.div>
             ))}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
+              style={{ minHeight: "1.2em" }}
+            >
+              <AnimatePresence mode="wait">
+                <motion.h1
+                  key={wordIndex}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.4 }}
+                  className="hero-headline"
+                  style={{
+                    background: "linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    margin: 0,
+                  }}
+                >
+                  {ROTATING_WORDS[wordIndex]}
+                </motion.h1>
+              </AnimatePresence>
+            </motion.div>
           </div>
 
           {/* Subtitle */}
@@ -297,13 +325,15 @@ export default function Hero() {
                 transition={{ duration: 0.48, ease: [0.25, 0.46, 0.45, 0.94] }}
                 style={{
                   position: "relative", zIndex: 3,
-                  background: "linear-gradient(145deg, #111827, #0f172a)",
-                  border: "1px solid #1e2d40",
+                  background: "rgba(13, 20, 36, 0.8)",
+                  backdropFilter: "blur(20px)",
+                  border: "1px solid rgba(0, 212, 255, 0.2)",
                   borderRadius: 20,
                   padding: 24,
                   cursor: card.slug ? "pointer" : "default",
                   boxShadow: "0 0 30px rgba(0,212,255,0.15), 0 20px 60px rgba(0,0,0,0.5)",
                   transformStyle: "preserve-3d",
+                  animation: "float 6s ease-in-out infinite",
                 }}
                 onClick={() => { if (card.slug) router.push(`/products/${card.slug}`); }}
               >

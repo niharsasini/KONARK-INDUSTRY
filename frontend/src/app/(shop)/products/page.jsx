@@ -29,7 +29,7 @@ const SORT_OPTIONS = [
   { value: "newest", label: "Newest" },
   { value: "price-asc", label: "Price: Low–High" },
   { value: "price-desc", label: "Price: High–Low" },
-  { value: "rating", label: "Top Rated" },
+  { value: "rating", label: "Most Popular" },
 ];
 
 function StarRating({ rating }) {
@@ -57,18 +57,27 @@ function ProductCard({ product }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: "#0f172a",
+        background: "linear-gradient(145deg, #0d1424, #111827)",
         border: `1px solid ${hovered
-          ? isVehicle ? "rgba(0,212,255,0.3)" : isService ? "rgba(167,139,250,0.3)" : "rgba(16,185,129,0.25)"
-          : "#1e2d40"}`,
-        borderRadius: 14, overflow: "hidden",
-        transition: "all 0.2s",
-        transform: hovered ? "translateY(-2px)" : "none",
+          ? isVehicle ? "rgba(0,212,255,0.4)" : isService ? "rgba(167,139,250,0.4)" : "rgba(16,185,129,0.35)"
+          : "#1a2740"}`,
+        borderRadius: 16, overflow: "hidden",
+        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+        transform: hovered ? "translateY(-6px)" : "none",
+        boxShadow: hovered ? "0 16px 40px rgba(0,0,0,0.35)" : "none",
         display: "flex", flexDirection: "column",
       }}
     >
       <div style={{ background: "#111827", height: 180, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-        <Image src={product.images?.[0] || product.image} alt={product.name} fill style={{ objectFit: "contain", padding: 20 }} sizes="(max-width: 768px) 50vw, 25vw" />
+        {(() => {
+          const src = product.images?.[0] || product.image;
+          const isLocal = src?.startsWith("/productimg/") || src?.startsWith("/konark/");
+          return isLocal ? (
+            <img src={src} alt={product.name} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", padding: 20, boxSizing: "border-box" }} />
+          ) : (
+            <Image src={src} alt={product.name} fill style={{ objectFit: "contain", padding: 20 }} sizes="(max-width: 768px) 50vw, 25vw" />
+          );
+        })()}
         {product.isNew && (
           <span style={{ position: "absolute", top: 8, left: 8, background: "#00d4ff", color: "#0a0f1e", fontSize: 10, fontWeight: 700, padding: "2px 7px", borderRadius: 4 }}>NEW</span>
         )}
@@ -166,8 +175,14 @@ export default function ProductsPage() {
     return list;
   }, [selectedCategories, typeFilter, minRating, sortBy, priceRange, productsList]);
 
+  const categoryCounts = useMemo(() => {
+    const counts = {};
+    allProducts.forEach((p) => { counts[p.category] = (counts[p.category] || 0) + 1; });
+    return counts;
+  }, [allProducts]);
+
   const Sidebar = () => (
-    <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, padding: 20, display: "flex", flexDirection: "column", gap: 20 }}>
+    <div style={{ background: "rgba(13, 20, 36, 0.8)", backdropFilter: "blur(20px)", border: "1px solid #1a2740", borderRadius: 16, padding: 20, display: "flex", flexDirection: "column", gap: 20 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <h3 style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Filters</h3>
         <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setSortBy("newest"); setTypeFilter("all"); setPriceRange([0, 200000]); }} style={{ fontSize: 12, color: "#00d4ff", background: "transparent", border: "none", cursor: "pointer", fontWeight: 600 }}>Reset</button>
@@ -198,14 +213,19 @@ export default function ProductsPage() {
       <div>
         <p style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Category</p>
         {CATEGORIES.map((cat) => (
-          <label key={cat} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0", cursor: "pointer", borderBottom: "1px solid #1e2d4040" }}>
-            <input
-              type="checkbox"
-              checked={cat === "All" ? selectedCategories.includes("All") : selectedCategories.includes(cat)}
-              onChange={() => toggleCategory(cat)}
-              style={{ accentColor: "#00d4ff", width: 14, height: 14, cursor: "pointer" }}
-            />
-            <span style={{ fontSize: 13, color: selectedCategories.includes(cat) || (cat === "All" && selectedCategories.includes("All")) ? "#f1f5f9" : "#94a3b8" }}>{cat}</span>
+          <label key={cat} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "7px 0", cursor: "pointer", borderBottom: "1px solid #1a274080" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <input
+                type="checkbox"
+                checked={cat === "All" ? selectedCategories.includes("All") : selectedCategories.includes(cat)}
+                onChange={() => toggleCategory(cat)}
+                style={{ accentColor: "#00d4ff", width: 14, height: 14, cursor: "pointer" }}
+              />
+              <span style={{ fontSize: 13, color: selectedCategories.includes(cat) || (cat === "All" && selectedCategories.includes("All")) ? "#f8fafc" : "#94a3b8" }}>{cat}</span>
+            </span>
+            <span style={{ fontSize: 11, color: "#64748b", background: "rgba(255,255,255,0.04)", padding: "2px 7px", borderRadius: 100 }}>
+              {cat === "All" ? allProducts.length : categoryCounts[cat] || 0}
+            </span>
           </label>
         ))}
       </div>
@@ -269,7 +289,7 @@ export default function ProductsPage() {
   );
 
   return (
-    <div style={{ background: "#0a0f1e", minHeight: "100vh" }}>
+    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 30%, #0d1424 60%, #040b16 100%)", minHeight: "100vh" }}>
       {/* Hero */}
       <div style={{ background: "#0f172a", borderBottom: "1px solid #1e2d40", padding: "80px 24px 48px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
@@ -278,7 +298,10 @@ export default function ProductsPage() {
             <span>/</span>
             <span style={{ color: "#00d4ff" }}>Products</span>
           </div>
-          <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 800, color: "#f1f5f9", margin: "0 0 10px" }}>All Products & Services</h1>
+          <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 800, margin: "0 0 10px" }}>
+            <span style={{ color: "#f8fafc" }}>Explore Our </span>
+            <span style={{ background: "linear-gradient(135deg, #00d4ff, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Full Range</span>
+          </h1>
           <p style={{ fontSize: 15, color: "#94a3b8", margin: 0 }}>EVs to book a test ride · Products to buy online · Services to book a technician</p>
         </div>
       </div>

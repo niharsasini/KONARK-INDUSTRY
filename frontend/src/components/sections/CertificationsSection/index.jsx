@@ -4,9 +4,11 @@ import { AnimatePresence } from 'framer-motion'
 import { certs } from './data'
 import CertCard from './CertCard'
 import PDFModal from './PDFModal'
+import { useScrollReveal } from '@/hooks/useScrollReveal'
 
 export default function CertificationsSection() {
   const [activeCert, setActiveCert] = useState(null)
+  const { ref, isVisible } = useScrollReveal()
 
   return (
     <>
@@ -15,10 +17,13 @@ export default function CertificationsSection() {
         background: '#0a0f1e',
         position: 'relative',
       }}>
-        <div style={{
+        <div ref={ref} style={{
           maxWidth: '1100px',
           margin: '0 auto',
           padding: '0 48px',
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'all 0.6s cubic-bezier(0.4,0,0.2,1)',
         }} className="certs-inner">
 
           {/* LEFT COLUMN */}

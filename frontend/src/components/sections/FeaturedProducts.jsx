@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
@@ -32,6 +32,11 @@ function TiltCard({ product }) {
   const router = useRouter();
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
+  const [imgIndex, setImgIndex] = useState(0);
+  const intervalRef = useRef(null);
+
+  const images = product.images?.length > 0 ? product.images : [product.image];
+  const hasMultipleImages = images.length > 1;
 
   const catColor = {
     "Electric Vehicles": "#00d4ff",
@@ -51,11 +56,25 @@ function TiltCard({ product }) {
   const ctaLabel = product.type === "vehicle" ? "Book Test Ride" : product.type === "service" ? "Book Now" : "Add to Cart";
   const ctaColor = product.type === "service" ? "#7c3aed" : "#00d4ff";
 
+  const handleMouseEnter = () => {
+    setHovered(true);
+    if (!hasMultipleImages) return;
+    intervalRef.current = setInterval(() => {
+      setImgIndex((i) => (i + 1) % images.length);
+    }, 1200);
+  };
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+    setHovered(false);
+    clearInterval(intervalRef.current);
+    setImgIndex(0);
+  };
+
   return (
     <motion.div
       onMouseMove={onMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => { setTilt({ x: 0, y: 0 }); setHovered(false); }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       animate={{ rotateX: tilt.x, rotateY: tilt.y }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
       onClick={() => router.push(`/products/${product.slug}`)}
@@ -78,10 +97,10 @@ function TiltCard({ product }) {
         overflow: "hidden",
       }}>
         <img
-          src={product.image} alt={product.name} loading="lazy"
+          src={images[imgIndex]} alt={product.name} loading="lazy"
           style={{ maxHeight: 160, maxWidth: "85%", objectFit: "contain",
             filter: hovered ? `drop-shadow(0 0 20px ${catColor}60)` : "none",
-            transition: "filter 0.3s",
+            transition: "filter 0.3s, opacity 0.3s",
           }}
         />
         {product.isNew && (
@@ -90,6 +109,13 @@ function TiltCard({ product }) {
         <span style={{ position: "absolute", top: 12, right: 12, background: `${catColor}18`, border: `1px solid ${catColor}40`, color: catColor, fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 4, textTransform: "uppercase" }}>
           {product.category.replace("Electric Vehicles", "EV").replace("Home Appliances", "Home").replace("Industrial Equipment", "Industrial")}
         </span>
+        {hasMultipleImages && (
+          <div style={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 4, zIndex: 5 }}>
+            {images.map((_, i) => (
+              <div key={i} style={{ width: i === imgIndex ? 14 : 5, height: 5, borderRadius: 3, background: i === imgIndex ? catColor : "rgba(255,255,255,0.35)", transition: "all 0.3s ease" }} />
+            ))}
+          </div>
+        )}
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${catColor}, transparent)` }} />
       </div>
 

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import { useCartStore, useWishlistStore } from "@/store";
 import { products as ProductData } from "@/components/product/ProductData";
@@ -15,6 +15,7 @@ import MobileMenu from "./MobileMenu";
 
 export default function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const cartCount = useCartStore((s) => s.itemCount());
   const wishlistCount = useWishlistStore((s) => s.items.length);
   const [scrolled, setScrolled] = useState(false);
@@ -83,7 +84,7 @@ export default function Navbar() {
   };
 
   const navStyle = scrolled
-    ? { background: "rgba(10,15,30,0.95)", backdropFilter: "blur(12px)", borderBottom: "1px solid #1e2d40" }
+    ? { background: "rgba(2, 8, 23, 0.8)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.05)" }
     : { background: "transparent" };
 
   return (
@@ -134,11 +135,14 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  style={{ padding: "8px 14px", fontSize: 14, fontWeight: 500, color: "#f1f5f9", borderRadius: 8, textDecoration: "none", transition: "color 0.2s" }}
+                  style={{ position: "relative", padding: "8px 14px", fontSize: 14, fontWeight: 500, color: pathname === link.href ? "#00d4ff" : "#f1f5f9", borderRadius: 8, textDecoration: "none", transition: "color 0.2s" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#f1f5f9")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = pathname === link.href ? "#00d4ff" : "#f1f5f9")}
                 >
                   {link.label}
+                  {pathname === link.href && (
+                    <span style={{ position: "absolute", bottom: 1, left: "50%", transform: "translateX(-50%)", width: 5, height: 5, borderRadius: "50%", background: "#00d4ff", boxShadow: "0 0 6px #00d4ff" }} />
+                  )}
                 </Link>
               )
             )}

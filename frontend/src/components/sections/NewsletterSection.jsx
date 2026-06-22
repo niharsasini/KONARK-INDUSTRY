@@ -2,10 +2,12 @@
 
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { useScrollReveal } from '@/hooks/useScrollReveal'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
 
 export default function NewsletterSection() {
+  const { ref, isVisible } = useScrollReveal()
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
@@ -34,7 +36,15 @@ export default function NewsletterSection() {
   if (alreadySubscribed && done) return null
 
   return (
-    <section style={{ background: '#060d1a', borderTop: '1px solid #1e2d40', borderBottom: '1px solid #1e2d40', padding: '60px 24px' }}>
+    <section
+      ref={ref}
+      style={{
+        background: '#060d1a', borderTop: '1px solid #1e2d40', borderBottom: '1px solid #1e2d40', padding: '60px 24px',
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
+        transition: 'all 0.6s cubic-bezier(0.4,0,0.2,1)',
+      }}
+    >
       <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center' }}>
         <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, color: '#00d4ff', textTransform: 'uppercase', letterSpacing: '0.14em', background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.25)', padding: '4px 14px', borderRadius: 999, marginBottom: 16 }}>
           STAY UPDATED
