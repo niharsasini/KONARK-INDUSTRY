@@ -23,11 +23,17 @@ const nextConfig: NextConfig = {
     ],
     formats: ['image/webp', 'image/avif'],
   },
-  webpack: (config) => {
+  webpack: (config, { dev }) => {
     config.externals = [
       ...(config.externals || []),
       { canvas: 'canvas' },
     ]
+    if (dev) {
+      config.watchOptions = {
+        poll: 1000,
+        aggregateTimeout: 300,
+      }
+    }
     return config
   },
 }
