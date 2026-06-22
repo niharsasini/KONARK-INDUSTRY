@@ -165,6 +165,13 @@ export async function updateEnquiryStatus(
   });
 }
 
+export async function updateEnquiryUrgency(id: string, urgent: boolean) {
+  return adminRequest(`/api/v1/enquiries/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ urgency: urgent ? "urgent" : "normal" }),
+  });
+}
+
 export async function markEnquiriesRead(ids: string[]) {
   return adminRequest("/api/v1/enquiries/bulk-read", {
     method: "POST",

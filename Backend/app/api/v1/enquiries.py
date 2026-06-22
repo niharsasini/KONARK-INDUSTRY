@@ -47,6 +47,7 @@ class EnquiryUpdateRequest(BaseModel):
     status: Optional[EnquiryStatus] = None
     is_read: Optional[bool] = None
     admin_notes: Optional[str] = None
+    urgency: Optional[UrgencyLevel] = None
 
 
 class EnquiryResponse(BaseModel):
@@ -224,6 +225,8 @@ async def update_enquiry(
         enquiry.is_read = body.is_read
     if body.admin_notes is not None:
         enquiry.admin_notes = body.admin_notes
+    if body.urgency is not None:
+        enquiry.urgency = body.urgency
 
     enquiry.updated_at = datetime.utcnow()
     await enquiry.save()

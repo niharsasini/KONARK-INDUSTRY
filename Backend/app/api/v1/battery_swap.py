@@ -11,6 +11,7 @@ POST   /battery-swap/upload-photo  — public: upload battery photo before form 
 """
 
 import os
+import re
 import uuid
 import asyncio
 from datetime import datetime, date
@@ -353,6 +354,20 @@ async def list_swaps(
         query_filter["status"] = status_filter
     if city:
         query_filter["city"] = city
+    if search:
+        pattern = re.escape(search.strip())
+        query_filter["$or"] = [
+            {"token_number": {"$regex": pattern, "$options": "i"}},
+            {"name": {"$regex": pattern, "$options": "i"}},
+            {"phone": {"$regex": pattern, "$options": "i"}},
+        ]
+    if date_from or date_to:
+        date_range: dict = {}
+        if date_from:
+            date_range["$gte"] = date_from
+        if date_to:
+            date_range["$lte"] = date_to
+        query_filter["preferred_date"] = date_range
 
     total = await BatterySwap.find(query_filter).count()
     response.headers["X-Total-Count"] = str(total)
@@ -364,21 +379,6 @@ async def list_swaps(
         .limit(limit)
         .to_list()
     )
-
-    # Apply search and date range in Python (Beanie text search is limited without text index)
-    if search:
-        s = search.lower()
-        swaps = [
-            sw for sw in swaps
-            if s in sw.token_number.lower()
-            or s in sw.name.lower()
-            or s in sw.phone
-        ]
-
-    if date_from:
-        swaps = [sw for sw in swaps if sw.preferred_date >= date_from]
-    if date_to:
-        swaps = [sw for sw in swaps if sw.preferred_date <= date_to]
 
     return [_to_list_item(sw) for sw in swaps]
 

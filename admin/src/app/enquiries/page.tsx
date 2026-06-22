@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { Download, Eye, X, Flag, MessageSquare, CheckSquare, Trash2, Search } from "lucide-react";
-import { getEnquiries, updateEnquiryStatus, markEnquiriesRead, deleteEnquiry } from "@/lib/adminApi";
+import { getEnquiries, updateEnquiryStatus, updateEnquiryUrgency, markEnquiriesRead, deleteEnquiry } from "@/lib/adminApi";
 import SkeletonLoader from "@/components/SkeletonLoader";
 import ErrorState from "@/components/ErrorState";
 import { Pagination } from "@/components/Pagination";
@@ -31,7 +31,7 @@ type Enquiry = {
   created_at?: string;
   date?: string;
   status: string;
-  urgent?: boolean;
+  urgency?: string;
   admin_notes?: string;
 };
 
@@ -83,6 +83,7 @@ export default function EnquiriesPage() {
 
   const getType = (e: Enquiry) => e.enquiry_type ?? e.type ?? "";
   const getId = (e: Enquiry) => String(e._id ?? e.id ?? "");
+  const isUrgent = (e: Enquiry) => e.urgency === "urgent";
 
   const filtered = enquiries;
   const totalPages = Math.max(1, Math.ceil(total / LIMIT));
@@ -105,6 +106,13 @@ export default function EnquiriesPage() {
   const changeStatus = async (id: string, status: string) => {
     setEnquiries((es) => es.map((e) => getId(e) === id ? { ...e, status } : e));
     try { await updateEnquiryStatus(id, status); } catch { /* optimistic; ignore */ }
+  };
+
+  const toggleUrgent = async (id: string) => {
+    const current = enquiries.find((e) => getId(e) === id);
+    const nextUrgent = !isUrgent(current ?? {} as Enquiry);
+    setEnquiries((es) => es.map((e) => getId(e) === id ? { ...e, urgency: nextUrgent ? "urgent" : "normal" } : e));
+    try { await updateEnquiryUrgency(id, nextUrgent); } catch { /* optimistic; ignore */ }
   };
 
   const markAllRead = async () => {
@@ -208,7 +216,7 @@ export default function EnquiriesPage() {
                       <td style={{ padding: "13px 14px", fontSize: 12, color: "#94a3b8" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                           {idx + 1}
-                          {row.urgent && <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ef4444", display: "inline-block" }} title="Urgent" />}
+                          {isUrgent(row) && <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ef4444", display: "inline-block" }} title="Urgent" />}
                         </div>
                       </td>
                       <td style={{ padding: "13px 14px", fontSize: 13, fontWeight: 600, color: "#f1f5f9", whiteSpace: "nowrap" }}>{row.name}</td>
@@ -247,8 +255,8 @@ export default function EnquiriesPage() {
                           {noteSaved === id && (
                             <span style={{ fontSize: 11, color: "#10b981", fontWeight: 600, alignSelf: "center" }}>Saved ✓</span>
                           )}
-                          <button onClick={() => setEnquiries((es) => es.map((e) => getId(e) === id ? { ...e, urgent: !e.urgent } : e))}
-                            style={{ display: "flex", alignItems: "center", padding: "5px 8px", background: row.urgent ? "rgba(239,68,68,0.1)" : "transparent", border: `1px solid ${row.urgent ? "rgba(239,68,68,0.4)" : "#1e2d40"}`, borderRadius: 6, color: row.urgent ? "#ef4444" : "#94a3b8", fontSize: 11, cursor: "pointer" }}>
+                          <button onClick={() => toggleUrgent(id)}
+                            style={{ display: "flex", alignItems: "center", padding: "5px 8px", background: isUrgent(row) ? "rgba(239,68,68,0.1)" : "transparent", border: `1px solid ${isUrgent(row) ? "rgba(239,68,68,0.4)" : "#1e2d40"}`, borderRadius: 6, color: isUrgent(row) ? "#ef4444" : "#94a3b8", fontSize: 11, cursor: "pointer" }}>
                             <Flag size={11} />
                           </button>
                           <button onClick={() => setDeleteId(id)}

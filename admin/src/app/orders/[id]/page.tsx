@@ -6,7 +6,7 @@ import { getOrder, updateOrderStatus, cancelOrder } from "@/lib/adminApi";
 import SkeletonLoader from "@/components/SkeletonLoader";
 import ErrorState from "@/components/ErrorState";
 
-const STATUSES = ["pending", "confirmed", "packed", "shipped", "delivered", "cancelled"];
+const STATUSES = ["pending", "confirmed", "packed", "shipped", "delivered"];
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
   pending: { bg: "rgba(249,115,22,0.1)", color: "#f97316" },
