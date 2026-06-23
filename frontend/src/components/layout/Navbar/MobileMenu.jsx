@@ -76,7 +76,7 @@ export default function MobileMenu({ menuOpen, setMenuOpen, expandedSection, set
             Sign Out
           </button>
         ) : (
-          <Link href="/login" className="mobile-nav-item" style={{ color: "#00d4ff" }} onClick={() => setMenuOpen(false)}>
+          <Link href="/login" className="mobile-nav-item" style={{ color: "#38bdf8" }} onClick={() => setMenuOpen(false)}>
             Login / Register
           </Link>
         )}
@@ -87,8 +87,8 @@ export default function MobileMenu({ menuOpen, setMenuOpen, expandedSection, set
           <Link className="mobile-btn-ghost" href="/services/enquiry" onClick={() => setMenuOpen(false)}>Book a Service</Link>
         </div>
 
-        <div style={{ textAlign: "center", marginTop: 32, paddingTop: 24, borderTop: "1px solid #1e2d40" }}>
-          <a href="tel:+919437611129" style={{ fontSize: 22, color: "#00d4ff", fontWeight: 800, display: "block", marginBottom: 6, textDecoration: "none" }}>
+        <div style={{ textAlign: "center", marginTop: 32, paddingTop: 24, borderTop: "1px solid #1c3050" }}>
+          <a href="tel:+919437611129" style={{ fontSize: 22, color: "#38bdf8", fontWeight: 800, display: "block", marginBottom: 6, textDecoration: "none" }}>
             📞 +91 94376 11129
           </a>
           <span style={{ fontSize: 13, color: "#64748b" }}>konarkindustrie@gmail.com</span>

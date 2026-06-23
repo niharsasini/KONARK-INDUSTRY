@@ -41,11 +41,11 @@ export default function Step4Review({ form }: { form: BatterySwapFormState }) {
           },
         ]
       ).map(({ title, editStep, rows }) => (
-        <div key={title} style={{ background: "#0a0f1e", border: "1px solid #1e2d40", borderRadius: 12, padding: 16, marginBottom: 14 }}>
+        <div key={title} style={{ background: "#080f1e", border: "1px solid #1c3050", borderRadius: 12, padding: 16, marginBottom: 14 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
             <p style={{ color: "#64748b", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, margin: 0 }}>{title}</p>
             <button onClick={() => goToStep(editStep)} style={{
-              background: "transparent", border: "none", color: "#00d4ff",
+              background: "transparent", border: "none", color: "#38bdf8",
               fontSize: 12, cursor: "pointer", padding: 0,
             }}>Edit →</button>
           </div>
@@ -62,7 +62,7 @@ export default function Step4Review({ form }: { form: BatterySwapFormState }) {
       {photoPreview && (
         <div style={{ marginBottom: 14 }}>
           <p style={{ color: "#64748b", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Battery Photo</p>
-          <img src={photoPreview} alt="Battery" style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 8, border: "1px solid #1e2d40" }} />
+          <img src={photoPreview} alt="Battery" style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 8, border: "1px solid #1c3050" }} />
         </div>
       )}
 
@@ -72,7 +72,7 @@ export default function Step4Review({ form }: { form: BatterySwapFormState }) {
           type="checkbox"
           checked={termsAgreed}
           onChange={(e) => setTermsAgreed(e.target.checked)}
-          style={{ marginTop: 3, accentColor: "#00d4ff", width: 16, height: 16 }}
+          style={{ marginTop: 3, accentColor: "#38bdf8", width: 16, height: 16 }}
         />
         <span style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>
           I confirm the battery details above are accurate. I understand the swap fee will be confirmed after inspection.

@@ -41,6 +41,7 @@ class SiteSettingsUpdate(BaseModel):
     announcement_banner_text: Optional[str] = None
     announcement_banner_link: Optional[str] = None
     announcement_banner_emoji: Optional[str] = None
+    announcement_banner_type: Optional[str] = None
     whatsapp_message_template: Optional[str] = None
     maintenance_mode: Optional[bool] = None
     maintenance_message: Optional[str] = None

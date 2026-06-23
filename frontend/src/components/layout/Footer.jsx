@@ -28,9 +28,9 @@ function SocialIcon({ href, label, children }) {
       aria-label={label}
       target="_blank"
       rel="noopener noreferrer"
-      style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid #1e2d40", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8", transition: "all 0.2s", textDecoration: "none" }}
-      onMouseEnter={(e) => { e.currentTarget.style.color = "#00d4ff"; e.currentTarget.style.borderColor = "#00d4ff"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.color = "#94a3b8"; e.currentTarget.style.borderColor = "#1e2d40"; }}
+      style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid #1c3050", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8", transition: "all 0.2s", textDecoration: "none" }}
+      onMouseEnter={(e) => { e.currentTarget.style.color = "#38bdf8"; e.currentTarget.style.borderColor = "#38bdf8"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.color = "#94a3b8"; e.currentTarget.style.borderColor = "#1c3050"; }}
     >
       {children}
     </a>
@@ -72,7 +72,7 @@ export default function Footer() {
   ].filter((s) => s.href);
 
   return (
-    <footer style={{ background: "#0a0f1e", borderTop: "1px solid #1e2d40" }}>
+    <footer style={{ background: "#080f1e", borderTop: "1px solid #1c3050" }}>
       {/* CTA Band */}
       <div className="footer-top footer-top-cta">
         <div className="footer-top-inner">
@@ -85,17 +85,17 @@ export default function Footer() {
           <div className="footer-top-buttons" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <Link
               href="/products"
-              style={{ padding: "12px 28px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: "none", transition: "background 0.2s", display: "inline-block" }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
+              style={{ padding: "12px 28px", background: "#38bdf8", color: "#080f1e", fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: "none", transition: "background 0.2s", display: "inline-block" }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#0ea5e9")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#38bdf8")}
             >
               Explore Products
             </Link>
             <Link
               href="/contact"
-              style={{ padding: "12px 28px", background: "transparent", color: "#f1f5f9", fontWeight: 600, fontSize: 14, borderRadius: 8, textDecoration: "none", border: "1px solid #1e2d40", transition: "all 0.2s", display: "inline-block" }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#f1f5f9"; }}
+              style={{ padding: "12px 28px", background: "transparent", color: "#f1f5f9", fontWeight: 600, fontSize: 14, borderRadius: 8, textDecoration: "none", border: "1px solid #1c3050", transition: "all 0.2s", display: "inline-block" }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#38bdf8"; e.currentTarget.style.color = "#38bdf8"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1c3050"; e.currentTarget.style.color = "#f1f5f9"; }}
             >
               Contact Us
             </Link>
@@ -108,15 +108,15 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, textDecoration: "none" }}>
-            <div style={{ width: 36, height: 36, borderRadius: "50%", border: "2px solid #00d4ff", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,212,255,0.1)" }}>
+            <div style={{ width: 36, height: 36, borderRadius: "50%", border: "2px solid #38bdf8", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(56,189,248,0.1)" }}>
               <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}>
-                <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#00d4ff" strokeWidth="2" strokeLinecap="round" />
-                <circle cx="12" cy="12" r="3" fill="#00d4ff" />
+                <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="12" cy="12" r="3" fill="#38bdf8" />
               </svg>
             </div>
             <div>
               <span style={{ display: "block", fontSize: 15, fontWeight: 700, color: "#fff" }}>KONARK</span>
-              <span style={{ display: "block", fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", color: "#00d4ff", textTransform: "uppercase" }}>INDUSTRY</span>
+              <span style={{ display: "block", fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", color: "#38bdf8", textTransform: "uppercase" }}>INDUSTRY</span>
             </div>
           </Link>
           <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.7, marginBottom: 20, whiteSpace: "pre-line" }}>
@@ -138,7 +138,7 @@ export default function Footer() {
             {PRODUCT_LINKS.map((l) => (
               <li key={l.label}>
                 <Link href={l.href} style={{ fontSize: 13, color: "#94a3b8", textDecoration: "none", transition: "color 0.2s" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
                 >
                   {l.label}
@@ -155,7 +155,7 @@ export default function Footer() {
             {COMPANY_LINKS.map((l) => (
               <li key={l.label}>
                 <Link href={l.href} style={{ fontSize: 13, color: "#94a3b8", textDecoration: "none", transition: "color 0.2s" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
                 >
                   {l.label}
@@ -194,7 +194,7 @@ export default function Footer() {
           {" "}·{" "}
           <Link href="/contact" style={{ color: "#94a3b8", textDecoration: "none" }}>Sitemap</Link>
         </p>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 12px", border: "1px solid #1e2d40", borderRadius: 6 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 12px", border: "1px solid #1c3050", borderRadius: 6 }}>
           <span style={{ fontSize: 16 }}>🇮🇳</span>
           <span style={{ fontSize: 12, color: "#94a3b8", fontWeight: 600 }}>Make in India</span>
         </div>

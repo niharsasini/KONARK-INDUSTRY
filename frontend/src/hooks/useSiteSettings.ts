@@ -19,6 +19,7 @@ export interface PublicSiteSettings {
   announcement_banner_text: string;
   announcement_banner_link: string | null;
   announcement_banner_emoji: string;
+  announcement_banner_type: string;
   whatsapp_message_template: string;
   maintenance_mode: boolean;
   maintenance_message: string;

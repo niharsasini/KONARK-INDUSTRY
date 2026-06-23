@@ -47,7 +47,7 @@ export default function ProductReviews({ slug }) {
     <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 680 }}>
       {/* Submit form */}
       {isLoggedIn && (
-        <div style={{ background: "#0f172a", border: "1px solid rgba(0,212,255,0.2)", borderRadius: 12, padding: 20, marginBottom: 8 }}>
+        <div style={{ background: "#0c1525", border: "1px solid rgba(56,189,248,0.2)", borderRadius: 12, padding: 20, marginBottom: 8 }}>
           <p style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 14px" }}>Write a Review</p>
           <form onSubmit={handleSubmitReview} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <div style={{ display: "flex", gap: 4 }}>
@@ -59,8 +59,8 @@ export default function ProductReviews({ slug }) {
                 </button>
               ))}
             </div>
-            <textarea value={comment} onChange={(e) => setComment(e.target.value)} required rows={3} placeholder="Share your experience with this product..." style={{ width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40", borderRadius: 8, padding: "10px 14px", color: "#f1f5f9", fontSize: 13, outline: "none", boxSizing: "border-box", resize: "vertical", fontFamily: "inherit" }} onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")} onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")} />
-            <button type="submit" disabled={submitting} style={{ padding: "10px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 8, border: "none", cursor: submitting ? "not-allowed" : "pointer", width: "fit-content", opacity: submitting ? 0.7 : 1 }}>
+            <textarea value={comment} onChange={(e) => setComment(e.target.value)} required rows={3} placeholder="Share your experience with this product..." style={{ width: "100%", background: "#080f1e", border: "1px solid #1c3050", borderRadius: 8, padding: "10px 14px", color: "#f1f5f9", fontSize: 13, outline: "none", boxSizing: "border-box", resize: "vertical", fontFamily: "inherit" }} onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")} onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")} />
+            <button type="submit" disabled={submitting} style={{ padding: "10px 24px", background: "#38bdf8", color: "#080f1e", fontWeight: 700, fontSize: 13, borderRadius: 8, border: "none", cursor: submitting ? "not-allowed" : "pointer", width: "fit-content", opacity: submitting ? 0.7 : 1 }}>
               {submitting ? "Submitting..." : "Submit Review"}
             </button>
           </form>
@@ -74,11 +74,11 @@ export default function ProductReviews({ slug }) {
         <div style={{ textAlign: "center", padding: "40px 24px" }}>
           <p style={{ fontSize: 20, marginBottom: 8 }}>⭐</p>
           <p style={{ fontSize: 14, color: "#94a3b8" }}>No reviews yet. Be the first to review this product!</p>
-          {!isLoggedIn && <p style={{ fontSize: 13, color: "#64748b", marginTop: 8 }}><Link href="/login" style={{ color: "#00d4ff" }}>Sign in</Link> to write a review.</p>}
+          {!isLoggedIn && <p style={{ fontSize: 13, color: "#64748b", marginTop: 8 }}><Link href="/login" style={{ color: "#38bdf8" }}>Sign in</Link> to write a review.</p>}
         </div>
       ) : (
         reviews.map((r, i) => (
-          <div key={r.id || i} style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 12, padding: "20px" }}>
+          <div key={r.id || i} style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 12, padding: "20px" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
               <span style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9" }}>{r.reviewer_name || r.name || "Customer"}</span>
               <span style={{ fontSize: 12, color: "#94a3b8" }}>

@@ -6,7 +6,7 @@ export default function NavButtons({ onNext, onBack, nextLabel = "Next →", dis
       {onBack && (
         <button onClick={onBack} style={{
           flex: "0 0 auto", padding: "12px 24px", background: "transparent",
-          border: "1px solid #1e2d40", borderRadius: 8, color: "#94a3b8",
+          border: "1px solid #1c3050", borderRadius: 8, color: "#94a3b8",
           fontSize: 14, fontWeight: 600, cursor: "pointer",
         }}>
           ← Back
@@ -14,8 +14,8 @@ export default function NavButtons({ onNext, onBack, nextLabel = "Next →", dis
       )}
       {onNext && (
         <button onClick={onNext} disabled={disabled} style={{
-          flex: 1, padding: "14px 24px", background: disabled ? "#1e2d40" : "#00d4ff",
-          border: "none", borderRadius: 8, color: disabled ? "#64748b" : "#0a0f1e",
+          flex: 1, padding: "14px 24px", background: disabled ? "#1c3050" : "#38bdf8",
+          border: "none", borderRadius: 8, color: disabled ? "#64748b" : "#080f1e",
           fontSize: 14, fontWeight: 800, cursor: disabled ? "not-allowed" : "pointer",
           transition: "background 0.2s",
         }}>

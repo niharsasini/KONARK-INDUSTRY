@@ -8,7 +8,7 @@ import Image from "next/image";
 const TABS = [
   {
     id: "ev", icon: "🏍", label: "EV & Mobility",
-    color: "#00d4ff", image: "/konark/productevscooty.png",
+    color: "#38bdf8", image: "/konark/productevscooty.png",
     stat: "200km", statLabel: "Max Range",
     heading: "Electric Vehicles",
     desc: "Our EVs are built for Indian roads — robust, efficient, and designed to outlast conventional options. From scooters to cargo e-rickshaws, and EV cars coming soon.",
@@ -24,7 +24,7 @@ const TABS = [
   },
   {
     id: "battery", icon: "🔋", label: "Energy Storage",
-    color: "#7c3aed", image: "/konark/productenergystored.png",
+    color: "#818cf8", image: "/konark/productenergystored.png",
     stat: "3,000+", statLabel: "Charge Cycles",
     heading: "LFP Battery Systems",
     desc: "LFP batteries engineered for longevity and safety. Ideal for solar storage, industrial backup, and EV power systems.",
@@ -119,7 +119,7 @@ function TabContent({ tab }) {
               <span key={p} style={{ fontSize: 10, padding: "3px 10px", borderRadius: 100, background: `${tab.color}12`, color: tab.color, border: `1px solid ${tab.color}30`, fontWeight: 600 }}>{p}</span>
             ))}
           </div>
-          <div style={{ background: "#060d1a", borderRadius: 16, padding: 24, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, minHeight: 180, position: "relative" }}>
+          <div style={{ background: "#050a14", borderRadius: 16, padding: 24, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, minHeight: 180, position: "relative" }}>
             <Image src={tab.image} alt={tab.label} fill style={{ objectFit: "contain", padding: 24, filter: `drop-shadow(0 0 20px ${tab.color}40)` }} />
           </div>
           <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>{tab.heading}</p>
@@ -136,7 +136,7 @@ export default function SolutionsSection() {
   const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true });
 
   return (
-    <section style={{ background: "linear-gradient(180deg, #060d1a 0%, #0a0f1e 100%)", padding: "100px 24px" }}>
+    <section style={{ background: "linear-gradient(180deg, #050a14 0%, #080f1e 100%)", padding: "100px 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <motion.div
           ref={headRef}
@@ -145,12 +145,12 @@ export default function SolutionsSection() {
           transition={{ duration: 0.6 }}
           style={{ textAlign: "center", marginBottom: 48 }}
         >
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(0,212,255,0.08)", marginBottom: 16 }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(56,189,248,0.3)", color: "#38bdf8", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(56,189,248,0.08)", marginBottom: 16 }}>
             WHAT WE MAKE
           </span>
           <h2 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, margin: "0 0 12px", lineHeight: 1.2 }}>
             <span style={{ color: "#f1f5f9" }}>Complete Energy </span>
-            <span style={{ background: "linear-gradient(135deg, #00d4ff, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Ecosystem</span>
+            <span style={{ background: "linear-gradient(135deg, #38bdf8, #818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Ecosystem</span>
           </h2>
           <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
             One company. Four pillars. Everything you need to live, work, and move sustainably.
@@ -170,7 +170,7 @@ export default function SolutionsSection() {
                 cursor: "pointer", transition: "all 0.25s", flexShrink: 0,
                 background: active === t.id ? `linear-gradient(135deg, ${t.color}30, ${t.color}15)` : "transparent",
                 color: active === t.id ? t.color : "#64748b",
-                border: `1px solid ${active === t.id ? t.color + "60" : "#1e2d40"}`,
+                border: `1px solid ${active === t.id ? t.color + "60" : "#1c3050"}`,
                 boxShadow: active === t.id ? `0 0 20px ${t.color}20` : "none",
                 minHeight: 44,
               }}

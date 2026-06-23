@@ -26,32 +26,32 @@ export default function ServiceDetail({ product }) {
   };
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: 64 }}>
+    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: 64 }}>
       {/* Breadcrumb */}
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "20px 24px 0", display: "flex", gap: 6, fontSize: 12, color: "#94a3b8", alignItems: "center" }}>
         <Link href="/" style={{ color: "#94a3b8", textDecoration: "none" }}>Home</Link>
         <span>/</span>
         <Link href="/services" style={{ color: "#94a3b8", textDecoration: "none" }}>Services</Link>
         <span>/</span>
-        <span style={{ color: "#a78bfa" }}>{product.name}</span>
+        <span style={{ color: "#a5b4fc" }}>{product.name}</span>
       </div>
 
       <div style={{ maxWidth: 1280, margin: "32px auto 0", padding: "0 24px", display: "grid", gridTemplateColumns: "1fr 380px", gap: 48 }} className="service-grid">
         {/* Left: service info */}
         <div>
-          <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 4, background: "rgba(167,139,250,0.1)", color: "#a78bfa", border: "1px solid rgba(167,139,250,0.25)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
+          <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 4, background: "rgba(165,180,252,0.1)", color: "#a5b4fc", border: "1px solid rgba(165,180,252,0.25)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
             Service
           </span>
           <h1 style={{ fontSize: "clamp(24px, 3vw, 40px)", fontWeight: 900, color: "#f1f5f9", margin: "0 0 12px", lineHeight: 1.2 }}>{product.name}</h1>
           <div style={{ display: "flex", gap: 16, marginBottom: 20, flexWrap: "wrap" }}>
-            <span style={{ fontSize: 13, color: "#a78bfa" }}>⏱ Response within 2 hrs</span>
+            <span style={{ fontSize: 13, color: "#a5b4fc" }}>⏱ Response within 2 hrs</span>
             <span style={{ fontSize: 13, color: "#10b981" }}>✓ Free Inspection</span>
-            <span style={{ fontSize: 13, color: "#00d4ff" }}>🛡 Service Warranty</span>
+            <span style={{ fontSize: 13, color: "#38bdf8" }}>🛡 Service Warranty</span>
           </div>
           <p style={{ fontSize: 15, color: "#94a3b8", lineHeight: 1.8, marginBottom: 32 }}>{product.description}</p>
 
           {/* What's included */}
-          <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, padding: "20px 24px", marginBottom: 28 }}>
+          <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 14, padding: "20px 24px", marginBottom: 28 }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", marginBottom: 16 }}>What's included</h3>
             {[
               "🔍 Free inspection & diagnosis",
@@ -60,7 +60,7 @@ export default function ServiceDetail({ product }) {
               "✅ Post-service quality check",
               "📄 Service report & 30-day warranty",
             ].map((item) => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: "1px solid #1e2d4060", fontSize: 13, color: "#94a3b8" }}>
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: "1px solid #1c305060", fontSize: 13, color: "#94a3b8" }}>
                 {item}
               </div>
             ))}
@@ -76,8 +76,8 @@ export default function ServiceDetail({ product }) {
                 { step: "3", title: "Service & Report", desc: "Work completed with full transparency. You receive a service report." },
               ].map((s) => (
                 <div key={s.step} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
-                  <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(167,139,250,0.15)", border: "1px solid rgba(167,139,250,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <span style={{ fontSize: 13, fontWeight: 800, color: "#a78bfa" }}>{s.step}</span>
+                  <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(165,180,252,0.15)", border: "1px solid rgba(165,180,252,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <span style={{ fontSize: 13, fontWeight: 800, color: "#a5b4fc" }}>{s.step}</span>
                   </div>
                   <div>
                     <p style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 2px" }}>{s.title}</p>
@@ -89,11 +89,11 @@ export default function ServiceDetail({ product }) {
           </div>
 
           {/* Service areas */}
-          <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, padding: "20px 24px", marginBottom: 28 }}>
+          <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 14, padding: "20px 24px", marginBottom: 28 }}>
             <h3 style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", marginBottom: 10 }}>Service Areas</h3>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
               {["Bhubaneswar", "Cuttack", "Puri", "Berhampur", "Sambalpur", "Rourkela"].map((city) => (
-                <span key={city} style={{ fontSize: 12, color: "#94a3b8", background: "#111827", border: "1px solid #1e2d40", padding: "4px 10px", borderRadius: 100 }}>{city}</span>
+                <span key={city} style={{ fontSize: 12, color: "#94a3b8", background: "#0e1928", border: "1px solid #1c3050", padding: "4px 10px", borderRadius: 100 }}>{city}</span>
               ))}
             </div>
           </div>
@@ -106,11 +106,11 @@ export default function ServiceDetail({ product }) {
         </div>
 
         {/* Right: booking form */}
-        <div style={{ background: "#0f172a", border: "1px solid rgba(167,139,250,0.2)", borderRadius: 20, padding: "28px", position: "sticky", top: 80 }}>
+        <div style={{ background: "#0c1525", border: "1px solid rgba(165,180,252,0.2)", borderRadius: 20, padding: "28px", position: "sticky", top: 80 }}>
           {product.externalLink ? (
             <>
               <div style={{ marginBottom: 20 }}>
-                <p style={{ fontSize: 13, color: "#a78bfa", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>Delivered by our partner</p>
+                <p style={{ fontSize: 13, color: "#a5b4fc", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>Delivered by our partner</p>
                 <h3 style={{ fontSize: 20, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>Soumya Shi Power</h3>
                 <p style={{ fontSize: 13, color: "#64748b", margin: "6px 0 0" }}>This service is fulfilled by our trusted energy partner.</p>
               </div>
@@ -118,24 +118,24 @@ export default function ServiceDetail({ product }) {
                 href={product.externalLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "#7c3aed", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "#818cf8", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
               >
                 Visit Partner Site →
               </a>
               <p style={{ fontSize: 12, color: "#475569", textAlign: "center", margin: "12px 0 0" }}>
-                Or call: <a href="tel:+919437611129" style={{ color: "#a78bfa", textDecoration: "none", fontWeight: 600 }}>+91 94376 11129</a>
+                Or call: <a href="tel:+919437611129" style={{ color: "#a5b4fc", textDecoration: "none", fontWeight: 600 }}>+91 94376 11129</a>
               </p>
             </>
           ) : product.internalLink ? (
             <>
               <div style={{ marginBottom: 20 }}>
-                <p style={{ fontSize: 13, color: "#a78bfa", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>Battery Swap</p>
+                <p style={{ fontSize: 13, color: "#a5b4fc", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>Battery Swap</p>
                 <h3 style={{ fontSize: 20, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>Book a Swap</h3>
                 <p style={{ fontSize: 13, color: "#64748b", margin: "6px 0 0" }}>Track your swap with a real-time token.</p>
               </div>
               <Link
                 href={product.internalLink}
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "#7c3aed", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "#818cf8", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
               >
                 Book a Swap →
               </Link>
@@ -143,7 +143,7 @@ export default function ServiceDetail({ product }) {
           ) : (
           <>
           <div style={{ marginBottom: 20 }}>
-            <p style={{ fontSize: 13, color: "#a78bfa", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>Book This Service</p>
+            <p style={{ fontSize: 13, color: "#a5b4fc", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>Book This Service</p>
             <h3 style={{ fontSize: 20, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>Get a Free Quote</h3>
             <p style={{ fontSize: 13, color: "#64748b", margin: "6px 0 0" }}>We'll call you within 2 hours to confirm.</p>
           </div>
@@ -153,7 +153,7 @@ export default function ServiceDetail({ product }) {
               <p style={{ fontSize: 40, marginBottom: 12 }}>✅</p>
               <p style={{ fontSize: 16, fontWeight: 700, color: "#10b981", margin: "0 0 8px" }}>Booking Confirmed!</p>
               <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.7 }}>
-                We'll call <strong style={{ color: "#a78bfa" }}>{form.phone}</strong> within 2 hours to schedule your service.
+                We'll call <strong style={{ color: "#a5b4fc" }}>{form.phone}</strong> within 2 hours to schedule your service.
               </p>
             </div>
           ) : (
@@ -171,9 +171,9 @@ export default function ServiceDetail({ product }) {
                     onChange={(e) => setForm((prev) => ({ ...prev, [f.k]: e.target.value }))}
                     required
                     placeholder={f.placeholder}
-                    style={{ width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40", borderRadius: 8, padding: "10px 14px", color: "#f1f5f9", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s" }}
-                    onFocus={(e) => (e.currentTarget.style.borderColor = "#a78bfa")}
-                    onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+                    style={{ width: "100%", background: "#080f1e", border: "1px solid #1c3050", borderRadius: 8, padding: "10px 14px", color: "#f1f5f9", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s" }}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = "#a5b4fc")}
+                    onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
                   />
                 </div>
               ))}
@@ -184,22 +184,22 @@ export default function ServiceDetail({ product }) {
                   onChange={(e) => setForm((prev) => ({ ...prev, problem: e.target.value }))}
                   rows={3}
                   placeholder="e.g. PCB not working, need soldering for 5 units..."
-                  style={{ width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40", borderRadius: 8, padding: "10px 14px", color: "#f1f5f9", fontSize: 14, outline: "none", boxSizing: "border-box", resize: "vertical", fontFamily: "inherit", transition: "border-color 0.2s" }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#a78bfa")}
-                  onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+                  style={{ width: "100%", background: "#080f1e", border: "1px solid #1c3050", borderRadius: 8, padding: "10px 14px", color: "#f1f5f9", fontSize: 14, outline: "none", boxSizing: "border-box", resize: "vertical", fontFamily: "inherit", transition: "border-color 0.2s" }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#a5b4fc")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
                 />
               </div>
               <button
                 type="submit"
                 disabled={submitting}
-                style={{ marginTop: 4, padding: "14px", background: "#7c3aed", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: submitting ? "not-allowed" : "pointer", transition: "background 0.2s", opacity: submitting ? 0.7 : 1 }}
+                style={{ marginTop: 4, padding: "14px", background: "#818cf8", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: submitting ? "not-allowed" : "pointer", transition: "background 0.2s", opacity: submitting ? 0.7 : 1 }}
                 onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.background = "#6d28d9"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "#7c3aed"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "#818cf8"; }}
               >
                 {submitting ? "Booking..." : "Book This Service →"}
               </button>
               <p style={{ fontSize: 12, color: "#475569", textAlign: "center", margin: 0 }}>
-                Or call: <a href="tel:+919437611129" style={{ color: "#a78bfa", textDecoration: "none", fontWeight: 600 }}>+91 94376 11129</a>
+                Or call: <a href="tel:+919437611129" style={{ color: "#a5b4fc", textDecoration: "none", fontWeight: 600 }}>+91 94376 11129</a>
               </p>
             </form>
           )}

@@ -8,8 +8,8 @@ import { loginUser } from "@/lib/api";
 
 const INPUT: React.CSSProperties = {
   width: "100%",
-  background: "#0a0f1e",
-  border: "1px solid #1e2d40",
+  background: "#080f1e",
+  border: "1px solid #1c3050",
   borderRadius: 10,
   padding: "12px 16px",
   color: "#f1f5f9",
@@ -36,11 +36,11 @@ export default function LoginPage() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const focus = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.style.borderColor = "#00d4ff";
-    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(0,212,255,0.1)";
+    e.currentTarget.style.borderColor = "#38bdf8";
+    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(56,189,248,0.1)";
   };
   const blur = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.style.borderColor = "#1e2d40";
+    e.currentTarget.style.borderColor = "#1c3050";
     e.currentTarget.style.boxShadow = "none";
   };
 
@@ -59,28 +59,28 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))", display: "flex" }}>
+    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))", display: "flex" }}>
       {/* Left panel */}
       <div style={{
         flex: "0 0 60%", display: "flex", flexDirection: "column", alignItems: "flex-start",
         justifyContent: "center", padding: "60px 80px",
-        background: "linear-gradient(135deg, #0a0f1e 0%, #0d1b2e 100%)",
-        borderRight: "1px solid #1e2d40", position: "relative", overflow: "hidden",
+        background: "linear-gradient(135deg, #080f1e 0%, #0d1b2e 100%)",
+        borderRight: "1px solid #1c3050", position: "relative", overflow: "hidden",
       }} className="login-left">
         {/* Background glow */}
-        <div style={{ position: "absolute", top: "20%", left: "30%", width: 400, height: 400, background: "radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "20%", left: "30%", width: 400, height: 400, background: "radial-gradient(circle, rgba(56,189,248,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         {/* Logo */}
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", marginBottom: 60 }}>
-          <div style={{ width: 40, height: 40, borderRadius: "50%", border: "2px solid #00d4ff", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,212,255,0.1)" }}>
+          <div style={{ width: 40, height: 40, borderRadius: "50%", border: "2px solid #38bdf8", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(56,189,248,0.1)" }}>
             <svg viewBox="0 0 24 24" fill="none" style={{ width: 18, height: 18 }}>
-              <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#00d4ff" strokeWidth="2" strokeLinecap="round" />
-              <circle cx="12" cy="12" r="3" fill="#00d4ff" />
+              <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" />
+              <circle cx="12" cy="12" r="3" fill="#38bdf8" />
             </svg>
           </div>
           <div>
             <span style={{ display: "block", fontSize: 15, fontWeight: 700, color: "#f1f5f9" }}>KONARK</span>
-            <span style={{ display: "block", fontSize: 9, fontWeight: 600, letterSpacing: "0.2em", color: "#00d4ff", textTransform: "uppercase" }}>INDUSTRY</span>
+            <span style={{ display: "block", fontSize: 9, fontWeight: 600, letterSpacing: "0.2em", color: "#38bdf8", textTransform: "uppercase" }}>INDUSTRY</span>
           </div>
         </Link>
 
@@ -94,15 +94,15 @@ export default function LoginPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           {BENEFITS.map(({ icon: Icon, text }) => (
             <div key={text} style={{ display: "flex", alignItems: "center", gap: 14 }}>
-              <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(0,212,255,0.08)", border: "1px solid rgba(0,212,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <Icon size={18} color="#00d4ff" />
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(56,189,248,0.08)", border: "1px solid rgba(56,189,248,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Icon size={18} color="#38bdf8" />
               </div>
               <p style={{ fontSize: 14, color: "#94a3b8", margin: 0 }}>{text}</p>
             </div>
           ))}
         </div>
 
-        <div style={{ marginTop: 60, padding: "16px 20px", background: "rgba(0,212,255,0.04)", border: "1px solid rgba(0,212,255,0.12)", borderRadius: 12 }}>
+        <div style={{ marginTop: 60, padding: "16px 20px", background: "rgba(56,189,248,0.04)", border: "1px solid rgba(56,189,248,0.12)", borderRadius: 12 }}>
           <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>
             "Konark's EVs are built for Odisha roads. Outstanding quality and after-sales service."
           </p>
@@ -116,7 +116,7 @@ export default function LoginPage() {
           <h2 style={{ fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 6px" }}>Sign In</h2>
           <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 32px" }}>
             Don't have an account?{" "}
-            <Link href="/register" style={{ color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}>Register free →</Link>
+            <Link href="/register" style={{ color: "#38bdf8", textDecoration: "none", fontWeight: 600 }}>Register free →</Link>
           </p>
 
           {error && (
@@ -134,7 +134,7 @@ export default function LoginPage() {
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 7 }}>
                 <label style={{ fontSize: 11, fontWeight: 600, color: "#94a3b8", letterSpacing: "0.08em", textTransform: "uppercase" }}>Password</label>
-                <Link href="/forgot-password" style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none" }}>Forgot password?</Link>
+                <Link href="/forgot-password" style={{ fontSize: 12, color: "#38bdf8", textDecoration: "none" }}>Forgot password?</Link>
               </div>
               <div style={{ position: "relative" }}>
                 <input aria-label="Password" type={showPw ? "text" : "password"} value={form.password} onChange={set("password")} required placeholder="••••••••" style={{ ...INPUT, paddingRight: 44 }} onFocus={focus} onBlur={blur} />
@@ -144,21 +144,21 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <button type="submit" disabled={loading} style={{ padding: "14px", background: loading ? "#0891b2" : "#00d4ff", color: "#0a0f1e", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", transition: "background 0.2s", marginTop: 4 }}
-              onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "#00b8d9"; }}
-              onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = loading ? "#0891b2" : "#00d4ff"; }}
+            <button type="submit" disabled={loading} style={{ padding: "14px", background: loading ? "#0891b2" : "#38bdf8", color: "#080f1e", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", transition: "background 0.2s", marginTop: 4 }}
+              onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "#0ea5e9"; }}
+              onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = loading ? "#0891b2" : "#38bdf8"; }}
             >
               {loading ? "Signing in..." : "Sign In →"}
             </button>
 
             <div style={{ position: "relative", textAlign: "center", margin: "4px 0" }}>
-              <div style={{ height: 1, background: "#1e2d40", position: "absolute", top: "50%", left: 0, right: 0 }} />
-              <span style={{ position: "relative", background: "#0a0f1e", padding: "0 12px", fontSize: 12, color: "#475569" }}>or</span>
+              <div style={{ height: 1, background: "#1c3050", position: "absolute", top: "50%", left: 0, right: 0 }} />
+              <span style={{ position: "relative", background: "#080f1e", padding: "0 12px", fontSize: 12, color: "#475569" }}>or</span>
             </div>
 
-            <Link href="/products" style={{ display: "block", padding: "13px", background: "transparent", border: "1px solid #1e2d40", color: "#94a3b8", fontWeight: 600, fontSize: 14, borderRadius: 10, textDecoration: "none", textAlign: "center", transition: "all 0.2s" }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
+            <Link href="/products" style={{ display: "block", padding: "13px", background: "transparent", border: "1px solid #1c3050", color: "#94a3b8", fontWeight: 600, fontSize: 14, borderRadius: 10, textDecoration: "none", textAlign: "center", transition: "all 0.2s" }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#38bdf8"; e.currentTarget.style.color = "#38bdf8"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1c3050"; e.currentTarget.style.color = "#94a3b8"; }}
             >
               Continue as Guest
             </Link>

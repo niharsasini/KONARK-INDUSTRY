@@ -5,13 +5,13 @@ import { useInView } from "react-intersection-observer";
 
 const FEATURES = [
   {
-    num: "01", icon: "⚡", color: "#00d4ff",
+    num: "01", icon: "⚡", color: "#38bdf8",
     title: "Odisha's Own EV Brand",
     body: "We design, manufacture, and service our own electric vehicles right here in Bhubaneswar. No middlemen. No import markup. Just honest Odisha-made technology at fair prices.",
     fromX: -60,
   },
   {
-    num: "02", icon: "🔋", color: "#7c3aed",
+    num: "02", icon: "🔋", color: "#818cf8",
     title: "Complete Energy Ecosystem",
     body: "From manufacturing LFP batteries to installing solar and wind power plants — we cover the full energy chain. One company handles everything from production to installation to maintenance.",
     fromX: 60,
@@ -42,7 +42,7 @@ function FeatureCard({ f, index, inView }) {
       onMouseLeave={() => setHovered(false)}
       className="why-card"
       style={{
-        border: `1px solid ${hovered ? f.color + "50" : "#1e2d40"}`,
+        border: `1px solid ${hovered ? f.color + "50" : "#1c3050"}`,
         transform: hovered ? "translateY(-4px)" : "translateY(0)",
         boxShadow: hovered ? `0 24px 48px rgba(0,0,0,0.4), 0 0 0 1px ${f.color}20` : "none",
       }}
@@ -85,15 +85,15 @@ export default function WhyKonark() {
         >
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff",
+            borderRadius: 999, border: "1px solid rgba(56,189,248,0.3)", color: "#38bdf8",
             fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em",
-            background: "rgba(0,212,255,0.08)", marginBottom: 16,
+            background: "rgba(56,189,248,0.08)", marginBottom: 16,
           }}>
             WHY CHOOSE US
           </span>
           <h2 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, margin: "0 0 14px", lineHeight: 1.2 }}>
             <span style={{ color: "#f1f5f9" }}>The Konark </span>
-            <span style={{ background: "linear-gradient(135deg, #00d4ff, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Promise</span>
+            <span style={{ background: "linear-gradient(135deg, #38bdf8, #818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Promise</span>
           </h2>
           <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 520, margin: "0 auto", lineHeight: 1.8 }}>
             We don&apos;t cut corners. Every product we make and every service we provide carries our name — and we take that seriously.

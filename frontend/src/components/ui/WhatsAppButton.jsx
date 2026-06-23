@@ -21,7 +21,7 @@ export default function WhatsAppButton() {
       onMouseLeave={() => setShowTooltip(false)}
     >
       {showTooltip && (
-        <div style={{ background: "#0f172a", border: "1px solid #1e2d40", color: "#f1f5f9", fontSize: 12, fontWeight: 600, padding: "6px 12px", borderRadius: 8, whiteSpace: "nowrap", boxShadow: "0 4px 12px rgba(0,0,0,0.4)", pointerEvents: "none" }}>
+        <div style={{ background: "#0c1525", border: "1px solid #1c3050", color: "#f1f5f9", fontSize: 12, fontWeight: 600, padding: "6px 12px", borderRadius: 8, whiteSpace: "nowrap", boxShadow: "0 4px 12px rgba(0,0,0,0.4)", pointerEvents: "none" }}>
           Chat with us on WhatsApp
         </div>
       )}

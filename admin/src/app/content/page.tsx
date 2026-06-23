@@ -11,8 +11,17 @@ type Settings = {
   announcement_banner_text: string;
   announcement_banner_link: string;
   announcement_banner_emoji: string;
+  announcement_banner_type: string;
   whatsapp_message_template: string;
 };
+
+const BANNER_TYPES = [
+  { value: "announcement", label: "Announcement" },
+  { value: "new_product", label: "New Product" },
+  { value: "offer", label: "Special Offer" },
+  { value: "event", label: "Event" },
+  { value: "alert", label: "Alert / Important" },
+];
 
 const INPUT: React.CSSProperties = {
   width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40",
@@ -46,6 +55,7 @@ export default function ContentPage() {
           announcement_banner_text: (s.announcement_banner_text as string) || "",
           announcement_banner_link: (s.announcement_banner_link as string) || "",
           announcement_banner_emoji: (s.announcement_banner_emoji as string) || "🎉",
+          announcement_banner_type: (s.announcement_banner_type as string) || "announcement",
           whatsapp_message_template: (s.whatsapp_message_template as string) || "",
         });
       })
@@ -128,6 +138,23 @@ export default function ContentPage() {
             >
               <span style={{ position: "absolute", top: 3, left: form.announcement_banner_enabled ? 22 : 3, width: 16, height: 16, borderRadius: "50%", background: "#fff", transition: "left 0.2s" }} />
             </button>
+          </div>
+          <label style={LABEL}>Banner Type</label>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
+            {BANNER_TYPES.map((t) => (
+              <button
+                key={t.value}
+                onClick={() => setForm((f) => (f ? { ...f, announcement_banner_type: t.value } : f))}
+                style={{
+                  padding: "6px 14px", borderRadius: 999, fontSize: 12, fontWeight: 600, cursor: "pointer",
+                  border: `1px solid ${form.announcement_banner_type === t.value ? "#00d4ff" : "#1e2d40"}`,
+                  background: form.announcement_banner_type === t.value ? "rgba(0,212,255,0.1)" : "transparent",
+                  color: form.announcement_banner_type === t.value ? "#00d4ff" : "#94a3b8",
+                }}
+              >
+                {t.label}
+              </button>
+            ))}
           </div>
           <label style={LABEL}>Banner Text</label>
           <input value={form.announcement_banner_text} onChange={set("announcement_banner_text")} placeholder="e.g. Free delivery on orders above ₹5,000" style={{ ...INPUT, marginBottom: 14 }} />

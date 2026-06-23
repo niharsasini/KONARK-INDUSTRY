@@ -19,12 +19,12 @@ export function Input({ value, onChange, placeholder, type = "text", required }:
       placeholder={placeholder}
       required={required}
       style={{
-        width: "100%", background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 8,
+        width: "100%", background: "#0c1525", border: "1px solid #1c3050", borderRadius: 8,
         color: "#f1f5f9", fontSize: 14, padding: "10px 14px", boxSizing: "border-box",
         outline: "none", transition: "border-color 0.2s",
       }}
-      onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
-      onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+      onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
+      onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
     />
   );
 }
@@ -39,12 +39,12 @@ export function Textarea({ value, onChange, placeholder, rows = 3 }: {
       placeholder={placeholder}
       rows={rows}
       style={{
-        width: "100%", background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 8,
+        width: "100%", background: "#0c1525", border: "1px solid #1c3050", borderRadius: 8,
         color: "#f1f5f9", fontSize: 14, padding: "10px 14px", boxSizing: "border-box",
         outline: "none", resize: "vertical", transition: "border-color 0.2s",
       }}
-      onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
-      onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+      onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
+      onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
     />
   );
 }
@@ -57,7 +57,7 @@ export function Select({ value, onChange, options, placeholder }: {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       style={{
-        width: "100%", background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 8,
+        width: "100%", background: "#0c1525", border: "1px solid #1c3050", borderRadius: 8,
         color: value ? "#f1f5f9" : "#64748b", fontSize: 14, padding: "10px 14px", boxSizing: "border-box",
         outline: "none", cursor: "pointer",
       }}

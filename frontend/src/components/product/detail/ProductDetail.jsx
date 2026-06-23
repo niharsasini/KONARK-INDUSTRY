@@ -77,14 +77,14 @@ export default function ProductDetail({ product }) {
   };
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: 64 }}>
+    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: 64 }}>
       {/* Breadcrumb */}
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "20px 24px 0", display: "flex", gap: 6, fontSize: 12, color: "#94a3b8", alignItems: "center" }}>
         <Link href="/" style={{ color: "#94a3b8", textDecoration: "none" }}>Home</Link>
         <span>/</span>
         <Link href="/products" style={{ color: "#94a3b8", textDecoration: "none" }}>Products</Link>
         <span>/</span>
-        <span style={{ color: "#00d4ff" }}>{product.name}</span>
+        <span style={{ color: "#38bdf8" }}>{product.name}</span>
       </div>
 
       {/* Main two-col */}
@@ -104,7 +104,7 @@ export default function ProductDetail({ product }) {
 
           {/* Price block */}
           <div>
-            <p style={{ fontSize: "clamp(24px, 3vw, 34px)", fontWeight: 800, color: formattedPrice ? "#00d4ff" : "#94a3b8", margin: 0, fontStyle: formattedPrice ? "normal" : "italic" }}>
+            <p style={{ fontSize: "clamp(24px, 3vw, 34px)", fontWeight: 800, color: formattedPrice ? "#38bdf8" : "#94a3b8", margin: 0, fontStyle: formattedPrice ? "normal" : "italic" }}>
               {formattedPrice || "Price on Request"}
             </p>
             {product.price > 0 && (
@@ -121,7 +121,7 @@ export default function ProductDetail({ product }) {
           </div>
 
           {/* Offers */}
-          <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 10, padding: "12px 16px" }}>
+          <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 10, padding: "12px 16px" }}>
             <p style={{ fontSize: 12, fontWeight: 700, color: "#f97316", margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>Available Offers</p>
             {[
               "✦ 10% off on first order with code KONARK10",
@@ -133,7 +133,7 @@ export default function ProductDetail({ product }) {
           {/* Quantity */}
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 13, color: "#94a3b8", fontWeight: 500 }}>Qty:</span>
-            <div style={{ display: "flex", alignItems: "center", border: "1px solid #1e2d40", borderRadius: 8, overflow: "hidden" }}>
+            <div style={{ display: "flex", alignItems: "center", border: "1px solid #1c3050", borderRadius: 8, overflow: "hidden" }}>
               <button onClick={() => setQty((q) => Math.max(1, q - 1))} style={{ width: 36, height: 36, background: "transparent", border: "none", color: "#f1f5f9", fontSize: 18, cursor: "pointer" }}>−</button>
               <span style={{ width: 40, textAlign: "center", fontSize: 14, fontWeight: 600, color: "#f1f5f9" }}>{qty}</span>
               <button onClick={() => setQty((q) => Math.min(10, q + 1))} style={{ width: 36, height: 36, background: "transparent", border: "none", color: "#f1f5f9", fontSize: 18, cursor: "pointer" }}>+</button>
@@ -145,24 +145,24 @@ export default function ProductDetail({ product }) {
             <div style={{ display: "flex", gap: 8 }}>
               <button
                 onClick={handleAddToCart}
-                style={{ flex: 1, padding: "14px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer", transition: "background 0.2s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
+                style={{ flex: 1, padding: "14px", background: "#38bdf8", color: "#080f1e", fontWeight: 700, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer", transition: "background 0.2s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#0ea5e9")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "#38bdf8")}
               >
                 Add to Cart 🛒
               </button>
               <button
                 onClick={() => { toggle(product.slug); toast(isInWishlist(product.slug) ? "Removed from wishlist" : "Saved to wishlist ❤️"); }}
-                style={{ width: 48, height: 48, borderRadius: 10, border: "1px solid #1e2d40", background: isInWishlist(product.slug) ? "rgba(239,68,68,0.1)" : "transparent", cursor: "pointer", fontSize: 20, display: "flex", alignItems: "center", justifyContent: "center" }}
+                style={{ width: 48, height: 48, borderRadius: 10, border: "1px solid #1c3050", background: isInWishlist(product.slug) ? "rgba(239,68,68,0.1)" : "transparent", cursor: "pointer", fontSize: 20, display: "flex", alignItems: "center", justifyContent: "center" }}
               >
                 {isInWishlist(product.slug) ? "❤️" : "🤍"}
               </button>
             </div>
             <button
               onClick={() => setEnquiryOpen(true)}
-              style={{ padding: "14px", background: "transparent", color: "#f1f5f9", fontWeight: 600, fontSize: 15, borderRadius: 10, border: "1px solid #1e2d40", cursor: "pointer", transition: "all 0.2s" }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#f1f5f9"; }}
+              style={{ padding: "14px", background: "transparent", color: "#f1f5f9", fontWeight: 600, fontSize: 15, borderRadius: 10, border: "1px solid #1c3050", cursor: "pointer", transition: "all 0.2s" }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#38bdf8"; e.currentTarget.style.color = "#38bdf8"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1c3050"; e.currentTarget.style.color = "#f1f5f9"; }}
             >
               Buy Now / Enquire
             </button>
@@ -171,7 +171,7 @@ export default function ProductDetail({ product }) {
           {/* Trust pills */}
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             {["🛡 2-Year Warranty", "🚚 Free Delivery", "↩ Easy Returns"].map((t) => (
-              <span key={t} style={{ fontSize: 12, color: "#94a3b8", background: "#0f172a", border: "1px solid #1e2d40", padding: "5px 10px", borderRadius: 6 }}>{t}</span>
+              <span key={t} style={{ fontSize: 12, color: "#94a3b8", background: "#0c1525", border: "1px solid #1c3050", padding: "5px 10px", borderRadius: 6 }}>{t}</span>
             ))}
           </div>
 
@@ -184,7 +184,7 @@ export default function ProductDetail({ product }) {
           <div style={{ display: "flex", gap: 8 }}>
             <button
               onClick={handleShare}
-              style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 16px", background: "transparent", border: "1px solid #1e2d40", color: "#94a3b8", fontSize: 13, fontWeight: 600, borderRadius: 8, cursor: "pointer" }}
+              style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 16px", background: "transparent", border: "1px solid #1c3050", color: "#94a3b8", fontSize: 13, fontWeight: 600, borderRadius: 8, cursor: "pointer" }}
             >
               🔗 Share
             </button>
@@ -200,7 +200,7 @@ export default function ProductDetail({ product }) {
           {product.price > 10000 && (
             <button
               onClick={() => setEmiOpen(true)}
-              style={{ background: "transparent", border: "none", color: "#00d4ff", cursor: "pointer", fontSize: 13, fontWeight: 600, textAlign: "left", padding: 0 }}
+              style={{ background: "transparent", border: "none", color: "#38bdf8", cursor: "pointer", fontSize: 13, fontWeight: 600, textAlign: "left", padding: 0 }}
             >
               💳 View EMI options
             </button>
@@ -208,7 +208,7 @@ export default function ProductDetail({ product }) {
 
           {/* Key specs */}
           {specs.length > 0 && (
-            <div style={{ borderTop: "1px solid #1e2d40", paddingTop: 16 }}>
+            <div style={{ borderTop: "1px solid #1c3050", paddingTop: 16 }}>
               <p style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", marginBottom: 12 }}>Key Highlights</p>
               <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
                 {specs.slice(0, 6).map(([k, v]) => (
@@ -223,7 +223,7 @@ export default function ProductDetail({ product }) {
 
           {/* Specs accordion */}
           {specs.length > 0 && (
-            <div style={{ border: "1px solid #1e2d40", borderRadius: 10 }}>
+            <div style={{ border: "1px solid #1c3050", borderRadius: 10 }}>
               <button
                 onClick={() => setSpecsOpen((o) => !o)}
                 style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", background: "transparent", border: "none", color: "#f1f5f9", fontSize: 13, fontWeight: 600, cursor: "pointer" }}
@@ -234,9 +234,9 @@ export default function ProductDetail({ product }) {
                 </svg>
               </button>
               {specsOpen && (
-                <div style={{ borderTop: "1px solid #1e2d40", padding: "0 16px 16px" }}>
+                <div style={{ borderTop: "1px solid #1c3050", padding: "0 16px 16px" }}>
                   {specs.map(([k, v], i) => (
-                    <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: i < specs.length - 1 ? "1px solid #1e2d40" : "none" }}>
+                    <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: i < specs.length - 1 ? "1px solid #1c3050" : "none" }}>
                       <span style={{ fontSize: 13, color: "#94a3b8" }}>{k}</span>
                       <span style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9" }}>{v}</span>
                     </div>
@@ -250,10 +250,10 @@ export default function ProductDetail({ product }) {
 
       {/* Tabs */}
       <div style={{ maxWidth: 1280, margin: "40px auto 0", padding: "0 24px" }}>
-        <div style={{ display: "flex", borderBottom: "1px solid #1e2d40", gap: 0, marginBottom: 28 }}>
+        <div style={{ display: "flex", borderBottom: "1px solid #1c3050", gap: 0, marginBottom: 28 }}>
           {["description", "specifications", "reviews"].map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
-              style={{ padding: "12px 20px", background: "transparent", border: "none", borderBottom: `2px solid ${activeTab === tab ? "#00d4ff" : "transparent"}`, color: activeTab === tab ? "#00d4ff" : "#94a3b8", fontSize: 13, fontWeight: 600, cursor: "pointer", textTransform: "capitalize", transition: "all 0.2s" }}>
+              style={{ padding: "12px 20px", background: "transparent", border: "none", borderBottom: `2px solid ${activeTab === tab ? "#38bdf8" : "transparent"}`, color: activeTab === tab ? "#38bdf8" : "#94a3b8", fontSize: 13, fontWeight: 600, cursor: "pointer", textTransform: "capitalize", transition: "all 0.2s" }}>
               {tab}
             </button>
           ))}
@@ -262,7 +262,7 @@ export default function ProductDetail({ product }) {
         {activeTab === "specifications" && specs.length > 0 && (
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 40px", maxWidth: 720 }}>
             {specs.map(([k, v], i) => (
-              <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "10px 0", borderBottom: "1px solid #1e2d40" }}>
+              <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "10px 0", borderBottom: "1px solid #1c3050" }}>
                 <span style={{ fontSize: 13, color: "#94a3b8" }}>{k}</span>
                 <span style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9" }}>{v}</span>
               </div>
@@ -278,16 +278,16 @@ export default function ProductDetail({ product }) {
           <h3 style={{ fontSize: 20, fontWeight: 700, color: "#f1f5f9", marginBottom: 20 }}>Recently Viewed</h3>
           <div style={{ display: "flex", gap: 16, overflowX: "auto", paddingBottom: 8 }}>
             {recentProducts.map((p) => (
-              <Link key={p.id} href={`/products/${p.slug}`} style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 12, overflow: "hidden", textDecoration: "none", flexShrink: 0, width: 180, transition: "border-color 0.2s" }}
+              <Link key={p.id} href={`/products/${p.slug}`} style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 12, overflow: "hidden", textDecoration: "none", flexShrink: 0, width: 180, transition: "border-color 0.2s" }}
                 onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#2d4a6b")}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
               >
-                <div style={{ background: "#111827", height: 120, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                <div style={{ background: "#0e1928", height: 120, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
                   <Image src={p.image} alt={p.name} fill style={{ objectFit: "contain", padding: 10 }} />
                 </div>
                 <div style={{ padding: 10 }}>
                   <p style={{ fontSize: 12, fontWeight: 600, color: "#f1f5f9", margin: "0 0 4px", lineHeight: 1.3 }}>{p.name}</p>
-                  <p style={{ fontSize: 12, color: "#00d4ff", margin: 0, fontWeight: 700 }}>{p.price ? `₹${p.price.toLocaleString("en-IN")}` : "On Request"}</p>
+                  <p style={{ fontSize: 12, color: "#38bdf8", margin: 0, fontWeight: 700 }}>{p.price ? `₹${p.price.toLocaleString("en-IN")}` : "On Request"}</p>
                 </div>
               </Link>
             ))}
@@ -301,10 +301,10 @@ export default function ProductDetail({ product }) {
       {/* EMI Modal */}
       {emiOpen && (
         <div style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }} onClick={() => setEmiOpen(false)}>
-          <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 20, padding: 28, maxWidth: 480, width: "100%", position: "relative" }} onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => setEmiOpen(false)} style={{ position: "absolute", top: 16, right: 16, background: "transparent", border: "1px solid #1e2d40", borderRadius: "50%", width: 32, height: 32, color: "#94a3b8", cursor: "pointer", fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+          <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 20, padding: 28, maxWidth: 480, width: "100%", position: "relative" }} onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => setEmiOpen(false)} style={{ position: "absolute", top: 16, right: 16, background: "transparent", border: "1px solid #1c3050", borderRadius: "50%", width: 32, height: 32, color: "#94a3b8", cursor: "pointer", fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", margin: "0 0 6px" }}>Easy EMI Options</h3>
-            <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 20px" }}>Product price: <strong style={{ color: "#00d4ff" }}>₹{product.price.toLocaleString("en-IN")}</strong></p>
+            <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 20px" }}>Product price: <strong style={{ color: "#38bdf8" }}>₹{product.price.toLocaleString("en-IN")}</strong></p>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {[
                 { months: 3, interest: 0, label: "3 Months", popular: false },
@@ -315,15 +315,15 @@ export default function ProductDetail({ product }) {
                 const total = product.price * (1 + opt.interest);
                 const monthly = total / opt.months;
                 return (
-                  <div key={opt.months} style={{ background: opt.popular ? "rgba(0,212,255,0.06)" : "#0a0f1e", border: `1px solid ${opt.popular ? "#00d4ff" : "#1e2d40"}`, borderRadius: 10, padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div key={opt.months} style={{ background: opt.popular ? "rgba(56,189,248,0.06)" : "#080f1e", border: `1px solid ${opt.popular ? "#38bdf8" : "#1c3050"}`, borderRadius: 10, padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <div>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <span style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9" }}>{opt.label}</span>
-                        {opt.popular && <span style={{ fontSize: 10, background: "#00d4ff", color: "#0a0f1e", padding: "2px 6px", borderRadius: 4, fontWeight: 700 }}>POPULAR</span>}
+                        {opt.popular && <span style={{ fontSize: 10, background: "#38bdf8", color: "#080f1e", padding: "2px 6px", borderRadius: 4, fontWeight: 700 }}>POPULAR</span>}
                       </div>
                       <span style={{ fontSize: 11, color: "#64748b" }}>Total: ₹{total.toLocaleString("en-IN", { maximumFractionDigits: 0 })}{opt.interest > 0 ? ` (${opt.interest * 100}% interest)` : " (0% interest)"}</span>
                     </div>
-                    <span style={{ fontSize: 16, fontWeight: 800, color: "#00d4ff" }}>₹{monthly.toLocaleString("en-IN", { maximumFractionDigits: 0 })}<span style={{ fontSize: 11, color: "#64748b", fontWeight: 400 }}>/mo</span></span>
+                    <span style={{ fontSize: 16, fontWeight: 800, color: "#38bdf8" }}>₹{monthly.toLocaleString("en-IN", { maximumFractionDigits: 0 })}<span style={{ fontSize: 11, color: "#64748b", fontWeight: 400 }}>/mo</span></span>
                   </div>
                 );
               })}

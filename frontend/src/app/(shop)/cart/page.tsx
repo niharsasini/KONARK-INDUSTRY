@@ -26,7 +26,7 @@ export default function CartPage() {
   const isEmpty = items.length === 0;
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
+    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "40px 24px" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Cart" }]} />
         <h1 style={{ fontSize: 28, fontWeight: 800, color: "#f1f5f9", margin: "0 0 32px" }}>
@@ -47,7 +47,7 @@ export default function CartPage() {
             </p>
             <Link
               href="/products"
-              style={{ display: "inline-block", padding: "12px 28px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: "none" }}
+              style={{ display: "inline-block", padding: "12px 28px", background: "#38bdf8", color: "#080f1e", fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: "none" }}
             >
               Continue Shopping →
             </Link>
@@ -57,15 +57,15 @@ export default function CartPage() {
             {/* Cart items */}
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {items.map((item) => (
-                <div key={item.slug} style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, padding: "16px 20px", display: "flex", alignItems: "center", gap: 16 }}>
-                  <div style={{ width: 64, height: 64, background: "#111827", borderRadius: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", position: "relative" }}>
+                <div key={item.slug} style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 14, padding: "16px 20px", display: "flex", alignItems: "center", gap: 16 }}>
+                  <div style={{ width: 64, height: 64, background: "#0e1928", borderRadius: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", position: "relative" }}>
                     <Image src={item.image} alt={item.name} fill style={{ objectFit: "contain", padding: 4 }} />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 2px" }}>{item.name}</p>
                     <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>{item.category}</p>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", border: "1px solid #1e2d40", borderRadius: 8, overflow: "hidden", flexShrink: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", border: "1px solid #1c3050", borderRadius: 8, overflow: "hidden", flexShrink: 0 }}>
                     <button
                       onClick={() => updateQuantity(item.slug, item.quantity - 1)}
                       style={{ width: 30, height: 30, background: "transparent", border: "none", color: "#f1f5f9", fontSize: 16, cursor: "pointer" }}
@@ -91,7 +91,7 @@ export default function CartPage() {
               <Link
                 href="/products"
                 style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "#94a3b8", textDecoration: "none", marginTop: 8 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
               >
                 ← Continue Shopping
@@ -99,7 +99,7 @@ export default function CartPage() {
             </div>
 
             {/* Order summary */}
-            <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, padding: "24px" }}>
+            <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "24px" }}>
               <h2 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", margin: "0 0 20px" }}>Order Summary</h2>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
@@ -113,9 +113,9 @@ export default function CartPage() {
                     <span style={{ color: row.value === "FREE" ? "#10b981" : "#f1f5f9", fontWeight: 500 }}>{row.value}</span>
                   </div>
                 ))}
-                <div style={{ borderTop: "1px solid #1e2d40", paddingTop: 12, display: "flex", justifyContent: "space-between", fontSize: 16, fontWeight: 700 }}>
+                <div style={{ borderTop: "1px solid #1c3050", paddingTop: 12, display: "flex", justifyContent: "space-between", fontSize: 16, fontWeight: 700 }}>
                   <span style={{ color: "#f1f5f9" }}>Total</span>
-                  <span style={{ color: "#00d4ff" }}>{sub ? `₹${total.toLocaleString("en-IN")}` : "On Request"}</span>
+                  <span style={{ color: "#38bdf8" }}>{sub ? `₹${total.toLocaleString("en-IN")}` : "On Request"}</span>
                 </div>
               </div>
 
@@ -134,9 +134,9 @@ export default function CartPage() {
 
               <Link
                 href="/checkout"
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "13px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: "none", marginBottom: 10 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "13px", background: "#38bdf8", color: "#080f1e", fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: "none", marginBottom: 10 }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#0ea5e9")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "#38bdf8")}
               >
                 Proceed to Checkout
               </Link>

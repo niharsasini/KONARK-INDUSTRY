@@ -21,20 +21,20 @@ export default function SearchBar({ searchOpen, setSearchOpen, searchQuery, setS
               if (e.key === "Escape") { setSearchOpen(false); setSearchQuery(""); }
             }}
             placeholder="Search products..."
-            style={{ width: 220, background: "#111827", border: "1px solid #00d4ff", color: "#f1f5f9", fontSize: 13, padding: "7px 12px", borderRadius: 8, outline: "none" }}
+            style={{ width: 220, background: "#0e1928", border: "1px solid #38bdf8", color: "#f1f5f9", fontSize: 13, padding: "7px 12px", borderRadius: 8, outline: "none" }}
           />
           {searchPreview.length > 0 && (
-            <div style={{ position: "absolute", top: "calc(100% + 6px)", left: 0, right: 0, background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 12, zIndex: 300, overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }}>
+            <div style={{ position: "absolute", top: "calc(100% + 6px)", left: 0, right: 0, background: "#0c1525", border: "1px solid #1c3050", borderRadius: 12, zIndex: 300, overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }}>
               {searchPreview.map((p) => (
                 <Link
                   key={p.slug}
                   href={`/products/${p.slug}`}
                   style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", textDecoration: "none", transition: "background 150ms" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.06)")}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(56,189,248,0.06)")}
                   onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                   onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
                 >
-                  <div style={{ width: 32, height: 32, background: "#111827", borderRadius: 6, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                  <div style={{ width: 32, height: 32, background: "#0e1928", borderRadius: 6, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
                     <Image src={p.image} alt={p.name} fill style={{ objectFit: "contain", padding: 2 }} />
                   </div>
                   <div>
@@ -50,7 +50,7 @@ export default function SearchBar({ searchOpen, setSearchOpen, searchQuery, setS
         <button
           onClick={() => setSearchOpen(true)}
           style={{ padding: 8, color: "#94a3b8", background: "transparent", border: "none", cursor: "pointer", borderRadius: 8, transition: "color 0.2s", display: "flex", alignItems: "center" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 20, height: 20 }}>

@@ -29,10 +29,10 @@ export default function PDFModal({ cert, onClose }) {
           width: '100%',
           maxWidth: '900px',
           height: '88vh',
-          background: '#0f172a',
+          background: '#0c1525',
           borderRadius: '16px',
           overflow: 'hidden',
-          border: '1px solid #1e2d40',
+          border: '1px solid #1c3050',
           display: 'flex',
           flexDirection: 'column',
         }}
@@ -43,8 +43,8 @@ export default function PDFModal({ cert, onClose }) {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '14px 20px',
-          borderBottom: '1px solid #1e2d40',
-          background: '#0a0f1e',
+          borderBottom: '1px solid #1c3050',
+          background: '#080f1e',
           flexShrink: 0,
           gap: '12px',
         }}>
@@ -102,8 +102,8 @@ export default function PDFModal({ cert, onClose }) {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                background: '#00d4ff',
-                color: '#0a0f1e',
+                background: '#38bdf8',
+                color: '#080f1e',
                 padding: '7px 14px',
                 borderRadius: '8px',
                 fontSize: '12px',
@@ -118,7 +118,7 @@ export default function PDFModal({ cert, onClose }) {
               onClick={onClose}
               style={{
                 background: 'transparent',
-                border: '1px solid #1e2d40',
+                border: '1px solid #1c3050',
                 color: '#94a3b8',
                 width: '36px',
                 height: '36px',

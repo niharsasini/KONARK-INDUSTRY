@@ -57,7 +57,7 @@ export default function FAQSection() {
     <section style={{ background: 'transparent', padding: '80px 24px' }}>
       <div style={{ maxWidth: 800, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, color: '#00d4ff', textTransform: 'uppercase', letterSpacing: '0.14em', background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.25)', padding: '4px 14px', borderRadius: 999, marginBottom: 16 }}>
+          <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase', letterSpacing: '0.14em', background: 'rgba(56,189,248,0.08)', border: '1px solid rgba(56,189,248,0.25)', padding: '4px 14px', borderRadius: 999, marginBottom: 16 }}>
             FAQ
           </span>
           <h2 style={{ fontSize: 'clamp(24px,3.5vw,40px)', fontWeight: 800, color: '#f1f5f9', margin: 0 }}>
@@ -70,9 +70,9 @@ export default function FAQSection() {
             <div
               key={i}
               style={{
-                background: '#0f172a',
-                border: `1px solid ${openIdx === i ? 'rgba(0,212,255,0.3)' : '#1e2d40'}`,
-                borderLeft: `3px solid ${openIdx === i ? '#00d4ff' : 'transparent'}`,
+                background: '#0c1525',
+                border: `1px solid ${openIdx === i ? 'rgba(56,189,248,0.3)' : '#1c3050'}`,
+                borderLeft: `3px solid ${openIdx === i ? '#38bdf8' : 'transparent'}`,
                 borderRadius: 12,
                 overflow: 'hidden',
                 transition: 'border-color 0.2s',
@@ -96,7 +96,7 @@ export default function FAQSection() {
                 <span style={{ fontSize: 15, fontWeight: 700, color: '#f1f5f9', lineHeight: 1.4 }}>
                   {faq.q}
                 </span>
-                <span style={{ fontSize: 20, color: '#00d4ff', flexShrink: 0, fontWeight: 300 }}>
+                <span style={{ fontSize: 20, color: '#38bdf8', flexShrink: 0, fontWeight: 300 }}>
                   {openIdx === i ? '−' : '+'}
                 </span>
               </button>

@@ -8,7 +8,7 @@
 .hero-section {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #020817 0%, #060d1a 30%, #0a1628 60%, #020817 100%);
+  background: linear-gradient(135deg, #050a14 0%, #050a14 30%, #0c1525 60%, #050a14 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -67,11 +67,11 @@
 .hero-product-card {
   background: rgba(15,23,42,0.8);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(0,212,255,0.15);
+  border: 1px solid rgba(56,189,248,0.15);
   border-radius: 20px;
   padding: 32px;
   width: 100%;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,255,0.08);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(56,189,248,0.08);
   cursor: pointer;
   overflow: hidden;
 }
@@ -154,12 +154,12 @@
 
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.1), rgba(124,58,237,0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(56,189,248,0.1), rgba(129,140,248,0.1), transparent);
   margin: 0;
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #00d4ff, #7c3aed);
+  background: linear-gradient(135deg, #38bdf8, #818cf8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -193,9 +193,9 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(0,212,255,0.08);
-  border: 1px solid rgba(0,212,255,0.3);
-  color: #00d4ff;
+  background: rgba(56,189,248,0.08);
+  border: 1px solid rgba(56,189,248,0.3);
+  color: #38bdf8;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -203,7 +203,7 @@
   padding: 5px 14px;
   border-radius: 999px;
   margin-bottom: 16px;
-  box-shadow: 0 0 20px rgba(0,212,255,0.2);
+  box-shadow: 0 0 20px rgba(56,189,248,0.2);
 }
 
 @media (max-width: 768px) {
@@ -226,8 +226,8 @@
 }
 
 .stat-card {
-  background: #0a0f1e;
-  border: 1px solid #1e2d40;
+  background: #080f1e;
+  border: 1px solid #1c3050;
   border-radius: 16px;
   padding: 32px 28px;
 }
@@ -235,7 +235,7 @@
 .stat-number {
   font-size: clamp(32px, 4vw, 48px);
   font-weight: 800;
-  background: linear-gradient(135deg, #00d4ff, #7c3aed);
+  background: linear-gradient(135deg, #38bdf8, #818cf8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -286,16 +286,16 @@
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s;
-  border: 1px solid #1e2d40;
+  border: 1px solid #1c3050;
   background: transparent;
   color: #64748b;
   white-space: nowrap;
 }
 
 .filter-tab.active {
-  background: #00d4ff;
-  color: #0a0f1e;
-  border-color: #00d4ff;
+  background: #38bdf8;
+  color: #080f1e;
+  border-color: #38bdf8;
   font-weight: 700;
 }
 

@@ -12,7 +12,7 @@ type Notification = {
 };
 
 const TYPE_ICON = { order: ShoppingBag, booking: Wrench, battery_swap: Battery };
-const TYPE_COLOR = { order: "#10b981", booking: "#a78bfa", battery_swap: "#00d4ff" };
+const TYPE_COLOR = { order: "#10b981", booking: "#a5b4fc", battery_swap: "#38bdf8" };
 const LAST_SEEN_KEY = "konark_notifications_last_seen";
 const POLL_MS = 60000;
 
@@ -74,7 +74,7 @@ export default function NotificationBell() {
         onClick={handleToggle}
         aria-label="Notifications"
         style={{ position: "relative", padding: 8, color: "#94a3b8", borderRadius: 8, display: "flex", border: "none", background: "transparent", cursor: "pointer", transition: "color 0.2s" }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
         onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
       >
         <Bell size={20} />
@@ -86,8 +86,8 @@ export default function NotificationBell() {
       </button>
 
       {open && (
-        <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 320, maxHeight: 400, overflowY: "auto", background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, boxShadow: "0 20px 48px rgba(0,0,0,0.5)", zIndex: 300 }}>
-          <div style={{ padding: "14px 16px", borderBottom: "1px solid #1e2d40" }}>
+        <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 320, maxHeight: 400, overflowY: "auto", background: "#0c1525", border: "1px solid #1c3050", borderRadius: 14, boxShadow: "0 20px 48px rgba(0,0,0,0.5)", zIndex: 300 }}>
+          <div style={{ padding: "14px 16px", borderBottom: "1px solid #1c3050" }}>
             <p style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Notifications</p>
           </div>
           {notifications.length === 0 ? (
@@ -99,7 +99,7 @@ export default function NotificationBell() {
               const Icon = TYPE_ICON[n.type] || Bell;
               const color = TYPE_COLOR[n.type] || "#94a3b8";
               return (
-                <div key={n.id} style={{ padding: "12px 16px", borderBottom: "1px solid #1e2d4060", display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <div key={n.id} style={{ padding: "12px 16px", borderBottom: "1px solid #1c305060", display: "flex", gap: 10, alignItems: "flex-start" }}>
                   <div style={{ width: 28, height: 28, borderRadius: 8, background: `${color}15`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <Icon size={13} color={color} />
                   </div>

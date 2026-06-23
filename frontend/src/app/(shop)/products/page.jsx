@@ -77,10 +77,10 @@ export default function ProductsPage() {
   }, [allProducts]);
 
   const Sidebar = () => (
-    <div style={{ background: "rgba(13, 20, 36, 0.8)", backdropFilter: "blur(20px)", border: "1px solid #1a2740", borderRadius: 16, padding: 20, display: "flex", flexDirection: "column", gap: 20 }}>
+    <div style={{ background: "rgba(13, 20, 36, 0.8)", backdropFilter: "blur(20px)", border: "1px solid #1c3050", borderRadius: 16, padding: 20, display: "flex", flexDirection: "column", gap: 20 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <h3 style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Filters</h3>
-        <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setSortBy("newest"); setTypeFilter("all"); setPriceRange([0, 200000]); }} style={{ fontSize: 12, color: "#00d4ff", background: "transparent", border: "none", cursor: "pointer", fontWeight: 600 }}>Reset</button>
+        <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setSortBy("newest"); setTypeFilter("all"); setPriceRange([0, 200000]); }} style={{ fontSize: 12, color: "#38bdf8", background: "transparent", border: "none", cursor: "pointer", fontWeight: 600 }}>Reset</button>
       </div>
 
       {/* Type filter */}
@@ -93,8 +93,8 @@ export default function ProductsPage() {
             style={{
               display: "flex", alignItems: "center", width: "100%",
               gap: 8, padding: "7px 10px", marginBottom: 4, cursor: "pointer",
-              border: `1px solid ${typeFilter === t.value ? "#00d4ff" : "transparent"}`,
-              borderRadius: 8, background: typeFilter === t.value ? "rgba(0,212,255,0.08)" : "transparent",
+              border: `1px solid ${typeFilter === t.value ? "#38bdf8" : "transparent"}`,
+              borderRadius: 8, background: typeFilter === t.value ? "rgba(56,189,248,0.08)" : "transparent",
               color: typeFilter === t.value ? "#f1f5f9" : "#94a3b8",
               fontSize: 13, fontWeight: typeFilter === t.value ? 600 : 400, transition: "all 0.15s",
             }}
@@ -108,13 +108,13 @@ export default function ProductsPage() {
       <div>
         <p style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Category</p>
         {CATEGORIES.map((cat) => (
-          <label key={cat} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "7px 0", cursor: "pointer", borderBottom: "1px solid #1a274080" }}>
+          <label key={cat} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "7px 0", cursor: "pointer", borderBottom: "1px solid #1c305080" }}>
             <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <input
                 type="checkbox"
                 checked={cat === "All" ? selectedCategories.includes("All") : selectedCategories.includes(cat)}
                 onChange={() => toggleCategory(cat)}
-                style={{ accentColor: "#00d4ff", width: 14, height: 14, cursor: "pointer" }}
+                style={{ accentColor: "#38bdf8", width: 14, height: 14, cursor: "pointer" }}
               />
               <span style={{ fontSize: 13, color: selectedCategories.includes(cat) || (cat === "All" && selectedCategories.includes("All")) ? "#f8fafc" : "#94a3b8" }}>{cat}</span>
             </span>
@@ -128,7 +128,7 @@ export default function ProductsPage() {
       {/* Price Range */}
       <div>
         <p style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Price Range</p>
-        <p style={{ fontSize: 12, color: "#00d4ff", fontWeight: 600, marginBottom: 10 }}>
+        <p style={{ fontSize: 12, color: "#38bdf8", fontWeight: 600, marginBottom: 10 }}>
           ₹{priceRange[0].toLocaleString("en-IN")} — ₹{priceRange[1].toLocaleString("en-IN")}
         </p>
         <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
@@ -140,9 +140,9 @@ export default function ProductsPage() {
               max={priceRange[1]}
               value={priceRange[0]}
               onChange={(e) => setPriceRange([Math.min(Number(e.target.value), priceRange[1]), priceRange[1]])}
-              style={{ width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40", borderRadius: 6, padding: "6px 8px 6px 20px", color: "#f1f5f9", fontSize: 12, outline: "none", boxSizing: "border-box" }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+              style={{ width: "100%", background: "#080f1e", border: "1px solid #1c3050", borderRadius: 6, padding: "6px 8px 6px 20px", color: "#f1f5f9", fontSize: 12, outline: "none", boxSizing: "border-box" }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
             />
           </div>
           <div style={{ flex: 1, position: "relative" }}>
@@ -153,9 +153,9 @@ export default function ProductsPage() {
               max={200000}
               value={priceRange[1]}
               onChange={(e) => setPriceRange([priceRange[0], Math.max(Number(e.target.value), priceRange[0])])}
-              style={{ width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40", borderRadius: 6, padding: "6px 8px 6px 20px", color: "#f1f5f9", fontSize: 12, outline: "none", boxSizing: "border-box" }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+              style={{ width: "100%", background: "#080f1e", border: "1px solid #1c3050", borderRadius: 6, padding: "6px 8px 6px 20px", color: "#f1f5f9", fontSize: 12, outline: "none", boxSizing: "border-box" }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
             />
           </div>
         </div>
@@ -166,7 +166,7 @@ export default function ProductsPage() {
           step={1000}
           value={priceRange[1]}
           onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-          style={{ width: "100%", accentColor: "#00d4ff" }}
+          style={{ width: "100%", accentColor: "#38bdf8" }}
         />
       </div>
 
@@ -175,7 +175,7 @@ export default function ProductsPage() {
         <p style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Minimum Rating</p>
         <button
           onClick={() => setMinRating(minRating === 4 ? 0 : 4)}
-          style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", border: `1px solid ${minRating === 4 ? "#00d4ff" : "#1e2d40"}`, borderRadius: 6, background: minRating === 4 ? "rgba(0,212,255,0.1)" : "transparent", color: minRating === 4 ? "#00d4ff" : "#94a3b8", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
+          style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", border: `1px solid ${minRating === 4 ? "#38bdf8" : "#1c3050"}`, borderRadius: 6, background: minRating === 4 ? "rgba(56,189,248,0.1)" : "transparent", color: minRating === 4 ? "#38bdf8" : "#94a3b8", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
         >
           4★ & above
         </button>
@@ -184,18 +184,18 @@ export default function ProductsPage() {
   );
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 30%, #0d1424 60%, #040b16 100%)", minHeight: "100vh" }}>
+    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 30%, #0c1525 60%, #050a14 100%)", minHeight: "100vh" }}>
       {/* Hero */}
-      <div style={{ background: "#0f172a", borderBottom: "1px solid #1e2d40", padding: "80px 24px 48px" }}>
+      <div style={{ background: "#0c1525", borderBottom: "1px solid #1c3050", padding: "80px 24px 48px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 12, fontSize: 12, color: "#94a3b8" }}>
             <Link href="/" style={{ color: "#94a3b8", textDecoration: "none" }}>Home</Link>
             <span>/</span>
-            <span style={{ color: "#00d4ff" }}>Products</span>
+            <span style={{ color: "#38bdf8" }}>Products</span>
           </div>
           <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 800, margin: "0 0 10px" }}>
             <span style={{ color: "#f8fafc" }}>Explore Our </span>
-            <span style={{ background: "linear-gradient(135deg, #00d4ff, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Full Range</span>
+            <span style={{ background: "linear-gradient(135deg, #38bdf8, #818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Full Range</span>
           </h1>
           <p style={{ fontSize: 15, color: "#94a3b8", margin: 0 }}>EVs to book a test ride · Products to buy online · Services to book a technician</p>
         </div>
@@ -206,8 +206,8 @@ export default function ProductsPage() {
         <div style={{ maxWidth: 1280, margin: "24px auto 0", padding: "0 24px" }}>
           <div style={{
             padding: "18px 24px",
-            background: "linear-gradient(135deg, rgba(0,212,255,0.08), rgba(124,58,237,0.06))",
-            border: "1px solid rgba(0,212,255,0.2)", borderRadius: 12,
+            background: "linear-gradient(135deg, rgba(56,189,248,0.08), rgba(129,140,248,0.06))",
+            border: "1px solid rgba(56,189,248,0.2)", borderRadius: 12,
             display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12,
           }}>
             <div>
@@ -215,10 +215,10 @@ export default function ProductsPage() {
                 🏍 Book a test ride at our Bhubaneswar showroom. No pressure, just drive.
               </p>
               <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>
-                Call <a href="tel:+919437611129" style={{ color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}>+91 94376 11129</a> to schedule · Bhimatangi Housing Colony, Bhubaneswar, Odisha 751002
+                Call <a href="tel:+919437611129" style={{ color: "#38bdf8", textDecoration: "none", fontWeight: 600 }}>+91 94376 11129</a> to schedule · Bhimatangi Housing Colony, Bhubaneswar, Odisha 751002
               </p>
             </div>
-            <Link href="/test-ride" style={{ padding: "9px 20px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap" }}>
+            <Link href="/test-ride" style={{ padding: "9px 20px", background: "#38bdf8", color: "#080f1e", fontWeight: 700, fontSize: 13, borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap" }}>
               Book Test Ride →
             </Link>
           </div>
@@ -231,13 +231,13 @@ export default function ProductsPage() {
         <div className="show-mobile-filter" style={{ marginBottom: 16, display: "none" }}>
           <button
             onClick={() => setDrawerOpen(true)}
-            style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 16px", border: "1px solid #1e2d40", borderRadius: 8, background: "transparent", color: "#f1f5f9", fontSize: 13, fontWeight: 600, cursor: "pointer" }}
+            style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 16px", border: "1px solid #1c3050", borderRadius: 8, background: "transparent", color: "#f1f5f9", fontSize: 13, fontWeight: 600, cursor: "pointer" }}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 16, height: 16 }}>
               <line x1="4" y1="6" x2="20" y2="6" /><line x1="8" y1="12" x2="20" y2="12" /><line x1="12" y1="18" x2="20" y2="18" />
             </svg>
             Filters
-            {typeFilter !== "all" && <span style={{ background: "#00d4ff", color: "#0a0f1e", fontSize: 10, fontWeight: 700, padding: "2px 6px", borderRadius: 100, marginLeft: 4 }}>1</span>}
+            {typeFilter !== "all" && <span style={{ background: "#38bdf8", color: "#080f1e", fontSize: 10, fontWeight: 700, padding: "2px 6px", borderRadius: 100, marginLeft: 4 }}>1</span>}
           </button>
         </div>
 
@@ -251,7 +251,7 @@ export default function ProductsPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                style={{ background: "#0f172a", border: "1px solid #1e2d40", color: "#f1f5f9", fontSize: 13, padding: "7px 12px", borderRadius: 8, outline: "none", cursor: "pointer" }}
+                style={{ background: "#0c1525", border: "1px solid #1c3050", color: "#f1f5f9", fontSize: 13, padding: "7px 12px", borderRadius: 8, outline: "none", cursor: "pointer" }}
               >
                 {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
@@ -260,7 +260,7 @@ export default function ProductsPage() {
             {filtered.length === 0 ? (
               <div style={{ textAlign: "center", padding: "60px 24px", color: "#94a3b8" }}>
                 <p style={{ fontSize: 16 }}>No products match your filters.</p>
-                <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setTypeFilter("all"); }} style={{ marginTop: 12, padding: "8px 20px", background: "#00d4ff", color: "#0a0f1e", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer" }}>Clear Filters</button>
+                <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setTypeFilter("all"); }} style={{ marginTop: 12, padding: "8px 20px", background: "#38bdf8", color: "#080f1e", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer" }}>Clear Filters</button>
               </div>
             ) : (
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 }}>
@@ -275,7 +275,7 @@ export default function ProductsPage() {
       {drawerOpen && (
         <div style={{ position: "fixed", inset: 0, zIndex: 200, display: "flex" }}>
           <div onClick={() => setDrawerOpen(false)} style={{ flex: 1, background: "rgba(0,0,0,0.6)" }} />
-          <div style={{ width: 300, background: "#0a0f1e", borderLeft: "1px solid #1e2d40", padding: 20, overflowY: "auto" }}>
+          <div style={{ width: 300, background: "#080f1e", borderLeft: "1px solid #1c3050", padding: 20, overflowY: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
               <h3 style={{ margin: 0, color: "#f1f5f9" }}>Filters</h3>
               <button onClick={() => setDrawerOpen(false)} style={{ background: "transparent", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: 20 }}>✕</button>

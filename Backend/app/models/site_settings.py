@@ -72,6 +72,8 @@ class SiteSettings(Document):
     announcement_banner_link: Optional[str] = None
     # Emoji shown at the start of the banner text
     announcement_banner_emoji: str = "🎉"
+    # Visual style/category — one of: announcement, new_product, offer, event, alert
+    announcement_banner_type: str = "announcement"
 
     # --- WhatsApp ---
     # Pre-filled message template used by the floating WhatsApp button

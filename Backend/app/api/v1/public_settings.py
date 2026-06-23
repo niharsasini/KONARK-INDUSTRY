@@ -35,6 +35,7 @@ async def get_public_settings():
         "announcement_banner_text": settings.announcement_banner_text,
         "announcement_banner_link": settings.announcement_banner_link,
         "announcement_banner_emoji": settings.announcement_banner_emoji,
+        "announcement_banner_type": settings.announcement_banner_type,
         "whatsapp_message_template": settings.whatsapp_message_template,
         "maintenance_mode": settings.maintenance_mode,
         "maintenance_message": settings.maintenance_message,

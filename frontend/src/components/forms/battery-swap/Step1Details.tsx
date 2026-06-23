@@ -24,11 +24,11 @@ export default function Step1Details({ form }: { form: BatterySwapFormState }) {
               onChange={(e) => setPhone(e.target.value)}
               placeholder="9437611129"
               style={{
-                width: "100%", background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 8,
+                width: "100%", background: "#0c1525", border: "1px solid #1c3050", borderRadius: 8,
                 color: "#f1f5f9", fontSize: 14, padding: "10px 14px 10px 44px", boxSizing: "border-box", outline: "none",
               }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
             />
           </div>
         </div>

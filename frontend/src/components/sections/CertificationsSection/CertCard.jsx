@@ -10,8 +10,8 @@ export default function CertCard({ cert, index, onClick }) {
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
       style={{
-        background: '#0f172a',
-        border: '1px solid #1e2d40',
+        background: '#0c1525',
+        border: '1px solid #1c3050',
         borderRadius: '16px',
         padding: '20px 24px',
         display: 'flex',

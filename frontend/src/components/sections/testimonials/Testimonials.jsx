@@ -3,17 +3,17 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
-const CARD_COLORS = ["#00d4ff", "#7c3aed", "#f97316"];
+const CARD_COLORS = ["#38bdf8", "#818cf8", "#f97316"];
 
 const FALLBACK_TESTIMONIALS = [
   {
     name: "Rajesh Kumar Panda", location: "Bhubaneswar, Odisha",
-    product: "EV Scooter X1", rating: 5, initials: "RKP", color: "#00d4ff",
+    product: "EV Scooter X1", rating: 5, initials: "RKP", color: "#38bdf8",
     text: "I bought the Konark X1 eight months ago for my daily commute from Patia to Infocity — about 22km each way. It handles the route perfectly on a single charge. When I had a minor issue with the charging port, the service team came to my house the next morning and fixed it under warranty. That kind of after-sales support is rare.",
   },
   {
     name: "Sunita Mishra", location: "Cuttack, Odisha",
-    product: "LFP Battery System", rating: 5, initials: "SM", color: "#7c3aed",
+    product: "LFP Battery System", rating: 5, initials: "SM", color: "#818cf8",
     text: "We run a small rice processing unit and load-shedding was killing our productivity. We got a Konark LFP battery system with our rooftop solar in March last year. Eighteen months — zero downtime, zero issues. The investment paid back in 14 months.",
   },
   {
@@ -75,8 +75,8 @@ export default function Testimonials() {
   const [featured, card2, card3] = testimonials;
 
   return (
-    <section style={{ background: "#060d1a", padding: "96px 0", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: "8%", left: "5%", fontSize: 320, fontWeight: 900, color: "rgba(0,212,255,0.015)", lineHeight: 1, pointerEvents: "none", userSelect: "none", fontFamily: "Georgia, serif" }}>&quot;</div>
+    <section style={{ background: "#050a14", padding: "96px 0", position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", top: "8%", left: "5%", fontSize: 320, fontWeight: 900, color: "rgba(56,189,248,0.015)", lineHeight: 1, pointerEvents: "none", userSelect: "none", fontFamily: "Georgia, serif" }}>&quot;</div>
 
       <div className="t-container" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 48px" }}>
         {/* Header */}
@@ -87,12 +87,12 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           style={{ textAlign: "center", marginBottom: 56 }}
         >
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(0,212,255,0.08)", marginBottom: 16 }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(56,189,248,0.3)", color: "#38bdf8", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(56,189,248,0.08)", marginBottom: 16 }}>
             WHAT CUSTOMERS SAY
           </span>
           <h2 style={{ fontSize: "clamp(26px, 3.5vw, 44px)", fontWeight: 900, margin: "0 0 12px", lineHeight: 1.2 }}>
             <span style={{ color: "#f1f5f9" }}>Real People. </span>
-            <span style={{ background: "linear-gradient(135deg, #00d4ff, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Real Results.</span>
+            <span style={{ background: "linear-gradient(135deg, #38bdf8, #818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Real Results.</span>
           </h2>
           <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 480, margin: "0 auto" }}>
             25,000+ customers across Odisha trust Konark Industry for their energy needs.
@@ -107,8 +107,8 @@ export default function Testimonials() {
             animate={gridIn ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7 }}
             style={{
-              background: "linear-gradient(135deg, rgba(0,212,255,0.06), rgba(124,58,237,0.06))",
-              border: "1px solid rgba(0,212,255,0.2)",
+              background: "linear-gradient(135deg, rgba(56,189,248,0.06), rgba(129,140,248,0.06))",
+              border: "1px solid rgba(56,189,248,0.2)",
               borderRadius: 24,
               padding: 40,
               display: "flex",
@@ -116,11 +116,11 @@ export default function Testimonials() {
               gap: 20,
             }}
           >
-            <div style={{ fontSize: 80, lineHeight: 0.8, color: "#00d4ff", opacity: 0.3, fontFamily: "Georgia, serif", userSelect: "none" }}>&ldquo;</div>
+            <div style={{ fontSize: 80, lineHeight: 0.8, color: "#38bdf8", opacity: 0.3, fontFamily: "Georgia, serif", userSelect: "none" }}>&ldquo;</div>
             <p style={{ fontSize: 18, color: "#f1f5f9", lineHeight: 2, margin: 0, fontStyle: "italic", flex: 1 }}>
               {featured.text}
             </p>
-            <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", paddingTop: 16, borderTop: "1px solid rgba(0,212,255,0.1)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", paddingTop: 16, borderTop: "1px solid rgba(56,189,248,0.1)" }}>
               <div style={{ width: 56, height: 56, borderRadius: "50%", background: `${featured.color}20`, border: `2px solid ${featured.color}60`, display: "flex", alignItems: "center", justifyContent: "center", color: featured.color, fontSize: 14, fontWeight: 700, flexShrink: 0 }}>
                 {featured.initials}
               </div>
@@ -143,8 +143,8 @@ export default function Testimonials() {
               animate={gridIn ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.15 }}
               style={{
-                background: "#0f172a",
-                border: "1px solid #1e2d40",
+                background: "#0c1525",
+                border: "1px solid #1c3050",
                 borderRadius: 20,
                 padding: 28,
                 flex: 1,
@@ -176,8 +176,8 @@ export default function Testimonials() {
               animate={gridIn ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
               style={{
-                background: "#0f172a",
-                border: "1px solid #1e2d40",
+                background: "#0c1525",
+                border: "1px solid #1c3050",
                 borderRadius: 20,
                 padding: 28,
                 flex: 1,
@@ -214,14 +214,14 @@ export default function Testimonials() {
               animate={statsIn ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               style={{
-                background: "#0f172a",
-                border: "1px solid #1e2d40",
+                background: "#0c1525",
+                border: "1px solid #1c3050",
                 borderRadius: 16,
                 padding: "20px 24px",
                 textAlign: "center",
               }}
             >
-              <p style={{ fontSize: "clamp(22px, 2.5vw, 32px)", fontWeight: 900, margin: "0 0 4px", background: "linear-gradient(135deg, #00d4ff, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              <p style={{ fontSize: "clamp(22px, 2.5vw, 32px)", fontWeight: 900, margin: "0 0 4px", background: "linear-gradient(135deg, #38bdf8, #818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                 {stat.value}
               </p>
               <p style={{ fontSize: 13, color: "#64748b", margin: 0, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em" }}>

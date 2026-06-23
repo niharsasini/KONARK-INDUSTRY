@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
 const STATS = [
-  { icon: "⚡", color: "#00d4ff", num: 10, suffix: "+", label: "Years of Excellence", desc: "Founded 2014 in Bhubaneswar" },
-  { icon: "👥", color: "#7c3aed", num: 25000, suffix: "+", label: "Happy Customers", desc: "Homes, farms & factories" },
+  { icon: "⚡", color: "#38bdf8", num: 10, suffix: "+", label: "Years of Excellence", desc: "Founded 2014 in Bhubaneswar" },
+  { icon: "👥", color: "#818cf8", num: 25000, suffix: "+", label: "Happy Customers", desc: "Homes, farms & factories" },
   { icon: "📦", color: "#f97316", num: 50, suffix: "+", label: "Products & Services", desc: "EVs, batteries, appliances" },
   { icon: "⭐", color: "#f59e0b", num: 99, suffix: "%", label: "Satisfaction Rate", desc: "Rated by verified buyers" },
 ];

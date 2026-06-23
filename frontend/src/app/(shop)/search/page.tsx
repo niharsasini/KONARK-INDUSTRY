@@ -20,8 +20,8 @@ function ProductCard({ product }: { product: any }) {
     <Link
       href={`/products/${product.slug}`}
       style={{
-        background: '#0f172a',
-        border: '1px solid #1e2d40',
+        background: '#0c1525',
+        border: '1px solid #1c3050',
         borderRadius: 14,
         overflow: 'hidden',
         textDecoration: 'none',
@@ -30,15 +30,15 @@ function ProductCard({ product }: { product: any }) {
         transition: 'border-color 0.2s, transform 0.2s',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(0,212,255,0.3)'
+        e.currentTarget.style.borderColor = 'rgba(56,189,248,0.3)'
         e.currentTarget.style.transform = 'translateY(-2px)'
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = '#1e2d40'
+        e.currentTarget.style.borderColor = '#1c3050'
         e.currentTarget.style.transform = 'none'
       }}
     >
-      <div style={{ background: '#111827', height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+      <div style={{ background: '#0e1928', height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
         {(() => {
           const src = product.image
           const isLocal = src?.startsWith('/productimg/') || src?.startsWith('/konark/')
@@ -49,10 +49,10 @@ function ProductCard({ product }: { product: any }) {
           )
         })()}
         {product.isNew && (
-          <span style={{ position: 'absolute', top: 8, left: 8, background: '#00d4ff', color: '#0a0f1e', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>NEW</span>
+          <span style={{ position: 'absolute', top: 8, left: 8, background: '#38bdf8', color: '#080f1e', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>NEW</span>
         )}
         {isVehicle && (
-          <span style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(0,212,255,0.12)', border: '1px solid rgba(0,212,255,0.3)', color: '#00d4ff', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>⚡ EV</span>
+          <span style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(56,189,248,0.12)', border: '1px solid rgba(56,189,248,0.3)', color: '#38bdf8', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>⚡ EV</span>
         )}
         {!isVehicle && !isService && (
           <span style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)', color: '#10b981', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>● In Stock</span>
@@ -61,7 +61,7 @@ function ProductCard({ product }: { product: any }) {
       <div style={{ padding: 14, flex: 1, display: 'flex', flexDirection: 'column', gap: 7 }}>
         <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: 0, lineHeight: 1.4 }}>{product.name}</p>
         <p style={{ fontSize: 11, color: '#64748b', margin: 0 }}>{product.category}</p>
-        <p style={{ fontSize: 15, fontWeight: 700, color: product.price ? '#00d4ff' : '#94a3b8', margin: 0, marginTop: 'auto' }}>
+        <p style={{ fontSize: 15, fontWeight: 700, color: product.price ? '#38bdf8' : '#94a3b8', margin: 0, marginTop: 'auto' }}>
           {product.price ? `₹${product.price.toLocaleString('en-IN')}` : 'Price on Request'}
         </p>
       </div>
@@ -98,7 +98,7 @@ function SearchResults() {
   }, [query])
 
   return (
-    <div style={{ background: 'linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)', minHeight: '100vh', paddingTop: '80px' }}>
+    <div style={{ background: 'linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)', minHeight: '100vh', paddingTop: '80px' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 24px' }}>
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Search Results' }]} />
         <div style={{ marginBottom: '32px' }}>
@@ -111,7 +111,7 @@ function SearchResults() {
             {query ? (
               <>
                 Results for{' '}
-                <span style={{ background: 'linear-gradient(135deg,#00d4ff,#7c3aed)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <span style={{ background: 'linear-gradient(135deg,#38bdf8,#818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   "{query}"
                 </span>
               </>
@@ -137,7 +137,7 @@ function SearchResults() {
             <p style={{ color: '#64748b', marginBottom: '24px' }}>
               Try searching for "EV Scooter", "Battery", "Fan" or "AC"
             </p>
-            <Link href="/products" style={{ background: '#00d4ff', color: '#0a0f1e', padding: '12px 28px', borderRadius: '10px', fontWeight: 700, textDecoration: 'none', fontSize: '15px' }}>
+            <Link href="/products" style={{ background: '#38bdf8', color: '#080f1e', padding: '12px 28px', borderRadius: '10px', fontWeight: 700, textDecoration: 'none', fontSize: '15px' }}>
               Browse All Products
             </Link>
           </div>
@@ -151,7 +151,7 @@ function SearchResults() {
                 <Link
                   key={s}
                   href={`/search?q=${encodeURIComponent(s)}`}
-                  style={{ background: '#0f172a', border: '1px solid #1e2d40', color: '#94a3b8', padding: '6px 16px', borderRadius: '100px', fontSize: '13px', textDecoration: 'none' }}
+                  style={{ background: '#0c1525', border: '1px solid #1c3050', color: '#94a3b8', padding: '6px 16px', borderRadius: '100px', fontSize: '13px', textDecoration: 'none' }}
                 >
                   {s}
                 </Link>
@@ -166,7 +166,7 @@ function SearchResults() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div style={{ background: 'linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)', minHeight: '100vh', paddingTop: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ color: '#94a3b8' }}>Searching...</span></div>}>
+    <Suspense fallback={<div style={{ background: 'linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)', minHeight: '100vh', paddingTop: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ color: '#94a3b8' }}>Searching...</span></div>}>
       <SearchResults />
     </Suspense>
   )

@@ -16,7 +16,9 @@ body {
 }
 
 body {
-  background: linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%) !important;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -10%, rgba(56, 189, 248, 0.12) 0%, rgba(129, 140, 248, 0.06) 40%, transparent 70%),
+    linear-gradient(180deg, #050a14 0%, #080f1e 50%, #050a14 100%) !important;
   background-attachment: fixed !important;
   min-height: 100vh;
   color: var(--k-text);

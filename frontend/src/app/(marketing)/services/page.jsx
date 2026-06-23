@@ -5,7 +5,7 @@ import Breadcrumb from "@/components/ui/Breadcrumb";
 
 const SERVICES = [
   {
-    color: "#00d4ff",
+    color: "#38bdf8",
     icon: "❄️",
     title: "AC Repair & Service",
     desc: "Diagnose and fix all brands, same day if booked before noon.",
@@ -13,7 +13,7 @@ const SERVICES = [
     href: "/services/enquiry", external: false,
   },
   {
-    color: "#00d4ff",
+    color: "#38bdf8",
     icon: "⚡",
     title: "EV Charging Station Installation",
     desc: "Install commercial and home EV charging stations. Certified installation, 1-year warranty on all equipment.",
@@ -21,7 +21,7 @@ const SERVICES = [
     href: "https://www.soumyashipower.in/", external: true,
   },
   {
-    color: "#7c3aed",
+    color: "#818cf8",
     icon: "🔋",
     title: "Battery Swap Service",
     desc: "Exchange your discharged EV battery for a fully charged one. Home pickup available.",
@@ -37,7 +37,7 @@ const SERVICES = [
     href: "https://www.soumyashipower.in/", external: true,
   },
   {
-    color: "#00d4ff",
+    color: "#38bdf8",
     icon: "💨",
     title: "Wind Power Plant Installation",
     desc: "Small and large-scale wind energy solutions. Hybrid wind-solar systems for farms, industries, and institutions.",
@@ -56,12 +56,12 @@ const SERVICES = [
 
 export default function ServicesPage() {
   return (
-    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
+    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       {/* Hero */}
-      <div style={{ background: "#0f172a", borderBottom: "1px solid #1e2d40", padding: "80px 24px 60px" }}>
+      <div style={{ background: "#0c1525", borderBottom: "1px solid #1c3050", padding: "80px 24px 60px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Services" }]} />
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(0,212,255,0.3)", color: "#00d4ff", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(0,212,255,0.08)", marginBottom: 20 }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(56,189,248,0.3)", color: "#38bdf8", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(56,189,248,0.08)", marginBottom: 20 }}>
             Our Services
           </span>
           <h1 style={{ fontSize: "clamp(28px, 5vw, 56px)", fontWeight: 800, color: "#f1f5f9", margin: "0 0 16px", lineHeight: 1.15 }}>
@@ -90,8 +90,8 @@ export default function ServicesPage() {
               { num: "48h", label: "Audit turnaround" },
               { num: "7d", label: "Installation SLA" },
             ].map((s) => (
-              <div key={s.label} style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 12, padding: "20px 16px", textAlign: "center" }}>
-                <p style={{ fontSize: 24, fontWeight: 800, color: "#00d4ff", margin: "0 0 4px" }}>{s.num}</p>
+              <div key={s.label} style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 12, padding: "20px 16px", textAlign: "center" }}>
+                <p style={{ fontSize: 24, fontWeight: 800, color: "#38bdf8", margin: "0 0 4px" }}>{s.num}</p>
                 <p style={{ fontSize: 11, color: "#94a3b8", margin: 0 }}>{s.label}</p>
               </div>
             ))}
@@ -100,15 +100,15 @@ export default function ServicesPage() {
       </section>
 
       {/* Service cards */}
-      <section id="services" style={{ background: "#111827", padding: "80px 24px" }}>
+      <section id="services" style={{ background: "#0e1928", padding: "80px 24px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 20 }}>
             {SERVICES.map((s) => (
               <div
                 key={s.title}
-                style={{ background: "#0f172a", border: "1px solid #1e2d40", borderTop: `2px solid ${s.color}`, borderRadius: 16, padding: "28px 24px", transition: "all 0.2s" }}
+                style={{ background: "#0c1525", border: "1px solid #1c3050", borderTop: `2px solid ${s.color}`, borderRadius: 16, padding: "28px 24px", transition: "all 0.2s" }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = s.color; e.currentTarget.style.transform = "translateY(-3px)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.borderTopColor = s.color; e.currentTarget.style.transform = "none"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1c3050"; e.currentTarget.style.borderTopColor = s.color; e.currentTarget.style.transform = "none"; }}
               >
                 <div style={{ width: 48, height: 48, borderRadius: 12, background: `${s.color}15`, border: `1px solid ${s.color}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, marginBottom: 16 }}>
                   {s.icon}
@@ -153,9 +153,9 @@ export default function ServicesPage() {
         </p>
         <Link
           href="/contact"
-          style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 15, borderRadius: 8, textDecoration: "none", transition: "background 0.2s" }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
+          style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", background: "#38bdf8", color: "#080f1e", fontWeight: 700, fontSize: 15, borderRadius: 8, textDecoration: "none", transition: "background 0.2s" }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#0ea5e9")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#38bdf8")}
         >
           Get in Touch
         </Link>

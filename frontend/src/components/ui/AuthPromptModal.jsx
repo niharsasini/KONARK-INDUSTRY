@@ -62,8 +62,8 @@ export default function AuthPromptModal() {
             right: 28,
             zIndex: 9999,
             width: 360,
-            background: "#0f172a",
-            border: "1px solid rgba(0,212,255,0.2)",
+            background: "#0c1525",
+            border: "1px solid rgba(56,189,248,0.2)",
             borderRadius: 16,
             boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
             padding: "28px",
@@ -86,10 +86,10 @@ export default function AuthPromptModal() {
           </button>
 
           {/* Icon */}
-          <div style={{ width: 44, height: 44, borderRadius: "50%", border: "2px solid #00d4ff", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,212,255,0.08)", marginBottom: 16 }}>
+          <div style={{ width: 44, height: 44, borderRadius: "50%", border: "2px solid #38bdf8", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(56,189,248,0.08)", marginBottom: 16 }}>
             <svg viewBox="0 0 24 24" fill="none" style={{ width: 20, height: 20 }}>
-              <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#00d4ff" strokeWidth="2" strokeLinecap="round" />
-              <circle cx="12" cy="12" r="3" fill="#00d4ff" />
+              <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" />
+              <circle cx="12" cy="12" r="3" fill="#38bdf8" />
             </svg>
           </div>
 
@@ -114,13 +114,13 @@ export default function AuthPromptModal() {
           <button
             onClick={goRegister}
             style={{
-              width: "100%", padding: "13px", background: "#00d4ff",
-              color: "#0a0f1e", fontWeight: 800, fontSize: 14,
+              width: "100%", padding: "13px", background: "#38bdf8",
+              color: "#080f1e", fontWeight: 800, fontSize: 14,
               borderRadius: 10, border: "none", cursor: "pointer",
               marginBottom: 12, transition: "background 0.2s",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#0ea5e9")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#38bdf8")}
           >
             Create Free Account →
           </button>
@@ -132,7 +132,7 @@ export default function AuthPromptModal() {
               onMouseEnter={(e) => (e.currentTarget.style.color = "#94a3b8")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "#64748b")}
             >
-              Already have an account? <span style={{ color: "#00d4ff", fontWeight: 600 }}>Sign in</span>
+              Already have an account? <span style={{ color: "#38bdf8", fontWeight: 600 }}>Sign in</span>
             </button>
           </p>
         </motion.div>

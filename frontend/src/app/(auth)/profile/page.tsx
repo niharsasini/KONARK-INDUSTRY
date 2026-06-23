@@ -16,9 +16,9 @@ const QUICK_LINKS = [
 function Skeleton() {
   return (
     <div style={{ animation: "pulse 1.5s infinite" }}>
-      <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 20, padding: 32, height: 120, marginBottom: 24 }} />
+      <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 20, padding: 32, height: 120, marginBottom: 24 }} />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 24 }}>
-        {[1, 2, 3].map((i) => <div key={i} style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, height: 80 }} />)}
+        {[1, 2, 3].map((i) => <div key={i} style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 14, height: 80 }} />)}
       </div>
       <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}`}</style>
     </div>
@@ -58,7 +58,7 @@ export default function ProfilePage() {
   };
 
   if (loading) return (
-    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
+    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px" }}><Skeleton /></div>
     </div>
   );
@@ -73,13 +73,13 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
+    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "My Profile" }]} />
 
         {/* Profile header */}
-        <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 20, padding: "32px", display: "flex", alignItems: "center", gap: 24, marginBottom: 24, flexWrap: "wrap" }}>
-          <div style={{ width: 72, height: 72, borderRadius: "50%", flexShrink: 0, background: "linear-gradient(135deg, rgba(0,212,255,0.2), rgba(124,58,237,0.2))", border: "2px solid rgba(0,212,255,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "#00d4ff" }}>
+        <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 20, padding: "32px", display: "flex", alignItems: "center", gap: 24, marginBottom: 24, flexWrap: "wrap" }}>
+          <div style={{ width: 72, height: 72, borderRadius: "50%", flexShrink: 0, background: "linear-gradient(135deg, rgba(56,189,248,0.2), rgba(129,140,248,0.2))", border: "2px solid rgba(56,189,248,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "#38bdf8" }}>
             {initial}
           </div>
           <div style={{ flex: 1 }}>
@@ -93,17 +93,17 @@ export default function ProfilePage() {
         {/* Stats row */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 24 }}>
           {STATS.map((s) => (
-            <div key={s.label} style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, padding: "20px 16px", textAlign: "center" }}>
-              <p style={{ fontSize: 28, fontWeight: 800, color: "#00d4ff", margin: "0 0 4px" }}>{s.value}</p>
+            <div key={s.label} style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 14, padding: "20px 16px", textAlign: "center" }}>
+              <p style={{ fontSize: 28, fontWeight: 800, color: "#38bdf8", margin: "0 0 4px" }}>{s.value}</p>
               <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>{s.label}</p>
             </div>
           ))}
         </div>
 
         {/* Quick links */}
-        <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, padding: "8px" }}>
+        <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "8px" }}>
           {QUICK_LINKS.map((link, i) => (
-            <Link key={link.label} href={link.href} style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", borderRadius: 10, textDecoration: "none", borderBottom: i < QUICK_LINKS.length - 1 ? "1px solid #1e2d40" : "none", transition: "background 0.15s" }}
+            <Link key={link.label} href={link.href} style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", borderRadius: 10, textDecoration: "none", borderBottom: i < QUICK_LINKS.length - 1 ? "1px solid #1c3050" : "none", transition: "background 0.15s" }}
               onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.03)")}
               onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
             >

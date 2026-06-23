@@ -5,13 +5,13 @@ import { products } from "@/components/product/ProductData";
 /* ─── Shared helpers used across Vehicle / Product / Service detail pages ─── */
 
 export const BADGE_COLORS = {
-  "Electric Vehicles": "#00d4ff",
-  Batteries: "#7c3aed",
+  "Electric Vehicles": "#38bdf8",
+  Batteries: "#818cf8",
   "Home Appliances": "#10b981",
   "Industrial Equipment": "#f97316",
   "Industrial Components": "#f97316",
   Electronics: "#94a3b8",
-  "Industrial Services": "#a78bfa",
+  "Industrial Services": "#a5b4fc",
 };
 
 export function StarRating({ rating, size = 14 }) {
@@ -35,16 +35,16 @@ export function RelatedProducts({ current }) {
       <h3 style={{ fontSize: 20, fontWeight: 700, color: "#f1f5f9", marginBottom: 20 }}>Related Products</h3>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 16 }}>
         {related.map((p) => (
-          <Link key={p.id} href={`/products/${p.slug}`} style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 12, overflow: "hidden", textDecoration: "none", transition: "border-color 0.2s" }}
+          <Link key={p.id} href={`/products/${p.slug}`} style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 12, overflow: "hidden", textDecoration: "none", transition: "border-color 0.2s" }}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#2d4a6b")}
-            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
           >
-            <div style={{ background: "#111827", height: 140, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+            <div style={{ background: "#0e1928", height: 140, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
               <Image src={p.image} alt={p.name} fill style={{ objectFit: "contain", padding: 10 }} />
             </div>
             <div style={{ padding: 12 }}>
               <p style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9", margin: "0 0 4px" }}>{p.name}</p>
-              <p style={{ fontSize: 13, color: "#00d4ff", margin: 0, fontWeight: 700 }}>{p.price ? `₹${p.price.toLocaleString("en-IN")}` : "On Request"}</p>
+              <p style={{ fontSize: 13, color: "#38bdf8", margin: 0, fontWeight: 700 }}>{p.price ? `₹${p.price.toLocaleString("en-IN")}` : "On Request"}</p>
             </div>
           </Link>
         ))}

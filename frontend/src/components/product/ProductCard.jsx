@@ -83,14 +83,14 @@ const ProductCard = ({ product }) => {
       style={{
         position: "relative",
         cursor: "pointer",
-        background: "linear-gradient(145deg, #0d1424, #111827)",
-        border: `1px solid ${hovered ? "rgba(0, 212, 255, 0.4)" : "#1a2740"}`,
+        background: "linear-gradient(145deg, #0c1525, #0e1928)",
+        border: `1px solid ${hovered ? "rgba(56, 189, 248, 0.4)" : "#1c3050"}`,
         borderRadius: 20,
         overflow: "hidden",
         transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
         transform: hovered ? "translateY(-10px) scale(1.01)" : "translateY(0) scale(1)",
         boxShadow: hovered
-          ? "0 30px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 212, 255, 0.1), 0 0 60px rgba(0, 212, 255, 0.05)"
+          ? "0 30px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(56, 189, 248, 0.1), 0 0 60px rgba(56, 189, 248, 0.05)"
           : "0 4px 16px rgba(0, 0, 0, 0.2)",
       }}
     >
@@ -121,7 +121,7 @@ const ProductCard = ({ product }) => {
 
       {/* Top-left status badge — card stays fully opaque regardless of stock status */}
       {isUpcoming ? (
-        <span style={{ position: "absolute", top: 12, left: 12, zIndex: 20, background: "linear-gradient(135deg, #7c3aed, #a855f7)", color: "#fff", fontSize: 10, fontWeight: 800, padding: "3px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        <span style={{ position: "absolute", top: 12, left: 12, zIndex: 20, background: "linear-gradient(135deg, #818cf8, #a5b4fc)", color: "#fff", fontSize: 10, fontWeight: 800, padding: "3px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>
           Upcoming
         </span>
       ) : !inStock ? (
@@ -137,7 +137,7 @@ const ProductCard = ({ product }) => {
       {/* 🖼️ Image area */}
       <div style={{
         position: "relative", height: 220, overflow: "hidden",
-        background: "linear-gradient(145deg, #0a1628, #0d1a2e)",
+        background: "linear-gradient(145deg, #0c1525, #0e1928)",
       }}>
         {images[imgIndex]?.startsWith("http") ? (
           <Image
@@ -166,8 +166,8 @@ const ProductCard = ({ product }) => {
         {product.category && (
           <span style={{
             position: "absolute", bottom: 10, left: 10, zIndex: 5,
-            background: "rgba(0, 212, 255, 0.1)", border: "1px solid rgba(0, 212, 255, 0.3)",
-            backdropFilter: "blur(10px)", color: "#00d4ff",
+            background: "rgba(56, 189, 248, 0.1)", border: "1px solid rgba(56, 189, 248, 0.3)",
+            backdropFilter: "blur(10px)", color: "#38bdf8",
             fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 100,
             textTransform: "uppercase", letterSpacing: "0.06em",
           }}>
@@ -184,7 +184,7 @@ const ProductCard = ({ product }) => {
                   width: i === imgIndex ? 16 : 6,
                   height: 6,
                   borderRadius: 3,
-                  background: i === imgIndex ? "#00d4ff" : "rgba(255,255,255,0.4)",
+                  background: i === imgIndex ? "#38bdf8" : "rgba(255,255,255,0.4)",
                   transition: "all 0.3s ease",
                   cursor: "pointer",
                 }}
@@ -206,34 +206,34 @@ const ProductCard = ({ product }) => {
           </p>
         )}
 
-        <p style={{ fontSize: 22, fontWeight: 800, color: "#00d4ff", margin: "6px 0 14px" }}>
+        <p style={{ fontSize: 22, fontWeight: 800, color: "#38bdf8", margin: "6px 0 14px" }}>
           {formattedPrice}
         </p>
 
         {isUpcoming ? (
           <button
             onClick={(e) => { e.stopPropagation(); router.push("/contact?interest=" + product.slug); }}
-            style={{ width: "100%", padding: "11px", background: "transparent", color: "#a855f7", border: "1.5px solid rgba(168, 85, 247, 0.5)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(124,58,237,0.1)"; e.currentTarget.style.borderColor = "#a855f7"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(168, 85, 247, 0.5)"; }}
+            style={{ width: "100%", padding: "11px", background: "transparent", color: "#a5b4fc", border: "1.5px solid rgba(165, 180, 252, 0.5)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(129,140,248,0.1)"; e.currentTarget.style.borderColor = "#a5b4fc"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(165, 180, 252, 0.5)"; }}
           >
             Register Interest
           </button>
         ) : !inStock ? (
-          <button disabled style={{ width: "100%", padding: "11px", background: "#1a2740", color: "#64748b", cursor: "not-allowed", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700 }}>
+          <button disabled style={{ width: "100%", padding: "11px", background: "#1c3050", color: "#64748b", cursor: "not-allowed", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700 }}>
             Out of Stock
           </button>
         ) : product.type === "vehicle" ? (
           <button
             onClick={(e) => { e.stopPropagation(); goToDetails(); }}
-            style={{ width: "100%", padding: "11px", background: "linear-gradient(135deg, #00d4ff, #0ea5e9)", color: "#020817", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}
+            style={{ width: "100%", padding: "11px", background: "linear-gradient(135deg, #38bdf8, #0284c7)", color: "#050a14", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}
           >
             Book Test Ride
           </button>
         ) : product.type === "service" ? (
           <button
             onClick={(e) => { e.stopPropagation(); goToDetails(); }}
-            style={{ width: "100%", padding: "11px", background: "linear-gradient(135deg, #7c3aed, #a855f7)", color: "#fff", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}
+            style={{ width: "100%", padding: "11px", background: "linear-gradient(135deg, #818cf8, #a5b4fc)", color: "#fff", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}
           >
             Book Service
           </button>
@@ -244,18 +244,18 @@ const ProductCard = ({ product }) => {
               width: "100%", padding: "11px", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer",
               transition: "all 0.2s",
               background: added ? "#10b981" : "transparent",
-              color: added ? "#fff" : "#00d4ff",
-              border: added ? "none" : "1px solid rgba(0, 212, 255, 0.5)",
+              color: added ? "#fff" : "#38bdf8",
+              border: added ? "none" : "1px solid rgba(56, 189, 248, 0.5)",
             }}
-            onMouseEnter={(e) => { if (!added) { e.currentTarget.style.background = "#00d4ff"; e.currentTarget.style.color = "#020817"; } }}
-            onMouseLeave={(e) => { if (!added) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#00d4ff"; } }}
+            onMouseEnter={(e) => { if (!added) { e.currentTarget.style.background = "#38bdf8"; e.currentTarget.style.color = "#050a14"; } }}
+            onMouseLeave={(e) => { if (!added) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#38bdf8"; } }}
           >
             {added ? "Added! ✓" : "Add to Cart"}
           </button>
         )}
 
         {/* Make in India */}
-        <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px solid #1a2740", fontSize: 10, color: "#FF9933", fontWeight: 600 }}>
+        <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px solid #1c3050", fontSize: 10, color: "#FF9933", fontWeight: 600 }}>
           🇮🇳 Made in India
         </div>
       </div>

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <main style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 30%, #0d1424 60%, #040b16 100%)" }}>
+    <main style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 30%, #0c1525 60%, #050a14 100%)" }}>
       <Hero />
       <MarqueeStrip />
       <StatsSection />

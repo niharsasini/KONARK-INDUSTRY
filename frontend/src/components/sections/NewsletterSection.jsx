@@ -39,19 +39,19 @@ export default function NewsletterSection() {
     <section
       ref={ref}
       style={{
-        background: '#060d1a', borderTop: '1px solid #1e2d40', borderBottom: '1px solid #1e2d40', padding: '60px 24px',
+        background: '#050a14', borderTop: '1px solid #1c3050', borderBottom: '1px solid #1c3050', padding: '60px 24px',
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
         transition: 'all 0.6s cubic-bezier(0.4,0,0.2,1)',
       }}
     >
       <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center' }}>
-        <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, color: '#00d4ff', textTransform: 'uppercase', letterSpacing: '0.14em', background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.25)', padding: '4px 14px', borderRadius: 999, marginBottom: 16 }}>
+        <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase', letterSpacing: '0.14em', background: 'rgba(56,189,248,0.08)', border: '1px solid rgba(56,189,248,0.25)', padding: '4px 14px', borderRadius: 999, marginBottom: 16 }}>
           STAY UPDATED
         </span>
         <h2 style={{ fontSize: 'clamp(22px,3.5vw,36px)', fontWeight: 800, margin: '0 0 12px', lineHeight: 1.2 }}>
           <span style={{ color: '#f1f5f9' }}>Get product launches and</span>{' '}
-          <span style={{ background: 'linear-gradient(135deg,#00d4ff,#7c3aed)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>offers first.</span>
+          <span style={{ background: 'linear-gradient(135deg,#38bdf8,#818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>offers first.</span>
         </h2>
         <p style={{ fontSize: 15, color: '#94a3b8', lineHeight: 1.7, margin: '0 0 32px' }}>
           Join 25,000+ customers who get our newsletter. No spam — just new products, service tips, and exclusive deals.
@@ -70,14 +70,14 @@ export default function NewsletterSection() {
               required
               placeholder="Enter your email address"
               aria-label="Email address for newsletter"
-              style={{ flex: 1, background: '#0f172a', border: '1px solid #1e2d40', borderRadius: 10, padding: '12px 16px', color: '#f1f5f9', fontSize: 14, outline: 'none', transition: 'border-color 0.2s' }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = '#00d4ff')}
-              onBlur={(e) => (e.currentTarget.style.borderColor = '#1e2d40')}
+              style={{ flex: 1, background: '#0c1525', border: '1px solid #1c3050', borderRadius: 10, padding: '12px 16px', color: '#f1f5f9', fontSize: 14, outline: 'none', transition: 'border-color 0.2s' }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = '#38bdf8')}
+              onBlur={(e) => (e.currentTarget.style.borderColor = '#1c3050')}
             />
             <button
               type="submit"
               disabled={loading}
-              style={{ padding: '12px 24px', background: loading ? '#0891b2' : '#00d4ff', color: '#0a0f1e', fontWeight: 700, fontSize: 14, borderRadius: 10, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', whiteSpace: 'nowrap' }}
+              style={{ padding: '12px 24px', background: loading ? '#0891b2' : '#38bdf8', color: '#080f1e', fontWeight: 700, fontSize: 14, borderRadius: 10, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', whiteSpace: 'nowrap' }}
             >
               {loading ? '...' : 'Subscribe →'}
             </button>

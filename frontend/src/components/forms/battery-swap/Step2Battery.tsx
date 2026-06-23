@@ -30,14 +30,14 @@ export default function Step2Battery({ form }: { form: BatterySwapFormState }) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 8 }}>
           {BATTERY_TYPES.map((bt) => (
             <button key={bt.value} onClick={() => setBatteryType(bt.value)} style={{
-              background: batteryType === bt.value ? "rgba(0,212,255,0.08)" : "#0a0f1e",
-              border: `1px solid ${batteryType === bt.value ? "#00d4ff" : "#1e2d40"}`,
+              background: batteryType === bt.value ? "rgba(56,189,248,0.08)" : "#080f1e",
+              border: `1px solid ${batteryType === bt.value ? "#38bdf8" : "#1c3050"}`,
               borderRadius: 10, padding: "14px 12px", cursor: "pointer", textAlign: "left",
               transition: "all 0.15s",
-              boxShadow: batteryType === bt.value ? "0 0 12px rgba(0,212,255,0.15)" : "none",
+              boxShadow: batteryType === bt.value ? "0 0 12px rgba(56,189,248,0.15)" : "none",
             }}>
               <span style={{ fontSize: 20 }}>{bt.icon}</span>
-              <p style={{ fontSize: 13, fontWeight: 700, color: batteryType === bt.value ? "#00d4ff" : "#f1f5f9", margin: "6px 0 2px" }}>{bt.label}</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: batteryType === bt.value ? "#38bdf8" : "#f1f5f9", margin: "6px 0 2px" }}>{bt.label}</p>
               <p style={{ fontSize: 11, color: "#64748b", margin: 0 }}>{bt.sub}</p>
             </button>
           ))}
@@ -74,12 +74,12 @@ export default function Step2Battery({ form }: { form: BatterySwapFormState }) {
         <div style={{ display: "flex", gap: 10, marginTop: 8, flexWrap: "wrap" }}>
           {CONDITIONS.map((c) => (
             <button key={c.value} onClick={() => setBatteryCondition(c.value)} style={{
-              flex: "1 1 140px", background: batteryCondition === c.value ? "rgba(0,212,255,0.08)" : "#0a0f1e",
-              border: `1px solid ${batteryCondition === c.value ? "#00d4ff" : "#1e2d40"}`,
+              flex: "1 1 140px", background: batteryCondition === c.value ? "rgba(56,189,248,0.08)" : "#080f1e",
+              border: `1px solid ${batteryCondition === c.value ? "#38bdf8" : "#1c3050"}`,
               borderRadius: 10, padding: "14px 10px", cursor: "pointer", textAlign: "left",
             }}>
               <span style={{ fontSize: 18 }}>{c.icon}</span>
-              <p style={{ fontSize: 13, fontWeight: 700, color: batteryCondition === c.value ? "#00d4ff" : "#f1f5f9", margin: "6px 0 2px" }}>{c.label}</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: batteryCondition === c.value ? "#38bdf8" : "#f1f5f9", margin: "6px 0 2px" }}>{c.label}</p>
               <p style={{ fontSize: 11, color: "#64748b", margin: 0 }}>{c.sub}</p>
             </button>
           ))}
@@ -98,7 +98,7 @@ export default function Step2Battery({ form }: { form: BatterySwapFormState }) {
             onClick={() => setHasPhysicalDamage((v) => !v)}
             style={{
               width: 44, height: 24, borderRadius: 999, cursor: "pointer",
-              background: hasPhysicalDamage ? "#00d4ff" : "#1e2d40", border: "none",
+              background: hasPhysicalDamage ? "#38bdf8" : "#1c3050", border: "none",
               position: "relative", transition: "background 0.2s",
             }}
           >
@@ -120,13 +120,13 @@ export default function Step2Battery({ form }: { form: BatterySwapFormState }) {
         <div
           onClick={() => uploadStatus !== "uploading" && fileInputRef.current?.click()}
           style={{
-            border: `2px dashed ${uploadStatus === "done" ? "#10b981" : "#00d4ff"}`,
+            border: `2px dashed ${uploadStatus === "done" ? "#10b981" : "#38bdf8"}`,
             borderRadius: 12, padding: "28px 16px", textAlign: "center", cursor: "pointer",
-            background: "rgba(0,212,255,0.03)", transition: "all 0.2s",
+            background: "rgba(56,189,248,0.03)", transition: "all 0.2s",
             marginTop: 8,
           }}
-          onMouseEnter={(e) => { if (uploadStatus !== "uploading") (e.currentTarget as HTMLDivElement).style.background = "rgba(0,212,255,0.07)"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.background = "rgba(0,212,255,0.03)"; }}
+          onMouseEnter={(e) => { if (uploadStatus !== "uploading") (e.currentTarget as HTMLDivElement).style.background = "rgba(56,189,248,0.07)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.background = "rgba(56,189,248,0.03)"; }}
         >
           {photoPreview ? (
             <img src={photoPreview} alt="Battery preview" style={{ maxHeight: 120, maxWidth: 200, borderRadius: 8, marginBottom: 8 }} />
@@ -139,8 +139,8 @@ export default function Step2Battery({ form }: { form: BatterySwapFormState }) {
               ? (
                 <>
                   <p style={{ color: "#94a3b8", fontSize: 13, margin: "0 0 8px" }}>Uploading...</p>
-                  <div style={{ background: "#1e2d40", borderRadius: 999, height: 4, overflow: "hidden", maxWidth: 200, margin: "0 auto" }}>
-                    <div style={{ height: "100%", width: `${uploadProgress}%`, background: "#00d4ff", transition: "width 0.3s" }} />
+                  <div style={{ background: "#1c3050", borderRadius: 999, height: 4, overflow: "hidden", maxWidth: 200, margin: "0 auto" }}>
+                    <div style={{ height: "100%", width: `${uploadProgress}%`, background: "#38bdf8", transition: "width 0.3s" }} />
                   </div>
                 </>
               )

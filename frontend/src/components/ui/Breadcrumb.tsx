@@ -14,7 +14,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
     <nav style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', marginBottom: '24px', flexWrap: 'wrap' }}>
       {items.map((item, i) => (
         <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {i > 0 && <span style={{ color: '#1e2d40' }}>›</span>}
+          {i > 0 && <span style={{ color: '#1c3050' }}>›</span>}
           {item.href && i < items.length - 1 ? (
             <Link
               href={item.href}

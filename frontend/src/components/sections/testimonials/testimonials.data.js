@@ -6,7 +6,7 @@ export const testimonials = [
     rating: 5,
     text: "I bought the Konark X1 eight months ago for my daily commute from Patia to Infocity — about 22km each way. It handles the route perfectly on a single charge. When I had a minor issue with the charging port, the service team came to my house the next morning and fixed it under warranty. That kind of after-sales support is rare.",
     initials: "RKP",
-    color: "#00d4ff",
+    color: "#38bdf8",
   },
   {
     name: "Sunita Mishra",
@@ -15,7 +15,7 @@ export const testimonials = [
     rating: 5,
     text: "We run a small rice processing unit and load-shedding was killing our productivity. We got a Konark LFP battery system installed with our rooftop solar in March last year. Eighteen months now — zero downtime, zero issues. It survived three major grid surges that would have fried a normal battery. The investment paid back in 14 months.",
     initials: "SM",
-    color: "#7c3aed",
+    color: "#818cf8",
   },
   {
     name: "Pradeep Sahoo",

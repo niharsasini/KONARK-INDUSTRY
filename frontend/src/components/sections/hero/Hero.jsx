@@ -42,7 +42,7 @@ const DECK = [
     price: p.price,
     slug: p.slug,
     badge: "FEATURED",
-    badgeColor: "#00d4ff",
+    badgeColor: "#38bdf8",
     specs: [p.category.replace("Electric Vehicles", "Electric"), `⭐ ${p.rating}`],
   })),
   ...industrialProducts.map((p) => ({
@@ -52,7 +52,7 @@ const DECK = [
     price: p.isUpcoming ? null : p.price,
     slug: p.slug,
     badge: p.isUpcoming ? "UPCOMING" : p.isNew ? "NEW" : "FEATURED",
-    badgeColor: p.isUpcoming ? "#7c3aed" : "#00d4ff",
+    badgeColor: p.isUpcoming ? "#818cf8" : "#38bdf8",
     specs: [p.category, `⭐ ${p.rating}`],
   })),
   ...CAR_IMAGES.map((src) => ({
@@ -62,7 +62,7 @@ const DECK = [
     price: null,
     slug: null,
     badge: "UPCOMING",
-    badgeColor: "#7c3aed",
+    badgeColor: "#818cf8",
     specs: ["Electric", "New Model 2025"],
   })),
 ];
@@ -104,39 +104,52 @@ export default function Hero() {
 
   return (
     <section className="hero-section">
-      {/* Animated grid layer */}
-      <div style={{
-        position: "absolute", inset: 0, zIndex: 0,
-        backgroundImage: `
-          linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px)
-        `,
-        backgroundSize: "60px 60px",
-        pointerEvents: "none",
-      }} />
+      {/* Animated gradient mesh background */}
+      <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "radial-gradient(ellipse 100% 100% at 20% 50%, rgba(56,189,248,0.15) 0%, transparent 50%), radial-gradient(ellipse 80% 80% at 80% 20%, rgba(129,140,248,0.12) 0%, transparent 50%), radial-gradient(ellipse 60% 60% at 60% 80%, rgba(249,115,22,0.06) 0%, transparent 50%)",
+        }} />
 
-      {/* Glowing orbs */}
-      <div className="hero-orb-cyan" style={{
-        position: "absolute", top: "-20%", right: "-10%",
-        width: "700px", height: "700px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 65%)",
-        filter: "blur(60px)", pointerEvents: "none", zIndex: 0,
-        animation: "float 8s ease-in-out infinite",
-      }} />
-      <div className="hero-orb-purple" style={{
-        position: "absolute", bottom: "-20%", left: "-10%",
-        width: "600px", height: "600px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 65%)",
-        filter: "blur(60px)", pointerEvents: "none", zIndex: 0,
-        animation: "float 10s ease-in-out infinite reverse",
-      }} />
+        <div style={{
+          position: "absolute", width: 700, height: 700, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(56,189,248,0.12) 0%, transparent 70%)",
+          top: -200, right: -100,
+          animation: "heroOrb1 12s ease-in-out infinite",
+        }} />
+        <div style={{
+          position: "absolute", width: 500, height: 500, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(129,140,248,0.1) 0%, transparent 70%)",
+          bottom: -150, left: -100,
+          animation: "heroOrb2 15s ease-in-out infinite",
+        }} />
+        <div style={{
+          position: "absolute", width: 300, height: 300, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)",
+          top: "40%", left: "40%",
+          animation: "heroOrb3 18s ease-in-out infinite",
+        }} />
+
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: "linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }} />
+
+        <div style={{
+          position: "absolute", left: 0, right: 0, height: 1,
+          background: "linear-gradient(90deg, transparent, rgba(56,189,248,0.3), transparent)",
+          animation: "scanLine 8s linear infinite",
+          top: "30%",
+        }} />
+      </div>
 
       {/* Rotating rings */}
       <div className="hero-ring-1" style={{
         position: "absolute", top: "50%", right: "5%",
         transform: "translateY(-50%)",
         width: "500px", height: "500px",
-        border: "1px solid rgba(0,212,255,0.08)",
+        border: "1px solid rgba(56,189,248,0.08)",
         borderRadius: "50%",
         animation: "spin 30s linear infinite",
         pointerEvents: "none", zIndex: 0,
@@ -146,7 +159,7 @@ export default function Hero() {
         transform: "translateY(-50%)",
         width: "380px", height: "380px",
         marginTop: "-60px", marginRight: "-60px",
-        border: "1px solid rgba(124,58,237,0.08)",
+        border: "1px solid rgba(129,140,248,0.08)",
         borderRadius: "50%",
         animation: "spin 20s linear infinite reverse",
         pointerEvents: "none", zIndex: 0,
@@ -161,13 +174,13 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.6 }}
-            style={{ marginBottom: 28 }}
+            style={{ marginBottom: 12 }}
           >
             <span className="hero-badge">
               <span style={{
                 width: 6, height: 6, borderRadius: "50%",
-                background: "#00d4ff",
-                boxShadow: "0 0 8px #00d4ff",
+                background: "#38bdf8",
+                boxShadow: "0 0 8px #38bdf8",
                 animation: "pulse-glow 2s infinite",
                 display: "inline-block",
               }} />
@@ -176,7 +189,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Headline */}
-          <div style={{ marginBottom: 24 }}>
+          <div style={{ marginBottom: 0 }}>
             {[
               { text: "Power Your", gradient: false },
               { text: "World With", gradient: false },
@@ -205,14 +218,8 @@ export default function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
                   transition={{ duration: 0.4 }}
-                  className="hero-headline"
-                  style={{
-                    background: "linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    margin: 0,
-                  }}
+                  className="hero-headline hero-rotating-word"
+                  style={{ margin: 0 }}
                 >
                   {ROTATING_WORDS[wordIndex]}
                 </motion.h1>
@@ -226,6 +233,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.6 }}
+            style={{ color: "rgba(203, 213, 225, 0.8)", marginTop: 16 }}
           >
             We make electric scooters, e-rickshaws, and batteries in Bhubaneswar.
             We fix your AC, EV charger, and electrical faults at your doorstep.
@@ -253,8 +261,8 @@ export default function Hero() {
               onClick={() => router.push("/services/enquiry")}
               className="hero-btn-ghost"
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,212,255,0.5)";
-                e.currentTarget.style.color = "#00d4ff";
+                e.currentTarget.style.borderColor = "rgba(56,189,248,0.5)";
+                e.currentTarget.style.color = "#38bdf8";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = "rgba(241,245,249,0.2)";
@@ -304,7 +312,7 @@ export default function Hero() {
                     position: "absolute", inset: 0,
                     background: "rgba(15,23,42,0.92)",
                     backdropFilter: "blur(4px)",
-                    border: "1px solid rgba(0,212,255,0.12)",
+                    border: "1px solid rgba(56,189,248,0.12)",
                     borderRadius: 20,
                     transform: `rotate(${rotate}deg) translate(${tx}px, ${ty}px)`,
                     transformOrigin: "center bottom",
@@ -342,11 +350,11 @@ export default function Hero() {
                   position: "relative", zIndex: 3,
                   background: "rgba(13, 20, 36, 0.8)",
                   backdropFilter: "blur(20px)",
-                  border: "1px solid rgba(0, 212, 255, 0.2)",
+                  border: "1px solid rgba(56, 189, 248, 0.2)",
                   borderRadius: 20,
                   padding: 24,
                   cursor: card.slug ? "pointer" : "default",
-                  boxShadow: "0 0 30px rgba(0,212,255,0.15), 0 20px 60px rgba(0,0,0,0.5)",
+                  boxShadow: "0 0 30px rgba(56,189,248,0.15), 0 20px 60px rgba(0,0,0,0.5)",
                   transformStyle: "preserve-3d",
                   animation: "float 6s ease-in-out infinite",
                 }}
@@ -356,7 +364,7 @@ export default function Hero() {
                 <div style={{
                   width: "100%", height: 240,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "#060d1a", borderRadius: 12,
+                  background: "#050a14", borderRadius: 12,
                   overflow: "hidden", marginBottom: 16,
                   position: "relative",
                 }}>
@@ -388,7 +396,7 @@ export default function Hero() {
                 {/* Price */}
                 <p style={{
                   fontSize: 22, fontWeight: 800,
-                  color: "#00d4ff",
+                  color: "#38bdf8",
                   margin: "0 0 14px",
                 }}>
                   {card.price ? `₹${card.price.toLocaleString("en-IN")}` : "Coming Soon"}
@@ -398,9 +406,9 @@ export default function Hero() {
                 <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
                   {card.specs.map((s) => (
                     <span key={s} style={{
-                      fontSize: 11, fontWeight: 600, color: "#a78bfa",
-                      background: "rgba(124,58,237,0.15)",
-                      border: "1px solid rgba(124,58,237,0.3)",
+                      fontSize: 11, fontWeight: 600, color: "#a5b4fc",
+                      background: "rgba(129,140,248,0.15)",
+                      border: "1px solid rgba(129,140,248,0.3)",
                       padding: "4px 10px", borderRadius: 6,
                     }}>
                       {s}
@@ -413,7 +421,7 @@ export default function Hero() {
                   <Link
                     href={`/products/${card.slug}`}
                     onClick={(e) => e.stopPropagation()}
-                    style={{ fontSize: 12, color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}
+                    style={{ fontSize: 12, color: "#38bdf8", textDecoration: "none", fontWeight: 600 }}
                   >
                     View Product →
                   </Link>
@@ -439,7 +447,7 @@ export default function Hero() {
                 style={{
                   width: i === current ? 24 : 8,
                   height: 8, borderRadius: 4,
-                  background: i === current ? "#00d4ff" : "#1e2d40",
+                  background: i === current ? "#38bdf8" : "#1c3050",
                   cursor: "pointer",
                   transition: "all 300ms",
                 }}
@@ -462,17 +470,17 @@ export default function Hero() {
                   flex: 1, minWidth: 0, display: "flex", flexDirection: "column",
                   alignItems: "center", gap: 4, padding: "10px 8px",
                   background: "rgba(15,23,42,0.8)",
-                  border: "1px solid #1e2d40", borderRadius: 10,
+                  border: "1px solid #1c3050", borderRadius: 10,
                   textDecoration: "none", fontSize: 11,
                   color: "#94a3b8", fontWeight: 600, textAlign: "center",
                   transition: "all 0.2s",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "#00d4ff";
-                  e.currentTarget.style.color = "#00d4ff";
+                  e.currentTarget.style.borderColor = "#38bdf8";
+                  e.currentTarget.style.color = "#38bdf8";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "#1e2d40";
+                  e.currentTarget.style.borderColor = "#1c3050";
                   e.currentTarget.style.color = "#94a3b8";
                 }}
               >
@@ -496,7 +504,7 @@ export default function Hero() {
         }}
       >
         <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase" }}>Scroll</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18, color: "#00d4ff" }}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18, color: "#38bdf8" }}>
           <path d="M6 9l6 6 6-6" />
         </svg>
       </motion.div>

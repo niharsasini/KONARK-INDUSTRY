@@ -3,8 +3,8 @@ import { useState } from "react";
 
 const inputStyle = {
   width: "100%",
-  background: "#0f172a",
-  border: "1px solid #1e2d40",
+  background: "#0c1525",
+  border: "1px solid #1c3050",
   color: "#f1f5f9",
   fontSize: 14,
   padding: "10px 14px",
@@ -44,7 +44,7 @@ export default function EnquiryModal({ open, onClose, product }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 20, padding: 32, width: "100%", maxWidth: 480, position: "relative", maxHeight: "90vh", overflowY: "auto" }}
+        style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 20, padding: 32, width: "100%", maxWidth: 480, position: "relative", maxHeight: "90vh", overflowY: "auto" }}
       >
         {/* Close */}
         <button
@@ -55,14 +55,14 @@ export default function EnquiryModal({ open, onClose, product }) {
         </button>
 
         <h2 style={{ fontSize: 20, fontWeight: 700, color: "#f1f5f9", margin: "0 0 6px" }}>Enquire Now</h2>
-        {product && <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 24px" }}>Product: <strong style={{ color: "#00d4ff" }}>{product.name}</strong></p>}
+        {product && <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 24px" }}>Product: <strong style={{ color: "#38bdf8" }}>{product.name}</strong></p>}
 
         {success ? (
           <div style={{ textAlign: "center", padding: "40px 0" }}>
             <div style={{ fontSize: 40, marginBottom: 16 }}>✅</div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", marginBottom: 8 }}>Enquiry Sent!</h3>
             <p style={{ fontSize: 14, color: "#94a3b8" }}>We'll call you back within 2 hours.</p>
-            <button onClick={onClose} style={{ marginTop: 20, padding: "10px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, border: "none", borderRadius: 8, cursor: "pointer" }}>Close</button>
+            <button onClick={onClose} style={{ marginTop: 20, padding: "10px 24px", background: "#38bdf8", color: "#080f1e", fontWeight: 700, border: "none", borderRadius: 8, cursor: "pointer" }}>Close</button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -73,8 +73,8 @@ export default function EnquiryModal({ open, onClose, product }) {
               value={form.name}
               onChange={handleChange}
               style={inputStyle}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
             />
             <input
               required
@@ -83,8 +83,8 @@ export default function EnquiryModal({ open, onClose, product }) {
               value={form.phone}
               onChange={handleChange}
               style={inputStyle}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
             />
             <input
               name="email"
@@ -93,8 +93,8 @@ export default function EnquiryModal({ open, onClose, product }) {
               value={form.email}
               onChange={handleChange}
               style={inputStyle}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
             />
             <input
               name="quantity"
@@ -102,8 +102,8 @@ export default function EnquiryModal({ open, onClose, product }) {
               value={form.quantity}
               onChange={handleChange}
               style={inputStyle}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
             />
             <textarea
               name="message"
@@ -112,13 +112,13 @@ export default function EnquiryModal({ open, onClose, product }) {
               value={form.message}
               onChange={handleChange}
               style={{ ...inputStyle, resize: "vertical" }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
             />
             <button
               type="submit"
               disabled={loading}
-              style={{ padding: "13px", background: loading ? "#1e2d40" : "#00d4ff", color: loading ? "#94a3b8" : "#0a0f1e", fontWeight: 700, fontSize: 15, borderRadius: 8, border: "none", cursor: loading ? "not-allowed" : "pointer", transition: "background 0.2s" }}
+              style={{ padding: "13px", background: loading ? "#1c3050" : "#38bdf8", color: loading ? "#94a3b8" : "#080f1e", fontWeight: 700, fontSize: 15, borderRadius: 8, border: "none", cursor: loading ? "not-allowed" : "pointer", transition: "background 0.2s" }}
             >
               {loading ? "Sending..." : "Send Enquiry"}
             </button>

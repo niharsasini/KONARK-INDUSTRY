@@ -26,8 +26,8 @@ const MAJOR_CITIES = [
 
 const INPUT = {
   width: "100%",
-  background: "#0f172a",
-  border: "1px solid #1e2d40",
+  background: "#0c1525",
+  border: "1px solid #1c3050",
   borderRadius: 10,
   padding: "12px 16px",
   color: "#f1f5f9",
@@ -67,11 +67,11 @@ export default function CheckoutPage() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const focus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#00d4ff";
-    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(0,212,255,0.1)";
+    e.currentTarget.style.borderColor = "#38bdf8";
+    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(56,189,248,0.1)";
   };
   const blur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#1e2d40";
+    e.currentTarget.style.borderColor = "#1c3050";
     e.currentTarget.style.boxShadow = "none";
   };
 
@@ -116,25 +116,25 @@ export default function CheckoutPage() {
 
   if (step === "success") {
     return (
-      <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ textAlign: "center", padding: "40px 24px", maxWidth: 480 }}>
           <div style={{ fontSize: 64, marginBottom: 24 }}>🎉</div>
           <h1 style={{ fontSize: 28, fontWeight: 800, color: "#f1f5f9", margin: "0 0 12px" }}>Order Placed!</h1>
           {orderNumber && (
-            <p style={{ fontSize: 13, color: "#00d4ff", fontWeight: 700, margin: "0 0 8px" }}>Order #{orderNumber}</p>
+            <p style={{ fontSize: 13, color: "#38bdf8", fontWeight: 700, margin: "0 0 8px" }}>Order #{orderNumber}</p>
           )}
           <p style={{ fontSize: 15, color: "#94a3b8", lineHeight: 1.8, marginBottom: 12 }}>
             Your order has been confirmed. Our team will call you on{" "}
-            <strong style={{ color: "#00d4ff" }}>{form.phone}</strong> to confirm delivery.
+            <strong style={{ color: "#38bdf8" }}>{form.phone}</strong> to confirm delivery.
           </p>
           <p style={{ fontSize: 13, color: "#64748b", marginBottom: 32 }}>
             Estimated delivery: 5–7 business days to {form.city || "your city"}.
           </p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <Link href="/products" style={{ padding: "12px 28px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: "none" }}>
+            <Link href="/products" style={{ padding: "12px 28px", background: "#38bdf8", color: "#080f1e", fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: "none" }}>
               Continue Shopping
             </Link>
-            <Link href="/orders" style={{ padding: "12px 28px", border: "1px solid #1e2d40", color: "#94a3b8", fontWeight: 600, fontSize: 14, borderRadius: 10, textDecoration: "none" }}>
+            <Link href="/orders" style={{ padding: "12px 28px", border: "1px solid #1c3050", color: "#94a3b8", fontWeight: 600, fontSize: 14, borderRadius: 10, textDecoration: "none" }}>
               View Orders
             </Link>
           </div>
@@ -144,7 +144,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
+    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Cart", href: "/cart" }, { label: "Checkout" }]} />
         <h1 style={{ fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }}>Checkout</h1>
@@ -153,13 +153,13 @@ export default function CheckoutPage() {
             <div key={s} style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <div style={{
                 width: 24, height: 24, borderRadius: "50%", border: "2px solid",
-                borderColor: (step === "details" && i === 0) || (step === "payment" && i <= 1) ? "#00d4ff" : "#1e2d40",
-                background: (step === "details" && i === 0) || (step === "payment" && i <= 1) ? "rgba(0,212,255,0.15)" : "transparent",
+                borderColor: (step === "details" && i === 0) || (step === "payment" && i <= 1) ? "#38bdf8" : "#1c3050",
+                background: (step === "details" && i === 0) || (step === "payment" && i <= 1) ? "rgba(56,189,248,0.15)" : "transparent",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 11, fontWeight: 700, color: "#00d4ff",
+                fontSize: 11, fontWeight: 700, color: "#38bdf8",
               }}>{i + 1}</div>
               <span style={{ fontSize: 13, color: (step === "details" && i === 0) || (step === "payment" && i <= 1) ? "#f1f5f9" : "#64748b", fontWeight: 600 }}>{s}</span>
-              {i === 0 && <span style={{ color: "#1e2d40" }}>›</span>}
+              {i === 0 && <span style={{ color: "#1c3050" }}>›</span>}
             </div>
           ))}
         </div>
@@ -168,7 +168,7 @@ export default function CheckoutPage() {
           {/* Form */}
           <div>
             {step === "details" && (
-              <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, padding: "28px" }}>
+              <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "28px" }}>
                 <h2 style={{ fontSize: 17, fontWeight: 700, color: "#f1f5f9", margin: "0 0 24px" }}>Delivery Details</h2>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                   <div style={{ gridColumn: "1 / -1" }}>
@@ -201,10 +201,10 @@ export default function CheckoutPage() {
                       onFocus={focus}
                     />
                     {cityOptions.length > 0 && (
-                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 100, background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 8, overflow: "hidden", boxShadow: "0 8px 24px rgba(0,0,0,0.3)" }}>
+                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 100, background: "#0c1525", border: "1px solid #1c3050", borderRadius: 8, overflow: "hidden", boxShadow: "0 8px 24px rgba(0,0,0,0.3)" }}>
                         {cityOptions.map((c) => (
                           <button key={c} type="button" onClick={() => { setForm((f) => ({ ...f, city: c })); setCityOptions([]); }} style={{ display: "block", width: "100%", padding: "10px 14px", background: "transparent", border: "none", color: "#f1f5f9", fontSize: 13, textAlign: "left", cursor: "pointer" }}
-                            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,212,255,0.06)")}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(56,189,248,0.06)")}
                             onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                           >{c}</button>
                         ))}
@@ -257,7 +257,7 @@ export default function CheckoutPage() {
                 </div>
                 <button
                   onClick={() => { if (!form.name || !form.phone || !form.address || !form.city) { toast.error("Please fill all required fields."); return; } setStep("payment"); }}
-                  style={{ marginTop: 24, width: "100%", padding: "14px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer" }}
+                  style={{ marginTop: 24, width: "100%", padding: "14px", background: "#38bdf8", color: "#080f1e", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer" }}
                 >
                   Continue to Payment →
                 </button>
@@ -265,7 +265,7 @@ export default function CheckoutPage() {
             )}
 
             {step === "payment" && (
-              <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, padding: "28px" }}>
+              <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "28px" }}>
                 <h2 style={{ fontSize: 17, fontWeight: 700, color: "#f1f5f9", margin: "0 0 24px" }}>Payment Method</h2>
                 <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
                   {[
@@ -275,12 +275,12 @@ export default function CheckoutPage() {
                   ].map((opt) => (
                     <label key={opt.value} style={{
                       display: "flex", alignItems: "center", gap: 14, padding: "14px 16px",
-                      border: `1px solid ${payment === opt.value ? "#00d4ff" : "#1e2d40"}`,
+                      border: `1px solid ${payment === opt.value ? "#38bdf8" : "#1c3050"}`,
                       borderRadius: 10, cursor: "pointer",
-                      background: payment === opt.value ? "rgba(0,212,255,0.06)" : "transparent",
+                      background: payment === opt.value ? "rgba(56,189,248,0.06)" : "transparent",
                       transition: "all 0.2s",
                     }}>
-                      <input type="radio" name="payment" value={opt.value} checked={payment === opt.value} onChange={(e) => setPayment(e.target.value)} style={{ accentColor: "#00d4ff", width: 16, height: 16 }} />
+                      <input type="radio" name="payment" value={opt.value} checked={payment === opt.value} onChange={(e) => setPayment(e.target.value)} style={{ accentColor: "#38bdf8", width: 16, height: 16 }} />
                       <div>
                         <p style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{opt.label}</p>
                         <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>{opt.desc}</p>
@@ -290,13 +290,13 @@ export default function CheckoutPage() {
                 </div>
                 {error && <p style={{ fontSize: 13, color: "#ef4444", marginBottom: 12 }}>{error}</p>}
                 <div style={{ display: "flex", gap: 10 }}>
-                  <button onClick={() => setStep("details")} style={{ flex: 1, padding: "13px", border: "1px solid #1e2d40", background: "transparent", color: "#94a3b8", fontWeight: 600, fontSize: 14, borderRadius: 10, cursor: "pointer" }}>
+                  <button onClick={() => setStep("details")} style={{ flex: 1, padding: "13px", border: "1px solid #1c3050", background: "transparent", color: "#94a3b8", fontWeight: 600, fontSize: 14, borderRadius: 10, cursor: "pointer" }}>
                     ← Back
                   </button>
                   <button
                     onClick={handlePlaceOrder}
                     disabled={loading || items.length === 0}
-                    style={{ flex: 2, padding: "13px", background: loading ? "#0e7490" : "#00d4ff", color: "#0a0f1e", fontWeight: 800, fontSize: 14, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: items.length === 0 ? 0.5 : 1 }}
+                    style={{ flex: 2, padding: "13px", background: loading ? "#0e7490" : "#38bdf8", color: "#080f1e", fontWeight: 800, fontSize: 14, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: items.length === 0 ? 0.5 : 1 }}
                   >
                     {loading ? "Placing Order..." : "Place Order →"}
                   </button>
@@ -306,12 +306,12 @@ export default function CheckoutPage() {
           </div>
 
           {/* Order summary */}
-          <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, padding: "24px" }}>
+          <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "24px" }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", margin: "0 0 16px" }}>Order Summary</h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16, maxHeight: 200, overflowY: "auto" }}>
               {items.map((item) => (
-                <div key={item.slug} style={{ display: "flex", alignItems: "center", gap: 10, paddingBottom: 10, borderBottom: "1px solid #1e2d40" }}>
-                  <div style={{ width: 44, height: 44, background: "#111827", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, position: "relative" }}>
+                <div key={item.slug} style={{ display: "flex", alignItems: "center", gap: 10, paddingBottom: 10, borderBottom: "1px solid #1c3050" }}>
+                  <div style={{ width: 44, height: 44, background: "#0e1928", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, position: "relative" }}>
                     <Image src={item.image} alt={item.name} fill style={{ objectFit: "contain", padding: 3 }} />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -334,9 +334,9 @@ export default function CheckoutPage() {
                 <span style={{ color: r.green ? "#10b981" : "#f1f5f9", fontWeight: 500 }}>{r.value}</span>
               </div>
             ))}
-            <div style={{ borderTop: "1px solid #1e2d40", paddingTop: 12, display: "flex", justifyContent: "space-between", fontSize: 16, fontWeight: 800 }}>
+            <div style={{ borderTop: "1px solid #1c3050", paddingTop: 12, display: "flex", justifyContent: "space-between", fontSize: 16, fontWeight: 800 }}>
               <span style={{ color: "#f1f5f9" }}>Total</span>
-              <span style={{ color: "#00d4ff" }}>{sub ? `₹${total.toLocaleString("en-IN")}` : "On Request"}</span>
+              <span style={{ color: "#38bdf8" }}>{sub ? `₹${total.toLocaleString("en-IN")}` : "On Request"}</span>
             </div>
             {sub > 0 && sub < 5000 && (
               <div style={{ marginTop: 12, padding: "10px 12px", background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 8, fontSize: 12, color: "#10b981" }}>

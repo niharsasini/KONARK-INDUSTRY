@@ -205,20 +205,20 @@ export default function BatterySwapPage() {
   };
 
   return (
-    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)" }}>
+    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px 24px 0" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Battery Swap" }]} />
       </div>
 
       {/* Hero */}
       <section style={{ position: "relative", overflow: "hidden", padding: "20px 24px 80px", textAlign: "center" }}>
-        <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(56,189,248,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(0,212,255,0.4)", color: "#00d4ff",
+            borderRadius: 999, border: "1px solid rgba(56,189,248,0.4)", color: "#38bdf8",
             fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em",
-            background: "rgba(0,212,255,0.08)", marginBottom: 20,
+            background: "rgba(56,189,248,0.08)", marginBottom: 20,
           }}>
             NEW SERVICE ⚡
           </span>
@@ -232,8 +232,8 @@ export default function BatterySwapPage() {
           <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
             {["⚡ Charged in minutes", "🔋 Same capacity guaranteed", "📍 Home pickup available"].map((pill) => (
               <span key={pill} style={{
-                padding: "6px 14px", borderRadius: 999, background: "rgba(0,212,255,0.08)",
-                border: "1px solid rgba(0,212,255,0.2)", color: "#94a3b8", fontSize: 13,
+                padding: "6px 14px", borderRadius: 999, background: "rgba(56,189,248,0.08)",
+                border: "1px solid rgba(56,189,248,0.2)", color: "#94a3b8", fontSize: 13,
               }}>{pill}</span>
             ))}
           </div>
@@ -255,25 +255,25 @@ export default function BatterySwapPage() {
           )}
 
           {step === 1 && (
-            <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, padding: "32px", marginBottom: 0 }}>
+            <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "32px", marginBottom: 0 }}>
               <Step1Details form={form} />
             </div>
           )}
 
           {step === 2 && (
-            <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, padding: "32px", marginBottom: 0 }}>
+            <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "32px", marginBottom: 0 }}>
               <Step2Battery form={form} />
             </div>
           )}
 
           {step === 3 && (
-            <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, padding: "32px", marginBottom: 0 }}>
+            <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "32px", marginBottom: 0 }}>
               <Step3Schedule form={form} />
             </div>
           )}
 
           {step === 4 && (
-            <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, padding: "32px", marginBottom: 0 }}>
+            <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "32px", marginBottom: 0 }}>
               <Step4Review form={form} />
             </div>
           )}

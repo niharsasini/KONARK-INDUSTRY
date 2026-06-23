@@ -38,9 +38,9 @@ export default function WishlistPage() {
   }
 
   return (
-    <div style={{ background: 'linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)', minHeight: '100vh', paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
+    <div style={{ background: 'linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)', minHeight: '100vh', paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       {/* Hero */}
-      <div style={{ background: '#0f172a', borderBottom: '1px solid #1e2d40', padding: '64px 24px 40px' }}>
+      <div style={{ background: '#0c1525', borderBottom: '1px solid #1c3050', padding: '64px 24px 40px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'My Wishlist' }]} />
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
@@ -55,7 +55,7 @@ export default function WishlistPage() {
             {wishlistProducts.length > 0 && (
               <button
                 onClick={handleAddAllToCart}
-                style={{ padding: '10px 20px', background: '#00d4ff', color: '#0a0f1e', fontWeight: 700, fontSize: 14, borderRadius: 10, border: 'none', cursor: 'pointer' }}
+                style={{ padding: '10px 20px', background: '#38bdf8', color: '#080f1e', fontWeight: 700, fontSize: 14, borderRadius: 10, border: 'none', cursor: 'pointer' }}
               >
                 Add All to Cart 🛒
               </button>
@@ -68,7 +68,7 @@ export default function WishlistPage() {
         {loading ? (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 20 }}>
             {[...Array(4)].map((_, i) => (
-              <div key={i} style={{ height: 280, background: '#0f172a', border: '1px solid #1e2d40', borderRadius: 14, animation: 'pulse 1.5s infinite' }} />
+              <div key={i} style={{ height: 280, background: '#0c1525', border: '1px solid #1c3050', borderRadius: 14, animation: 'pulse 1.5s infinite' }} />
             ))}
             <style>{`@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }`}</style>
           </div>
@@ -83,7 +83,7 @@ export default function WishlistPage() {
             </p>
             <Link
               href="/products"
-              style={{ background: '#00d4ff', color: '#0a0f1e', padding: '12px 28px', borderRadius: 10, fontWeight: 700, textDecoration: 'none', fontSize: 15 }}
+              style={{ background: '#38bdf8', color: '#080f1e', padding: '12px 28px', borderRadius: 10, fontWeight: 700, textDecoration: 'none', fontSize: 15 }}
             >
               Start Browsing Products →
             </Link>
@@ -93,7 +93,7 @@ export default function WishlistPage() {
             {wishlistProducts.map((product: any) => (
               <div
                 key={product.slug}
-                style={{ background: '#0f172a', border: '1px solid #1e2d40', borderRadius: 14, overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative' }}
+                style={{ background: '#0c1525', border: '1px solid #1c3050', borderRadius: 14, overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative' }}
               >
                 <button
                   onClick={() => { toggle(product.slug); toast('Removed from wishlist') }}
@@ -103,7 +103,7 @@ export default function WishlistPage() {
                   ✕
                 </button>
                 <Link href={`/products/${product.slug}`} style={{ textDecoration: 'none' }}>
-                  <div style={{ background: '#111827', height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                  <div style={{ background: '#0e1928', height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                     {(() => {
                       const src = product.images?.[0] || product.image
                       const isLocal = src?.startsWith('/productimg/') || src?.startsWith('/konark/')
@@ -117,7 +117,7 @@ export default function WishlistPage() {
                   <div style={{ padding: 14 }}>
                     <p style={{ fontSize: 11, color: '#64748b', margin: '0 0 4px' }}>{product.category}</p>
                     <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: '0 0 8px', lineHeight: 1.4 }}>{product.name}</p>
-                    <p style={{ fontSize: 15, fontWeight: 700, color: product.price ? '#00d4ff' : '#94a3b8', margin: 0 }}>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: product.price ? '#38bdf8' : '#94a3b8', margin: 0 }}>
                       {product.price ? `₹${product.price.toLocaleString('en-IN')}` : 'Price on Request'}
                     </p>
                   </div>
@@ -128,7 +128,7 @@ export default function WishlistPage() {
                       addItem({ id: product.id || product.slug, slug: product.slug, name: product.name, price: product.price, image: product.images?.[0] || product.image || '', category: product.category || '', type: product.type || 'product' })
                       toast.success(`${product.name} added to cart!`)
                     }}
-                    style={{ margin: '0 14px 14px', padding: '8px', background: '#00d4ff', color: '#0a0f1e', fontWeight: 700, fontSize: 13, borderRadius: 8, border: 'none', cursor: 'pointer' }}
+                    style={{ margin: '0 14px 14px', padding: '8px', background: '#38bdf8', color: '#080f1e', fontWeight: 700, fontSize: 13, borderRadius: 8, border: 'none', cursor: 'pointer' }}
                   >
                     Add to Cart
                   </button>

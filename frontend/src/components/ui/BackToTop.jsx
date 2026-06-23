@@ -24,14 +24,14 @@ export default function BackToTop() {
           style={{
             position: "fixed", bottom: 90, right: 24, zIndex: 998,
             width: 44, height: 44, borderRadius: "50%",
-            background: "#0f172a", border: "1px solid #1e2d40",
-            color: "#00d4ff", cursor: "pointer",
+            background: "#0c1525", border: "1px solid #1c3050",
+            color: "#38bdf8", cursor: "pointer",
             display: "flex", alignItems: "center", justifyContent: "center",
             boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
             transition: "border-color 0.2s, background 0.2s",
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.background = "rgba(0,212,255,0.1)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.background = "#0f172a"; }}
+          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#38bdf8"; e.currentTarget.style.background = "rgba(56,189,248,0.1)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1c3050"; e.currentTarget.style.background = "#0c1525"; }}
         >
           <svg viewBox="0 0 20 20" fill="currentColor" style={{ width: 18, height: 18 }}>
             <path fillRule="evenodd" d="M14.77 12.79a.75.75 0 01-1.06-.02L10 8.832 6.29 12.77a.75.75 0 11-1.08-1.04l4.25-4.5a.75.75 0 011.08 0l4.25 4.5a.75.75 0 01-.02 1.06z" clipRule="evenodd" />

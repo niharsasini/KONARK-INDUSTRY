@@ -19,8 +19,8 @@ const SERVICE_OPTIONS = [
 ];
 
 const INPUT_STYLE: React.CSSProperties = {
-  background: "#0f172a",
-  border: "1px solid #1e2d40",
+  background: "#0c1525",
+  border: "1px solid #1c3050",
   borderRadius: 10,
   padding: "12px 16px",
   color: "#f1f5f9",
@@ -45,7 +45,7 @@ function Field({ label, required, children }: { label: string; required?: boolea
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <label style={LABEL_STYLE}>
-        {label} {required && <span style={{ color: "#00d4ff" }}>*</span>}
+        {label} {required && <span style={{ color: "#38bdf8" }}>*</span>}
       </label>
       {children}
     </div>
@@ -65,11 +65,11 @@ export default function EnquiryPage() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const focusStyle = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#00d4ff";
-    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(0,212,255,0.1)";
+    e.currentTarget.style.borderColor = "#38bdf8";
+    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(56,189,248,0.1)";
   };
   const blurStyle = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#1e2d40";
+    e.currentTarget.style.borderColor = "#1c3050";
     e.currentTarget.style.boxShadow = "none";
   };
 
@@ -88,23 +88,23 @@ export default function EnquiryPage() {
   };
 
   return (
-    <main style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
+    <main style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       {/* Hero */}
       <div style={{
-        background: "linear-gradient(180deg, #060d1a 0%, #0a0f1e 100%)",
-        borderBottom: "1px solid #1e2d40",
+        background: "linear-gradient(180deg, #050a14 0%, #080f1e 100%)",
+        borderBottom: "1px solid #1c3050",
         padding: "60px 24px 48px",
       }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           {/* Breadcrumb */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20, fontSize: 13, color: "#475569" }}>
             <Link href="/" style={{ color: "#475569", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "#475569")}
             >Home</Link>
             <span>›</span>
             <Link href="/services" style={{ color: "#475569", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "#475569")}
             >Services</Link>
             <span>›</span>
@@ -131,7 +131,7 @@ export default function EnquiryPage() {
 
             {success ? (
               <div style={{
-                background: "#0f172a", border: "1px solid #1e2d40",
+                background: "#0c1525", border: "1px solid #1c3050",
                 borderRadius: 16, padding: "48px 32px", textAlign: "center",
               }}>
                 <div style={{ fontSize: 56, marginBottom: 20 }}>✅</div>
@@ -140,12 +140,12 @@ export default function EnquiryPage() {
                 </h3>
                 <p style={{ fontSize: 15, color: "#94a3b8", lineHeight: 1.8, marginBottom: 28 }}>
                   We've received your request. Our team will call you on{" "}
-                  <strong style={{ color: "#00d4ff" }}>{form.phone}</strong> within 2 hours to confirm your service slot.
+                  <strong style={{ color: "#38bdf8" }}>{form.phone}</strong> within 2 hours to confirm your service slot.
                 </p>
                 <button
                   onClick={() => { setSuccess(false); setForm({ name: "", phone: "", email: "", service: "", city: "", date: "", problem: "", urgency: "moderate" }); }}
                   style={{
-                    background: "#00d4ff", color: "#0a0f1e", padding: "12px 28px",
+                    background: "#38bdf8", color: "#080f1e", padding: "12px 28px",
                     borderRadius: 10, fontWeight: 700, fontSize: 14, border: "none",
                     cursor: "pointer",
                   }}
@@ -188,7 +188,7 @@ export default function EnquiryPage() {
                   >
                     <option value="" disabled>Select a service...</option>
                     {SERVICE_OPTIONS.map((s) => (
-                      <option key={s} value={s} style={{ background: "#0f172a" }}>{s}</option>
+                      <option key={s} value={s} style={{ background: "#0c1525" }}>{s}</option>
                     ))}
                   </select>
                 </Field>
@@ -231,7 +231,7 @@ export default function EnquiryPage() {
                           type="radio" name="urgency" value={opt.value}
                           checked={form.urgency === opt.value}
                           onChange={set("urgency")}
-                          style={{ accentColor: "#00d4ff", width: 16, height: 16 }}
+                          style={{ accentColor: "#38bdf8", width: 16, height: 16 }}
                         />
                         {opt.label}
                       </label>
@@ -249,8 +249,8 @@ export default function EnquiryPage() {
                   type="submit"
                   disabled={loading}
                   style={{
-                    width: "100%", padding: 16, background: loading ? "#0891b2" : "#00d4ff",
-                    color: "#0a0f1e", fontWeight: 800, fontSize: 16,
+                    width: "100%", padding: 16, background: loading ? "#0891b2" : "#38bdf8",
+                    color: "#080f1e", fontWeight: 800, fontSize: 16,
                     borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer",
                     transition: "background 0.2s",
                   }}
@@ -281,7 +281,7 @@ export default function EnquiryPage() {
               },
             ].map((card) => (
               <div key={card.title} style={{
-                background: "#0f172a", border: "1px solid #1e2d40",
+                background: "#0c1525", border: "1px solid #1c3050",
                 borderRadius: 14, padding: "20px 22px",
               }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
@@ -296,11 +296,11 @@ export default function EnquiryPage() {
 
             {/* Direct contact */}
             <div style={{
-              background: "rgba(0,212,255,0.05)", border: "1px solid rgba(0,212,255,0.2)",
+              background: "rgba(56,189,248,0.05)", border: "1px solid rgba(56,189,248,0.2)",
               borderRadius: 14, padding: "20px 22px",
             }}>
               <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 8px" }}>Prefer to call directly?</p>
-              <a href="tel:+919437611129" style={{ fontSize: 18, fontWeight: 800, color: "#00d4ff", textDecoration: "none", display: "block", marginBottom: 4 }}>
+              <a href="tel:+919437611129" style={{ fontSize: 18, fontWeight: 800, color: "#38bdf8", textDecoration: "none", display: "block", marginBottom: 4 }}>
                 +91 94376 11129
               </a>
               <p style={{ fontSize: 12, color: "#475569", margin: 0 }}>Mon–Sat, 8AM–8PM</p>

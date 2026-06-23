@@ -30,9 +30,9 @@ export default function CertificationsSection() {
           <div className="certs-left">
             <span style={{
               display: 'inline-block',
-              background: 'rgba(0,212,255,0.08)',
-              border: '1px solid rgba(0,212,255,0.2)',
-              color: '#00d4ff',
+              background: 'rgba(56,189,248,0.08)',
+              border: '1px solid rgba(56,189,248,0.2)',
+              color: '#38bdf8',
               fontSize: '11px',
               fontWeight: 700,
               letterSpacing: '0.1em',
@@ -53,7 +53,7 @@ export default function CertificationsSection() {
             }}>
               Certified{' '}
               <span style={{
-                background: 'linear-gradient(135deg,#00d4ff,#7c3aed)',
+                background: 'linear-gradient(135deg,#38bdf8,#818cf8)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
