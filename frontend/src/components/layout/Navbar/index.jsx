@@ -89,7 +89,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, transition: "all 0.3s", ...navStyle }}>
+      <nav style={{ position: "fixed", top: "var(--banner-h, 0px)", left: 0, right: 0, zIndex: 999, transition: "all 0.3s, top 0.3s ease", ...navStyle }}>
         <div className="navbar-inner" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
           <PowerLogo />
 
@@ -172,6 +172,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/products"
+                className="animate-pulse-glow"
                 style={{ padding: "8px 16px", background: "#00d4ff", color: "#0a0f1e", fontSize: 13, fontWeight: 700, borderRadius: 8, textDecoration: "none", transition: "background 0.2s", whiteSpace: "nowrap" }}
                 onMouseEnter={(e) => (e.currentTarget.style.background = "#00b8d9")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4ff")}

@@ -79,9 +79,32 @@
 }
 
 .announcement-banner {
-  background: linear-gradient(90deg, #7c3aed 0%, #00d4ff 50%, #7c3aed 100%);
-  background-size: 200% 100%;
-  animation: gradient-shift 3s ease infinite, fadeIn 0.4s ease;
+  background: linear-gradient(90deg, #020817 0%, #7c3aed 20%, #00d4ff 50%, #7c3aed 80%, #020817 100%);
+  background-size: 300% 100%;
+  animation: banner-scan 6s linear infinite, fadeIn 0.4s ease;
+}
+
+@keyframes banner-scan {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+.banner-ticker-track {
+  display: inline-flex;
+  animation: ticker 18s linear infinite;
+}
+
+.banner-ticker-item {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  padding-right: 48px;
 }
 
 @keyframes slide-right {

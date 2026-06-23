@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
+const BANNER_HEIGHT = 40;
+
 export default function AnnouncementBanner() {
   const settings = useSiteSettings();
   const [dismissed, setDismissed] = useState(true);
@@ -11,64 +13,94 @@ export default function AnnouncementBanner() {
     setDismissed(sessionStorage.getItem("banner_dismissed") === "true");
   }, []);
 
-  const handleDismiss = () => {
+  const visible = Boolean(
+    settings?.announcement_banner_enabled && settings.announcement_banner_text && !dismissed
+  );
+
+  // Pushes the fixed navbar down by the banner's height via a CSS var, so the two
+  // never overlap regardless of which one mounts/unmounts first.
+  useEffect(() => {
+    document.documentElement.style.setProperty("--banner-h", visible ? `${BANNER_HEIGHT}px` : "0px");
+    return () => {
+      document.documentElement.style.setProperty("--banner-h", "0px");
+    };
+  }, [visible]);
+
+  if (!visible || !settings) return null;
+
+  const handleDismiss = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     sessionStorage.setItem("banner_dismissed", "true");
     setDismissed(true);
   };
 
-  if (!settings?.announcement_banner_enabled || !settings.announcement_banner_text || dismissed) {
-    return null;
-  }
-
   const emoji = settings.announcement_banner_emoji || "🎉";
   const link = settings.announcement_banner_link;
+  const message = `${emoji} ${settings.announcement_banner_text}`;
 
-  const content = (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-      <span>{emoji}</span>
-      {settings.announcement_banner_text}
-    </span>
+  const ticker = (
+    <div style={{ overflow: "hidden", whiteSpace: "nowrap", flex: 1 }}>
+      <div className="banner-ticker-track">
+        <span className="banner-ticker-item">{message}</span>
+        <span className="banner-ticker-item">{message}</span>
+        <span className="banner-ticker-item">{message}</span>
+      </div>
+    </div>
   );
 
-  return (
+  const bar = (
     <div
       className="announcement-banner"
       style={{
-        color: "#fff",
-        padding: "10px 40px",
-        textAlign: "center",
-        fontSize: 13,
-        fontWeight: 700,
-        position: "relative",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: BANNER_HEIGHT,
         zIndex: 1000,
+        display: "flex",
+        alignItems: "center",
+        padding: "0 40px",
       }}
     >
-      {link ? (
-        <Link href={link} style={{ color: "#fff", textDecoration: "underline" }}>
-          {content}
-        </Link>
-      ) : (
-        content
-      )}
+      {ticker}
       <button
         onClick={handleDismiss}
         aria-label="Dismiss"
         style={{
           position: "absolute",
-          right: 16,
+          right: 12,
           top: "50%",
           transform: "translateY(-50%)",
-          background: "transparent",
+          background: "rgba(0,0,0,0.15)",
           border: "none",
+          borderRadius: "50%",
+          width: 22,
+          height: 22,
           cursor: "pointer",
           color: "#fff",
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: 700,
-          padding: "0 4px",
+          lineHeight: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
         }}
       >
-        ✕
+        ×
       </button>
     </div>
   );
+
+  if (link) {
+    return (
+      <Link href={link} style={{ textDecoration: "none" }}>
+        {bar}
+      </Link>
+    );
+  }
+
+  return bar;
 }

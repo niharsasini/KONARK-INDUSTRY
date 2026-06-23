@@ -103,7 +103,7 @@ export default function Hero() {
   const card = DECK[current];
 
   return (
-    <section className="hero-section" style={{ paddingTop: 64 }}>
+    <section className="hero-section">
       {/* Animated grid layer */}
       <div style={{
         position: "absolute", inset: 0, zIndex: 0,
