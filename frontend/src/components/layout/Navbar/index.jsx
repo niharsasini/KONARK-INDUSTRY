@@ -84,7 +84,7 @@ export default function Navbar() {
   };
 
   const navStyle = scrolled
-    ? { background: "rgba(2, 8, 23, 0.8)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.05)" }
+    ? { background: "rgba(2, 8, 23, 0.8)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(0,212,255,0.15)", boxShadow: "0 1px 20px rgba(0,212,255,0.08)" }
     : { background: "transparent" };
 
   return (

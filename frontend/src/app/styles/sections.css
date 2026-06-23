@@ -8,7 +8,7 @@
 .hero-section {
   position: relative;
   overflow: hidden;
-  background: #0a0f1e;
+  background: linear-gradient(135deg, #020817 0%, #060d1a 30%, #0a1628 60%, #020817 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -148,6 +148,21 @@
     gap: 6px;
     justify-content: center;
   }
+}
+
+/* ─── Section divider + gradient text utilities ─────── */
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.1), rgba(124,58,237,0.1), transparent);
+  margin: 0;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #00d4ff, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ─── Global section headers ────────────────────────── */
