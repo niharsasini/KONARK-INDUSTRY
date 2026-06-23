@@ -740,4 +740,30 @@ export const products = [
       AirFilter: "Industrial Grade Dust Filter",
     },
   },
+
+  {
+    id: 30,
+    slug: "konark-wiper-machine",
+    name: "KONARK INDUSTRY WIPER MACHINE",
+    type: "vehicle",
+    category: CATEGORIES.INDUSTRIAL,
+    price: 1440000,
+    rating: 4.8,
+    isNew: true,
+    inStock: true,
+    image: "/konark/Konark-wiper-machine.png",
+    images: ["/konark/Konark-wiper-machine.png"],
+    shortDescription:
+      "Industrial electric wiper/sweeper machine for factory floors, warehouses and municipal areas.",
+    description:
+      "The Konark Industry Wiper Machine is a heavy-duty industrial cleaning solution designed for large floor areas. Battery operated with zero emissions. Ideal for factories, warehouses, industrial parks, hospitals and municipal cleaning operations.",
+    specifications: {
+      Type: "Industrial Floor Wiper/Sweeper",
+      Power: "Battery Operated",
+      Price: "Rs 14,40,000 + GST",
+      Application: "Factories, Warehouses, Hospitals, Municipal",
+      Brand: "Konark Industry",
+      Availability: "In Stock",
+    },
+  },
 ];

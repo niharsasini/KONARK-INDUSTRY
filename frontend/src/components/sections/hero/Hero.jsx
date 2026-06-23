@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { products } from "@/components/product/ProductData";
+import { products, CATEGORIES } from "@/components/product/ProductData";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const TRUST_PILLS = ["✓ ISI Certified", "✓ 2-Year Warranty", "✓ Doorstep Service"];
@@ -25,7 +25,12 @@ const CAR_IMAGES = [
   "/konark/car-8.png",
 ];
 
-const vehicleProducts = products.filter((p) => p.type === "vehicle").slice(0, 4);
+const vehicleProducts = products
+  .filter((p) => p.type === "vehicle" && p.category !== CATEGORIES.INDUSTRIAL)
+  .slice(0, 4);
+const industrialProducts = products.filter(
+  (p) => p.type === "vehicle" && p.category === CATEGORIES.INDUSTRIAL
+);
 
 const ROTATING_WORDS = ["Konark.", "Innovation.", "Sustainability."];
 
@@ -39,6 +44,16 @@ const DECK = [
     badge: "FEATURED",
     badgeColor: "#00d4ff",
     specs: [p.category.replace("Electric Vehicles", "Electric"), `⭐ ${p.rating}`],
+  })),
+  ...industrialProducts.map((p) => ({
+    type: "product",
+    src: p.image,
+    name: p.name,
+    price: p.price,
+    slug: p.slug,
+    badge: p.isNew ? "NEW" : "FEATURED",
+    badgeColor: "#00d4ff",
+    specs: [p.category, `⭐ ${p.rating}`],
   })),
   ...CAR_IMAGES.map((src) => ({
     type: "car",
