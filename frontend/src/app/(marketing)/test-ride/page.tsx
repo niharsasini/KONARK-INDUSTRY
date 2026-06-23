@@ -81,7 +81,7 @@ export default function TestRidePage() {
 
   if (success) {
     return (
-      <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: 64, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ textAlign: "center", padding: "40px 24px", maxWidth: 480 }}>
           <div style={{ fontSize: 64, marginBottom: 24 }}>🏍</div>
           <h1 style={{ fontSize: 28, fontWeight: 800, color: "#f1f5f9", margin: "0 0 12px" }}>Booking Confirmed!</h1>
@@ -108,7 +108,7 @@ export default function TestRidePage() {
   }
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: 64 }}>
+    <div style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "60px 24px" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Test Ride" }]} />
         {/* Header */}

@@ -9,3 +9,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.page-top-padding {
+  padding-top: calc(64px + var(--banner-h, 0px));
+}

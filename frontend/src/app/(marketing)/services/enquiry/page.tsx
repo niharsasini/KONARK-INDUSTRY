@@ -88,7 +88,7 @@ export default function EnquiryPage() {
   };
 
   return (
-    <main style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: 64 }}>
+    <main style={{ background: "linear-gradient(135deg, #020817 0%, #0a0f1e 40%, #040b16 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       {/* Hero */}
       <div style={{
         background: "linear-gradient(180deg, #060d1a 0%, #0a0f1e 100%)",

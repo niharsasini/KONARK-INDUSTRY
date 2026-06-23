@@ -712,15 +712,15 @@ export const products = [
     name: "KONARK INDUSTRY WIPER MACHINE",
     type: "vehicle",
     category: CATEGORIES.INDUSTRIAL,
-    price: 0,
+    price: 1440000,
     rating: 4.8,
     isNew: true,
-    isUpcoming: true,
-    inStock: false,
+    isUpcoming: false,
+    inStock: true,
     image: "/konark/Konark-wiper-machine.png",
     images: ["/konark/Konark-wiper-machine.png"],
     shortDescription:
-      "Coming soon — Industrial electric wiper machine for factory floors and warehouses.",
+      "Heavy-duty industrial electric wiper machine for factory floors, warehouses and municipal areas. ₹14,40,000 + GST.",
     description:
       "The Konark Industry Wiper Machine is a heavy-duty industrial cleaning solution designed for large floor areas. Battery operated with zero emissions. Ideal for factories, warehouses, industrial parks, hospitals and municipal cleaning operations.",
     specifications: {
@@ -729,7 +729,7 @@ export const products = [
       Price: "Rs 14,40,000 + GST",
       Application: "Factories, Warehouses, Hospitals, Municipal",
       Brand: "Konark Industry",
-      Availability: "Coming Soon",
+      Availability: "In Stock",
     },
   },
 ];
