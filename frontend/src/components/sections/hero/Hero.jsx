@@ -49,10 +49,10 @@ const DECK = [
     type: "product",
     src: p.image,
     name: p.name,
-    price: p.price,
+    price: p.isUpcoming ? null : p.price,
     slug: p.slug,
-    badge: p.isNew ? "NEW" : "FEATURED",
-    badgeColor: "#00d4ff",
+    badge: p.isUpcoming ? "UPCOMING" : p.isNew ? "NEW" : "FEATURED",
+    badgeColor: p.isUpcoming ? "#7c3aed" : "#00d4ff",
     specs: [p.category, `⭐ ${p.rating}`],
   })),
   ...CAR_IMAGES.map((src) => ({

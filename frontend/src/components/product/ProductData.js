@@ -707,54 +707,20 @@ export const products = [
   /* ================= INDUSTRIAL EQUIPMENT ================= */
 
   {
-    id: 29,
-    slug: "industrial-floor-sweeper-vol-2300",
-    name: "Industrial Floor Sweeper VOL-2300",
-    type: "vehicle",
-    category: CATEGORIES.INDUSTRIAL,
-    price: 1440000,
-    rating: 4.8,
-    isNew: true,
-    // TODO: Replace with real sweeper image via admin
-    image: "/productimg/Utility Vehicle.png",
-    images: ["/productimg/Utility Vehicle.png"],
-    shortDescription:
-      "Heavy-duty electric floor sweeper for industrial and municipal cleaning. 22,000 m²/h efficiency.",
-    description:
-      "The Konark Industry VOL-2300 Industrial Floor Sweeper is a powerful battery-operated cleaning machine designed for large industrial and municipal areas. Features sweep and suction combo, HD reversing camera, industrial grade dust filtration, and water spray dust suppression system. Ideal for warehouses, factory premises, industrial parks, roads and municipal cleaning.",
-    specifications: {
-      Model: "VOL-2300",
-      ProductSize: "3200 × 2100 × 2950 mm",
-      SweepingWidth: "2000 - 2200 mm",
-      MainBrushWidth: "800 mm",
-      SideBrushWidth: "550 mm",
-      DustTankCapacity: "260 L",
-      WaterTankCapacity: "300 L",
-      MachineWeight: "1580 kg",
-      Battery: "48V / 200Ah",
-      DriveMotor: "3000W",
-      BrushMotor: "1000W",
-      WorkingTime: "6 - 8 hours",
-      WorkingEfficiency: "22,000 m²/h",
-      TravelSpeed: "12 - 16 km/h",
-      AirFilter: "Industrial Grade Dust Filter",
-    },
-  },
-
-  {
     id: 30,
     slug: "konark-wiper-machine",
     name: "KONARK INDUSTRY WIPER MACHINE",
     type: "vehicle",
     category: CATEGORIES.INDUSTRIAL,
-    price: 1440000,
+    price: 0,
     rating: 4.8,
     isNew: true,
-    inStock: true,
+    isUpcoming: true,
+    inStock: false,
     image: "/konark/Konark-wiper-machine.png",
     images: ["/konark/Konark-wiper-machine.png"],
     shortDescription:
-      "Industrial electric wiper/sweeper machine for factory floors, warehouses and municipal areas.",
+      "Coming soon — Industrial electric wiper machine for factory floors and warehouses.",
     description:
       "The Konark Industry Wiper Machine is a heavy-duty industrial cleaning solution designed for large floor areas. Battery operated with zero emissions. Ideal for factories, warehouses, industrial parks, hospitals and municipal cleaning operations.",
     specifications: {
@@ -763,7 +729,7 @@ export const products = [
       Price: "Rs 14,40,000 + GST",
       Application: "Factories, Warehouses, Hospitals, Municipal",
       Brand: "Konark Industry",
-      Availability: "In Stock",
+      Availability: "Coming Soon",
     },
   },
 ];
