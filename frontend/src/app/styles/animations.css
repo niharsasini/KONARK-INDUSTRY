@@ -78,6 +78,12 @@
   100% { background-position: 0% 50%; }
 }
 
+.announcement-banner {
+  background: linear-gradient(90deg, #7c3aed 0%, #00d4ff 50%, #7c3aed 100%);
+  background-size: 200% 100%;
+  animation: gradient-shift 3s ease infinite, fadeIn 0.4s ease;
+}
+
 @keyframes slide-right {
   from { transform: translateX(-100%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }

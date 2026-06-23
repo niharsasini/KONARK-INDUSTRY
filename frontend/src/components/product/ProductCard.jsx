@@ -20,6 +20,12 @@ const ProductCard = ({ product }) => {
   const hasMultipleImages = images.length > 1;
   const inWishlist = isInWishlist(product.slug);
 
+  // Backend returns snake_case (is_new, in_stock); static ProductData.js uses camelCase.
+  // Normalize here so both sources render badges/CTAs correctly.
+  const isNew = product.is_new ?? product.isNew ?? false;
+  const inStock = product.in_stock ?? product.inStock ?? true;
+  const isUpcoming = product.isUpcoming ?? product.is_upcoming ?? false;
+
   const handleMouseEnter = () => {
     setHovered(true);
     if (!hasMultipleImages) return;
@@ -36,6 +42,8 @@ const ProductCard = ({ product }) => {
   const formattedPrice =
     typeof product.price === "number" && product.price > 0
       ? `₹${product.price.toLocaleString()}`
+      : isUpcoming
+      ? "Coming Soon"
       : "Price on Request";
 
   const goToDetails = () => {
@@ -79,10 +87,10 @@ const ProductCard = ({ product }) => {
         border: `1px solid ${hovered ? "rgba(0, 212, 255, 0.4)" : "#1a2740"}`,
         borderRadius: 20,
         overflow: "hidden",
-        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-        transform: hovered ? "translateY(-8px)" : "translateY(0)",
+        transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+        transform: hovered ? "translateY(-10px) scale(1.01)" : "translateY(0) scale(1)",
         boxShadow: hovered
-          ? "0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 212, 255, 0.1)"
+          ? "0 30px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 212, 255, 0.1), 0 0 60px rgba(0, 212, 255, 0.05)"
           : "0 4px 16px rgba(0, 0, 0, 0.2)",
       }}
     >
@@ -111,19 +119,20 @@ const ProductCard = ({ product }) => {
         <Heart size={14} color={inWishlist ? "#ef4444" : "#cbd5e1"} fill={inWishlist ? "#ef4444" : "none"} />
       </button>
 
-      {/* 🟨 NEW corner */}
-      {product.isNew && (
-        <span style={{ position: "absolute", top: 12, left: 12, zIndex: 20, background: "linear-gradient(135deg, #f59e0b, #fbbf24)", color: "#020817", fontSize: 10, fontWeight: 800, padding: "3px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      {/* Top-left status badge — card stays fully opaque regardless of stock status */}
+      {isUpcoming ? (
+        <span style={{ position: "absolute", top: 12, left: 12, zIndex: 20, background: "linear-gradient(135deg, #7c3aed, #a855f7)", color: "#fff", fontSize: 10, fontWeight: 800, padding: "3px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+          Upcoming
+        </span>
+      ) : !inStock ? (
+        <span style={{ position: "absolute", top: 12, left: 12, zIndex: 20, background: "#ef4444", color: "#fff", fontSize: 10, fontWeight: 800, padding: "3px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+          Out of Stock
+        </span>
+      ) : isNew ? (
+        <span style={{ position: "absolute", top: 12, left: 12, zIndex: 20, background: "linear-gradient(135deg, #10b981, #059669)", color: "#fff", fontSize: 10, fontWeight: 800, padding: "3px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>
           New
         </span>
-      )}
-
-      {/* Out of Stock overlay */}
-      {product.inStock === false && (
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(2,8,23,0.6)", display: "flex", alignItems: "flex-start", justifyContent: "flex-start", padding: 12, zIndex: 15, pointerEvents: "none" }}>
-          <span style={{ background: "#ef4444", color: "#fff", fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 4 }}>Out of Stock</span>
-        </div>
-      )}
+      ) : null}
 
       {/* 🖼️ Image area */}
       <div style={{
@@ -137,8 +146,8 @@ const ProductCard = ({ product }) => {
             fill
             style={{
               objectFit: "contain", padding: 20,
-              transform: hovered ? "scale(1.05)" : "scale(1)",
-              transition: "transform 0.4s ease, opacity 0.3s ease",
+              transform: hovered ? "scale(1.08)" : "scale(1)",
+              transition: "transform 0.5s ease, opacity 0.3s ease",
             }}
             sizes="(max-width: 768px) 100vw, 400px"
           />
@@ -149,8 +158,8 @@ const ProductCard = ({ product }) => {
             style={{
               width: "100%", height: "100%", objectFit: "contain", padding: 20,
               boxSizing: "border-box",
-              transform: hovered ? "scale(1.05)" : "scale(1)",
-              transition: "transform 0.4s ease, opacity 0.3s ease",
+              transform: hovered ? "scale(1.08)" : "scale(1)",
+              transition: "transform 0.5s ease, opacity 0.3s ease",
             }}
           />
         )}
@@ -201,7 +210,16 @@ const ProductCard = ({ product }) => {
           {formattedPrice}
         </p>
 
-        {product.inStock === false ? (
+        {isUpcoming ? (
+          <button
+            onClick={(e) => { e.stopPropagation(); router.push("/contact?interest=" + product.slug); }}
+            style={{ width: "100%", padding: "11px", background: "transparent", color: "#a855f7", border: "1.5px solid rgba(168, 85, 247, 0.5)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(124,58,237,0.1)"; e.currentTarget.style.borderColor = "#a855f7"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(168, 85, 247, 0.5)"; }}
+          >
+            Register Interest
+          </button>
+        ) : !inStock ? (
           <button disabled style={{ width: "100%", padding: "11px", background: "#1a2740", color: "#64748b", cursor: "not-allowed", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700 }}>
             Out of Stock
           </button>

@@ -68,6 +68,10 @@ class SiteSettings(Document):
     announcement_banner_enabled: bool = False
     # Text shown in the announcement banner
     announcement_banner_text: str = ""
+    # Optional link/CTA the banner text points to
+    announcement_banner_link: Optional[str] = None
+    # Emoji shown at the start of the banner text
+    announcement_banner_emoji: str = "🎉"
 
     # --- WhatsApp ---
     # Pre-filled message template used by the floating WhatsApp button

@@ -48,4 +48,19 @@
   --gradient-cyan: linear-gradient(135deg, #00d4ff, #0ea5e9);
   --gradient-purple: linear-gradient(135deg, #7c3aed, #a855f7);
   --gradient-gold: linear-gradient(135deg, #f59e0b, #fbbf24);
+
+  /* Additional depth layers + transitions for card/section polish */
+  --bg-card-alt: #0f1a2e;
+  --bg-elevated: #142033;
+  --border-purple: rgba(124, 58, 237, 0.4);
+  --red: #ef4444;
+  --glow-card: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
 }

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 export default function AnnouncementBanner() {
@@ -19,20 +20,36 @@ export default function AnnouncementBanner() {
     return null;
   }
 
+  const emoji = settings.announcement_banner_emoji || "🎉";
+  const link = settings.announcement_banner_link;
+
+  const content = (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+      <span>{emoji}</span>
+      {settings.announcement_banner_text}
+    </span>
+  );
+
   return (
     <div
+      className="announcement-banner"
       style={{
-        background: "linear-gradient(90deg, #00d4ff, #7c3aed)",
-        color: "#0a0f1e",
+        color: "#fff",
         padding: "10px 40px",
         textAlign: "center",
         fontSize: 13,
-        fontWeight: 600,
+        fontWeight: 700,
         position: "relative",
         zIndex: 1000,
       }}
     >
-      {settings.announcement_banner_text}
+      {link ? (
+        <Link href={link} style={{ color: "#fff", textDecoration: "underline" }}>
+          {content}
+        </Link>
+      ) : (
+        content
+      )}
       <button
         onClick={handleDismiss}
         aria-label="Dismiss"
@@ -44,7 +61,7 @@ export default function AnnouncementBanner() {
           background: "transparent",
           border: "none",
           cursor: "pointer",
-          color: "#0a0f1e",
+          color: "#fff",
           fontSize: 16,
           fontWeight: 700,
           padding: "0 4px",

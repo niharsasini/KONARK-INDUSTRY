@@ -9,6 +9,8 @@ type Settings = {
   footer_tagline: string | null;
   announcement_banner_enabled: boolean;
   announcement_banner_text: string;
+  announcement_banner_link: string;
+  announcement_banner_emoji: string;
   whatsapp_message_template: string;
 };
 
@@ -42,6 +44,8 @@ export default function ContentPage() {
           footer_tagline: (s.footer_tagline as string) || "",
           announcement_banner_enabled: Boolean(s.announcement_banner_enabled),
           announcement_banner_text: (s.announcement_banner_text as string) || "",
+          announcement_banner_link: (s.announcement_banner_link as string) || "",
+          announcement_banner_emoji: (s.announcement_banner_emoji as string) || "🎉",
           whatsapp_message_template: (s.whatsapp_message_template as string) || "",
         });
       })
@@ -126,7 +130,17 @@ export default function ContentPage() {
             </button>
           </div>
           <label style={LABEL}>Banner Text</label>
-          <input value={form.announcement_banner_text} onChange={set("announcement_banner_text")} placeholder="e.g. Free delivery on orders above ₹5,000" style={INPUT} />
+          <input value={form.announcement_banner_text} onChange={set("announcement_banner_text")} placeholder="e.g. Free delivery on orders above ₹5,000" style={{ ...INPUT, marginBottom: 14 }} />
+          <div style={{ display: "flex", gap: 12 }}>
+            <div style={{ flex: "0 0 90px" }}>
+              <label style={LABEL}>Emoji</label>
+              <input value={form.announcement_banner_emoji} onChange={set("announcement_banner_emoji")} placeholder="🎉" style={INPUT} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={LABEL}>Banner Link (optional)</label>
+              <input value={form.announcement_banner_link} onChange={set("announcement_banner_link")} placeholder="/products" style={INPUT} />
+            </div>
+          </div>
         </div>
 
         <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 24 }}>
