@@ -5,6 +5,7 @@ Uses lru_cache so settings are loaded only once per process lifetime.
 """
 
 from functools import lru_cache
+from typing import Optional
 from pydantic_settings import BaseSettings
 
 
@@ -53,7 +54,12 @@ class Settings(BaseSettings):
     admin_url: str = "http://localhost:3001"
     local_url: str = "http://localhost:3000"
 
-    model_config = {"env_file": ".env", "case_sensitive": False}
+    # --- Cloudinary ---
+    cloudinary_cloud_name: Optional[str] = None
+    cloudinary_api_key: Optional[str] = None
+    cloudinary_api_secret: Optional[str] = None
+
+    model_config = {"env_file": ".env", "case_sensitive": False, "extra": "ignore"}
 
 
 @lru_cache()
