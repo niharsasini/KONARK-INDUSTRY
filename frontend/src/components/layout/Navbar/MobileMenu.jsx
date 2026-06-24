@@ -11,7 +11,7 @@ export default function MobileMenu({ menuOpen, setMenuOpen, expandedSection, set
 
       <button
         onClick={() => setMenuOpen(false)}
-        style={{ position: "absolute", top: 12, right: 16, zIndex: 999, background: "transparent", border: "none", cursor: "pointer", color: "#f1f5f9", width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 8 }}
+        style={{ position: "absolute", top: 12, right: 16, zIndex: 999, background: "transparent", border: "none", cursor: "pointer", color: "var(--text-heading)", width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 8 }}
         aria-label="Close menu"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 24, height: 24 }}>
@@ -29,7 +29,7 @@ export default function MobileMenu({ menuOpen, setMenuOpen, expandedSection, set
             onClick={() => setExpandedSection((s) => s === "products" ? null : "products")}
           >
             Products
-            <span style={{ fontSize: 14, color: "#64748b" }}>{expandedSection === "products" ? "▲" : "▾"}</span>
+            <span style={{ fontSize: 14, color: "var(--text-subtle)" }}>{expandedSection === "products" ? "▲" : "▾"}</span>
           </button>
           {expandedSection === "products" && (
             <div>
@@ -49,7 +49,7 @@ export default function MobileMenu({ menuOpen, setMenuOpen, expandedSection, set
             onClick={() => setExpandedSection((s) => s === "services" ? null : "services")}
           >
             Services
-            <span style={{ fontSize: 14, color: "#64748b" }}>{expandedSection === "services" ? "▲" : "▾"}</span>
+            <span style={{ fontSize: 14, color: "var(--text-subtle)" }}>{expandedSection === "services" ? "▲" : "▾"}</span>
           </button>
           {expandedSection === "services" && (
             <div>
@@ -76,7 +76,7 @@ export default function MobileMenu({ menuOpen, setMenuOpen, expandedSection, set
             Sign Out
           </button>
         ) : (
-          <Link href="/login" className="mobile-nav-item" style={{ color: "#38bdf8" }} onClick={() => setMenuOpen(false)}>
+          <Link href="/login" className="mobile-nav-item" style={{ color: "var(--navy)" }} onClick={() => setMenuOpen(false)}>
             Login / Register
           </Link>
         )}
@@ -87,11 +87,11 @@ export default function MobileMenu({ menuOpen, setMenuOpen, expandedSection, set
           <Link className="mobile-btn-ghost" href="/services/enquiry" onClick={() => setMenuOpen(false)}>Book a Service</Link>
         </div>
 
-        <div style={{ textAlign: "center", marginTop: 32, paddingTop: 24, borderTop: "1px solid #1c3050" }}>
-          <a href="tel:+919437611129" style={{ fontSize: 22, color: "#38bdf8", fontWeight: 800, display: "block", marginBottom: 6, textDecoration: "none" }}>
+        <div style={{ textAlign: "center", marginTop: 32, paddingTop: 24, borderTop: "1px solid var(--border-light)" }}>
+          <a href="tel:+919437611129" style={{ fontSize: 22, color: "var(--navy)", fontWeight: 800, display: "block", marginBottom: 6, textDecoration: "none" }}>
             📞 +91 94376 11129
           </a>
-          <span style={{ fontSize: 13, color: "#64748b" }}>konarkindustrie@gmail.com</span>
+          <span style={{ fontSize: 13, color: "var(--text-subtle)" }}>konarkindustrie@gmail.com</span>
         </div>
       </div>
     </div>

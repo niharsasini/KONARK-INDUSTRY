@@ -12,7 +12,7 @@ type Notification = {
 };
 
 const TYPE_ICON = { order: ShoppingBag, booking: Wrench, battery_swap: Battery };
-const TYPE_COLOR = { order: "#10b981", booking: "#a5b4fc", battery_swap: "#38bdf8" };
+const TYPE_COLOR = { order: "#10b981", booking: "#5b21b6", battery_swap: "var(--navy)" };
 const LAST_SEEN_KEY = "konark_notifications_last_seen";
 const POLL_MS = 60000;
 
@@ -73,9 +73,9 @@ export default function NotificationBell() {
       <button
         onClick={handleToggle}
         aria-label="Notifications"
-        style={{ position: "relative", padding: 8, color: "#94a3b8", borderRadius: 8, display: "flex", border: "none", background: "transparent", cursor: "pointer", transition: "color 0.2s" }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
-        onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
+        style={{ position: "relative", padding: 8, color: "var(--text-muted)", borderRadius: 8, display: "flex", border: "none", background: "transparent", cursor: "pointer", transition: "color 0.2s" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy)")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
       >
         <Bell size={20} />
         {unreadCount > 0 && (
@@ -86,26 +86,26 @@ export default function NotificationBell() {
       </button>
 
       {open && (
-        <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 320, maxHeight: 400, overflowY: "auto", background: "#0c1525", border: "1px solid #1c3050", borderRadius: 14, boxShadow: "0 20px 48px rgba(0,0,0,0.5)", zIndex: 300 }}>
-          <div style={{ padding: "14px 16px", borderBottom: "1px solid #1c3050" }}>
-            <p style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Notifications</p>
+        <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 320, maxHeight: 400, overflowY: "auto", background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, boxShadow: "0 20px 48px rgba(26,15,0,0.18)", zIndex: 300 }}>
+          <div style={{ padding: "14px 16px", borderBottom: "1px solid var(--border-light)" }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>Notifications</p>
           </div>
           {notifications.length === 0 ? (
-            <p style={{ padding: "24px 16px", fontSize: 12, color: "#64748b", textAlign: "center", margin: 0 }}>
+            <p style={{ padding: "24px 16px", fontSize: 12, color: "var(--text-subtle)", textAlign: "center", margin: 0 }}>
               No notifications yet
             </p>
           ) : (
             notifications.map((n) => {
               const Icon = TYPE_ICON[n.type] || Bell;
-              const color = TYPE_COLOR[n.type] || "#94a3b8";
+              const color = TYPE_COLOR[n.type] || "var(--text-muted)";
               return (
-                <div key={n.id} style={{ padding: "12px 16px", borderBottom: "1px solid #1c305060", display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <div key={n.id} style={{ padding: "12px 16px", borderBottom: "1px solid var(--border-light)", display: "flex", gap: 10, alignItems: "flex-start" }}>
                   <div style={{ width: 28, height: 28, borderRadius: 8, background: `${color}15`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <Icon size={13} color={color} />
                   </div>
                   <div>
-                    <p style={{ fontSize: 12, fontWeight: 700, color: "#f1f5f9", margin: "0 0 2px" }}>{n.title}</p>
-                    <p style={{ fontSize: 11, color: "#94a3b8", margin: "0 0 4px", lineHeight: 1.4 }}>{n.message}</p>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 2px" }}>{n.title}</p>
+                    <p style={{ fontSize: 11, color: "var(--text-muted)", margin: "0 0 4px", lineHeight: 1.4 }}>{n.message}</p>
                     <p style={{ fontSize: 10, color: "#475569", margin: 0 }}>{timeAgo(n.created_at)}</p>
                   </div>
                 </div>

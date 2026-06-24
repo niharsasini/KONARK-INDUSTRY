@@ -8,7 +8,7 @@ import Image from "next/image";
 const TABS = [
   {
     id: "ev", icon: "🏍", label: "EV & Mobility",
-    color: "#38bdf8", image: "/konark/productevscooty.png",
+    color: "#1a6aab", image: "/konark/productevscooty.png",
     stat: "200km", statLabel: "Max Range",
     heading: "Electric Vehicles",
     desc: "Our EVs are built for Indian roads — robust, efficient, and designed to outlast conventional options. From scooters to cargo e-rickshaws, and EV cars coming soon.",
@@ -24,7 +24,7 @@ const TABS = [
   },
   {
     id: "battery", icon: "🔋", label: "Energy Storage",
-    color: "#818cf8", image: "/konark/productenergystored.png",
+    color: "#c17f24", image: "/konark/productenergystored.png",
     stat: "3,000+", statLabel: "Charge Cycles",
     heading: "LFP Battery Systems",
     desc: "LFP batteries engineered for longevity and safety. Ideal for solar storage, industrial backup, and EV power systems.",
@@ -38,7 +38,7 @@ const TABS = [
   },
   {
     id: "home", icon: "🏠", label: "Home Appliances",
-    color: "#10b981", image: "/konark/fan.jpeg",
+    color: "#1a7a4a", image: "/konark/fan.jpeg",
     stat: "60%", statLabel: "Energy Savings",
     heading: "Smart Appliances",
     desc: "Smart home appliances that reduce your electricity bill without sacrificing comfort. Precision-engineered in Bhubaneswar.",
@@ -52,7 +52,7 @@ const TABS = [
   },
   {
     id: "industrial", icon: "🏭", label: "Industrial",
-    color: "#f97316", image: "/konark/coldstorage solutions.png",
+    color: "#d97706", image: "/konark/coldstorage solutions.png",
     stat: "7 days", statLabel: "Fast Delivery",
     heading: "Industrial Solutions",
     desc: "Cold storage, automation systems, and custom motor solutions. We work directly with factories, farms, and large institutions.",
@@ -82,13 +82,13 @@ function TabContent({ tab }) {
         <p className="solutions-stat-num" style={{ color: tab.color, margin: "0 0 4px", lineHeight: 1, textShadow: `0 0 40px ${tab.color}50`, fontWeight: 900 }}>
           {tab.stat}
         </p>
-        <p style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 20 }}>{tab.statLabel}</p>
-        <h3 style={{ fontSize: 28, fontWeight: 800, color: "#f1f5f9", margin: "0 0 12px" }}>{tab.heading}</h3>
-        <p style={{ fontSize: 15, color: "#94a3b8", lineHeight: 1.8, marginBottom: 24 }}>{tab.desc}</p>
+        <p style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 20 }}>{tab.statLabel}</p>
+        <h3 style={{ fontSize: 28, fontWeight: 800, color: "#fff", margin: "0 0 12px" }}>{tab.heading}</h3>
+        <p style={{ fontSize: 15, color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: 24 }}>{tab.desc}</p>
 
         <ul className="solutions-features-list" style={{ listStyle: "none", padding: 0, margin: "0 0 28px", display: "flex", flexDirection: "column", gap: 10 }}>
           {tab.features.map(f => (
-            <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "#f1f5f9" }}>
+            <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "rgba(255,255,255,0.9)" }}>
               <span style={{ width: 20, height: 20, borderRadius: "50%", flexShrink: 0, background: `${tab.color}20`, border: `1px solid ${tab.color}50`, display: "flex", alignItems: "center", justifyContent: "center", marginTop: 1 }}>
                 <svg viewBox="0 0 12 12" fill={tab.color} style={{ width: 7, height: 7 }}>
                   <path d="M2 6l3 3 5-6" stroke={tab.color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" fill="none" />
@@ -112,18 +112,18 @@ function TabContent({ tab }) {
         <motion.div
           animate={{ y: [0, -12, 0], rotateX: [0, 3, 0] }}
           transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
-          style={{ background: "rgba(15,23,42,0.8)", backdropFilter: "blur(20px)", border: `1px solid ${tab.color}25`, borderRadius: 24, padding: 32, width: "100%", maxWidth: 340, boxShadow: `0 30px 60px rgba(0,0,0,0.5), 0 0 40px ${tab.color}15`, transformStyle: "preserve-3d" }}
+          style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(20px)", border: `1px solid ${tab.color}40`, borderRadius: 24, padding: 32, width: "100%", maxWidth: 340, boxShadow: `0 30px 60px rgba(0,0,0,0.35), 0 0 40px ${tab.color}15`, transformStyle: "preserve-3d" }}
         >
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
             {tab.products.map(p => (
               <span key={p} style={{ fontSize: 10, padding: "3px 10px", borderRadius: 100, background: `${tab.color}12`, color: tab.color, border: `1px solid ${tab.color}30`, fontWeight: 600 }}>{p}</span>
             ))}
           </div>
-          <div style={{ background: "#050a14", borderRadius: 16, padding: 24, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, minHeight: 180, position: "relative" }}>
+          <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 24, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, minHeight: 180, position: "relative" }}>
             <Image src={tab.image} alt={tab.label} fill style={{ objectFit: "contain", padding: 24, filter: `drop-shadow(0 0 20px ${tab.color}40)` }} />
           </div>
-          <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>{tab.heading}</p>
-          <p style={{ fontSize: 13, color: "#64748b", margin: 0 }}>Engineered in Bhubaneswar, Odisha</p>
+          <p style={{ fontSize: 15, fontWeight: 700, color: "#fff", margin: "0 0 4px" }}>{tab.heading}</p>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", margin: 0 }}>Engineered in Bhubaneswar, Odisha</p>
         </motion.div>
       </div>
     </motion.div>
@@ -136,7 +136,7 @@ export default function SolutionsSection() {
   const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true });
 
   return (
-    <section style={{ background: "linear-gradient(180deg, #050a14 0%, #080f1e 100%)", padding: "100px 24px" }}>
+    <section style={{ background: "linear-gradient(180deg, #1a0f00 0%, #0f4c81 100%)", padding: "100px 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <motion.div
           ref={headRef}
@@ -145,14 +145,14 @@ export default function SolutionsSection() {
           transition={{ duration: 0.6 }}
           style={{ textAlign: "center", marginBottom: 48 }}
         >
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(56,189,248,0.3)", color: "#38bdf8", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(56,189,248,0.08)", marginBottom: 16 }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(193,127,36,0.4)", color: "#fde8a0", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(193,127,36,0.15)", marginBottom: 16 }}>
             WHAT WE MAKE
           </span>
           <h2 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, margin: "0 0 12px", lineHeight: 1.2 }}>
-            <span style={{ color: "#f1f5f9" }}>Complete Energy </span>
-            <span style={{ background: "linear-gradient(135deg, #38bdf8, #818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Ecosystem</span>
+            <span style={{ color: "#fff" }}>Complete Energy </span>
+            <span style={{ background: "linear-gradient(135deg, #c17f24, #fde8a0)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Ecosystem</span>
           </h2>
-          <p style={{ fontSize: 15, color: "#94a3b8", maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
+          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.7)", maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
             One company. Four pillars. Everything you need to live, work, and move sustainably.
           </p>
         </motion.div>
@@ -169,8 +169,8 @@ export default function SolutionsSection() {
                 padding: "10px 22px", borderRadius: 12, fontSize: 14, fontWeight: 600,
                 cursor: "pointer", transition: "all 0.25s", flexShrink: 0,
                 background: active === t.id ? `linear-gradient(135deg, ${t.color}30, ${t.color}15)` : "transparent",
-                color: active === t.id ? t.color : "#64748b",
-                border: `1px solid ${active === t.id ? t.color + "60" : "#1c3050"}`,
+                color: active === t.id ? t.color : "rgba(255,255,255,0.55)",
+                border: `1px solid ${active === t.id ? t.color + "60" : "rgba(255,255,255,0.12)"}`,
                 boxShadow: active === t.id ? `0 0 20px ${t.color}20` : "none",
                 minHeight: 44,
               }}

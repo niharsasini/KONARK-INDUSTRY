@@ -30,9 +30,9 @@ export default function CertificationsSection() {
           <div className="certs-left">
             <span style={{
               display: 'inline-block',
-              background: 'rgba(56,189,248,0.08)',
-              border: '1px solid rgba(56,189,248,0.2)',
-              color: '#38bdf8',
+              background: 'rgba(15,76,129,0.08)',
+              border: '1px solid rgba(15,76,129,0.2)',
+              color: 'var(--navy)',
               fontSize: '11px',
               fontWeight: 700,
               letterSpacing: '0.1em',
@@ -47,13 +47,13 @@ export default function CertificationsSection() {
             <h2 style={{
               fontSize: 'clamp(28px,4vw,42px)',
               fontWeight: 900,
-              color: '#f1f5f9',
+              color: 'var(--text-heading)',
               lineHeight: 1.2,
               marginBottom: '16px',
             }}>
               Certified{' '}
               <span style={{
-                background: 'linear-gradient(135deg,#38bdf8,#818cf8)',
+                background: 'linear-gradient(135deg,var(--navy),#c17f24)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -61,7 +61,7 @@ export default function CertificationsSection() {
             </h2>
 
             <p style={{
-              color: '#94a3b8',
+              color: 'var(--text-muted)',
               fontSize: '16px',
               lineHeight: 1.8,
               marginBottom: '32px',
@@ -97,7 +97,7 @@ export default function CertificationsSection() {
                   All certificates are active
                 </p>
                 <p style={{
-                  color: '#64748b',
+                  color: 'var(--text-subtle)',
                   fontSize: '12px',
                   margin: 0,
                   lineHeight: 1.6,

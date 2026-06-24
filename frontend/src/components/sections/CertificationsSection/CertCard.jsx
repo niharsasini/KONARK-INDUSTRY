@@ -10,8 +10,8 @@ export default function CertCard({ cert, index, onClick }) {
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
       style={{
-        background: '#0c1525',
-        border: '1px solid #1c3050',
+        background: 'var(--bg-card)',
+        border: '1px solid var(--border-light)',
         borderRadius: '16px',
         padding: '20px 24px',
         display: 'flex',
@@ -78,7 +78,7 @@ export default function CertCard({ cert, index, onClick }) {
         <div style={{
           fontSize: '15px',
           fontWeight: 700,
-          color: '#f1f5f9',
+          color: 'var(--text-heading)',
           marginBottom: '2px',
           whiteSpace: 'nowrap',
           overflow: 'hidden',
@@ -88,7 +88,7 @@ export default function CertCard({ cert, index, onClick }) {
         </div>
         <div style={{
           fontSize: '12px',
-          color: '#64748b',
+          color: 'var(--text-subtle)',
           marginBottom: '2px',
         }}>
           {cert.issuer}

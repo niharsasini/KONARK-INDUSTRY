@@ -18,11 +18,11 @@ export default function ServicesMegaMenu({ onPanelEnter, onPanelLeave }) {
         position: "absolute",
         top: "calc(100% + 8px)",
         left: 0,
-        background: "rgba(13, 20, 36, 0.92)",
+        background: "rgba(255, 255, 255, 0.96)",
         backdropFilter: "blur(20px)",
-        border: "1px solid rgba(56,189,248,0.15)",
+        border: "1px solid var(--border-light)",
         borderRadius: 16,
-        boxShadow: "0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(56,189,248,0.05)",
+        boxShadow: "0 24px 60px rgba(26,15,0,0.18), 0 0 0 1px rgba(15,76,129,0.05)",
         padding: 24,
         zIndex: 200,
         minWidth: 560,
@@ -32,36 +32,36 @@ export default function ServicesMegaMenu({ onPanelEnter, onPanelLeave }) {
       }}
     >
       {/* Column 1 — Home & EV Services */}
-      <div style={{ paddingRight: 20, borderRight: "1px solid #1c3050" }}>
-        <ColHeader emoji="🏠" title="Home & EV Services" color="#38bdf8" />
-        <SvcItem icon="❄️" iconBg="rgba(56,189,248,0.12)" label="AC Repair & Service" desc="All brands, same day" href="/services/enquiry" />
-        <SvcItem icon="⚡" iconBg="rgba(56,189,248,0.10)" label="EV Charging Station Install" desc="Home & commercial" href="https://www.soumyashipower.in/" />
-        <SvcItem icon="🔋" iconBg="rgba(129,140,248,0.12)" label="Battery Swap" desc="Fast swap, home pickup" href="/battery-swap" />
+      <div style={{ paddingRight: 20, borderRight: "1px solid var(--border-light)" }}>
+        <ColHeader emoji="🏠" title="Home & EV Services" color="var(--navy)" />
+        <SvcItem icon="❄️" iconBg="rgba(15,76,129,0.12)" label="AC Repair & Service" desc="All brands, same day" href="/services/enquiry" />
+        <SvcItem icon="⚡" iconBg="rgba(15,76,129,0.10)" label="EV Charging Station Install" desc="Home & commercial" href="https://www.soumyashipower.in/" />
+        <SvcItem icon="🔋" iconBg="rgba(91,33,182,0.12)" label="Battery Swap" desc="Fast swap, home pickup" href="/battery-swap" />
       </div>
 
       {/* Column 2 — Energy & Power */}
       <div style={{ paddingLeft: 20 }}>
-        <ColHeader emoji="🌿" title="Energy & Power" color="#f97316" />
-        <SvcItem icon="☀️" iconBg="rgba(249,115,22,0.12)" label="Solar Power Plant" desc="Rooftop & captive up to 1MW" href="https://www.soumyashipower.in/" />
-        <SvcItem icon="💨" iconBg="rgba(56,189,248,0.10)" label="Wind Power Plant" desc="Hybrid wind-solar systems" href="https://www.soumyashipower.in/" />
-        <SvcItem icon="🔧" iconBg="rgba(16,185,129,0.10)" label="All Services" desc="View the full list" href="/services" />
+        <ColHeader emoji="🌿" title="Energy & Power" color="var(--gold)" />
+        <SvcItem icon="☀️" iconBg="rgba(193,127,36,0.12)" label="Solar Power Plant" desc="Rooftop & captive up to 1MW" href="https://www.soumyashipower.in/" />
+        <SvcItem icon="💨" iconBg="rgba(15,76,129,0.10)" label="Wind Power Plant" desc="Hybrid wind-solar systems" href="https://www.soumyashipower.in/" />
+        <SvcItem icon="🔧" iconBg="rgba(26,122,74,0.10)" label="All Services" desc="View the full list" href="/services" />
       </div>
 
       {/* Bottom bar */}
-      <div style={{ gridColumn: "1 / -1", marginTop: 16, paddingTop: 16, borderTop: "1px solid #1c3050", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ gridColumn: "1 / -1", marginTop: 16, paddingTop: 16, borderTop: "1px solid var(--border-light)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Link
           href="/services"
-          style={{ fontSize: 13, color: "#94a3b8", textDecoration: "none", fontWeight: 500, transition: "color 150ms" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#f1f5f9")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
+          style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none", fontWeight: 500, transition: "color 150ms" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-heading)")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
         >
           View all services →
         </Link>
         <Link
           href="/services/enquiry"
-          style={{ fontSize: 13, fontWeight: 700, color: "#080f1e", background: "#38bdf8", padding: "8px 16px", borderRadius: 8, textDecoration: "none", transition: "background 150ms" }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#0ea5e9")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#38bdf8")}
+          style={{ fontSize: 13, fontWeight: 700, color: "#fff", background: "var(--navy)", padding: "8px 16px", borderRadius: 8, textDecoration: "none", transition: "background 150ms" }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "var(--navy-dark)")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "var(--navy)")}
         >
           Book a Service Now →
         </Link>

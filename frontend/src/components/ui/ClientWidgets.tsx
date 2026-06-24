@@ -13,14 +13,14 @@ export default function ClientWidgets() {
         position="top-right"
         toastOptions={{
           style: {
-            background: "#0c1525",
-            color: "#f1f5f9",
-            border: "1px solid #1c3050",
+            background: "var(--bg-card)",
+            color: "var(--text-heading)",
+            border: "1px solid var(--border-light)",
             borderRadius: "10px",
             fontSize: "13px",
           },
           success: {
-            iconTheme: { primary: "#38bdf8", secondary: "#080f1e" },
+            iconTheme: { primary: "var(--navy)", secondary: "#fff" },
           },
           error: {
             iconTheme: { primary: "#ef4444", secondary: "#fff" },

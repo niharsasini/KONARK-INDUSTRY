@@ -14,18 +14,18 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
     <nav style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', marginBottom: '24px', flexWrap: 'wrap' }}>
       {items.map((item, i) => (
         <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {i > 0 && <span style={{ color: '#1c3050' }}>›</span>}
+          {i > 0 && <span style={{ color: 'var(--border-light)' }}>›</span>}
           {item.href && i < items.length - 1 ? (
             <Link
               href={item.href}
-              style={{ color: '#64748b', textDecoration: 'none', transition: 'color 150ms' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#94a3b8')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#64748b')}
+              style={{ color: 'var(--text-subtle)', textDecoration: 'none', transition: 'color 150ms' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-subtle)')}
             >
               {item.label}
             </Link>
           ) : (
-            <span style={{ color: i === items.length - 1 ? '#94a3b8' : '#64748b' }}>
+            <span style={{ color: i === items.length - 1 ? 'var(--text-muted)' : 'var(--text-subtle)' }}>
               {item.label}
             </span>
           )}

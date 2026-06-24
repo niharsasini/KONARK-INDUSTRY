@@ -11,11 +11,11 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const styles: Record<Variant, string> = {
   primary:
-    "bg-[#38bdf8] text-[#080f1e] font-semibold hover:bg-[#0ea5e9] active:scale-95",
+    "bg-[#0f4c81] text-white font-semibold hover:bg-[#0a3460] active:scale-95",
   ghost:
-    "bg-transparent text-[#f1f5f9] border border-[#1c3050] hover:border-[#38bdf8] hover:text-[#38bdf8]",
+    "bg-transparent text-[#1a0f00] border border-[#d4c9b8] hover:border-[#0f4c81] hover:text-[#0f4c81]",
   outline:
-    "bg-transparent text-[#38bdf8] border border-[#38bdf8] hover:bg-[#38bdf8] hover:text-[#080f1e]",
+    "bg-transparent text-[#0f4c81] border border-[#0f4c81] hover:bg-[#0f4c81] hover:text-white",
 };
 
 const sizes = {

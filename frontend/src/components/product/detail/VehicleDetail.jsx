@@ -54,44 +54,44 @@ export default function VehicleDetail({ product }) {
   };
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: 64 }}>
+    <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: 64 }}>
       {/* Breadcrumb */}
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "20px 24px 0", display: "flex", gap: 6, fontSize: 12, color: "#94a3b8", alignItems: "center" }}>
-        <Link href="/" style={{ color: "#94a3b8", textDecoration: "none" }}>Home</Link>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "20px 24px 0", display: "flex", gap: 6, fontSize: 12, color: "var(--text-muted)", alignItems: "center" }}>
+        <Link href="/" style={{ color: "var(--text-muted)", textDecoration: "none" }}>Home</Link>
         <span>/</span>
-        <Link href="/products" style={{ color: "#94a3b8", textDecoration: "none" }}>Products</Link>
+        <Link href="/products" style={{ color: "var(--text-muted)", textDecoration: "none" }}>Products</Link>
         <span>/</span>
-        <span style={{ color: "#38bdf8" }}>{product.name}</span>
+        <span style={{ color: "var(--navy)" }}>{product.name}</span>
       </div>
 
       {/* Cinematic hero image */}
       <div style={{
         maxWidth: 1280, margin: "24px auto 0", padding: "0 24px",
-        background: "linear-gradient(145deg, #0d1b2e, #050a14)",
+        background: "linear-gradient(145deg, var(--bg-surface), var(--bg-section))",
         borderRadius: 24, overflow: "hidden",
-        border: "1px solid rgba(56,189,248,0.15)",
+        border: "1px solid rgba(15,76,129,0.15)",
         position: "relative", minHeight: 420,
         display: "flex", alignItems: "center", justifyContent: "center",
       }}>
         {/* Glow */}
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 60% 50%, rgba(56,189,248,0.06) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 60% 50%, rgba(15,76,129,0.06) 0%, transparent 65%)", pointerEvents: "none" }} />
         {product.isNew && (
-          <span style={{ position: "absolute", top: 24, left: 24, background: "#38bdf8", color: "#080f1e", fontSize: 11, fontWeight: 800, padding: "4px 12px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>NEW</span>
+          <span style={{ position: "absolute", top: 24, left: 24, background: "var(--navy)", color: "#fff", fontSize: 11, fontWeight: 800, padding: "4px 12px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>NEW</span>
         )}
-        <span style={{ position: "absolute", top: 24, right: 24, background: "rgba(56,189,248,0.12)", border: "1px solid rgba(56,189,248,0.35)", color: "#38bdf8", fontSize: 11, fontWeight: 800, padding: "4px 12px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>⚡ EV Vehicle</span>
+        <span style={{ position: "absolute", top: 24, right: 24, background: "rgba(15,76,129,0.12)", border: "1px solid rgba(15,76,129,0.35)", color: "var(--navy)", fontSize: 11, fontWeight: 800, padding: "4px 12px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>⚡ EV Vehicle</span>
         {product.image?.startsWith("http") ? (
           <Image
             src={product.image}
             alt={product.name}
             fill
-            style={{ objectFit: "contain", padding: "40px 15%", filter: "drop-shadow(0 8px 40px rgba(56,189,248,0.2))", zIndex: 1 }}
+            style={{ objectFit: "contain", padding: "40px 15%", filter: "drop-shadow(0 8px 40px rgba(15,76,129,0.2))", zIndex: 1 }}
             sizes="(max-width: 768px) 90vw, 600px"
           />
         ) : (
           <img
             src={product.image}
             alt={product.name}
-            style={{ maxHeight: 380, maxWidth: "70%", objectFit: "contain", filter: "drop-shadow(0 8px 40px rgba(56,189,248,0.2))", position: "relative", zIndex: 1 }}
+            style={{ maxHeight: 380, maxWidth: "70%", objectFit: "contain", filter: "drop-shadow(0 8px 40px rgba(15,76,129,0.2))", position: "relative", zIndex: 1 }}
           />
         )}
       </div>
@@ -100,13 +100,13 @@ export default function VehicleDetail({ product }) {
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
         <div style={{
           display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1,
-          background: "#1c3050", borderRadius: 14, overflow: "hidden", marginTop: 24,
+          background: "var(--border-light)", borderRadius: 14, overflow: "hidden", marginTop: 24,
         }} className="spec-strip">
           {VEHICLE_HIGHLIGHTS.map((s) => (
-            <div key={s.label} style={{ background: "#0c1525", padding: "20px 16px", textAlign: "center" }}>
+            <div key={s.label} style={{ background: "var(--bg-card)", padding: "20px 16px", textAlign: "center" }}>
               <p style={{ fontSize: 22, margin: "0 0 4px" }}>{s.icon}</p>
-              <p style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 4px" }}>{s.label}</p>
-              <p style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{s.value}</p>
+              <p style={{ fontSize: 11, color: "var(--text-subtle)", textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 4px" }}>{s.label}</p>
+              <p style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>{s.value}</p>
             </div>
           ))}
         </div>
@@ -116,41 +116,41 @@ export default function VehicleDetail({ product }) {
       <div style={{ maxWidth: 1280, margin: "48px auto 0", padding: "0 24px", display: "grid", gridTemplateColumns: "1fr 400px", gap: 48, alignItems: "start" }} className="vehicle-grid">
         {/* Left: info */}
         <div>
-          <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 4, background: "rgba(56,189,248,0.1)", color: "#38bdf8", border: "1px solid rgba(56,189,248,0.25)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
+          <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 4, background: "rgba(15,76,129,0.1)", color: "var(--navy)", border: "1px solid rgba(15,76,129,0.25)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
             {product.category}
           </span>
-          <h1 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, color: "#f1f5f9", margin: "0 0 12px", lineHeight: 1.15 }}>{product.name}</h1>
+          <h1 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, color: "var(--text-heading)", margin: "0 0 12px", lineHeight: 1.15 }}>{product.name}</h1>
           <StarRating rating={product.rating} size={16} />
-          <p style={{ fontSize: 15, color: "#94a3b8", lineHeight: 1.8, margin: "20px 0" }}>{product.description}</p>
+          <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.8, margin: "20px 0" }}>{product.description}</p>
 
           {product.price > 0 ? (
             <div style={{ marginBottom: 24 }}>
-              <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 2px" }}>Starting from</p>
-              <p style={{ fontSize: 36, fontWeight: 900, color: "#38bdf8", margin: 0 }}>₹{product.price.toLocaleString("en-IN")}</p>
-              <p style={{ fontSize: 13, color: "#64748b", margin: "4px 0 0" }}>or ₹{Math.round(product.price / 24).toLocaleString("en-IN")}/month over 24 months EMI</p>
+              <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: "0 0 2px" }}>Starting from</p>
+              <p style={{ fontSize: 36, fontWeight: 900, color: "var(--navy)", margin: 0 }}>₹{product.price.toLocaleString("en-IN")}</p>
+              <p style={{ fontSize: 13, color: "var(--text-subtle)", margin: "4px 0 0" }}>or ₹{Math.round(product.price / 24).toLocaleString("en-IN")}/month over 24 months EMI</p>
             </div>
           ) : (
-            <p style={{ fontSize: 20, fontWeight: 700, color: "#64748b", fontStyle: "italic", marginBottom: 24 }}>Price on Request</p>
+            <p style={{ fontSize: 20, fontWeight: 700, color: "var(--text-subtle)", fontStyle: "italic", marginBottom: 24 }}>Price on Request</p>
           )}
 
           {/* CTAs */}
           <div style={{ display: "flex", gap: 12, marginBottom: 32, flexWrap: "wrap" }}>
             <a href={isUpcoming ? "/contact?interest=upcoming" : "#book-test-ride"} style={{
-              padding: "14px 32px", background: "#38bdf8", color: "#080f1e",
+              padding: "14px 32px", background: "var(--navy)", color: "#fff",
               fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none",
               transition: "background 0.2s", display: "inline-block",
             }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#0ea5e9")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#38bdf8")}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "var(--navy-dark)")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "var(--navy)")}
             >
               {isUpcoming ? "Register Interest" : "Book Test Ride"}
             </a>
             <a href="tel:+919437611129" style={{
-              padding: "14px 32px", border: "1px solid rgba(56,189,248,0.35)",
-              color: "#38bdf8", fontWeight: 700, fontSize: 15, borderRadius: 10,
+              padding: "14px 32px", border: "1px solid rgba(15,76,129,0.35)",
+              color: "var(--navy)", fontWeight: 700, fontSize: 15, borderRadius: 10,
               textDecoration: "none", transition: "all 0.2s", display: "inline-block",
             }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(56,189,248,0.08)"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(15,76,129,0.08)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
             >
               Get Best Price
@@ -161,7 +161,7 @@ export default function VehicleDetail({ product }) {
           <div style={{ display: "flex", gap: 8, marginBottom: 32 }}>
             <button
               onClick={handleShare}
-              style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 16px", background: "transparent", border: "1px solid #1c3050", color: "#94a3b8", fontSize: 13, fontWeight: 600, borderRadius: 8, cursor: "pointer" }}
+              style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 16px", background: "transparent", border: "1px solid var(--border-light)", color: "var(--text-muted)", fontSize: 13, fontWeight: 600, borderRadius: 8, cursor: "pointer" }}
             >
               🔗 Share
             </button>
@@ -175,7 +175,7 @@ export default function VehicleDetail({ product }) {
 
           {/* Why choose */}
           <div style={{ marginBottom: 40 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", marginBottom: 16 }}>Why choose this vehicle</h3>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: "var(--text-heading)", marginBottom: 16 }}>Why choose this vehicle</h3>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               {[
                 { icon: "🇮🇳", title: "Made in India", desc: "Manufactured at our Bhubaneswar facility" },
@@ -183,18 +183,18 @@ export default function VehicleDetail({ product }) {
                 { icon: "🛡", title: "2-Year Warranty", desc: "Full warranty on motor and battery" },
                 { icon: "🔧", title: "Service Network", desc: "Doorstep service across Odisha" },
               ].map((f) => (
-                <div key={f.title} style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 12, padding: "16px" }}>
+                <div key={f.title} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 12, padding: "16px" }}>
                   <p style={{ fontSize: 22, margin: "0 0 8px" }}>{f.icon}</p>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>{f.title}</p>
-                  <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>{f.desc}</p>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 4px" }}>{f.title}</p>
+                  <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: 0 }}>{f.desc}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* What's included */}
-          <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 14, padding: "20px 24px", marginBottom: 40 }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", marginBottom: 16 }}>What's included</h3>
+          <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, padding: "20px 24px", marginBottom: 40 }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-heading)", marginBottom: 16 }}>What's included</h3>
             {[
               "🔌 Portable charger (home + fast-charge adapter)",
               "📄 Registration assistance & RC support",
@@ -202,7 +202,7 @@ export default function VehicleDetail({ product }) {
               "🔧 Free first service (within 3 months)",
               "📱 Digital display & remote anti-theft",
             ].map((item) => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: "1px solid #1c305060", fontSize: 13, color: "#94a3b8" }}>
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: "1px solid var(--border-light)60", fontSize: 13, color: "var(--text-muted)" }}>
                 {item}
               </div>
             ))}
@@ -211,23 +211,23 @@ export default function VehicleDetail({ product }) {
           {/* Upcoming model banner */}
           {isUpcoming && (
             <div style={{
-              background: "rgba(129,140,248,0.1)",
-              border: "1px solid rgba(129,140,248,0.3)",
+              background: "rgba(193,127,36,0.1)",
+              border: "1px solid rgba(193,127,36,0.3)",
               borderRadius: 12, padding: "16px 20px",
               display: "flex", gap: 12, marginBottom: 28,
               alignItems: "flex-start",
             }}>
               <span style={{ fontSize: 22 }}>⚡</span>
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 14, fontWeight: 700, color: "#a5b4fc", margin: "0 0 4px" }}>New Model Coming Soon</p>
-                <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 12px", lineHeight: 1.6 }}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: "var(--gold)", margin: "0 0 4px" }}>New Model Coming Soon</p>
+                <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 12px", lineHeight: 1.6 }}>
                   This is an upcoming Konark product. Register your interest to be notified when it launches.
                 </p>
                 <Link
                   href="/contact?interest=upcoming"
-                  style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", background: "rgba(129,140,248,0.2)", border: "1px solid rgba(129,140,248,0.4)", color: "#a5b4fc", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 700, transition: "background 0.2s" }}
-                  onMouseEnter={e => (e.currentTarget.style.background = "rgba(129,140,248,0.3)")}
-                  onMouseLeave={e => (e.currentTarget.style.background = "rgba(129,140,248,0.2)")}
+                  style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", background: "rgba(193,127,36,0.2)", border: "1px solid rgba(193,127,36,0.4)", color: "var(--gold)", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 700, transition: "background 0.2s" }}
+                  onMouseEnter={e => (e.currentTarget.style.background = "rgba(193,127,36,0.3)")}
+                  onMouseLeave={e => (e.currentTarget.style.background = "rgba(193,127,36,0.2)")}
                 >
                   Register Interest →
                 </Link>
@@ -237,15 +237,15 @@ export default function VehicleDetail({ product }) {
 
           {/* Full specs accordion */}
           {specs.length > 0 && (
-            <div style={{ borderTop: "1px solid #1c3050", paddingTop: 24 }}>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", marginBottom: 14 }}>
+            <div style={{ borderTop: "1px solid var(--border-light)", paddingTop: 24 }}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-heading)", marginBottom: 14 }}>
                 {isUpcoming ? "🚀 Upcoming New Model — Specifications" : "Full Specifications"}
               </h3>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 40px" }}>
                 {specs.map(([k, v], i) => (
-                  <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #1c3050" }}>
-                    <span style={{ fontSize: 13, color: "#94a3b8" }}>{k}</span>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9" }}>{v}</span>
+                  <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid var(--border-light)" }}>
+                    <span style={{ fontSize: 13, color: "var(--text-muted)" }}>{k}</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: "var(--text-heading)" }}>{v}</span>
                   </div>
                 ))}
               </div>
@@ -254,13 +254,13 @@ export default function VehicleDetail({ product }) {
         </div>
 
         {/* Right: Book test ride form */}
-        <div id="book-test-ride" style={{ background: "#0c1525", border: "1px solid rgba(56,189,248,0.2)", borderRadius: 20, padding: "28px", position: "sticky", top: 80 }}>
+        <div id="book-test-ride" style={{ background: "var(--bg-card)", border: "1px solid rgba(15,76,129,0.2)", borderRadius: 20, padding: "28px", position: "sticky", top: 80 }}>
           <div style={{ marginBottom: 20 }}>
-            <p style={{ fontSize: 13, color: "#38bdf8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>
+            <p style={{ fontSize: 13, color: "var(--navy)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>
               {isUpcoming ? "Register Your Interest" : "Book a Test Ride"}
             </p>
-            <h3 style={{ fontSize: 20, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>{isUpcoming ? "Be the first to know" : "Experience it yourself"}</h3>
-            <p style={{ fontSize: 13, color: "#64748b", margin: "6px 0 0", lineHeight: 1.6 }}>
+            <h3 style={{ fontSize: 20, fontWeight: 800, color: "var(--text-heading)", margin: 0 }}>{isUpcoming ? "Be the first to know" : "Experience it yourself"}</h3>
+            <p style={{ fontSize: 13, color: "var(--text-subtle)", margin: "6px 0 0", lineHeight: 1.6 }}>
               {isUpcoming ? "We'll notify you the moment it launches and bookings open." : "Come to our Bhubaneswar showroom. No pressure, just drive."}
             </p>
           </div>
@@ -268,9 +268,9 @@ export default function VehicleDetail({ product }) {
           {success ? (
             <div style={{ textAlign: "center", padding: "32px 16px" }}>
               <p style={{ fontSize: 40, marginBottom: 12 }}>✅</p>
-              <p style={{ fontSize: 16, fontWeight: 700, color: "#10b981", margin: "0 0 8px" }}>Booking Confirmed!</p>
-              <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.7 }}>
-                We'll call <strong style={{ color: "#38bdf8" }}>{form.phone}</strong> to confirm your slot. See you at our showroom!
+              <p style={{ fontSize: 16, fontWeight: 700, color: "var(--green)", margin: "0 0 8px" }}>Booking Confirmed!</p>
+              <p style={{ fontSize: 13, color: "var(--text-muted)", lineHeight: 1.7 }}>
+                We'll call <strong style={{ color: "var(--navy)" }}>{form.phone}</strong> to confirm your slot. See you at our showroom!
               </p>
             </div>
           ) : (
@@ -281,41 +281,41 @@ export default function VehicleDetail({ product }) {
                 { k: "city", label: "Your City", placeholder: "Bhubaneswar", type: "text" },
               ].map((f) => (
                 <div key={f.k}>
-                  <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>{f.label}</label>
+                  <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>{f.label}</label>
                   <input
                     type={f.type}
                     value={form[f.k]}
                     onChange={(e) => setForm((prev) => ({ ...prev, [f.k]: e.target.value }))}
                     required
                     placeholder={f.placeholder}
-                    style={{ width: "100%", background: "#080f1e", border: "1px solid #1c3050", borderRadius: 8, padding: "10px 14px", color: "#f1f5f9", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s" }}
-                    onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
-                    onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
+                    style={{ width: "100%", background: "#fff", border: "1px solid var(--border-light)", borderRadius: 8, padding: "10px 14px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s" }}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = "var(--navy)")}
+                    onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border-light)")}
                   />
                 </div>
               ))}
               <div>
-                <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>Preferred Date</label>
+                <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>Preferred Date</label>
                 <input
                   type="date"
                   value={form.date}
                   onChange={(e) => setForm((prev) => ({ ...prev, date: e.target.value }))}
                   required
-                  style={{ width: "100%", background: "#080f1e", border: "1px solid #1c3050", borderRadius: 8, padding: "10px 14px", color: "#f1f5f9", fontSize: 14, outline: "none", boxSizing: "border-box", colorScheme: "dark", transition: "border-color 0.2s" }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
-                  onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
+                  style={{ width: "100%", background: "#fff", border: "1px solid var(--border-light)", borderRadius: 8, padding: "10px 14px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", colorScheme: "light", transition: "border-color 0.2s" }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "var(--navy)")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border-light)")}
                 />
               </div>
               <button
                 type="submit"
                 disabled={submitting}
-                style={{ marginTop: 4, padding: "14px", background: "#38bdf8", color: "#080f1e", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: submitting ? "not-allowed" : "pointer", transition: "background 0.2s", opacity: submitting ? 0.7 : 1 }}
-                onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.background = "#0ea5e9"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "#38bdf8"; }}
+                style={{ marginTop: 4, padding: "14px", background: "var(--navy)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: submitting ? "not-allowed" : "pointer", transition: "background 0.2s", opacity: submitting ? 0.7 : 1 }}
+                onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.background = "var(--navy-dark)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "var(--navy)"; }}
               >
                 {submitting ? "Booking..." : "Confirm Test Ride →"}
               </button>
-              <p style={{ fontSize: 11, color: "#475569", textAlign: "center", margin: 0 }}>
+              <p style={{ fontSize: 11, color: "var(--text-subtle)", textAlign: "center", margin: 0 }}>
                 📍 Bhimatangi Housing Colony, Bhubaneswar, Odisha 751002
               </p>
             </form>

@@ -9,11 +9,11 @@ interface BadgeProps {
 }
 
 const styles: Record<BadgeVariant, string> = {
-  cyan: "bg-[#38bdf8]/10 text-[#38bdf8] border-[#38bdf8]/30",
-  purple: "bg-[#818cf8]/10 text-[#818cf8] border-[#818cf8]/30",
-  orange: "bg-[#f97316]/10 text-[#f97316] border-[#f97316]/30",
-  green: "bg-[#10b981]/10 text-[#10b981] border-[#10b981]/30",
-  gray: "bg-[#94a3b8]/10 text-[#94a3b8] border-[#94a3b8]/30",
+  cyan: "bg-[#0f4c81]/10 text-[#0f4c81] border-[#0f4c81]/30",
+  purple: "bg-[#5b21b6]/10 text-[#5b21b6] border-[#5b21b6]/30",
+  orange: "bg-[#c17f24]/10 text-[#c17f24] border-[#c17f24]/30",
+  green: "bg-[#1a7a4a]/10 text-[#1a7a4a] border-[#1a7a4a]/30",
+  gray: "bg-[#6b5a45]/10 text-[#6b5a45] border-[#6b5a45]/30",
 };
 
 export default function Badge({ variant = "cyan", children, className = "" }: BadgeProps) {

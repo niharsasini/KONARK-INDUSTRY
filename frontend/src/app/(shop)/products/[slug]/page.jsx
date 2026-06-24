@@ -43,17 +43,17 @@ export default function ProductPage() {
 
   if (loading && !product) {
     return (
-      <div style={{ minHeight: "100vh", background: "#080f1e", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <p style={{ fontSize: 14, color: "#94a3b8" }}>Loading...</p>
+      <div style={{ minHeight: "100vh", background: "var(--bg-page)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <p style={{ fontSize: 14, color: "var(--text-muted)" }}>Loading...</p>
       </div>
     );
   }
 
   if (!product) {
     return (
-      <div style={{ minHeight: "100vh", background: "#080f1e", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 16 }}>
+      <div style={{ minHeight: "100vh", background: "var(--bg-page)", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 16 }}>
         <p style={{ fontSize: 20, color: "#ef4444", fontWeight: 600 }}>Product not found</p>
-        <Link href="/products" style={{ color: "#38bdf8", textDecoration: "none", fontSize: 14 }}>← Back to Products</Link>
+        <Link href="/products" style={{ color: "var(--navy)", textDecoration: "none", fontSize: 14 }}>← Back to Products</Link>
       </div>
     );
   }

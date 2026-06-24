@@ -231,13 +231,13 @@ export default function ProductsPage() {
         <div className="show-mobile-filter" style={{ marginBottom: 16, display: "none" }}>
           <button
             onClick={() => setDrawerOpen(true)}
-            style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 16px", border: "1px solid #1c3050", borderRadius: 8, background: "transparent", color: "#f1f5f9", fontSize: 13, fontWeight: 600, cursor: "pointer" }}
+            style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 16px", border: "1px solid var(--border-default)", borderRadius: 8, background: "transparent", color: "var(--text-heading)", fontSize: 13, fontWeight: 600, cursor: "pointer" }}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 16, height: 16 }}>
               <line x1="4" y1="6" x2="20" y2="6" /><line x1="8" y1="12" x2="20" y2="12" /><line x1="12" y1="18" x2="20" y2="18" />
             </svg>
             Filters
-            {typeFilter !== "all" && <span style={{ background: "#38bdf8", color: "#080f1e", fontSize: 10, fontWeight: 700, padding: "2px 6px", borderRadius: 100, marginLeft: 4 }}>1</span>}
+            {typeFilter !== "all" && <span style={{ background: "var(--navy)", color: "#fff", fontSize: 10, fontWeight: 700, padding: "2px 6px", borderRadius: 100, marginLeft: 4 }}>1</span>}
           </button>
         </div>
 
@@ -247,20 +247,20 @@ export default function ProductsPage() {
           <div>
             {/* Sort bar */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 10 }}>
-              <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Showing <strong style={{ color: "#f1f5f9" }}>{filtered.length}</strong> results</p>
+              <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>Showing <strong style={{ color: "var(--text-heading)" }}>{filtered.length}</strong> results</p>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                style={{ background: "#0c1525", border: "1px solid #1c3050", color: "#f1f5f9", fontSize: 13, padding: "7px 12px", borderRadius: 8, outline: "none", cursor: "pointer" }}
+                style={{ background: "var(--bg-card)", border: "1px solid var(--border-default)", color: "var(--text-heading)", fontSize: 13, padding: "7px 12px", borderRadius: 8, outline: "none", cursor: "pointer" }}
               >
                 {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
             </div>
 
             {filtered.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "60px 24px", color: "#94a3b8" }}>
+              <div style={{ textAlign: "center", padding: "60px 24px", color: "var(--text-muted)" }}>
                 <p style={{ fontSize: 16 }}>No products match your filters.</p>
-                <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setTypeFilter("all"); }} style={{ marginTop: 12, padding: "8px 20px", background: "#38bdf8", color: "#080f1e", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer" }}>Clear Filters</button>
+                <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setTypeFilter("all"); }} style={{ marginTop: 12, padding: "8px 20px", background: "var(--navy)", color: "#fff", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer" }}>Clear Filters</button>
               </div>
             ) : (
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 }}>
@@ -274,11 +274,11 @@ export default function ProductsPage() {
       {/* Mobile drawer */}
       {drawerOpen && (
         <div style={{ position: "fixed", inset: 0, zIndex: 200, display: "flex" }}>
-          <div onClick={() => setDrawerOpen(false)} style={{ flex: 1, background: "rgba(0,0,0,0.6)" }} />
-          <div style={{ width: 300, background: "#080f1e", borderLeft: "1px solid #1c3050", padding: 20, overflowY: "auto" }}>
+          <div onClick={() => setDrawerOpen(false)} style={{ flex: 1, background: "var(--bg-overlay)" }} />
+          <div style={{ width: 300, background: "var(--bg-page)", borderLeft: "1px solid var(--border-default)", padding: 20, overflowY: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-              <h3 style={{ margin: 0, color: "#f1f5f9" }}>Filters</h3>
-              <button onClick={() => setDrawerOpen(false)} style={{ background: "transparent", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: 20 }}>✕</button>
+              <h3 style={{ margin: 0, color: "var(--text-heading)" }}>Filters</h3>
+              <button onClick={() => setDrawerOpen(false)} style={{ background: "transparent", border: "none", color: "var(--text-muted)", cursor: "pointer", fontSize: 20 }}>✕</button>
             </div>
             <Sidebar />
           </div>

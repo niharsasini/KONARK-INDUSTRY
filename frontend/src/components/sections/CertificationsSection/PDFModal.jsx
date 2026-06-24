@@ -29,10 +29,10 @@ export default function PDFModal({ cert, onClose }) {
           width: '100%',
           maxWidth: '900px',
           height: '88vh',
-          background: '#0c1525',
+          background: 'var(--bg-card)',
           borderRadius: '16px',
           overflow: 'hidden',
-          border: '1px solid #1c3050',
+          border: '1px solid var(--border-light)',
           display: 'flex',
           flexDirection: 'column',
         }}
@@ -43,8 +43,8 @@ export default function PDFModal({ cert, onClose }) {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '14px 20px',
-          borderBottom: '1px solid #1c3050',
-          background: '#080f1e',
+          borderBottom: '1px solid var(--border-light)',
+          background: '#fff',
           flexShrink: 0,
           gap: '12px',
         }}>
@@ -72,7 +72,7 @@ export default function PDFModal({ cert, onClose }) {
             </div>
             <div style={{ minWidth: 0 }}>
               <div style={{
-                color: '#f1f5f9',
+                color: 'var(--text-heading)',
                 fontWeight: 700,
                 fontSize: '15px',
                 whiteSpace: 'nowrap',
@@ -82,7 +82,7 @@ export default function PDFModal({ cert, onClose }) {
                 {cert.title}
               </div>
               <div style={{
-                color: '#64748b',
+                color: 'var(--text-subtle)',
                 fontSize: '11px',
                 fontFamily: 'monospace',
               }}>
@@ -102,8 +102,8 @@ export default function PDFModal({ cert, onClose }) {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                background: '#38bdf8',
-                color: '#080f1e',
+                background: 'var(--navy)',
+                color: '#fff',
                 padding: '7px 14px',
                 borderRadius: '8px',
                 fontSize: '12px',
@@ -118,8 +118,8 @@ export default function PDFModal({ cert, onClose }) {
               onClick={onClose}
               style={{
                 background: 'transparent',
-                border: '1px solid #1c3050',
-                color: '#94a3b8',
+                border: '1px solid var(--border-light)',
+                color: 'var(--text-muted)',
                 width: '36px',
                 height: '36px',
                 borderRadius: '8px',
