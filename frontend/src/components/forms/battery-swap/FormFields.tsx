@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 
 export function FieldLabel({ children, required }: { children: ReactNode; required?: boolean }) {
   return (
-    <label style={{ fontSize: 13, fontWeight: 600, color: "#94a3b8", display: "block", marginBottom: 6 }}>
-      {children}{required && <span style={{ color: "#ef4444" }}> *</span>}
+    <label style={{ fontSize: 13, fontWeight: 600, color: "var(--text-muted)", display: "block", marginBottom: 6 }}>
+      {children}{required && <span style={{ color: "var(--red)" }}> *</span>}
     </label>
   );
 }
@@ -19,12 +19,18 @@ export function Input({ value, onChange, placeholder, type = "text", required }:
       placeholder={placeholder}
       required={required}
       style={{
-        width: "100%", background: "#0c1525", border: "1px solid #1c3050", borderRadius: 8,
-        color: "#f1f5f9", fontSize: 14, padding: "10px 14px", boxSizing: "border-box",
+        width: "100%", background: "var(--bg-card)", border: "1px solid var(--border-default)", borderRadius: 8,
+        color: "var(--text-body)", fontSize: 14, padding: "10px 14px", boxSizing: "border-box",
         outline: "none", transition: "border-color 0.2s",
       }}
-      onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
-      onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
+      onFocus={(e) => {
+        e.currentTarget.style.borderColor = "var(--navy)";
+        e.currentTarget.style.boxShadow = "0 0 0 3px rgba(15,76,129,0.1)";
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.borderColor = "var(--border-default)";
+        e.currentTarget.style.boxShadow = "none";
+      }}
     />
   );
 }
@@ -39,12 +45,18 @@ export function Textarea({ value, onChange, placeholder, rows = 3 }: {
       placeholder={placeholder}
       rows={rows}
       style={{
-        width: "100%", background: "#0c1525", border: "1px solid #1c3050", borderRadius: 8,
-        color: "#f1f5f9", fontSize: 14, padding: "10px 14px", boxSizing: "border-box",
+        width: "100%", background: "var(--bg-card)", border: "1px solid var(--border-default)", borderRadius: 8,
+        color: "var(--text-body)", fontSize: 14, padding: "10px 14px", boxSizing: "border-box",
         outline: "none", resize: "vertical", transition: "border-color 0.2s",
       }}
-      onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
-      onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
+      onFocus={(e) => {
+        e.currentTarget.style.borderColor = "var(--navy)";
+        e.currentTarget.style.boxShadow = "0 0 0 3px rgba(15,76,129,0.1)";
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.borderColor = "var(--border-default)";
+        e.currentTarget.style.boxShadow = "none";
+      }}
     />
   );
 }
@@ -57,8 +69,8 @@ export function Select({ value, onChange, options, placeholder }: {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       style={{
-        width: "100%", background: "#0c1525", border: "1px solid #1c3050", borderRadius: 8,
-        color: value ? "#f1f5f9" : "#64748b", fontSize: 14, padding: "10px 14px", boxSizing: "border-box",
+        width: "100%", background: "var(--bg-card)", border: "1px solid var(--border-default)", borderRadius: 8,
+        color: value ? "var(--text-body)" : "var(--text-subtle)", fontSize: 14, padding: "10px 14px", boxSizing: "border-box",
         outline: "none", cursor: "pointer",
       }}
     >

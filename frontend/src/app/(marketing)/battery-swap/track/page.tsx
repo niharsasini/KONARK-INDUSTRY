@@ -34,14 +34,14 @@ const STATUS_ORDER = ["pending", "confirmed", "assigned", "in_progress", "comple
 
 function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, { bg: string; color: string }> = {
-    pending: { bg: "rgba(249,115,22,0.12)", color: "#f97316" },
-    confirmed: { bg: "rgba(56,189,248,0.12)", color: "#38bdf8" },
-    assigned: { bg: "rgba(165,180,252,0.12)", color: "#a5b4fc" },
-    in_progress: { bg: "rgba(59,130,246,0.12)", color: "#3b82f6" },
-    completed: { bg: "rgba(16,185,129,0.12)", color: "#10b981" },
-    cancelled: { bg: "rgba(239,68,68,0.12)", color: "#ef4444" },
+    pending: { bg: "var(--gold-bg)", color: "var(--amber)" },
+    confirmed: { bg: "var(--navy-bg)", color: "var(--navy)" },
+    assigned: { bg: "var(--purple-bg)", color: "var(--purple)" },
+    in_progress: { bg: "var(--navy-bg)", color: "var(--navy-light)" },
+    completed: { bg: "var(--green-bg)", color: "var(--green)" },
+    cancelled: { bg: "var(--red-bg)", color: "var(--red)" },
   };
-  const style = colors[status] || { bg: "rgba(100,116,139,0.12)", color: "#64748b" };
+  const style = colors[status] || { bg: "var(--bg-section)", color: "var(--text-muted)" };
   return (
     <span style={{
       display: "inline-block", padding: "4px 12px", borderRadius: 999,
@@ -100,7 +100,7 @@ export default function BatterySwapTrackPage() {
   }
 
   return (
-    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", padding: "80px 24px 80px" }}>
+    <main style={{ minHeight: "100vh", background: "var(--bg-page)", padding: "80px 24px 80px" }}>
       <div style={{ maxWidth: 600, margin: "0 auto" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Battery Swap", href: "/battery-swap" }, { label: "Track My Swap" }]} />
 
@@ -108,14 +108,14 @@ export default function BatterySwapTrackPage() {
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <span style={{
             display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            border: "1px solid rgba(56,189,248,0.3)", color: "#38bdf8",
+            border: "1px solid var(--border-navy)", color: "var(--navy)",
             fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em",
-            background: "rgba(56,189,248,0.08)", marginBottom: 16,
+            background: "var(--navy-bg)", marginBottom: 16,
           }}>⚡ Battery Swap</span>
-          <h1 style={{ fontSize: "clamp(24px, 4vw, 40px)", fontWeight: 900, color: "#f1f5f9", margin: "0 0 10px" }}>
+          <h1 style={{ fontSize: "clamp(24px, 4vw, 40px)", fontWeight: 900, color: "var(--text-heading)", margin: "0 0 10px" }}>
             Track Your Battery Swap
           </h1>
-          <p style={{ color: "#94a3b8", fontSize: 15 }}>
+          <p style={{ color: "var(--text-muted)", fontSize: 15 }}>
             Enter your swap token to see the current status.
           </p>
         </div>
@@ -128,16 +128,16 @@ export default function BatterySwapTrackPage() {
               onChange={(e) => setTokenInput(e.target.value)}
               placeholder="BSW-2024-XXXXX"
               style={{
-                flex: 1, background: "#0c1525", border: "1px solid #1c3050", borderRadius: 8,
-                color: "#f1f5f9", fontSize: 15, padding: "12px 16px", outline: "none",
+                flex: 1, background: "var(--bg-card)", border: "1px solid var(--border-default)", borderRadius: 8,
+                color: "var(--text-body)", fontSize: 15, padding: "12px 16px", outline: "none",
                 fontFamily: "monospace", letterSpacing: "0.06em",
               }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#0f4c81")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#d4c9b8")}
             />
             <button type="submit" disabled={loading || !tokenInput.trim()} style={{
-              padding: "12px 24px", background: loading ? "#1c3050" : "#38bdf8",
-              border: "none", borderRadius: 8, color: loading ? "#64748b" : "#080f1e",
+              padding: "12px 24px", background: loading ? "var(--border-default)" : "var(--navy)",
+              border: "none", borderRadius: 8, color: loading ? "var(--text-muted)" : "#ffffff",
               fontWeight: 700, fontSize: 14, cursor: loading ? "not-allowed" : "pointer",
               transition: "background 0.2s", whiteSpace: "nowrap",
             }}>
@@ -148,8 +148,8 @@ export default function BatterySwapTrackPage() {
 
         {error && (
           <div style={{
-            background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.3)",
-            borderRadius: 8, padding: "12px 16px", marginBottom: 24, color: "#ef4444", fontSize: 14,
+            background: "var(--red-bg)", border: "1px solid rgba(192,57,43,0.3)",
+            borderRadius: 8, padding: "12px 16px", marginBottom: 24, color: "var(--red)", fontSize: 14,
           }}>
             ⚠️ {error}
           </div>
@@ -160,13 +160,13 @@ export default function BatterySwapTrackPage() {
           <div>
             {/* Summary card */}
             <div style={{
-              background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16,
-              padding: 24, marginBottom: 24,
+              background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16,
+              padding: 24, marginBottom: 24, boxShadow: "var(--shadow-sm)",
             }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
                 <div>
-                  <p style={{ color: "#64748b", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 4px" }}>Swap Token</p>
-                  <p style={{ color: "#38bdf8", fontFamily: "monospace", fontSize: 20, fontWeight: 900, margin: 0, letterSpacing: "0.06em" }}>
+                  <p style={{ color: "var(--text-muted)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 4px" }}>Swap Token</p>
+                  <p style={{ color: "var(--navy)", fontFamily: "monospace", fontSize: 20, fontWeight: 900, margin: 0, letterSpacing: "0.06em" }}>
                     {swap.token_number}
                   </p>
                 </div>
@@ -186,9 +186,9 @@ export default function BatterySwapTrackPage() {
                     ...((swap.confirmed_time_slot || swap.preferred_time_slot) ? [["Slot", swap.confirmed_time_slot || swap.preferred_time_slot]] : []),
                   ] as [string, string][]
                 ).map(([k, v]) => (
-                  <div key={k} style={{ background: "#080f1e", borderRadius: 8, padding: "10px 12px" }}>
-                    <p style={{ color: "#64748b", fontSize: 11, margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.08em" }}>{k}</p>
-                    <p style={{ color: "#f1f5f9", fontSize: 13, fontWeight: 600, margin: 0 }}>{v}</p>
+                  <div key={k} style={{ background: "var(--bg-section)", borderRadius: 8, padding: "10px 12px" }}>
+                    <p style={{ color: "var(--text-muted)", fontSize: 11, margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.08em" }}>{k}</p>
+                    <p style={{ color: "var(--text-heading)", fontSize: 13, fontWeight: 600, margin: 0 }}>{v}</p>
                   </div>
                 ))}
               </div>
@@ -196,24 +196,24 @@ export default function BatterySwapTrackPage() {
 
             {/* Status timeline */}
             {swap.status !== "cancelled" && (
-              <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: 24 }}>
-                <p style={{ color: "#64748b", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 20px" }}>Status Timeline</p>
+              <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: 24, boxShadow: "var(--shadow-sm)" }}>
+                <p style={{ color: "var(--text-muted)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 20px" }}>Status Timeline</p>
                 {STATUS_FLOW.map((step, i) => {
                   const done = i < currentStatusIdx;
                   const active = i === currentStatusIdx;
                   const pending = i > currentStatusIdx;
-                  const lineColor = done ? "#10b981" : "#1c3050";
+                  const lineColor = done ? "var(--green)" : "var(--border-default)";
                   return (
                     <div key={step.key} style={{ display: "flex", gap: 14, position: "relative" }}>
                       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <div style={{
                           width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
                           display: "flex", alignItems: "center", justifyContent: "center",
-                          background: done ? "#10b981" : active ? "rgba(56,189,248,0.12)" : "#080f1e",
-                          border: `2px solid ${done ? "#10b981" : active ? "#38bdf8" : "#1c3050"}`,
+                          background: done ? "var(--green)" : active ? "var(--navy-bg)" : "var(--bg-section)",
+                          border: `2px solid ${done ? "var(--green)" : active ? "var(--navy)" : "var(--border-default)"}`,
                           fontSize: done ? 14 : 16,
-                          color: done ? "#fff" : pending ? "#1c3050" : undefined,
-                          boxShadow: active ? "0 0 12px rgba(56,189,248,0.3)" : "none",
+                          color: done ? "#fff" : pending ? "var(--border-default)" : undefined,
+                          boxShadow: active ? "0 0 12px rgba(15,76,129,0.3)" : "none",
                         }}>
                           {done ? "✓" : step.icon}
                         </div>
@@ -224,16 +224,16 @@ export default function BatterySwapTrackPage() {
                       <div style={{ paddingBottom: i < STATUS_FLOW.length - 1 ? 20 : 0, flex: 1 }}>
                         <p style={{
                           fontSize: 14, fontWeight: 700, margin: "6px 0 4px",
-                          color: done ? "#10b981" : active ? "#38bdf8" : "#64748b",
+                          color: done ? "var(--green)" : active ? "var(--navy)" : "var(--text-muted)",
                         }}>
                           {step.label}
-                          {active && <span style={{ marginLeft: 8, fontSize: 11, color: "#38bdf8", background: "rgba(56,189,248,0.1)", padding: "2px 8px", borderRadius: 999 }}>CURRENT</span>}
+                          {active && <span style={{ marginLeft: 8, fontSize: 11, color: "var(--navy)", background: "var(--navy-bg)", padding: "2px 8px", borderRadius: 999 }}>CURRENT</span>}
                         </p>
-                        <p style={{ fontSize: 12, color: done || active ? "#94a3b8" : "#1c3050", margin: 0, lineHeight: 1.5 }}>
+                        <p style={{ fontSize: 12, color: done || active ? "var(--text-muted)" : "var(--border-default)", margin: 0, lineHeight: 1.5 }}>
                           {active || done ? step.desc : "Pending"}
                         </p>
                         {step.key === "assigned" && swap.assigned_technician && (active || done) && (
-                          <p style={{ fontSize: 12, color: "#a5b4fc", margin: "4px 0 0" }}>
+                          <p style={{ fontSize: 12, color: "var(--purple)", margin: "4px 0 0" }}>
                             🔧 {swap.assigned_technician}
                           </p>
                         )}
@@ -245,26 +245,26 @@ export default function BatterySwapTrackPage() {
             )}
 
             {swap.status === "cancelled" && (
-              <div style={{ background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 12, padding: 20, textAlign: "center" }}>
+              <div style={{ background: "var(--red-bg)", border: "1px solid rgba(192,57,43,0.2)", borderRadius: 12, padding: 20, textAlign: "center" }}>
                 <p style={{ fontSize: 20, marginBottom: 8 }}>❌</p>
-                <p style={{ color: "#ef4444", fontWeight: 700, marginBottom: 6 }}>Swap Request Cancelled</p>
-                <p style={{ color: "#94a3b8", fontSize: 13 }}>
-                  Please call <a href="tel:+919437611129" style={{ color: "#38bdf8" }}>+91 94376 11129</a> if you need help.
+                <p style={{ color: "var(--red)", fontWeight: 700, marginBottom: 6 }}>Swap Request Cancelled</p>
+                <p style={{ color: "var(--text-muted)", fontSize: 13 }}>
+                  Please call <a href="tel:+919437611129" style={{ color: "var(--navy)" }}>+91 94376 11129</a> if you need help.
                 </p>
               </div>
             )}
 
             <div style={{ marginTop: 20, display: "flex", gap: 10, justifyContent: "center" }}>
               <Link href="/battery-swap" style={{
-                padding: "10px 20px", background: "#38bdf8", color: "#080f1e",
+                padding: "10px 20px", background: "var(--navy)", color: "#ffffff",
                 fontWeight: 700, fontSize: 13, borderRadius: 8, textDecoration: "none",
               }}>
                 Book Another Swap
               </Link>
               <Link href="/" style={{
-                padding: "10px 20px", background: "transparent", color: "#94a3b8",
+                padding: "10px 20px", background: "transparent", color: "var(--text-muted)",
                 fontWeight: 600, fontSize: 13, borderRadius: 8, textDecoration: "none",
-                border: "1px solid #1c3050",
+                border: "1px solid var(--border-default)",
               }}>
                 Back to Home
               </Link>

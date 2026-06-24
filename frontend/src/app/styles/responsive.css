@@ -65,16 +65,12 @@
   .stats-section { padding: 48px 0 !important; }
   .stats-inner {
     grid-template-columns: 1fr 1fr !important;
-    padding: 0 !important;
+    padding: 0 16px !important;
+    gap: 12px !important;
   }
   .stat-item {
-    padding: 24px 16px !important;
-    border-right: none !important;
-    border-bottom: 1px solid #1c3050 !important;
+    padding: 20px 16px !important;
   }
-  .stat-item:nth-child(odd) { border-right: 1px solid #1c3050 !important; }
-  .stat-item:nth-child(3),
-  .stat-item:nth-child(4) { border-bottom: none !important; }
   .stat-number { font-size: 36px !important; }
   .stat-label { font-size: 11px !important; }
   .stat-desc { display: none !important; }

@@ -19,11 +19,11 @@ const SERVICE_OPTIONS = [
 ];
 
 const INPUT_STYLE: React.CSSProperties = {
-  background: "#0c1525",
-  border: "1px solid #1c3050",
+  background: "var(--bg-card)",
+  border: "1px solid var(--border-default)",
   borderRadius: 10,
   padding: "12px 16px",
-  color: "#f1f5f9",
+  color: "var(--text-body)",
   fontSize: 15,
   width: "100%",
   outline: "none",
@@ -32,7 +32,7 @@ const INPUT_STYLE: React.CSSProperties = {
 };
 
 const LABEL_STYLE: React.CSSProperties = {
-  color: "#94a3b8",
+  color: "var(--text-muted)",
   fontSize: 13,
   fontWeight: 600,
   letterSpacing: "0.04em",
@@ -45,7 +45,7 @@ function Field({ label, required, children }: { label: string; required?: boolea
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <label style={LABEL_STYLE}>
-        {label} {required && <span style={{ color: "#38bdf8" }}>*</span>}
+        {label} {required && <span style={{ color: "var(--navy)" }}>*</span>}
       </label>
       {children}
     </div>
@@ -65,11 +65,11 @@ export default function EnquiryPage() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const focusStyle = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#38bdf8";
-    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(56,189,248,0.1)";
+    e.currentTarget.style.borderColor = "#0f4c81";
+    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(15,76,129,0.1)";
   };
   const blurStyle = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#1c3050";
+    e.currentTarget.style.borderColor = "#d4c9b8";
     e.currentTarget.style.boxShadow = "none";
   };
 
@@ -88,32 +88,32 @@ export default function EnquiryPage() {
   };
 
   return (
-    <main style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
+    <main style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       {/* Hero */}
       <div style={{
-        background: "linear-gradient(180deg, #050a14 0%, #080f1e 100%)",
-        borderBottom: "1px solid #1c3050",
+        background: "var(--grad-section)",
+        borderBottom: "1px solid var(--border-light)",
         padding: "60px 24px 48px",
       }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           {/* Breadcrumb */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20, fontSize: 13, color: "#475569" }}>
-            <Link href="/" style={{ color: "#475569", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#475569")}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20, fontSize: 13, color: "var(--text-subtle)" }}>
+            <Link href="/" style={{ color: "var(--text-subtle)", textDecoration: "none" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#0f4c81")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#8c7a66")}
             >Home</Link>
             <span>›</span>
-            <Link href="/services" style={{ color: "#475569", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#475569")}
+            <Link href="/services" style={{ color: "var(--text-subtle)", textDecoration: "none" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#0f4c81")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#8c7a66")}
             >Services</Link>
             <span>›</span>
-            <span style={{ color: "#94a3b8" }}>Book a Service</span>
+            <span style={{ color: "var(--text-muted)" }}>Book a Service</span>
           </div>
-          <h1 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 900, color: "#f1f5f9", margin: "0 0 14px", lineHeight: 1.15 }}>
+          <h1 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 900, color: "var(--text-heading)", margin: "0 0 14px", lineHeight: 1.15 }}>
             Book a Service
           </h1>
-          <p style={{ fontSize: 17, color: "#94a3b8", lineHeight: 1.7, margin: 0 }}>
+          <p style={{ fontSize: 17, color: "var(--text-muted)", lineHeight: 1.7, margin: 0 }}>
             Tell us what's wrong. We'll send the right person.
           </p>
         </div>
@@ -125,29 +125,29 @@ export default function EnquiryPage() {
 
           {/* LEFT — Form */}
           <div>
-            <h2 style={{ fontSize: 20, fontWeight: 700, color: "#f1f5f9", margin: "0 0 28px" }}>
+            <h2 style={{ fontSize: 20, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 28px" }}>
               What do you need help with?
             </h2>
 
             {success ? (
               <div style={{
-                background: "#0c1525", border: "1px solid #1c3050",
-                borderRadius: 16, padding: "48px 32px", textAlign: "center",
+                background: "var(--bg-card)", border: "1px solid var(--border-light)",
+                borderRadius: 16, padding: "48px 32px", textAlign: "center", boxShadow: "var(--shadow-sm)",
               }}>
                 <div style={{ fontSize: 56, marginBottom: 20 }}>✅</div>
-                <h3 style={{ fontSize: 24, fontWeight: 800, color: "#f1f5f9", margin: "0 0 14px" }}>
+                <h3 style={{ fontSize: 24, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 14px" }}>
                   Enquiry Sent!
                 </h3>
-                <p style={{ fontSize: 15, color: "#94a3b8", lineHeight: 1.8, marginBottom: 28 }}>
+                <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 28 }}>
                   We've received your request. Our team will call you on{" "}
-                  <strong style={{ color: "#38bdf8" }}>{form.phone}</strong> within 2 hours to confirm your service slot.
+                  <strong style={{ color: "var(--navy)" }}>{form.phone}</strong> within 2 hours to confirm your service slot.
                 </p>
                 <button
                   onClick={() => { setSuccess(false); setForm({ name: "", phone: "", email: "", service: "", city: "", date: "", problem: "", urgency: "moderate" }); }}
                   style={{
-                    background: "#38bdf8", color: "#080f1e", padding: "12px 28px",
+                    background: "var(--grad-navy)", color: "#ffffff", padding: "12px 28px",
                     borderRadius: 10, fontWeight: 700, fontSize: 14, border: "none",
-                    cursor: "pointer",
+                    cursor: "pointer", boxShadow: "var(--shadow-navy)",
                   }}
                 >
                   Book Another Service
@@ -169,7 +169,7 @@ export default function EnquiryPage() {
                     style={INPUT_STYLE} placeholder="+91 98765 43210"
                     onFocus={focusStyle} onBlur={blurStyle}
                   />
-                  <span style={{ fontSize: 11, color: "#475569", marginTop: 4 }}>We'll call to confirm your slot</span>
+                  <span style={{ fontSize: 11, color: "var(--text-subtle)", marginTop: 4 }}>We'll call to confirm your slot</span>
                 </Field>
 
                 <Field label="Email Address">
@@ -188,7 +188,7 @@ export default function EnquiryPage() {
                   >
                     <option value="" disabled>Select a service...</option>
                     {SERVICE_OPTIONS.map((s) => (
-                      <option key={s} value={s} style={{ background: "#0c1525" }}>{s}</option>
+                      <option key={s} value={s} style={{ background: "var(--bg-card)" }}>{s}</option>
                     ))}
                   </select>
                 </Field>
@@ -204,7 +204,7 @@ export default function EnquiryPage() {
                 <Field label="Preferred Date">
                   <input
                     type="date" value={form.date} onChange={set("date")}
-                    style={{ ...INPUT_STYLE, colorScheme: "dark" }}
+                    style={{ ...INPUT_STYLE, colorScheme: "light" }}
                     onFocus={focusStyle} onBlur={blurStyle}
                   />
                 </Field>
@@ -226,12 +226,12 @@ export default function EnquiryPage() {
                       { value: "moderate", label: "Moderate — within 2–3 days" },
                       { value: "urgent", label: "Urgent — as soon as possible" },
                     ].map((opt) => (
-                      <label key={opt.value} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", fontSize: 14, color: form.urgency === opt.value ? "#f1f5f9" : "#94a3b8" }}>
+                      <label key={opt.value} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", fontSize: 14, color: form.urgency === opt.value ? "var(--text-heading)" : "var(--text-muted)" }}>
                         <input
                           type="radio" name="urgency" value={opt.value}
                           checked={form.urgency === opt.value}
                           onChange={set("urgency")}
-                          style={{ accentColor: "#38bdf8", width: 16, height: 16 }}
+                          style={{ accentColor: "#0f4c81", width: 16, height: 16 }}
                         />
                         {opt.label}
                       </label>
@@ -240,7 +240,7 @@ export default function EnquiryPage() {
                 </Field>
 
                 {error && (
-                  <p style={{ fontSize: 13, color: "#ef4444", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 8, padding: "10px 14px", margin: 0 }}>
+                  <p style={{ fontSize: 13, color: "var(--red)", background: "var(--red-bg)", border: "1px solid rgba(192,57,43,0.2)", borderRadius: 8, padding: "10px 14px", margin: 0 }}>
                     {error}
                   </p>
                 )}
@@ -249,10 +249,10 @@ export default function EnquiryPage() {
                   type="submit"
                   disabled={loading}
                   style={{
-                    width: "100%", padding: 16, background: loading ? "#0891b2" : "#38bdf8",
-                    color: "#080f1e", fontWeight: 800, fontSize: 16,
+                    width: "100%", padding: 16, background: loading ? "var(--navy-light)" : "var(--grad-navy)",
+                    color: "#ffffff", fontWeight: 800, fontSize: 16,
                     borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer",
-                    transition: "background 0.2s",
+                    transition: "background 0.2s", boxShadow: "var(--shadow-navy)",
                   }}
                 >
                   {loading ? "Sending..." : "Send Enquiry →"}
@@ -281,14 +281,14 @@ export default function EnquiryPage() {
               },
             ].map((card) => (
               <div key={card.title} style={{
-                background: "#0c1525", border: "1px solid #1c3050",
-                borderRadius: 14, padding: "20px 22px",
+                background: "var(--bg-card)", border: "1px solid var(--border-light)",
+                borderRadius: 14, padding: "20px 22px", boxShadow: "var(--shadow-sm)",
               }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
                   <span style={{ fontSize: 22, lineHeight: 1.3 }}>{card.icon}</span>
                   <div>
-                    <p style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 6px" }}>{card.title}</p>
-                    <p style={{ fontSize: 13, color: "#64748b", margin: 0, lineHeight: 1.7 }}>{card.body}</p>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 6px" }}>{card.title}</p>
+                    <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0, lineHeight: 1.7 }}>{card.body}</p>
                   </div>
                 </div>
               </div>
@@ -296,14 +296,14 @@ export default function EnquiryPage() {
 
             {/* Direct contact */}
             <div style={{
-              background: "rgba(56,189,248,0.05)", border: "1px solid rgba(56,189,248,0.2)",
+              background: "var(--navy-bg)", border: "1px solid var(--border-navy)",
               borderRadius: 14, padding: "20px 22px",
             }}>
-              <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 8px" }}>Prefer to call directly?</p>
-              <a href="tel:+919437611129" style={{ fontSize: 18, fontWeight: 800, color: "#38bdf8", textDecoration: "none", display: "block", marginBottom: 4 }}>
+              <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 8px" }}>Prefer to call directly?</p>
+              <a href="tel:+919437611129" style={{ fontSize: 18, fontWeight: 800, color: "var(--navy)", textDecoration: "none", display: "block", marginBottom: 4 }}>
                 +91 94376 11129
               </a>
-              <p style={{ fontSize: 12, color: "#475569", margin: 0 }}>Mon–Sat, 8AM–8PM</p>
+              <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: 0 }}>Mon–Sat, 8AM–8PM</p>
             </div>
           </div>
         </div>

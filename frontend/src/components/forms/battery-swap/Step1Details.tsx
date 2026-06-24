@@ -8,7 +8,7 @@ export default function Step1Details({ form }: { form: BatterySwapFormState }) {
 
   return (
     <>
-      <h2 style={{ fontSize: 20, fontWeight: 700, color: "#f1f5f9", margin: "0 0 24px" }}>Tell us about yourself</h2>
+      <h2 style={{ fontSize: 20, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 24px" }}>Tell us about yourself</h2>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
         <div>
           <FieldLabel required>Full Name</FieldLabel>
@@ -17,18 +17,18 @@ export default function Step1Details({ form }: { form: BatterySwapFormState }) {
         <div>
           <FieldLabel required>Phone Number</FieldLabel>
           <div style={{ position: "relative" }}>
-            <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#64748b", fontSize: 14, pointerEvents: "none" }}>+91</span>
+            <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "var(--text-subtle)", fontSize: 14, pointerEvents: "none" }}>+91</span>
             <input
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="9437611129"
               style={{
-                width: "100%", background: "#0c1525", border: "1px solid #1c3050", borderRadius: 8,
-                color: "#f1f5f9", fontSize: 14, padding: "10px 14px 10px 44px", boxSizing: "border-box", outline: "none",
+                width: "100%", background: "var(--bg-card)", border: "1px solid var(--border-default)", borderRadius: 8,
+                color: "var(--text-body)", fontSize: 14, padding: "10px 14px 10px 44px", boxSizing: "border-box", outline: "none",
               }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
+              onFocus={(e) => { e.currentTarget.style.borderColor = "var(--navy)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(15,76,129,0.1)"; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = "var(--border-default)"; e.currentTarget.style.boxShadow = "none"; }}
             />
           </div>
         </div>

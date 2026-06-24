@@ -26,11 +26,11 @@ const MAJOR_CITIES = [
 
 const INPUT = {
   width: "100%",
-  background: "#0c1525",
-  border: "1px solid #1c3050",
+  background: "var(--bg-card)",
+  border: "1px solid var(--border-default)",
   borderRadius: 10,
   padding: "12px 16px",
-  color: "#f1f5f9",
+  color: "var(--text-body)",
   fontSize: 14,
   outline: "none",
   boxSizing: "border-box" as const,
@@ -41,7 +41,7 @@ const LABEL = {
   display: "block",
   fontSize: 12,
   fontWeight: 600,
-  color: "#94a3b8",
+  color: "var(--text-muted)",
   letterSpacing: "0.04em",
   textTransform: "uppercase" as const,
   marginBottom: 6,
@@ -67,11 +67,11 @@ export default function CheckoutPage() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const focus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#38bdf8";
-    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(56,189,248,0.1)";
+    e.currentTarget.style.borderColor = "var(--navy)";
+    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(15,76,129,0.1)";
   };
   const blur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#1c3050";
+    e.currentTarget.style.borderColor = "var(--border-default)";
     e.currentTarget.style.boxShadow = "none";
   };
 
@@ -116,25 +116,25 @@ export default function CheckoutPage() {
 
   if (step === "success") {
     return (
-      <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ textAlign: "center", padding: "40px 24px", maxWidth: 480 }}>
           <div style={{ fontSize: 64, marginBottom: 24 }}>🎉</div>
-          <h1 style={{ fontSize: 28, fontWeight: 800, color: "#f1f5f9", margin: "0 0 12px" }}>Order Placed!</h1>
+          <h1 style={{ fontSize: 28, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 12px" }}>Order Placed!</h1>
           {orderNumber && (
-            <p style={{ fontSize: 13, color: "#38bdf8", fontWeight: 700, margin: "0 0 8px" }}>Order #{orderNumber}</p>
+            <p style={{ fontSize: 13, color: "var(--navy)", fontWeight: 700, margin: "0 0 8px" }}>Order #{orderNumber}</p>
           )}
-          <p style={{ fontSize: 15, color: "#94a3b8", lineHeight: 1.8, marginBottom: 12 }}>
+          <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 12 }}>
             Your order has been confirmed. Our team will call you on{" "}
-            <strong style={{ color: "#38bdf8" }}>{form.phone}</strong> to confirm delivery.
+            <strong style={{ color: "var(--navy)" }}>{form.phone}</strong> to confirm delivery.
           </p>
-          <p style={{ fontSize: 13, color: "#64748b", marginBottom: 32 }}>
+          <p style={{ fontSize: 13, color: "var(--text-subtle)", marginBottom: 32 }}>
             Estimated delivery: 5–7 business days to {form.city || "your city"}.
           </p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <Link href="/products" style={{ padding: "12px 28px", background: "#38bdf8", color: "#080f1e", fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: "none" }}>
+            <Link href="/products" style={{ padding: "12px 28px", background: "var(--grad-navy)", color: "#fff", fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: "none", boxShadow: "var(--shadow-navy)" }}>
               Continue Shopping
             </Link>
-            <Link href="/orders" style={{ padding: "12px 28px", border: "1px solid #1c3050", color: "#94a3b8", fontWeight: 600, fontSize: 14, borderRadius: 10, textDecoration: "none" }}>
+            <Link href="/orders" style={{ padding: "12px 28px", border: "1px solid var(--border-default)", color: "var(--text-muted)", fontWeight: 600, fontSize: 14, borderRadius: 10, textDecoration: "none" }}>
               View Orders
             </Link>
           </div>
@@ -144,22 +144,22 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
+    <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Cart", href: "/cart" }, { label: "Checkout" }]} />
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }}>Checkout</h1>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 8px" }}>Checkout</h1>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
           {["Delivery Details", "Payment"].map((s, i) => (
             <div key={s} style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <div style={{
                 width: 24, height: 24, borderRadius: "50%", border: "2px solid",
-                borderColor: (step === "details" && i === 0) || (step === "payment" && i <= 1) ? "#38bdf8" : "#1c3050",
-                background: (step === "details" && i === 0) || (step === "payment" && i <= 1) ? "rgba(56,189,248,0.15)" : "transparent",
+                borderColor: (step === "details" && i === 0) || (step === "payment" && i <= 1) ? "var(--navy)" : "var(--border-default)",
+                background: (step === "details" && i === 0) || (step === "payment" && i <= 1) ? "rgba(15,76,129,0.15)" : "transparent",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 11, fontWeight: 700, color: "#38bdf8",
+                fontSize: 11, fontWeight: 700, color: "var(--navy)",
               }}>{i + 1}</div>
-              <span style={{ fontSize: 13, color: (step === "details" && i === 0) || (step === "payment" && i <= 1) ? "#f1f5f9" : "#64748b", fontWeight: 600 }}>{s}</span>
-              {i === 0 && <span style={{ color: "#1c3050" }}>›</span>}
+              <span style={{ fontSize: 13, color: (step === "details" && i === 0) || (step === "payment" && i <= 1) ? "var(--text-heading)" : "var(--text-subtle)", fontWeight: 600 }}>{s}</span>
+              {i === 0 && <span style={{ color: "var(--border-default)" }}>›</span>}
             </div>
           ))}
         </div>
@@ -168,8 +168,8 @@ export default function CheckoutPage() {
           {/* Form */}
           <div>
             {step === "details" && (
-              <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "28px" }}>
-                <h2 style={{ fontSize: 17, fontWeight: 700, color: "#f1f5f9", margin: "0 0 24px" }}>Delivery Details</h2>
+              <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "28px", boxShadow: "var(--shadow-sm)" }}>
+                <h2 style={{ fontSize: 17, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 24px" }}>Delivery Details</h2>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                   <div style={{ gridColumn: "1 / -1" }}>
                     <label style={LABEL}>Full Name</label>
@@ -201,10 +201,10 @@ export default function CheckoutPage() {
                       onFocus={focus}
                     />
                     {cityOptions.length > 0 && (
-                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 100, background: "#0c1525", border: "1px solid #1c3050", borderRadius: 8, overflow: "hidden", boxShadow: "0 8px 24px rgba(0,0,0,0.3)" }}>
+                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 100, background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 8, overflow: "hidden", boxShadow: "var(--shadow-md)" }}>
                         {cityOptions.map((c) => (
-                          <button key={c} type="button" onClick={() => { setForm((f) => ({ ...f, city: c })); setCityOptions([]); }} style={{ display: "block", width: "100%", padding: "10px 14px", background: "transparent", border: "none", color: "#f1f5f9", fontSize: 13, textAlign: "left", cursor: "pointer" }}
-                            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(56,189,248,0.06)")}
+                          <button key={c} type="button" onClick={() => { setForm((f) => ({ ...f, city: c })); setCityOptions([]); }} style={{ display: "block", width: "100%", padding: "10px 14px", background: "transparent", border: "none", color: "var(--text-body)", fontSize: 13, textAlign: "left", cursor: "pointer" }}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "var(--navy-bg)")}
                             onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                           >{c}</button>
                         ))}
@@ -232,8 +232,8 @@ export default function CheckoutPage() {
                       onFocus={focus}
                       onBlur={blur}
                     />
-                    {pincodeStatus === "ok" && <p style={{ fontSize: 12, color: "#10b981", marginTop: 4 }}>✓ Delivery available</p>}
-                    {pincodeStatus === "warn" && <p style={{ fontSize: 12, color: "#f97316", marginTop: 4 }}>⚠ Delivery may take extra time. Call +91 94376 11129 to confirm.</p>}
+                    {pincodeStatus === "ok" && <p style={{ fontSize: 12, color: "var(--green)", marginTop: 4 }}>✓ Delivery available</p>}
+                    {pincodeStatus === "warn" && <p style={{ fontSize: 12, color: "var(--amber)", marginTop: 4 }}>⚠ Delivery may take extra time. Call +91 94376 11129 to confirm.</p>}
                   </div>
                   <div style={{ gridColumn: "1 / -1" }}>
                     <label style={LABEL}>Full Address</label>
@@ -252,12 +252,12 @@ export default function CheckoutPage() {
                       onFocus={focus}
                       onBlur={blur}
                     />
-                    <p style={{ fontSize: 11, color: "#475569", marginTop: 4 }}>Add your GSTIN to receive a GST invoice for your order.</p>
+                    <p style={{ fontSize: 11, color: "var(--text-subtle)", marginTop: 4 }}>Add your GSTIN to receive a GST invoice for your order.</p>
                   </div>
                 </div>
                 <button
                   onClick={() => { if (!form.name || !form.phone || !form.address || !form.city) { toast.error("Please fill all required fields."); return; } setStep("payment"); }}
-                  style={{ marginTop: 24, width: "100%", padding: "14px", background: "#38bdf8", color: "#080f1e", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer" }}
+                  style={{ marginTop: 24, width: "100%", padding: "14px", background: "var(--grad-navy)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer", boxShadow: "var(--shadow-navy)" }}
                 >
                   Continue to Payment →
                 </button>
@@ -265,8 +265,8 @@ export default function CheckoutPage() {
             )}
 
             {step === "payment" && (
-              <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "28px" }}>
-                <h2 style={{ fontSize: 17, fontWeight: 700, color: "#f1f5f9", margin: "0 0 24px" }}>Payment Method</h2>
+              <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "28px", boxShadow: "var(--shadow-sm)" }}>
+                <h2 style={{ fontSize: 17, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 24px" }}>Payment Method</h2>
                 <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
                   {[
                     { value: "cod", label: "Cash on Delivery", desc: "Pay when your order arrives" },
@@ -275,28 +275,28 @@ export default function CheckoutPage() {
                   ].map((opt) => (
                     <label key={opt.value} style={{
                       display: "flex", alignItems: "center", gap: 14, padding: "14px 16px",
-                      border: `1px solid ${payment === opt.value ? "#38bdf8" : "#1c3050"}`,
+                      border: `1px solid ${payment === opt.value ? "var(--navy)" : "var(--border-default)"}`,
                       borderRadius: 10, cursor: "pointer",
-                      background: payment === opt.value ? "rgba(56,189,248,0.06)" : "transparent",
+                      background: payment === opt.value ? "var(--navy-bg)" : "transparent",
                       transition: "all 0.2s",
                     }}>
-                      <input type="radio" name="payment" value={opt.value} checked={payment === opt.value} onChange={(e) => setPayment(e.target.value)} style={{ accentColor: "#38bdf8", width: 16, height: 16 }} />
+                      <input type="radio" name="payment" value={opt.value} checked={payment === opt.value} onChange={(e) => setPayment(e.target.value)} style={{ accentColor: "var(--navy)", width: 16, height: 16 }} />
                       <div>
-                        <p style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{opt.label}</p>
-                        <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>{opt.desc}</p>
+                        <p style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>{opt.label}</p>
+                        <p style={{ fontSize: 12, color: "var(--text-muted)", margin: 0 }}>{opt.desc}</p>
                       </div>
                     </label>
                   ))}
                 </div>
-                {error && <p style={{ fontSize: 13, color: "#ef4444", marginBottom: 12 }}>{error}</p>}
+                {error && <p style={{ fontSize: 13, color: "var(--red)", marginBottom: 12 }}>{error}</p>}
                 <div style={{ display: "flex", gap: 10 }}>
-                  <button onClick={() => setStep("details")} style={{ flex: 1, padding: "13px", border: "1px solid #1c3050", background: "transparent", color: "#94a3b8", fontWeight: 600, fontSize: 14, borderRadius: 10, cursor: "pointer" }}>
+                  <button onClick={() => setStep("details")} style={{ flex: 1, padding: "13px", border: "1px solid var(--border-default)", background: "transparent", color: "var(--text-muted)", fontWeight: 600, fontSize: 14, borderRadius: 10, cursor: "pointer" }}>
                     ← Back
                   </button>
                   <button
                     onClick={handlePlaceOrder}
                     disabled={loading || items.length === 0}
-                    style={{ flex: 2, padding: "13px", background: loading ? "#0e7490" : "#38bdf8", color: "#080f1e", fontWeight: 800, fontSize: 14, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: items.length === 0 ? 0.5 : 1 }}
+                    style={{ flex: 2, padding: "13px", background: loading ? "var(--navy-light)" : "var(--grad-navy)", color: "#fff", fontWeight: 800, fontSize: 14, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: items.length === 0 ? 0.5 : 1, boxShadow: "var(--shadow-navy)" }}
                   >
                     {loading ? "Placing Order..." : "Place Order →"}
                   </button>
@@ -306,19 +306,19 @@ export default function CheckoutPage() {
           </div>
 
           {/* Order summary */}
-          <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "24px" }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", margin: "0 0 16px" }}>Order Summary</h3>
+          <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "24px", boxShadow: "var(--shadow-sm)" }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 16px" }}>Order Summary</h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16, maxHeight: 200, overflowY: "auto" }}>
               {items.map((item) => (
-                <div key={item.slug} style={{ display: "flex", alignItems: "center", gap: 10, paddingBottom: 10, borderBottom: "1px solid #1c3050" }}>
-                  <div style={{ width: 44, height: 44, background: "#0e1928", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, position: "relative" }}>
+                <div key={item.slug} style={{ display: "flex", alignItems: "center", gap: 10, paddingBottom: 10, borderBottom: "1px solid var(--border-light)" }}>
+                  <div style={{ width: 44, height: 44, background: "var(--bg-section-alt)", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, position: "relative" }}>
                     <Image src={item.image} alt={item.name} fill style={{ objectFit: "contain", padding: 3 }} />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontSize: 12, fontWeight: 600, color: "#f1f5f9", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.name}</p>
-                    <p style={{ fontSize: 11, color: "#94a3b8", margin: 0 }}>Qty: {item.quantity}</p>
+                    <p style={{ fontSize: 12, fontWeight: 600, color: "var(--text-heading)", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.name}</p>
+                    <p style={{ fontSize: 11, color: "var(--text-muted)", margin: 0 }}>Qty: {item.quantity}</p>
                   </div>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", flexShrink: 0 }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "var(--text-heading)", flexShrink: 0 }}>
                     {item.price ? `₹${(item.price * item.quantity).toLocaleString("en-IN")}` : "—"}
                   </span>
                 </div>
@@ -329,17 +329,17 @@ export default function CheckoutPage() {
               { label: "Delivery", value: delivery === 0 ? "FREE" : `₹${delivery}`, green: delivery === 0 },
               { label: "GST (18%)", value: sub ? `₹${gst.toLocaleString("en-IN")}` : "—" },
             ].map((r) => (
-              <div key={r.label} style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#94a3b8", marginBottom: 10 }}>
+              <div key={r.label} style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "var(--text-muted)", marginBottom: 10 }}>
                 <span>{r.label}</span>
-                <span style={{ color: r.green ? "#10b981" : "#f1f5f9", fontWeight: 500 }}>{r.value}</span>
+                <span style={{ color: r.green ? "var(--green)" : "var(--text-heading)", fontWeight: 500 }}>{r.value}</span>
               </div>
             ))}
-            <div style={{ borderTop: "1px solid #1c3050", paddingTop: 12, display: "flex", justifyContent: "space-between", fontSize: 16, fontWeight: 800 }}>
-              <span style={{ color: "#f1f5f9" }}>Total</span>
-              <span style={{ color: "#38bdf8" }}>{sub ? `₹${total.toLocaleString("en-IN")}` : "On Request"}</span>
+            <div style={{ borderTop: "1px solid var(--border-light)", paddingTop: 12, display: "flex", justifyContent: "space-between", fontSize: 16, fontWeight: 800 }}>
+              <span style={{ color: "var(--text-heading)" }}>Total</span>
+              <span style={{ color: "var(--navy)" }}>{sub ? `₹${total.toLocaleString("en-IN")}` : "On Request"}</span>
             </div>
             {sub > 0 && sub < 5000 && (
-              <div style={{ marginTop: 12, padding: "10px 12px", background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 8, fontSize: 12, color: "#10b981" }}>
+              <div style={{ marginTop: 12, padding: "10px 12px", background: "var(--green-bg)", border: "1px solid rgba(26,122,74,0.2)", borderRadius: 8, fontSize: 12, color: "var(--green)" }}>
                 🚚 Add ₹{(5000 - sub).toLocaleString("en-IN")} more for free delivery
               </div>
             )}

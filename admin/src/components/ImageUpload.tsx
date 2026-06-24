@@ -63,11 +63,11 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
         placeholder="/productimg/name.png or paste URL"
         style={{
           flex: 1,
-          background: "#0f172a",
-          border: "1px solid #1e2d40",
+          background: "#ffffff",
+          border: "1px solid #d4c9b8",
           borderRadius: 8,
           padding: "10px 14px",
-          color: "#f1f5f9",
+          color: "#1a0f00",
           fontSize: 13,
           outline: "none",
           boxSizing: "border-box",
@@ -75,9 +75,9 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
       />
       <label
         style={{
-          background: uploading ? "#1e2d40" : "#0f172a",
-          border: "1px solid #334155",
-          color: uploading ? "#64748b" : "#94a3b8",
+          background: uploading ? "#e8dfd0" : "#ffffff",
+          border: uploading ? "1px solid #d4c9b8" : "1px dashed #d4c9b8",
+          color: uploading ? "#6b5a45" : "#6b5a45",
           padding: "10px 14px",
           borderRadius: 8,
           cursor: uploading ? "not-allowed" : "pointer",
@@ -106,8 +106,8 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
             height: 48,
             objectFit: "cover",
             borderRadius: 8,
-            border: "1px solid #1e2d40",
-            background: "#0f172a",
+            border: "1px solid #e8dfd0",
+            background: "#f9f4ec",
             flexShrink: 0,
           }}
           onError={(e) => {

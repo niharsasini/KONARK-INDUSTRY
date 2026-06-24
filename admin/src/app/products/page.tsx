@@ -10,7 +10,7 @@ import { Pagination } from "@/components/Pagination";
 const LIMIT = 20;
 
 const TYPE_COLORS: Record<string, string> = {
-  vehicle: "#00d4ff",
+  vehicle: "#0f4c81",
   product: "#10b981",
   service: "#a78bfa",
 };
@@ -153,8 +153,8 @@ export default function ProductsPage() {
   };
 
   const inputStyle: React.CSSProperties = {
-    width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40",
-    borderRadius: 8, padding: "10px 14px", color: "#f1f5f9",
+    width: "100%", background: "#ffffff", border: "1px solid #e8dfd0",
+    borderRadius: 8, padding: "10px 14px", color: "#1a0f00",
     fontSize: 13, outline: "none", boxSizing: "border-box",
   };
 
@@ -167,17 +167,17 @@ export default function ProductsPage() {
     <div style={{ padding: "32px 40px", maxWidth: 1400 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
         <div>
-          <h1 style={{ fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>Products</h1>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{total} products in catalogue</p>
+          <h1 style={{ fontSize: 26, fontWeight: 800, color: "#1a0f00", margin: "0 0 4px" }}>Products</h1>
+          <p style={{ fontSize: 13, color: "#6b5a45", margin: 0 }}>{total} products in catalogue</p>
         </div>
         <button onClick={() => router.push("/products/new")}
-          style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 20px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 10, border: "none", cursor: "pointer" }}>
+          style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 20px", background: "#0f4c81", color: "#ffffff", fontWeight: 700, fontSize: 13, borderRadius: 10, border: "none", cursor: "pointer" }}>
           <Plus size={15} /> Add Product
         </button>
       </div>
 
       {toastMsg && (
-        <div style={{ padding: "10px 16px", marginBottom: 16, borderRadius: 8, fontSize: 13, fontWeight: 600, background: "rgba(0,212,255,0.1)", color: "#00d4ff", border: "1px solid rgba(0,212,255,0.3)" }}>
+        <div style={{ padding: "10px 16px", marginBottom: 16, borderRadius: 8, fontSize: 13, fontWeight: 600, background: "rgba(15,76,129,0.1)", color: "#0f4c81", border: "1px solid rgba(15,76,129,0.3)" }}>
           {toastMsg}
         </div>
       )}
@@ -185,13 +185,13 @@ export default function ProductsPage() {
       {/* Filters */}
       <div style={{ display: "flex", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
         <div style={{ position: "relative", flex: 1, minWidth: 200 }}>
-          <Search size={14} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
+          <Search size={14} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#6b5a45" }} />
           <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="Search products..." style={{ ...inputStyle, paddingLeft: 36 }} />
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           {["All", "Vehicle", "Product", "Service"].map((t) => (
             <button key={t} onClick={() => setTypeFilter(t)}
-              style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid", borderColor: typeFilter === t ? "#00d4ff" : "#1e2d40", background: typeFilter === t ? "rgba(0,212,255,0.08)" : "transparent", color: typeFilter === t ? "#00d4ff" : "#94a3b8", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.15s" }}>
+              style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid", borderColor: typeFilter === t ? "#0f4c81" : "#e8dfd0", background: typeFilter === t ? "rgba(15,76,129,0.08)" : "transparent", color: typeFilter === t ? "#0f4c81" : "#6b5a45", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.15s" }}>
               {t}
             </button>
           ))}
@@ -200,43 +200,43 @@ export default function ProductsPage() {
 
       {/* Bulk action bar */}
       {selected.length > 0 && (
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, padding: "10px 16px", background: "rgba(0,212,255,0.06)", border: "1px solid rgba(0,212,255,0.2)", borderRadius: 10 }}>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#00d4ff" }}>{selected.length} selected</span>
-          <button disabled={bulkBusy} onClick={handleBulkDelete} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid rgba(239,68,68,0.4)", background: "rgba(239,68,68,0.1)", color: "#ef4444", fontSize: 12, fontWeight: 600, cursor: bulkBusy ? "not-allowed" : "pointer" }}>Delete Selected</button>
-          <button disabled={bulkBusy} onClick={() => handleBulkStock(true)} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #1e2d40", background: "transparent", color: "#10b981", fontSize: 12, fontWeight: 600, cursor: bulkBusy ? "not-allowed" : "pointer" }}>Mark In Stock</button>
-          <button disabled={bulkBusy} onClick={() => handleBulkStock(false)} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #1e2d40", background: "transparent", color: "#94a3b8", fontSize: 12, fontWeight: 600, cursor: bulkBusy ? "not-allowed" : "pointer" }}>Mark Out of Stock</button>
-          <button onClick={() => setSelected([])} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #1e2d40", background: "transparent", color: "#64748b", fontSize: 12, fontWeight: 600, cursor: "pointer", marginLeft: "auto" }}>Clear Selection</button>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, padding: "10px 16px", background: "rgba(15,76,129,0.06)", border: "1px solid rgba(15,76,129,0.2)", borderRadius: 10 }}>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#0f4c81" }}>{selected.length} selected</span>
+          <button disabled={bulkBusy} onClick={handleBulkDelete} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid rgba(192,57,43,0.4)", background: "rgba(192,57,43,0.1)", color: "#c0392b", fontSize: 12, fontWeight: 600, cursor: bulkBusy ? "not-allowed" : "pointer" }}>Delete Selected</button>
+          <button disabled={bulkBusy} onClick={() => handleBulkStock(true)} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #e8dfd0", background: "transparent", color: "#10b981", fontSize: 12, fontWeight: 600, cursor: bulkBusy ? "not-allowed" : "pointer" }}>Mark In Stock</button>
+          <button disabled={bulkBusy} onClick={() => handleBulkStock(false)} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #e8dfd0", background: "transparent", color: "#6b5a45", fontSize: 12, fontWeight: 600, cursor: bulkBusy ? "not-allowed" : "pointer" }}>Mark Out of Stock</button>
+          <button onClick={() => setSelected([])} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #e8dfd0", background: "transparent", color: "#6b5a45", fontSize: 12, fontWeight: 600, cursor: "pointer", marginLeft: "auto" }}>Clear Selection</button>
         </div>
       )}
 
       {/* Empty state */}
       {products.length === 0 && (
-        <div style={{ textAlign: "center", padding: "60px 0", color: "#475569" }}>
+        <div style={{ textAlign: "center", padding: "60px 0", color: "#6b5a45" }}>
           <p style={{ fontSize: 32, margin: "0 0 12px" }}>📦</p>
-          <p style={{ fontSize: 14, fontWeight: 600, color: "#94a3b8", marginBottom: 16 }}>No products found</p>
-          <button onClick={() => router.push("/products/new")} style={{ padding: "10px 20px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 10, border: "none", cursor: "pointer" }}>Add First Product</button>
+          <p style={{ fontSize: 14, fontWeight: 600, color: "#6b5a45", marginBottom: 16 }}>No products found</p>
+          <button onClick={() => router.push("/products/new")} style={{ padding: "10px 20px", background: "#0f4c81", color: "#ffffff", fontWeight: 700, fontSize: 13, borderRadius: 10, border: "none", cursor: "pointer" }}>Add First Product</button>
         </div>
       )}
 
       {/* Table */}
       {products.length > 0 && (
-        <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, overflow: "hidden" }}>
+        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, overflow: "hidden" }}>
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead style={{ background: "#0f172a" }}>
+              <thead style={{ background: "#f9f4ec" }}>
                 <tr>
                   <th style={{ padding: "14px 16px" }}>
                     <input type="checkbox" checked={selected.length === products.length} onChange={toggleSelectAll} />
                   </th>
                   {["Image", "Name", "Category", "Type", "Price", "Stock", "Featured", "Actions"].map((h) => (
-                    <th key={h} style={{ padding: "14px 16px", textAlign: "left", fontSize: 11, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>{h}</th>
+                    <th key={h} style={{ padding: "14px 16px", textAlign: "left", fontSize: 11, fontWeight: 600, color: "#6b5a45", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {products.map((p) => (
-                  <tr key={p.slug} style={{ borderTop: "1px solid #1e2d40" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.02)")}
+                  <tr key={p.slug} style={{ borderTop: "1px solid #e8dfd0" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(15,76,129,0.03)")}
                     onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                   >
                     <td style={{ padding: "12px 16px" }}>
@@ -246,24 +246,24 @@ export default function ProductsPage() {
                       <img
                         src={p.images?.[0] || "/placeholder.svg"}
                         alt={p.name}
-                        style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 8, border: "1px solid #1e2d40", background: "#0f172a" }}
+                        style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 8, border: "1px solid #e8dfd0", background: "#f9f4ec" }}
                         onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }}
                       />
                     </td>
-                    <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 600, color: "#f1f5f9" }}>
+                    <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 600, color: "#1a0f00" }}>
                       {p.name}
-                      {p.is_new && <span style={{ marginLeft: 6, fontSize: 10, background: "rgba(0,212,255,0.12)", color: "#00d4ff", border: "1px solid rgba(0,212,255,0.25)", padding: "1px 6px", borderRadius: 4, fontWeight: 700 }}>NEW</span>}
+                      {p.is_new && <span style={{ marginLeft: 6, fontSize: 10, background: "rgba(15,76,129,0.12)", color: "#0f4c81", border: "1px solid rgba(15,76,129,0.25)", padding: "1px 6px", borderRadius: 4, fontWeight: 700 }}>NEW</span>}
                     </td>
-                    <td style={{ padding: "12px 16px", fontSize: 12, color: "#94a3b8" }}>{p.category}</td>
+                    <td style={{ padding: "12px 16px", fontSize: 12, color: "#6b5a45" }}>{p.category}</td>
                     <td style={{ padding: "12px 16px" }}>
-                      <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: `${TYPE_COLORS[p.type] ?? "#94a3b8"}15`, color: TYPE_COLORS[p.type] ?? "#94a3b8", textTransform: "capitalize" }}>{p.type}</span>
+                      <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: `${TYPE_COLORS[p.type] ?? "#6b5a45"}15`, color: TYPE_COLORS[p.type] ?? "#6b5a45", textTransform: "capitalize" }}>{p.type}</span>
                     </td>
-                    <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 700, color: p.price > 0 ? "#f1f5f9" : "#64748b" }}>
+                    <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 700, color: p.price > 0 ? "#1a0f00" : "#6b5a45" }}>
                       {p.price > 0 ? `₹${p.price.toLocaleString("en-IN")}` : "On Request"}
                     </td>
                     <td style={{ padding: "12px 16px" }}>
                       <button onClick={() => handleToggleStock(p.slug)}
-                        style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: p.in_stock ? "rgba(16,185,129,0.1)" : "rgba(239,68,68,0.1)", color: p.in_stock ? "#10b981" : "#ef4444", border: "none", cursor: "pointer" }}>
+                        style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: p.in_stock ? "rgba(16,185,129,0.1)" : "rgba(192,57,43,0.1)", color: p.in_stock ? "#10b981" : "#c0392b", border: "none", cursor: "pointer" }}>
                         {p.in_stock ? "In Stock" : "Out of Stock"}
                       </button>
                     </td>
@@ -271,22 +271,22 @@ export default function ProductsPage() {
                       <button onClick={() => handleToggleFeatured(p.slug)}
                         style={{ background: "transparent", border: "none", cursor: "pointer", display: "flex" }}
                         title={p.is_featured ? "Unfeature" : "Mark as featured"}>
-                        <Star size={16} color={p.is_featured ? "#f97316" : "#475569"} fill={p.is_featured ? "#f97316" : "none"} />
+                        <Star size={16} color={p.is_featured ? "#f97316" : "#6b5a45"} fill={p.is_featured ? "#f97316" : "none"} />
                       </button>
                     </td>
                     <td style={{ padding: "12px 16px" }}>
                       <div style={{ display: "flex", gap: 8 }}>
                         <button onClick={() => router.push(`/products/${p.slug}/edit`)}
-                          style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", background: "transparent", border: "1px solid #1e2d40", borderRadius: 6, color: "#94a3b8", fontSize: 12, cursor: "pointer" }}
-                          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#00d4ff")}
-                          onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1e2d40")}
+                          style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", background: "transparent", border: "1px solid #e8dfd0", borderRadius: 6, color: "#6b5a45", fontSize: 12, cursor: "pointer" }}
+                          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#0f4c81")}
+                          onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#e8dfd0")}
                         >
                           <Edit2 size={12} /> Edit
                         </button>
                         <button onClick={() => setDeleteSlug(p.slug)}
-                          style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", background: "transparent", border: "1px solid #1e2d40", borderRadius: 6, color: "#94a3b8", fontSize: 12, cursor: "pointer" }}
-                          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#ef4444"; e.currentTarget.style.color = "#ef4444"; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1e2d40"; e.currentTarget.style.color = "#94a3b8"; }}
+                          style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", background: "transparent", border: "1px solid #e8dfd0", borderRadius: 6, color: "#6b5a45", fontSize: 12, cursor: "pointer" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#c0392b"; e.currentTarget.style.color = "#c0392b"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e8dfd0"; e.currentTarget.style.color = "#6b5a45"; }}
                         >
                           <Trash2 size={12} /> Delete
                         </button>
@@ -305,14 +305,14 @@ export default function ProductsPage() {
       {/* Delete confirm */}
       {deleteSlug !== null && (
         <div style={{ position: "fixed", inset: 0, zIndex: 300, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.7)" }}>
-          <div style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 16, padding: "32px", maxWidth: 360, width: "90%", textAlign: "center" }}>
-            <Trash2 size={32} color="#ef4444" style={{ margin: "0 auto 16px" }} />
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", margin: "0 0 8px" }}>Delete Product?</h3>
-            <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 24px" }}>This action cannot be undone.</p>
+          <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 16, padding: "32px", maxWidth: 360, width: "90%", textAlign: "center" }}>
+            <Trash2 size={32} color="#c0392b" style={{ margin: "0 auto 16px" }} />
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#1a0f00", margin: "0 0 8px" }}>Delete Product?</h3>
+            <p style={{ fontSize: 13, color: "#6b5a45", margin: "0 0 24px" }}>This action cannot be undone.</p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
-              <button onClick={() => setDeleteSlug(null)} style={{ padding: "10px 24px", background: "transparent", border: "1px solid #1e2d40", borderRadius: 8, color: "#94a3b8", fontSize: 13, cursor: "pointer" }}>Cancel</button>
+              <button onClick={() => setDeleteSlug(null)} style={{ padding: "10px 24px", background: "transparent", border: "1px solid #e8dfd0", borderRadius: 8, color: "#6b5a45", fontSize: 13, cursor: "pointer" }}>Cancel</button>
               <button onClick={confirmDelete} disabled={deleting}
-                style={{ padding: "10px 24px", background: "#ef4444", border: "none", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 700, cursor: deleting ? "not-allowed" : "pointer" }}>
+                style={{ padding: "10px 24px", background: "#c0392b", border: "none", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 700, cursor: deleting ? "not-allowed" : "pointer" }}>
                 {deleting ? "Deleting..." : "Delete"}
               </button>
             </div>

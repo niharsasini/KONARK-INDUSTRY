@@ -17,13 +17,13 @@ const CATEGORIES = [
 ];
 
 const inputStyle: React.CSSProperties = {
-  width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40",
-  borderRadius: 8, padding: "11px 14px", color: "#f1f5f9",
+  width: "100%", background: "#ffffff", border: "1px solid #e8dfd0",
+  borderRadius: 8, padding: "11px 14px", color: "#1a0f00",
   fontSize: 13, outline: "none", boxSizing: "border-box",
 };
 
 const labelStyle: React.CSSProperties = {
-  fontSize: 11, color: "#94a3b8", display: "block",
+  fontSize: 11, color: "#6b5a45", display: "block",
   marginBottom: 7, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600,
 };
 
@@ -134,30 +134,30 @@ export default function EditProductPage() {
   };
 
   if (fetching) {
-    return <div style={{ padding: "32px 40px", color: "#94a3b8" }}>Loading product...</div>;
+    return <div style={{ padding: "32px 40px", color: "#6b5a45" }}>Loading product...</div>;
   }
 
   return (
     <div style={{ padding: "32px 40px", maxWidth: 800 }}>
       <div style={{ marginBottom: 28 }}>
-        <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "#94a3b8", textDecoration: "none", marginBottom: 16 }}>
+        <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "#6b5a45", textDecoration: "none", marginBottom: 16 }}>
           <ArrowLeft size={14} /> Back to Products
         </Link>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>Edit Product</h1>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: "#1a0f00", margin: 0 }}>Edit Product</h1>
       </div>
 
       {saved && (
-        <div style={{ padding: "14px 20px", background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", borderRadius: 10, marginBottom: 24, fontSize: 13, color: "#10b981", fontWeight: 600 }}>
+        <div style={{ padding: "14px 20px", background: "rgba(26,122,74,0.1)", border: "1px solid rgba(26,122,74,0.3)", borderRadius: 10, marginBottom: 24, fontSize: 13, color: "#1a7a4a", fontWeight: 600 }}>
           ✅ Product updated successfully! Redirecting...
         </div>
       )}
       {error && (
-        <div style={{ padding: "14px 20px", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 10, marginBottom: 24, fontSize: 13, color: "#ef4444", fontWeight: 600 }}>
+        <div style={{ padding: "14px 20px", background: "rgba(192,57,43,0.1)", border: "1px solid rgba(192,57,43,0.3)", borderRadius: 10, marginBottom: 24, fontSize: 13, color: "#c0392b", fontWeight: 600 }}>
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 16, padding: "32px" }}>
+      <form onSubmit={handleSubmit} style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 16, padding: "32px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
           <div style={{ gridColumn: "1 / -1" }}>
             <label style={labelStyle}>Product Name *</label>
@@ -175,7 +175,7 @@ export default function EditProductPage() {
             <label style={labelStyle}>Type *</label>
             <div style={{ display: "flex", gap: 16, paddingTop: 8 }}>
               {["vehicle", "product", "service"].map((t) => (
-                <label key={t} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "#94a3b8", cursor: "pointer", textTransform: "capitalize" }}>
+                <label key={t} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "#6b5a45", cursor: "pointer", textTransform: "capitalize" }}>
                   <input type="radio" name="type" value={t} checked={form.type === t} onChange={set("type")} />
                   {t}
                 </label>
@@ -201,7 +201,7 @@ export default function EditProductPage() {
           <div style={{ gridColumn: "1 / -1" }}>
             <label style={labelStyle}>
               Product Images
-              <span style={{ color: "#64748b", fontSize: 12, marginLeft: 8, textTransform: "none", letterSpacing: "normal", fontWeight: 400 }}>
+              <span style={{ color: "#6b5a45", fontSize: 12, marginLeft: 8, textTransform: "none", letterSpacing: "normal", fontWeight: 400 }}>
                 (Add up to 5 image paths)
               </span>
             </label>
@@ -209,12 +209,12 @@ export default function EditProductPage() {
             {images.map((img, i) => (
               <div key={i} style={{ marginBottom: 10 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                  <span style={{ color: "#64748b", fontSize: 13 }}>Image {i + 1}</span>
+                  <span style={{ color: "#6b5a45", fontSize: 13 }}>Image {i + 1}</span>
                   {images.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeImageField(i)}
-                      style={{ background: "transparent", border: "1px solid #ef4444", color: "#ef4444", borderRadius: 6, padding: "2px 8px", cursor: "pointer", fontSize: 12 }}
+                      style={{ background: "transparent", border: "1px solid #c0392b", color: "#c0392b", borderRadius: 6, padding: "2px 8px", cursor: "pointer", fontSize: 12 }}
                     >
                       Remove
                     </button>
@@ -228,7 +228,7 @@ export default function EditProductPage() {
               <button
                 type="button"
                 onClick={addImageField}
-                style={{ background: "transparent", border: "1px dashed #1e2d40", color: "#64748b", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13, width: "100%", marginTop: 4 }}
+                style={{ background: "transparent", border: "1px dashed #d4c9b8", color: "#6b5a45", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13, width: "100%", marginTop: 4 }}
               >
                 + Add Another Image
               </button>
@@ -242,38 +242,38 @@ export default function EditProductPage() {
                 <div key={i} style={{ display: "flex", gap: 8 }}>
                   <input value={row.key} onChange={(e) => updateSpec(i, "key", e.target.value)} placeholder="Key (e.g. Range)" style={{ ...inputStyle, flex: 1 }} />
                   <input value={row.val} onChange={(e) => updateSpec(i, "val", e.target.value)} placeholder="Value (e.g. 200 km)" style={{ ...inputStyle, flex: 1 }} />
-                  <button type="button" onClick={() => removeSpecRow(i)} style={{ background: "transparent", border: "1px solid #1e2d40", borderRadius: 8, color: "#ef4444", cursor: "pointer", padding: "0 12px" }}>
+                  <button type="button" onClick={() => removeSpecRow(i)} style={{ background: "transparent", border: "1px solid #e8dfd0", borderRadius: 8, color: "#c0392b", cursor: "pointer", padding: "0 12px" }}>
                     <Trash2 size={14} />
                   </button>
                 </div>
               ))}
             </div>
-            <button type="button" onClick={addSpecRow} style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 8, border: "1px solid #1e2d40", background: "transparent", color: "#00d4ff", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+            <button type="button" onClick={addSpecRow} style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 8, border: "1px solid #e8dfd0", background: "transparent", color: "#0f4c81", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
               <Plus size={13} /> Add Spec
             </button>
           </div>
 
           <div style={{ gridColumn: "1 / -1", display: "flex", gap: 28 }}>
-            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "#94a3b8" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "#6b5a45" }}>
               <input type="checkbox" checked={form.inStock} onChange={(e) => setForm((f) => ({ ...f, inStock: e.target.checked }))} />
               In Stock
             </label>
-            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "#94a3b8" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "#6b5a45" }}>
               <input type="checkbox" checked={form.isNew} onChange={(e) => setForm((f) => ({ ...f, isNew: e.target.checked }))} />
               Mark as New
             </label>
-            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "#94a3b8" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "#6b5a45" }}>
               <input type="checkbox" checked={form.isFeatured} onChange={(e) => setForm((f) => ({ ...f, isFeatured: e.target.checked }))} />
               Featured
             </label>
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: 12, paddingTop: 20, borderTop: "1px solid #1e2d40" }}>
-          <button type="submit" disabled={loading} style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 28px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 14, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1 }}>
+        <div style={{ display: "flex", gap: 12, paddingTop: 20, borderTop: "1px solid #e8dfd0" }}>
+          <button type="submit" disabled={loading} style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 28px", background: "#0f4c81", color: "#ffffff", fontWeight: 700, fontSize: 14, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1 }}>
             <Save size={15} /> {loading ? "Saving..." : "Save Changes"}
           </button>
-          <Link href="/products" style={{ display: "flex", alignItems: "center", padding: "12px 24px", background: "transparent", border: "1px solid #1e2d40", borderRadius: 10, color: "#94a3b8", fontSize: 14, textDecoration: "none" }}>
+          <Link href="/products" style={{ display: "flex", alignItems: "center", padding: "12px 24px", background: "transparent", border: "1px solid #e8dfd0", borderRadius: 10, color: "#6b5a45", fontSize: 14, textDecoration: "none" }}>
             Cancel
           </Link>
         </div>

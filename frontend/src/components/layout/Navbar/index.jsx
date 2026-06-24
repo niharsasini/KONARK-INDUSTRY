@@ -84,8 +84,8 @@ export default function Navbar() {
   };
 
   const navStyle = scrolled
-    ? { background: "rgba(2, 8, 23, 0.8)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(56,189,248,0.15)", boxShadow: "0 1px 20px rgba(56,189,248,0.08)" }
-    : { background: "transparent" };
+    ? { background: "rgba(245, 240, 232, 0.92)", backdropFilter: "blur(20px)", borderBottom: "1px solid #d4c9b8", boxShadow: "0 2px 20px rgba(26,15,0,0.08)" }
+    : { background: "transparent", borderBottom: "none" };
 
   return (
     <>
@@ -105,9 +105,9 @@ export default function Navbar() {
                 >
                   <Link
                     href={link.href}
-                    style={{ display: "flex", alignItems: "center", gap: 4, padding: "8px 14px", fontSize: 14, fontWeight: 500, color: "#f1f5f9", borderRadius: 8, textDecoration: "none", transition: "color 0.2s" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "#f1f5f9")}
+                    style={{ display: "flex", alignItems: "center", gap: 4, padding: "8px 14px", fontSize: 14, fontWeight: 500, color: "#6b5a45", borderRadius: 8, textDecoration: "none", transition: "color 0.2s" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "#1a0f00")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "#6b5a45")}
                   >
                     {link.label}
                     <svg viewBox="0 0 20 20" fill="currentColor" style={{ width: 14, height: 14, opacity: 0.6 }}>
@@ -135,13 +135,13 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  style={{ position: "relative", padding: "8px 14px", fontSize: 14, fontWeight: 500, color: pathname === link.href ? "#38bdf8" : "#f1f5f9", borderRadius: 8, textDecoration: "none", transition: "color 0.2s" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = pathname === link.href ? "#38bdf8" : "#f1f5f9")}
+                  style={{ position: "relative", padding: "8px 14px", fontSize: 14, fontWeight: pathname === link.href ? 700 : 500, color: pathname === link.href ? "#0f4c81" : "#6b5a45", borderRadius: 8, textDecoration: "none", transition: "color 0.2s" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#1a0f00")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = pathname === link.href ? "#0f4c81" : "#6b5a45")}
                 >
                   {link.label}
                   {pathname === link.href && (
-                    <span style={{ position: "absolute", bottom: 1, left: "50%", transform: "translateX(-50%)", width: 5, height: 5, borderRadius: "50%", background: "#38bdf8", boxShadow: "0 0 6px #38bdf8" }} />
+                    <span style={{ position: "absolute", bottom: 1, left: "50%", transform: "translateX(-50%)", width: 5, height: 5, borderRadius: "50%", background: "#0f4c81" }} />
                   )}
                 </Link>
               )
@@ -164,18 +164,17 @@ export default function Navbar() {
             <div className="nav-right-desktop">
               <Link
                 href="/services/enquiry"
-                style={{ padding: "8px 16px", borderRadius: 8, textDecoration: "none", border: "1px solid rgba(56,189,248,0.3)", color: "#38bdf8", fontSize: 13, fontWeight: 600, transition: "all 0.2s", whiteSpace: "nowrap" }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(56,189,248,0.08)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                style={{ padding: "8px 16px", borderRadius: 8, textDecoration: "none", border: "2px solid #0f4c81", color: "#0f4c81", fontSize: 13, fontWeight: 700, transition: "all 0.2s", whiteSpace: "nowrap" }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = "#0f4c81"; e.currentTarget.style.color = "#fff"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#0f4c81"; }}
               >
                 Book Service
               </Link>
               <Link
                 href="/products"
-                className="animate-pulse-glow"
-                style={{ padding: "8px 16px", background: "#38bdf8", color: "#080f1e", fontSize: 13, fontWeight: 700, borderRadius: 8, textDecoration: "none", transition: "background 0.2s", whiteSpace: "nowrap" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#0ea5e9")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#38bdf8")}
+                style={{ padding: "8px 16px", background: "linear-gradient(135deg, #0f4c81, #0a3460)", color: "#fff", fontSize: 13, fontWeight: 700, borderRadius: 8, textDecoration: "none", transition: "all 0.25s ease", whiteSpace: "nowrap", boxShadow: "0 4px 12px rgba(15,76,129,0.3)", animation: "pulseNavy 2.5s ease infinite" }}
+                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 6px 20px rgba(15,76,129,0.4)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 12px rgba(15,76,129,0.3)"; e.currentTarget.style.transform = "translateY(0)"; }}
               >
                 Shop Now
               </Link>
@@ -188,24 +187,24 @@ export default function Navbar() {
             <Link
               href="/wishlist"
               aria-label="Wishlist"
-              style={{ position: "relative", padding: 8, color: "#94a3b8", borderRadius: 8, display: "flex", transition: "color 0.2s", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#ef4444")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
+              style={{ position: "relative", padding: 8, color: "#6b5a45", borderRadius: 8, display: "flex", transition: "color 0.2s", textDecoration: "none" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#c0392b")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#6b5a45")}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 20, height: 20 }}>
                 <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
               </svg>
               {wishlistCount > 0 && (
-                <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "#ef4444", color: "#fff", fontSize: 10, fontWeight: 700, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>{wishlistCount > 9 ? "9+" : wishlistCount}</span>
+                <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "#c0392b", color: "#fff", fontSize: 10, fontWeight: 700, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>{wishlistCount > 9 ? "9+" : wishlistCount}</span>
               )}
             </Link>
 
             {/* Cart — always visible */}
             <Link
               href="/cart"
-              style={{ position: "relative", padding: 8, color: "#94a3b8", borderRadius: 8, display: "flex", transition: "color 0.2s", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
+              style={{ position: "relative", padding: 8, color: "#6b5a45", borderRadius: 8, display: "flex", transition: "color 0.2s", textDecoration: "none" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#0f4c81")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#6b5a45")}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 20, height: 20 }}>
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
@@ -213,7 +212,7 @@ export default function Navbar() {
                 <path d="M16 10a4 4 0 01-8 0" />
               </svg>
               {cartCount > 0 && (
-                <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "#38bdf8", color: "#080f1e", fontSize: 10, fontWeight: 700, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>{cartCount > 9 ? "9+" : cartCount}</span>
+                <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "#0f4c81", color: "#fff", fontSize: 10, fontWeight: 700, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>{cartCount > 9 ? "9+" : cartCount}</span>
               )}
             </Link>
 

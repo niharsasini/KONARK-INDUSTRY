@@ -77,15 +77,15 @@ export default function ProductsPage() {
   }, [allProducts]);
 
   const Sidebar = () => (
-    <div style={{ background: "rgba(13, 20, 36, 0.8)", backdropFilter: "blur(20px)", border: "1px solid #1c3050", borderRadius: 16, padding: 20, display: "flex", flexDirection: "column", gap: 20 }}>
+    <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: 20, display: "flex", flexDirection: "column", gap: 20, boxShadow: "var(--shadow-sm)" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h3 style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Filters</h3>
-        <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setSortBy("newest"); setTypeFilter("all"); setPriceRange([0, 200000]); }} style={{ fontSize: 12, color: "#38bdf8", background: "transparent", border: "none", cursor: "pointer", fontWeight: 600 }}>Reset</button>
+        <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>Filters</h3>
+        <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setSortBy("newest"); setTypeFilter("all"); setPriceRange([0, 200000]); }} style={{ fontSize: 12, color: "var(--navy)", background: "transparent", border: "none", cursor: "pointer", fontWeight: 600 }}>Reset</button>
       </div>
 
       {/* Type filter */}
       <div>
-        <p style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Type</p>
+        <p style={{ fontSize: 12, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Type</p>
         {TYPE_FILTERS.map((t) => (
           <button
             key={t.value}
@@ -93,9 +93,9 @@ export default function ProductsPage() {
             style={{
               display: "flex", alignItems: "center", width: "100%",
               gap: 8, padding: "7px 10px", marginBottom: 4, cursor: "pointer",
-              border: `1px solid ${typeFilter === t.value ? "#38bdf8" : "transparent"}`,
-              borderRadius: 8, background: typeFilter === t.value ? "rgba(56,189,248,0.08)" : "transparent",
-              color: typeFilter === t.value ? "#f1f5f9" : "#94a3b8",
+              border: `1px solid ${typeFilter === t.value ? "var(--navy)" : "transparent"}`,
+              borderRadius: 8, background: typeFilter === t.value ? "rgba(15,76,129,0.08)" : "transparent",
+              color: typeFilter === t.value ? "var(--navy)" : "var(--text-muted)",
               fontSize: 13, fontWeight: typeFilter === t.value ? 600 : 400, transition: "all 0.15s",
             }}
           >
@@ -106,19 +106,19 @@ export default function ProductsPage() {
 
       {/* Categories */}
       <div>
-        <p style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Category</p>
+        <p style={{ fontSize: 12, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Category</p>
         {CATEGORIES.map((cat) => (
-          <label key={cat} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "7px 0", cursor: "pointer", borderBottom: "1px solid #1c305080" }}>
+          <label key={cat} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "7px 0", cursor: "pointer", borderBottom: "1px solid var(--border-light)" }}>
             <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <input
                 type="checkbox"
                 checked={cat === "All" ? selectedCategories.includes("All") : selectedCategories.includes(cat)}
                 onChange={() => toggleCategory(cat)}
-                style={{ accentColor: "#38bdf8", width: 14, height: 14, cursor: "pointer" }}
+                style={{ accentColor: "var(--navy)", width: 14, height: 14, cursor: "pointer" }}
               />
-              <span style={{ fontSize: 13, color: selectedCategories.includes(cat) || (cat === "All" && selectedCategories.includes("All")) ? "#f8fafc" : "#94a3b8" }}>{cat}</span>
+              <span style={{ fontSize: 13, color: selectedCategories.includes(cat) || (cat === "All" && selectedCategories.includes("All")) ? "var(--text-heading)" : "var(--text-muted)" }}>{cat}</span>
             </span>
-            <span style={{ fontSize: 11, color: "#64748b", background: "rgba(255,255,255,0.04)", padding: "2px 7px", borderRadius: 100 }}>
+            <span style={{ fontSize: 11, color: "var(--text-subtle)", background: "var(--bg-section-alt)", padding: "2px 7px", borderRadius: 100 }}>
               {cat === "All" ? allProducts.length : categoryCounts[cat] || 0}
             </span>
           </label>
@@ -127,35 +127,35 @@ export default function ProductsPage() {
 
       {/* Price Range */}
       <div>
-        <p style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Price Range</p>
-        <p style={{ fontSize: 12, color: "#38bdf8", fontWeight: 600, marginBottom: 10 }}>
+        <p style={{ fontSize: 12, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Price Range</p>
+        <p style={{ fontSize: 12, color: "var(--navy)", fontWeight: 600, marginBottom: 10 }}>
           ₹{priceRange[0].toLocaleString("en-IN")} — ₹{priceRange[1].toLocaleString("en-IN")}
         </p>
         <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
           <div style={{ flex: 1, position: "relative" }}>
-            <span style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "#64748b" }}>₹</span>
+            <span style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "var(--text-subtle)" }}>₹</span>
             <input
               type="number"
               min={0}
               max={priceRange[1]}
               value={priceRange[0]}
               onChange={(e) => setPriceRange([Math.min(Number(e.target.value), priceRange[1]), priceRange[1]])}
-              style={{ width: "100%", background: "#080f1e", border: "1px solid #1c3050", borderRadius: 6, padding: "6px 8px 6px 20px", color: "#f1f5f9", fontSize: 12, outline: "none", boxSizing: "border-box" }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
+              style={{ width: "100%", background: "var(--bg-page)", border: "1px solid var(--border-default)", borderRadius: 6, padding: "6px 8px 6px 20px", color: "var(--text-body)", fontSize: 12, outline: "none", boxSizing: "border-box" }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "var(--navy)")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border-default)")}
             />
           </div>
           <div style={{ flex: 1, position: "relative" }}>
-            <span style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "#64748b" }}>₹</span>
+            <span style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "var(--text-subtle)" }}>₹</span>
             <input
               type="number"
               min={priceRange[0]}
               max={200000}
               value={priceRange[1]}
               onChange={(e) => setPriceRange([priceRange[0], Math.max(Number(e.target.value), priceRange[0])])}
-              style={{ width: "100%", background: "#080f1e", border: "1px solid #1c3050", borderRadius: 6, padding: "6px 8px 6px 20px", color: "#f1f5f9", fontSize: 12, outline: "none", boxSizing: "border-box" }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#1c3050")}
+              style={{ width: "100%", background: "var(--bg-page)", border: "1px solid var(--border-default)", borderRadius: 6, padding: "6px 8px 6px 20px", color: "var(--text-body)", fontSize: 12, outline: "none", boxSizing: "border-box" }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "var(--navy)")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border-default)")}
             />
           </div>
         </div>
@@ -166,16 +166,16 @@ export default function ProductsPage() {
           step={1000}
           value={priceRange[1]}
           onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-          style={{ width: "100%", accentColor: "#38bdf8" }}
+          style={{ width: "100%", accentColor: "var(--navy)" }}
         />
       </div>
 
       {/* Rating */}
       <div>
-        <p style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Minimum Rating</p>
+        <p style={{ fontSize: 12, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Minimum Rating</p>
         <button
           onClick={() => setMinRating(minRating === 4 ? 0 : 4)}
-          style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", border: `1px solid ${minRating === 4 ? "#38bdf8" : "#1c3050"}`, borderRadius: 6, background: minRating === 4 ? "rgba(56,189,248,0.1)" : "transparent", color: minRating === 4 ? "#38bdf8" : "#94a3b8", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
+          style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", border: `1px solid ${minRating === 4 ? "var(--navy)" : "var(--border-default)"}`, borderRadius: 6, background: minRating === 4 ? "rgba(15,76,129,0.08)" : "transparent", color: minRating === 4 ? "var(--navy)" : "var(--text-muted)", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
         >
           4★ & above
         </button>
@@ -184,20 +184,20 @@ export default function ProductsPage() {
   );
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 30%, #0c1525 60%, #050a14 100%)", minHeight: "100vh" }}>
+    <div style={{ background: "var(--bg-page)", minHeight: "100vh" }}>
       {/* Hero */}
-      <div style={{ background: "#0c1525", borderBottom: "1px solid #1c3050", padding: "80px 24px 48px" }}>
+      <div style={{ background: "var(--bg-section)", borderBottom: "1px solid var(--border-light)", padding: "80px 24px 48px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 12, fontSize: 12, color: "#94a3b8" }}>
-            <Link href="/" style={{ color: "#94a3b8", textDecoration: "none" }}>Home</Link>
+          <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 12, fontSize: 12, color: "var(--text-muted)" }}>
+            <Link href="/" style={{ color: "var(--text-muted)", textDecoration: "none" }}>Home</Link>
             <span>/</span>
-            <span style={{ color: "#38bdf8" }}>Products</span>
+            <span style={{ color: "var(--navy)" }}>Products</span>
           </div>
           <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 800, margin: "0 0 10px" }}>
-            <span style={{ color: "#f8fafc" }}>Explore Our </span>
-            <span style={{ background: "linear-gradient(135deg, #38bdf8, #818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Full Range</span>
+            <span style={{ color: "var(--text-heading)" }}>Explore Our </span>
+            <span style={{ background: "var(--grad-navy)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Full Range</span>
           </h1>
-          <p style={{ fontSize: 15, color: "#94a3b8", margin: 0 }}>EVs to book a test ride · Products to buy online · Services to book a technician</p>
+          <p style={{ fontSize: 15, color: "var(--text-muted)", margin: 0 }}>EVs to book a test ride · Products to buy online · Services to book a technician</p>
         </div>
       </div>
 
@@ -206,19 +206,19 @@ export default function ProductsPage() {
         <div style={{ maxWidth: 1280, margin: "24px auto 0", padding: "0 24px" }}>
           <div style={{
             padding: "18px 24px",
-            background: "linear-gradient(135deg, rgba(56,189,248,0.08), rgba(129,140,248,0.06))",
-            border: "1px solid rgba(56,189,248,0.2)", borderRadius: 12,
+            background: "var(--navy-bg)",
+            border: "1px solid var(--border-navy)", borderRadius: 12,
             display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12,
           }}>
             <div>
-              <p style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 4px" }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 4px" }}>
                 🏍 Book a test ride at our Bhubaneswar showroom. No pressure, just drive.
               </p>
-              <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>
-                Call <a href="tel:+919437611129" style={{ color: "#38bdf8", textDecoration: "none", fontWeight: 600 }}>+91 94376 11129</a> to schedule · Bhimatangi Housing Colony, Bhubaneswar, Odisha 751002
+              <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>
+                Call <a href="tel:+919437611129" style={{ color: "var(--navy)", textDecoration: "none", fontWeight: 600 }}>+91 94376 11129</a> to schedule · Bhimatangi Housing Colony, Bhubaneswar, Odisha 751002
               </p>
             </div>
-            <Link href="/test-ride" style={{ padding: "9px 20px", background: "#38bdf8", color: "#080f1e", fontWeight: 700, fontSize: 13, borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap" }}>
+            <Link href="/test-ride" style={{ padding: "9px 20px", background: "var(--grad-navy)", color: "#fff", fontWeight: 700, fontSize: 13, borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap", boxShadow: "var(--shadow-navy)" }}>
               Book Test Ride →
             </Link>
           </div>

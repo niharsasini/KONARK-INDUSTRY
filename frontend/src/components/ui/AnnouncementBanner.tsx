@@ -4,34 +4,39 @@ import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const BANNER_HEIGHT = 40;
 
-const BANNER_STYLES: Record<string, { bg: string; accent: string; icon: string; label: string }> = {
+const BANNER_STYLES: Record<string, { bg: string; accent: string; icon: string; label: string; text: string }> = {
   announcement: {
-    bg: "linear-gradient(90deg, #1e1b4b, #312e81, #1e1b4b)",
-    accent: "#818cf8",
+    bg: "linear-gradient(90deg, #0f4c81, #1a6aab, #0f4c81)",
+    accent: "#fde8a0",
+    text: "#fff",
     icon: "📢",
     label: "ANNOUNCEMENT",
   },
   new_product: {
-    bg: "linear-gradient(90deg, #052e16, #14532d, #052e16)",
-    accent: "#34d399",
+    bg: "linear-gradient(90deg, #1a0f00, #2c1a0a, #1a0f00)",
+    accent: "#c17f24",
+    text: "#f5f0e8",
     icon: "🆕",
     label: "NEW PRODUCT",
   },
   offer: {
-    bg: "linear-gradient(90deg, #431407, #7c2d12, #431407)",
-    accent: "#fb923c",
+    bg: "linear-gradient(90deg, #9a6419, #c17f24, #9a6419)",
+    accent: "#fde8a0",
+    text: "#fff",
     icon: "🔥",
     label: "SPECIAL OFFER",
   },
   event: {
-    bg: "linear-gradient(90deg, #0c4a6e, #0369a1, #0c4a6e)",
-    accent: "#38bdf8",
+    bg: "linear-gradient(90deg, #5b21b6, #7c3aed, #5b21b6)",
+    accent: "#e9d5ff",
+    text: "#fff",
     icon: "🎉",
     label: "EVENT",
   },
   alert: {
-    bg: "linear-gradient(90deg, #450a0a, #7f1d1d, #450a0a)",
-    accent: "#f87171",
+    bg: "linear-gradient(90deg, #96291f, #c0392b, #96291f)",
+    accent: "#fecaca",
+    text: "#fff",
     icon: "⚠️",
     label: "IMPORTANT",
   },
@@ -111,7 +116,7 @@ export default function AnnouncementBanner() {
 
       {/* Scrolling ticker */}
       <div style={{ flex: 1, overflow: "hidden", position: "relative" }}>
-        <div className="banner-ticker-track" style={{ color: "rgba(255,255,255,0.9)", fontSize: 13, fontWeight: 600 }}>
+        <div className="banner-ticker-track" style={{ color: style.text, fontSize: 13, fontWeight: 600 }}>
           {[0, 1, 2].map((i) => (
             <span key={i} className="banner-ticker-item">
               {icon} {settings.announcement_banner_text}

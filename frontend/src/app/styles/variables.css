@@ -1,66 +1,87 @@
 :root {
-  --k-bg: #080f1e;
-  --k-surface: #0e1928;
-  --k-card: #0c1525;
-  --k-border: #1c3050;
-  --k-accent: #38bdf8;
-  --k-accent-hover: #0ea5e9;
-  --k-purple: #818cf8;
-  --k-orange: #f97316;
-  --k-text: #f1f5f9;
-  --k-muted: #94a3b8;
-  --k-success: #10b981;
-  --k-danger: #ef4444;
-  --k-card-hover-border: #2d4a6b;
-  --cyan: #38bdf8;
-  --purple: #818cf8;
-  --orange: #f97316;
-  --green: #10b981;
-  --pink: #ec4899;
-  --gold: #f59e0b;
-  --navy: #080f1e;
-  --surface: #0c1525;
-  --card: #0e1928;
-  --border: #1c3050;
-  --text: #f1f5f9;
-  --muted: #64748b;
-  --subtle: #94a3b8;
+  /* ── BACKGROUNDS ── */
+  --bg-page:        #f5f0e8;
+  --bg-section:     #e3dacd;
+  --bg-section-alt: #ede4d5;
+  --bg-card:        #ffffff;
+  --bg-card-hover:  #fdfaf6;
+  --bg-surface:     #f9f4ec;
+  --bg-dark:        #1a0f00;
+  --bg-dark-card:   #2c1a0a;
+  --bg-overlay:     rgba(26, 15, 0, 0.5);
 
-  /* New depth-oriented palette */
-  --bg-primary: #050a14;
-  --bg-secondary: #080f1e;
-  --bg-card: #0c1525;
-  --bg-card-hover: #112035;
-  --bg-surface: #0e1928;
-  --border-subtle: #1c3050;
-  --border-default: #1c3050;
-  --border-active: rgba(56, 189, 248, 0.3);
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-  --text-subtle: #64748b;
-  --accent-cyan: #38bdf8;
-  --accent-purple: #818cf8;
-  --accent-green: #10b981;
-  --accent-amber: #f59e0b;
-  --glow-cyan: 0 0 30px rgba(56, 189, 248, 0.15);
-  --glow-purple: 0 0 30px rgba(129, 140, 248, 0.15);
-  --gradient-cyan: linear-gradient(135deg, #38bdf8, #0284c7);
-  --gradient-purple: linear-gradient(135deg, #818cf8, #a5b4fc);
-  --gradient-gold: linear-gradient(135deg, #f59e0b, #fbbf24);
+  /* ── BORDERS ── */
+  --border-light:   #e8dfd0;
+  --border-default: #d4c9b8;
+  --border-dark:    #c4b8a5;
+  --border-navy:    rgba(15, 76, 129, 0.3);
 
-  /* Additional depth layers + transitions for card/section polish */
-  --bg-card-alt: #0f1a2e;
-  --bg-elevated: #112035;
-  --border-purple: rgba(129, 140, 248, 0.4);
-  --red: #ef4444;
-  --glow-card: 0 20px 60px rgba(0, 0, 0, 0.5);
-  --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-full: 9999px;
+  /* ── TEXT ── */
+  --text-heading:   #1a0f00;
+  --text-body:      #2c1a0a;
+  --text-muted:     #6b5a45;
+  --text-subtle:    #8c7a66;
+  --text-on-dark:   #f5f0e8;
+  --text-on-dark-muted: #c4b8a5;
+
+  /* ── BRAND COLORS ── */
+  --navy:           #0f4c81;
+  --navy-dark:      #0a3460;
+  --navy-light:     #1a6aab;
+  --navy-bg:        #e8f0f8;
+  --gold:           #c17f24;
+  --gold-dark:      #9a6419;
+  --gold-light:     #d4952e;
+  --gold-bg:        #fdf3e3;
+  --red:            #c0392b;
+  --red-dark:       #96291f;
+  --red-bg:         #fdecea;
+  --green:          #1a7a4a;
+  --green-dark:     #145e38;
+  --green-bg:       #e8f5ee;
+  --purple:         #5b21b6;
+  --purple-bg:      #ede9fe;
+  --amber:          #d97706;
+
+  /* ── GRADIENTS ── */
+  --grad-navy:      linear-gradient(135deg, #0f4c81, #0a3460);
+  --grad-gold:      linear-gradient(135deg, #c17f24, #9a6419);
+  --grad-hero:      linear-gradient(135deg, #1a0f00 0%, #0f4c81 100%);
+  --grad-card:      linear-gradient(145deg, #ffffff, #fdfaf6);
+  --grad-warm:      linear-gradient(135deg, #f5f0e8, #e3dacd);
+  --grad-section:   linear-gradient(180deg, #f5f0e8 0%, #e3dacd 100%);
+
+  /* ── SHADOWS ── */
+  --shadow-sm:      0 1px 4px rgba(26,15,0,0.08);
+  --shadow-md:      0 4px 16px rgba(26,15,0,0.1);
+  --shadow-lg:      0 8px 32px rgba(26,15,0,0.12);
+  --shadow-xl:      0 20px 60px rgba(26,15,0,0.15);
+  --shadow-navy:    0 8px 24px rgba(15,76,129,0.3);
+  --shadow-gold:    0 8px 24px rgba(193,127,36,0.3);
+
+  /* ── RADIUS ── */
+  --radius-sm:      6px;
+  --radius-md:      10px;
+  --radius-lg:      16px;
+  --radius-xl:      24px;
+  --radius-full:    9999px;
+
+  /* ── TRANSITIONS ── */
+  --transition:     all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease;
+  --transition-slow: all 0.5s ease;
+
+  /* ── Legacy aliases kept for components still referencing old token names ── */
+  --k-bg: var(--bg-page);
+  --k-surface: var(--bg-surface);
+  --k-card: var(--bg-card);
+  --k-border: var(--border-default);
+  --k-accent: var(--navy);
+  --k-accent-hover: var(--navy-dark);
+  --k-purple: var(--purple);
+  --k-orange: var(--gold);
+  --k-text: var(--text-body);
+  --k-muted: var(--text-muted);
+  --k-success: var(--green);
+  --k-danger: var(--red);
 }

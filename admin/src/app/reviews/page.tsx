@@ -92,12 +92,12 @@ export default function ReviewsPage() {
   return (
     <div style={{ padding: "32px 40px", maxWidth: 1300 }}>
       <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>Reviews</h1>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Moderate customer product reviews</p>
+        <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a0f00", margin: "0 0 4px" }}>Reviews</h1>
+        <p style={{ fontSize: 13, color: "#6b5a45", margin: 0 }}>Moderate customer product reviews</p>
       </div>
 
       <div style={{ display: "flex", gap: 10, marginBottom: 24, flexWrap: "wrap" }}>
-        <div style={{ padding: "7px 14px", borderRadius: 100, background: "#111827", border: "1px solid #1e2d40", fontSize: 12, fontWeight: 700, color: "#f1f5f9" }}>
+        <div style={{ padding: "7px 14px", borderRadius: 100, background: "#ffffff", border: "1px solid #e8dfd0", fontSize: 12, fontWeight: 700, color: "#1a0f00" }}>
           Total: {total}
         </div>
         <div style={{ padding: "7px 14px", borderRadius: 100, background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.3)", fontSize: 12, fontWeight: 700, color: "#f97316" }}>
@@ -109,48 +109,48 @@ export default function ReviewsPage() {
       </div>
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
-        <div style={{ display: "flex", gap: 4, borderBottom: "1px solid #1e2d40" }}>
+        <div style={{ display: "flex", gap: 4, borderBottom: "1px solid #e8dfd0" }}>
           {FILTERS.map(({ key, label }) => (
             <button
               key={key}
               onClick={() => setFilter(key)}
-              style={{ padding: "10px 18px", background: "transparent", border: "none", borderBottom: filter === key ? "2px solid #00d4ff" : "2px solid transparent", color: filter === key ? "#00d4ff" : "#94a3b8", fontSize: 13, fontWeight: filter === key ? 700 : 400, cursor: "pointer", marginBottom: -1 }}
+              style={{ padding: "10px 18px", background: "transparent", border: "none", borderBottom: filter === key ? "2px solid #0f4c81" : "2px solid transparent", color: filter === key ? "#0f4c81" : "#6b5a45", fontSize: 13, fontWeight: filter === key ? 700 : 400, cursor: "pointer", marginBottom: -1 }}
             >
               {label}
             </button>
           ))}
         </div>
         <select value={ratingFilter} onChange={(e) => setRatingFilter(e.target.value)}
-          style={{ padding: "9px 14px", borderRadius: 8, border: "1px solid #1e2d40", background: "#0a0f1e", color: "#f1f5f9", fontSize: 12, fontWeight: 600, cursor: "pointer", outline: "none" }}>
+          style={{ padding: "9px 14px", borderRadius: 8, border: "1px solid #d4c9b8", background: "#ffffff", color: "#1a0f00", fontSize: 12, fontWeight: 600, cursor: "pointer", outline: "none" }}>
           <option value="">All Ratings</option>
           {[5, 4, 3, 2, 1].map((r) => <option key={r} value={r}>{r} ★</option>)}
         </select>
       </div>
 
       {loading ? (
-        <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 24 }}>
+        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
           {[...Array(4)].map((_, i) => (
-            <div key={i} style={{ height: 44, background: "#0f172a", borderRadius: 8, marginBottom: 10, opacity: 1 - i * 0.15 }} />
+            <div key={i} style={{ height: 44, background: "#f9f4ec", borderRadius: 8, marginBottom: 10, opacity: 1 - i * 0.15 }} />
           ))}
         </div>
       ) : error ? (
         <div style={{ background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 14, padding: 32, textAlign: "center" }}>
           <p style={{ color: "#ef4444", fontSize: 14, fontWeight: 600, margin: "0 0 14px" }}>{error}</p>
-          <button onClick={fetchReviews} style={{ padding: "9px 20px", borderRadius: 8, border: "none", background: "#00d4ff", color: "#0a0f1e", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+          <button onClick={fetchReviews} style={{ padding: "9px 20px", borderRadius: 8, border: "none", background: "#0f4c81", color: "#ffffff", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
             Retry
           </button>
         </div>
       ) : reviews.length === 0 ? (
-        <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 48, textAlign: "center" }}>
-          <p style={{ fontSize: 14, color: "#64748b" }}>No reviews found</p>
+        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 48, textAlign: "center" }}>
+          <p style={{ fontSize: 14, color: "#6b5a45" }}>No reviews found</p>
         </div>
       ) : (
-        <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, overflow: "hidden" }}>
+        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, overflow: "hidden" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
-              <tr style={{ borderBottom: "1px solid #1e2d40", background: "#0f172a" }}>
+              <tr style={{ borderBottom: "1px solid #e8dfd0", background: "#f9f4ec" }}>
                 {["Product", "Reviewer", "Rating", "Comment", "Status", "Date", "Actions"].map((h) => (
-                  <th key={h} style={{ padding: "12px 16px", textAlign: "left", fontSize: 11, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
+                  <th key={h} style={{ padding: "12px 16px", textAlign: "left", fontSize: 11, fontWeight: 600, color: "#6b5a45", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
                     {h}
                   </th>
                 ))}
@@ -158,17 +158,17 @@ export default function ReviewsPage() {
             </thead>
             <tbody>
               {reviews.map((r) => (
-                <tr key={r.id} style={{ borderBottom: "1px solid #1e2d4060" }}>
-                  <td style={{ padding: "14px 16px", fontSize: 13, color: "#f1f5f9", fontWeight: 600 }}>{r.product_name}</td>
-                  <td style={{ padding: "14px 16px", fontSize: 13, color: "#94a3b8" }}>{r.name}</td>
-                  <td style={{ padding: "14px 16px", fontSize: 13, color: "#f97316", fontWeight: 700 }}>{r.rating} ★</td>
-                  <td style={{ padding: "14px 16px", fontSize: 12, color: "#94a3b8", maxWidth: 320 }}>{r.comment}</td>
+                <tr key={r.id} style={{ borderBottom: "1px solid #e8dfd0" }}>
+                  <td style={{ padding: "14px 16px", fontSize: 13, color: "#1a0f00", fontWeight: 600 }}>{r.product_name}</td>
+                  <td style={{ padding: "14px 16px", fontSize: 13, color: "#6b5a45" }}>{r.name}</td>
+                  <td style={{ padding: "14px 16px", fontSize: 13, color: "#c17f24", fontWeight: 700 }}>{r.rating} ★</td>
+                  <td style={{ padding: "14px 16px", fontSize: 12, color: "#6b5a45", maxWidth: 320 }}>{r.comment}</td>
                   <td style={{ padding: "14px 16px" }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, padding: "4px 10px", borderRadius: 100, background: r.is_approved ? "rgba(16,185,129,0.1)" : "rgba(249,115,22,0.1)", color: r.is_approved ? "#10b981" : "#f97316" }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, padding: "4px 10px", borderRadius: 100, background: r.is_approved ? "rgba(26,122,74,0.1)" : "rgba(193,127,36,0.12)", color: r.is_approved ? "#1a7a4a" : "#c17f24" }}>
                       {r.is_approved ? "Approved" : "Pending"}
                     </span>
                   </td>
-                  <td style={{ padding: "14px 16px", fontSize: 12, color: "#94a3b8", whiteSpace: "nowrap" }}>
+                  <td style={{ padding: "14px 16px", fontSize: 12, color: "#6b5a45", whiteSpace: "nowrap" }}>
                     {new Date(r.created_at).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                   </td>
                   <td style={{ padding: "14px 16px" }}>
@@ -176,14 +176,14 @@ export default function ReviewsPage() {
                       <button
                         disabled={busyId === r.id}
                         onClick={() => handleApprove(r.id)}
-                        style={{ padding: "5px 10px", borderRadius: 6, border: "none", background: r.is_approved ? "rgba(249,115,22,0.1)" : "rgba(16,185,129,0.1)", color: r.is_approved ? "#f97316" : "#10b981", fontSize: 11, cursor: "pointer", fontWeight: 600, whiteSpace: "nowrap" }}
+                        style={{ padding: "5px 10px", borderRadius: 6, border: "none", background: r.is_approved ? "rgba(193,127,36,0.12)" : "rgba(26,122,74,0.1)", color: r.is_approved ? "#c17f24" : "#1a7a4a", fontSize: 11, cursor: "pointer", fontWeight: 600, whiteSpace: "nowrap" }}
                       >
                         {r.is_approved ? "Unapprove" : "Approve"}
                       </button>
                       <button
                         disabled={busyId === r.id}
                         onClick={() => handleDelete(r.id)}
-                        style={{ padding: "5px 10px", borderRadius: 6, border: "1px solid #1e2d40", background: "transparent", color: "#ef4444", fontSize: 11, cursor: "pointer", fontWeight: 500 }}
+                        style={{ padding: "5px 10px", borderRadius: 6, border: "1px solid #e8dfd0", background: "transparent", color: "#c0392b", fontSize: 11, cursor: "pointer", fontWeight: 500 }}
                       >
                         Delete
                       </button>

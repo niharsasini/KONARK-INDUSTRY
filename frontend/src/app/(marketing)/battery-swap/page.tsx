@@ -171,7 +171,7 @@ export default function BatterySwapPage() {
     }
   }
 
-  const chargeColor = chargePercent <= 20 ? "#ef4444" : chargePercent <= 50 ? "#f97316" : "#10b981";
+  const chargeColor = chargePercent <= 20 ? "var(--red)" : chargePercent <= 50 ? "var(--amber)" : "var(--green)";
 
   function goToStep(n: number, validate?: () => string) {
     if (validate) {
@@ -205,35 +205,35 @@ export default function BatterySwapPage() {
   };
 
   return (
-    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)" }}>
+    <main style={{ minHeight: "100vh", background: "var(--bg-page)" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px 24px 0" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Battery Swap" }]} />
       </div>
 
       {/* Hero */}
       <section style={{ position: "relative", overflow: "hidden", padding: "20px 24px 80px", textAlign: "center" }}>
-        <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(56,189,248,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(15,76,129,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(56,189,248,0.4)", color: "#38bdf8",
+            borderRadius: 999, border: "1px solid rgba(15,76,129,0.4)", color: "var(--navy)",
             fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em",
-            background: "rgba(56,189,248,0.08)", marginBottom: 20,
+            background: "var(--navy-bg)", marginBottom: 20,
           }}>
             NEW SERVICE ⚡
           </span>
-          <h1 style={{ fontSize: "clamp(32px, 5vw, 60px)", fontWeight: 900, color: "#f1f5f9", margin: "0 0 16px", lineHeight: 1.15 }}>
+          <h1 style={{ fontSize: "clamp(32px, 5vw, 60px)", fontWeight: 900, color: "var(--text-heading)", margin: "0 0 16px", lineHeight: 1.15 }}>
             Battery Swap Service
           </h1>
-          <p style={{ fontSize: "clamp(15px, 2vw, 18px)", color: "#94a3b8", maxWidth: 520, margin: "0 auto 28px", lineHeight: 1.7 }}>
+          <p style={{ fontSize: "clamp(15px, 2vw, 18px)", color: "var(--text-muted)", maxWidth: 520, margin: "0 auto 28px", lineHeight: 1.7 }}>
             Hand us your discharged battery.<br />Drive away with a fully charged one.<br />
-            <strong style={{ color: "#f1f5f9" }}>No waiting. No hassle.</strong>
+            <strong style={{ color: "var(--text-heading)" }}>No waiting. No hassle.</strong>
           </p>
           <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
             {["⚡ Charged in minutes", "🔋 Same capacity guaranteed", "📍 Home pickup available"].map((pill) => (
               <span key={pill} style={{
-                padding: "6px 14px", borderRadius: 999, background: "rgba(56,189,248,0.08)",
-                border: "1px solid rgba(56,189,248,0.2)", color: "#94a3b8", fontSize: 13,
+                padding: "6px 14px", borderRadius: 999, background: "var(--navy-bg)",
+                border: "1px solid var(--border-navy)", color: "var(--text-muted)", fontSize: 13,
               }}>{pill}</span>
             ))}
           </div>
@@ -247,33 +247,33 @@ export default function BatterySwapPage() {
 
           {error && (
             <div style={{
-              background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.3)",
-              borderRadius: 8, padding: "12px 16px", marginBottom: 20, color: "#ef4444", fontSize: 14,
+              background: "var(--red-bg)", border: "1px solid rgba(192,57,43,0.3)",
+              borderRadius: 8, padding: "12px 16px", marginBottom: 20, color: "var(--red)", fontSize: 14,
             }}>
               ⚠️ {error}
             </div>
           )}
 
           {step === 1 && (
-            <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "32px", marginBottom: 0 }}>
+            <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "32px", marginBottom: 0, boxShadow: "var(--shadow-sm)" }}>
               <Step1Details form={form} />
             </div>
           )}
 
           {step === 2 && (
-            <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "32px", marginBottom: 0 }}>
+            <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "32px", marginBottom: 0, boxShadow: "var(--shadow-sm)" }}>
               <Step2Battery form={form} />
             </div>
           )}
 
           {step === 3 && (
-            <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "32px", marginBottom: 0 }}>
+            <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "32px", marginBottom: 0, boxShadow: "var(--shadow-sm)" }}>
               <Step3Schedule form={form} />
             </div>
           )}
 
           {step === 4 && (
-            <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "32px", marginBottom: 0 }}>
+            <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "32px", marginBottom: 0, boxShadow: "var(--shadow-sm)" }}>
               <Step4Review form={form} />
             </div>
           )}

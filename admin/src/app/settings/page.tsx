@@ -4,19 +4,19 @@ import { Save, Check, Plus, X, Eye, EyeOff } from "lucide-react";
 import { getSettings, updateSettings, changePassword } from "@/lib/adminApi";
 
 const IS: React.CSSProperties = {
-  width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40",
-  borderRadius: 8, padding: "11px 14px", color: "#f1f5f9",
+  width: "100%", background: "#ffffff", border: "1px solid #d4c9b8",
+  borderRadius: 8, padding: "11px 14px", color: "#1a0f00",
   fontSize: 13, outline: "none", boxSizing: "border-box",
 };
 const LS: React.CSSProperties = {
-  fontSize: 11, color: "#94a3b8", display: "block",
+  fontSize: 11, color: "#6b5a45", display: "block",
   marginBottom: 7, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600,
 };
 
 const focusBorder = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-  (e.currentTarget.style.borderColor = "#00d4ff");
+  (e.currentTarget.style.borderColor = "#0f4c81");
 const blurBorder = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-  (e.currentTarget.style.borderColor = "#1e2d40");
+  (e.currentTarget.style.borderColor = "#d4c9b8");
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 type DayHours = { open: boolean; from: string; to: string };
@@ -207,7 +207,7 @@ export default function SettingsPage() {
 
   const Toggle = ({ on, toggle }: { on: boolean; toggle: () => void }) => (
     <button onClick={toggle} type="button"
-      style={{ width: 42, height: 22, borderRadius: 11, border: "none", cursor: "pointer", background: on ? "#00d4ff" : "#1e2d40", position: "relative", transition: "background 0.2s", flexShrink: 0 }}>
+      style={{ width: 42, height: 22, borderRadius: 11, border: "none", cursor: "pointer", background: on ? "#0f4c81" : "#e8dfd0", position: "relative", transition: "background 0.2s", flexShrink: 0 }}>
       <span style={{ position: "absolute", top: 3, left: on ? 22 : 3, width: 16, height: 16, borderRadius: "50%", background: "#fff", transition: "left 0.2s" }} />
     </button>
   );
@@ -222,7 +222,7 @@ export default function SettingsPage() {
     }
     if (saved === section) {
       return (
-        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", borderRadius: 8, fontSize: 12, color: "#10b981", fontWeight: 600 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", background: "rgba(26,122,74,0.1)", border: "1px solid rgba(26,122,74,0.3)", borderRadius: 8, fontSize: 12, color: "#1a7a4a", fontWeight: 600 }}>
           <Check size={13} /> Saved!
         </div>
       );
@@ -232,18 +232,18 @@ export default function SettingsPage() {
 
   return (
     <div style={{ padding: "32px 40px", maxWidth: 900 }}>
-      <h1 style={{ fontSize: 22, fontWeight: 800, color: "#f1f5f9", margin: "0 0 32px" }}>Settings</h1>
+      <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a0f00", margin: "0 0 32px" }}>Settings</h1>
 
       {loadError && (
-        <div style={{ padding: "10px 16px", background: "rgba(249,115,22,0.08)", border: "1px solid rgba(249,115,22,0.25)", borderRadius: 8, marginBottom: 20, fontSize: 12, color: "#f97316" }}>
+        <div style={{ padding: "10px 16px", background: "rgba(193,127,36,0.1)", border: "1px solid rgba(193,127,36,0.3)", borderRadius: 8, marginBottom: 20, fontSize: 12, color: "#c17f24" }}>
           {loadError}
         </div>
       )}
 
       {/* COMPANY INFO */}
-      <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 28, marginBottom: 24 }}>
+      <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 28, marginBottom: 24 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 22 }}>
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Company Information</h2>
+          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#1a0f00", margin: 0 }}>Company Information</h2>
           <SavedBadge section="company" />
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
@@ -275,72 +275,72 @@ export default function SettingsPage() {
           ))}
         </div>
         <button onClick={saveCompany}
-          style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 20 }}>
+          style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#0f4c81", color: "#ffffff", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 20 }}>
           <Save size={14} /> Save Company Info
         </button>
       </div>
 
       {/* BUSINESS HOURS */}
-      <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 28, marginBottom: 24 }}>
+      <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 28, marginBottom: 24 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 22 }}>
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Business Hours</h2>
+          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#1a0f00", margin: 0 }}>Business Hours</h2>
           <SavedBadge section="hours" />
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {DAYS.map((day) => (
-            <div key={day} style={{ display: "flex", alignItems: "center", gap: 16, padding: "10px 0", borderBottom: "1px solid #1e2d4050" }}>
+            <div key={day} style={{ display: "flex", alignItems: "center", gap: 16, padding: "10px 0", borderBottom: "1px solid #e8dfd0" }}>
               <Toggle on={hours[day]?.open ?? false} toggle={() => setHour(day, { open: !hours[day]?.open })} />
-              <span style={{ fontSize: 13, color: hours[day]?.open ? "#f1f5f9" : "#475569", width: 96, fontWeight: 500 }}>{day}</span>
+              <span style={{ fontSize: 13, color: hours[day]?.open ? "#1a0f00" : "#6b5a45", width: 96, fontWeight: 500 }}>{day}</span>
               {hours[day]?.open ? (
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <input type="time" value={hours[day]?.from ?? "09:00"} onChange={(e) => setHour(day, { from: e.target.value })}
-                    style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 6, padding: "6px 10px", color: "#f1f5f9", fontSize: 12, outline: "none" }} />
-                  <span style={{ color: "#64748b", fontSize: 12 }}>to</span>
+                    style={{ background: "#ffffff", border: "1px solid #d4c9b8", borderRadius: 6, padding: "6px 10px", color: "#1a0f00", fontSize: 12, outline: "none" }} />
+                  <span style={{ color: "#6b5a45", fontSize: 12 }}>to</span>
                   <input type="time" value={hours[day]?.to ?? "18:00"} onChange={(e) => setHour(day, { to: e.target.value })}
-                    style={{ background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 6, padding: "6px 10px", color: "#f1f5f9", fontSize: 12, outline: "none" }} />
+                    style={{ background: "#ffffff", border: "1px solid #d4c9b8", borderRadius: 6, padding: "6px 10px", color: "#1a0f00", fontSize: 12, outline: "none" }} />
                 </div>
               ) : (
-                <span style={{ fontSize: 12, color: "#475569" }}>Closed</span>
+                <span style={{ fontSize: 12, color: "#6b5a45" }}>Closed</span>
               )}
             </div>
           ))}
         </div>
         <button onClick={saveHours}
-          style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 20 }}>
+          style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#0f4c81", color: "#ffffff", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 20 }}>
           <Save size={14} /> Save Hours
         </button>
       </div>
 
       {/* SERVICE AREAS */}
-      <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 28, marginBottom: 24 }}>
+      <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 28, marginBottom: 24 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Service Areas</h2>
+          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#1a0f00", margin: 0 }}>Service Areas</h2>
           <SavedBadge section="areas" />
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
           {areas.map((a) => (
-            <div key={a} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", background: "rgba(0,212,255,0.08)", border: "1px solid rgba(0,212,255,0.2)", borderRadius: 100, fontSize: 13, color: "#00d4ff", fontWeight: 600 }}>
+            <div key={a} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", background: "rgba(15,76,129,0.08)", border: "1px solid rgba(15,76,129,0.2)", borderRadius: 100, fontSize: 13, color: "#0f4c81", fontWeight: 600 }}>
               {a}
-              <button onClick={() => removeArea(a)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "#64748b", display: "flex", padding: 0 }}><X size={12} /></button>
+              <button onClick={() => removeArea(a)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "#6b5a45", display: "flex", padding: 0 }}><X size={12} /></button>
             </div>
           ))}
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           <input value={newArea} onChange={(e) => setNewArea(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addArea()} placeholder="Add city..." style={{ ...IS, flex: 1 }} onFocus={focusBorder} onBlur={blurBorder} />
-          <button onClick={addArea} style={{ padding: "10px 16px", borderRadius: 8, border: "none", background: "#00d4ff", color: "#0a0f1e", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+          <button onClick={addArea} style={{ padding: "10px 16px", borderRadius: 8, border: "none", background: "#0f4c81", color: "#ffffff", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
             <Plus size={14} /> Add
           </button>
         </div>
         <button onClick={saveAreas}
-          style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 16 }}>
+          style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#0f4c81", color: "#ffffff", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 16 }}>
           <Save size={14} /> Save Areas
         </button>
       </div>
 
       {/* NOTIFICATIONS */}
-      <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 28, marginBottom: 24 }}>
+      <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 28, marginBottom: 24 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Notification Settings</h2>
+          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#1a0f00", margin: 0 }}>Notification Settings</h2>
           <SavedBadge section="notifs" />
         </div>
         {([
@@ -350,47 +350,47 @@ export default function SettingsPage() {
           ["dailySummary", "Daily Summary Email"],
           ["weeklyReport", "Weekly Report Email"],
         ] as [keyof typeof notifs, string][]).map(([key, label]) => (
-          <div key={key} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid #1e2d4050" }}>
-            <span style={{ fontSize: 13, color: "#94a3b8" }}>{label}</span>
+          <div key={key} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid #e8dfd0" }}>
+            <span style={{ fontSize: 13, color: "#6b5a45" }}>{label}</span>
             <Toggle on={notifs[key]} toggle={() => toggleNotif(key)} />
           </div>
         ))}
         <button onClick={saveNotifications}
-          style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 20 }}>
+          style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#0f4c81", color: "#ffffff", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 20 }}>
           <Save size={14} /> Save Notifications
         </button>
       </div>
 
       {/* TECHNICIANS */}
-      <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 28, marginBottom: 24 }}>
+      <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 28, marginBottom: 24 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 22 }}>
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Technicians</h2>
+          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#1a0f00", margin: 0 }}>Technicians</h2>
           <SavedBadge section="technicians" />
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
           {technicians.map((t) => (
-            <div key={t} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", background: "rgba(0,212,255,0.08)", border: "1px solid rgba(0,212,255,0.2)", borderRadius: 100, fontSize: 13, color: "#00d4ff", fontWeight: 600 }}>
+            <div key={t} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", background: "rgba(15,76,129,0.08)", border: "1px solid rgba(15,76,129,0.2)", borderRadius: 100, fontSize: 13, color: "#0f4c81", fontWeight: 600 }}>
               {t}
-              <button onClick={() => removeTechnician(t)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "#64748b", display: "flex", padding: 0 }}><X size={12} /></button>
+              <button onClick={() => removeTechnician(t)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "#6b5a45", display: "flex", padding: 0 }}><X size={12} /></button>
             </div>
           ))}
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           <input value={newTechnician} onChange={(e) => setNewTechnician(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addTechnician()} placeholder="Add technician name..." style={{ ...IS, flex: 1 }} onFocus={focusBorder} onBlur={blurBorder} />
-          <button onClick={addTechnician} style={{ padding: "10px 16px", borderRadius: 8, border: "none", background: "#00d4ff", color: "#0a0f1e", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+          <button onClick={addTechnician} style={{ padding: "10px 16px", borderRadius: 8, border: "none", background: "#0f4c81", color: "#ffffff", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
             <Plus size={14} /> Add
           </button>
         </div>
         <button onClick={saveTechnicians}
-          style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#00d4ff", color: "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 16 }}>
+          style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: "#0f4c81", color: "#ffffff", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: "pointer", marginTop: 16 }}>
           <Save size={14} /> Save Technicians
         </button>
       </div>
 
       {/* CHANGE PASSWORD */}
-      <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 28 }}>
+      <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 28 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 22 }}>
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Change Admin Password</h2>
+          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#1a0f00", margin: 0 }}>Change Admin Password</h2>
           <SavedBadge section="password" />
         </div>
         {pwError && (
@@ -407,7 +407,7 @@ export default function SettingsPage() {
                     onChange={(e) => setPw((p) => ({ ...p, [key]: e.target.value }))}
                     placeholder="••••••••" style={{ ...IS, paddingRight: 44 }} onFocus={focusBorder} onBlur={blurBorder} />
                   <button type="button" onClick={() => setShowPw((s) => ({ ...s, [key]: !s[key] }))}
-                    style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "transparent", border: "none", cursor: "pointer", color: "#64748b", display: "flex" }}>
+                    style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "transparent", border: "none", cursor: "pointer", color: "#6b5a45", display: "flex" }}>
                     {showPw[key] ? <EyeOff size={15} /> : <Eye size={15} />}
                   </button>
                 </div>
@@ -415,7 +415,7 @@ export default function SettingsPage() {
             );
           })}
           <button type="submit" disabled={pwLoading}
-            style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: pwLoading ? "#1e2d40" : "#00d4ff", color: pwLoading ? "#94a3b8" : "#0a0f1e", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: pwLoading ? "not-allowed" : "pointer", alignSelf: "flex-start" }}>
+            style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 24px", background: pwLoading ? "#e8dfd0" : "#0f4c81", color: pwLoading ? "#6b5a45" : "#ffffff", fontWeight: 700, fontSize: 13, borderRadius: 9, border: "none", cursor: pwLoading ? "not-allowed" : "pointer", alignSelf: "flex-start" }}>
             <Save size={14} /> {pwLoading ? "Updating..." : "Update Password"}
           </button>
         </form>

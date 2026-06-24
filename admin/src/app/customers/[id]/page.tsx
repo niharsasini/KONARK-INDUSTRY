@@ -7,12 +7,12 @@ import SkeletonLoader from "@/components/SkeletonLoader";
 import ErrorState from "@/components/ErrorState";
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
-  pending: { bg: "rgba(249,115,22,0.1)", color: "#f97316" },
-  confirmed: { bg: "rgba(0,212,255,0.1)", color: "#00d4ff" },
-  packed: { bg: "rgba(124,58,237,0.1)", color: "#a78bfa" },
-  shipped: { bg: "rgba(59,130,246,0.1)", color: "#60a5fa" },
-  delivered: { bg: "rgba(16,185,129,0.1)", color: "#10b981" },
-  cancelled: { bg: "rgba(239,68,68,0.1)", color: "#ef4444" },
+  pending: { bg: "rgba(193,127,36,0.12)", color: "#c17f24" },
+  confirmed: { bg: "rgba(15,76,129,0.12)", color: "#0f4c81" },
+  packed: { bg: "rgba(15,76,129,0.12)", color: "#0f4c81" },
+  shipped: { bg: "rgba(15,76,129,0.12)", color: "#0f4c81" },
+  delivered: { bg: "rgba(26,122,74,0.12)", color: "#1a7a4a" },
+  cancelled: { bg: "rgba(192,57,43,0.12)", color: "#c0392b" },
 };
 
 type RecentOrder = {
@@ -79,25 +79,25 @@ export default function CustomerDetailPage() {
   return (
     <div style={{ padding: "32px 40px", maxWidth: 1000 }}>
       <button onClick={() => router.push("/customers")}
-        style={{ display: "flex", alignItems: "center", gap: 6, background: "transparent", border: "none", color: "#94a3b8", fontSize: 13, cursor: "pointer", marginBottom: 20, padding: 0 }}>
+        style={{ display: "flex", alignItems: "center", gap: 6, background: "transparent", border: "none", color: "#6b5a45", fontSize: 13, cursor: "pointer", marginBottom: 20, padding: 0 }}>
         <ArrowLeft size={14} /> Back to Customers
       </button>
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28, flexWrap: "wrap", gap: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(0,212,255,0.12)", border: "1px solid rgba(0,212,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontWeight: 700, color: "#00d4ff" }}>
+          <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(15,76,129,0.12)", border: "1px solid rgba(15,76,129,0.25)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontWeight: 700, color: "#0f4c81" }}>
             {initials}
           </div>
           <div>
-            <h1 style={{ fontSize: 22, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>{customer.name}</h1>
-            <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{customer.email} · {customer.phone}</p>
+            <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a0f00", margin: "0 0 4px" }}>{customer.name}</h1>
+            <p style={{ fontSize: 13, color: "#6b5a45", margin: 0 }}>{customer.email} · {customer.phone}</p>
           </div>
         </div>
         <button onClick={handleToggle} disabled={toggling}
           style={{
-            background: customer.is_active ? "rgba(239,68,68,0.1)" : "rgba(16,185,129,0.1)",
-            border: `1px solid ${customer.is_active ? "#ef4444" : "#10b981"}`,
-            color: customer.is_active ? "#ef4444" : "#10b981",
+            background: customer.is_active ? "#c0392b" : "#1a7a4a",
+            border: `1px solid ${customer.is_active ? "#c0392b" : "#1a7a4a"}`,
+            color: "#ffffff",
             padding: "10px 20px", borderRadius: 8, fontSize: 13, fontWeight: 700,
             cursor: toggling ? "not-allowed" : "pointer",
           }}>
@@ -113,16 +113,16 @@ export default function CustomerDetailPage() {
           { label: "City", value: customer.city || "—" },
           { label: "Status", value: customer.is_active ? "Active" : "Inactive" },
         ].map((s) => (
-          <div key={s.label} style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: "18px 20px" }}>
-            <p style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 8px" }}>{s.label}</p>
-            <p style={{ fontSize: 20, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>{s.value}</p>
+          <div key={s.label} style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: "18px 20px" }}>
+            <p style={{ fontSize: 11, color: "#6b5a45", textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 8px" }}>{s.label}</p>
+            <p style={{ fontSize: 20, fontWeight: 800, color: "#1a0f00", margin: 0 }}>{s.value}</p>
           </div>
         ))}
       </div>
 
       {/* Profile details */}
-      <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 24, marginBottom: 24 }}>
-        <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 18px" }}>Profile</h2>
+      <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24, marginBottom: 24 }}>
+        <h2 style={{ fontSize: 15, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Profile</h2>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
           {[
             ["Email", customer.email],
@@ -133,39 +133,39 @@ export default function CustomerDetailPage() {
             ["Last Login", customer.last_login ? new Date(customer.last_login).toLocaleDateString("en-IN") : "Never"],
           ].map(([k, v]) => (
             <div key={k}>
-              <p style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 4px", fontWeight: 600 }}>{k}</p>
-              <p style={{ fontSize: 13, color: "#f1f5f9", margin: 0, fontWeight: 500 }}>{v}</p>
+              <p style={{ fontSize: 10, color: "#6b5a45", textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 4px", fontWeight: 600 }}>{k}</p>
+              <p style={{ fontSize: 13, color: "#1a0f00", margin: 0, fontWeight: 500 }}>{v}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Order history */}
-      <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 24 }}>
-        <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", margin: "0 0 18px" }}>Order History</h2>
+      <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
+        <h2 style={{ fontSize: 15, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Order History</h2>
         {customer.recent_orders.length === 0 ? (
-          <p style={{ fontSize: 13, color: "#64748b" }}>No orders placed yet.</p>
+          <p style={{ fontSize: 13, color: "#6b5a45" }}>No orders placed yet.</p>
         ) : (
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
-              <tr style={{ borderBottom: "1px solid #1e2d40" }}>
+              <tr style={{ borderBottom: "1px solid #e8dfd0" }}>
                 {["Order #", "Amount", "Status", "Date"].map((h) => (
-                  <th key={h} style={{ padding: "8px 6px", textAlign: "left", fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.06em" }}>{h}</th>
+                  <th key={h} style={{ padding: "8px 6px", textAlign: "left", fontSize: 10, color: "#6b5a45", textTransform: "uppercase", letterSpacing: "0.06em" }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {customer.recent_orders.map((o) => (
                 <tr key={o.order_number}
-                  style={{ borderBottom: "1px solid #1e2d4060", cursor: "pointer" }}
+                  style={{ borderBottom: "1px solid #e8dfd060", cursor: "pointer" }}
                   onClick={() => router.push(`/orders/${o.order_number}`)}
                 >
-                  <td style={{ padding: "10px 6px", fontSize: 12, color: "#00d4ff", fontFamily: "monospace", fontWeight: 600 }}>{o.order_number}</td>
-                  <td style={{ padding: "10px 6px", fontSize: 13, fontWeight: 700, color: "#f1f5f9" }}>₹{o.total_amount.toLocaleString("en-IN")}</td>
+                  <td style={{ padding: "10px 6px", fontSize: 12, color: "#0f4c81", fontFamily: "monospace", fontWeight: 600 }}>{o.order_number}</td>
+                  <td style={{ padding: "10px 6px", fontSize: 13, fontWeight: 700, color: "#1a0f00" }}>₹{o.total_amount.toLocaleString("en-IN")}</td>
                   <td style={{ padding: "10px 6px" }}>
                     <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: STATUS_COLORS[o.order_status]?.bg, color: STATUS_COLORS[o.order_status]?.color, textTransform: "capitalize" }}>{o.order_status}</span>
                   </td>
-                  <td style={{ padding: "10px 6px", fontSize: 12, color: "#94a3b8" }}>{new Date(o.created_at).toLocaleDateString("en-IN")}</td>
+                  <td style={{ padding: "10px 6px", fontSize: 12, color: "#6b5a45" }}>{new Date(o.created_at).toLocaleDateString("en-IN")}</td>
                 </tr>
               ))}
             </tbody>

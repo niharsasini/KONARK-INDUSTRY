@@ -186,7 +186,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#0a0f1e" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: "#f5f0e8" }}>
       {/* Mobile overlay backdrop */}
       {isMobile && mobileOpen && (
         <div onClick={() => setMobileOpen(false)}
@@ -196,8 +196,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar */}
       <aside style={{
         width: isMobile ? SIDEBAR_W : collapsed ? 64 : SIDEBAR_W,
-        background: "#0f172a",
-        borderRight: "1px solid #1e2d40",
+        background: "#1a0f00",
+        borderRight: "1px solid rgba(255,255,255,0.08)",
         display: "flex", flexDirection: "column",
         position: "fixed", top: 0, left: 0, bottom: 0,
         zIndex: 50,
@@ -206,23 +206,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         transform: isMobile ? `translateX(${mobileOpen ? "0" : "-100%"})` : "translateX(0)",
       }}>
         {/* Logo */}
-        <div style={{ padding: "18px 14px", borderBottom: "1px solid #1e2d40", display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 64, gap: 8 }}>
+        <div style={{ padding: "18px 14px", borderBottom: "1px solid rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 64, gap: 8 }}>
           {!collapsed && (
             <Link href="/dashboard" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10, overflow: "hidden" }}>
-              <div style={{ width: 30, height: 30, borderRadius: "50%", border: "2px solid #00d4ff", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,212,255,0.1)", flexShrink: 0 }}>
+              <div style={{ width: 30, height: 30, borderRadius: "50%", border: "2px solid #c17f24", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(193,127,36,0.1)", flexShrink: 0 }}>
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 13, height: 13 }}>
-                  <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#00d4ff" strokeWidth="2" strokeLinecap="round" />
-                  <circle cx="12" cy="12" r="3" fill="#00d4ff" />
+                  <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#c17f24" strokeWidth="2" strokeLinecap="round" />
+                  <circle cx="12" cy="12" r="3" fill="#c17f24" />
                 </svg>
               </div>
               <div style={{ lineHeight: 1, overflow: "hidden" }}>
-                <span style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#f1f5f9", letterSpacing: "0.05em", whiteSpace: "nowrap" }}>KONARK</span>
-                <span style={{ display: "block", fontSize: 9, color: "#00d4ff", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" }}>Admin Panel</span>
+                <span style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#f5f0e8", letterSpacing: "0.05em", whiteSpace: "nowrap" }}>KONARK</span>
+                <span style={{ display: "block", fontSize: 9, color: "#c17f24", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" }}>Admin Panel</span>
               </div>
             </Link>
           )}
           <button onClick={() => setCollapsed((c) => !c)}
-            style={{ background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8", padding: 4, borderRadius: 6, flexShrink: 0, marginLeft: collapsed ? "auto" : 0, marginRight: collapsed ? "auto" : 0 }}>
+            style={{ background: "transparent", border: "none", cursor: "pointer", color: "rgba(245,240,232,0.7)", padding: 4, borderRadius: 6, flexShrink: 0, marginLeft: collapsed ? "auto" : 0, marginRight: collapsed ? "auto" : 0 }}>
             {collapsed ? <ChevronRight size={16} /> : <X size={16} />}
           </button>
         </div>
@@ -239,24 +239,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   padding: collapsed ? "10px 0" : "9px 12px",
                   borderRadius: 8, textDecoration: "none",
                   justifyContent: collapsed ? "center" : "flex-start",
-                  borderLeft: active ? "3px solid #00d4ff" : "3px solid transparent",
-                  background: active ? "rgba(0,212,255,0.06)" : "transparent",
-                  color: active ? "#00d4ff" : "#94a3b8",
+                  borderLeft: active ? "3px solid #c17f24" : "3px solid transparent",
+                  background: active ? "rgba(193,127,36,0.15)" : "transparent",
+                  color: active ? "#c17f24" : "rgba(245,240,232,0.7)",
                   transition: "all 0.15s", fontSize: 13,
                   fontWeight: active ? 600 : 400, position: "relative",
                 }}
-                onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = "rgba(255,255,255,0.03)"; }}
-                onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = "transparent"; }}
+                onMouseEnter={(e) => { if (!active) { e.currentTarget.style.background = "rgba(255,255,255,0.03)"; e.currentTarget.style.color = "#f5f0e8"; } }}
+                onMouseLeave={(e) => { if (!active) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "rgba(245,240,232,0.7)"; } }}
               >
                 <Icon size={15} style={{ flexShrink: 0 }} />
                 {!collapsed && <span style={{ flex: 1 }}>{label}</span>}
                 {!collapsed && badge ? (
-                  <span style={{ fontSize: 10, fontWeight: 700, minWidth: 18, height: 18, borderRadius: 9, background: active ? "#00d4ff" : "#1e2d40", color: active ? "#0a0f1e" : "#94a3b8", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 5px" }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, minWidth: 18, height: 18, borderRadius: 9, background: active ? "#c17f24" : "rgba(255,255,255,0.08)", color: active ? "#1a0f00" : "rgba(245,240,232,0.7)", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 5px" }}>
                     {badge}
                   </span>
                 ) : null}
                 {collapsed && badge ? (
-                  <span style={{ position: "absolute", top: 6, right: 6, width: 8, height: 8, borderRadius: "50%", background: "#00d4ff" }} />
+                  <span style={{ position: "absolute", top: 6, right: 6, width: 8, height: 8, borderRadius: "50%", background: "#c17f24" }} />
                 ) : null}
               </Link>
             );
@@ -264,10 +264,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         {/* Bottom */}
-        <div style={{ padding: "10px 10px", borderTop: "1px solid #1e2d40" }}>
+        <div style={{ padding: "10px 10px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
           {!collapsed && (
             <Link href="http://localhost:3000" target="_blank" rel="noopener noreferrer"
-              style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 10px", borderRadius: 6, textDecoration: "none", color: "#94a3b8", fontSize: 12, marginBottom: 4, transition: "background 0.15s" }}
+              style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 10px", borderRadius: 6, textDecoration: "none", color: "rgba(245,240,232,0.7)", fontSize: 12, marginBottom: 4, transition: "background 0.15s" }}
               onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.03)")}
               onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
             >
@@ -276,8 +276,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           )}
           {!collapsed && (
             <div style={{ padding: "8px 10px", marginBottom: 4 }}>
-              <p style={{ fontSize: 10, color: "#94a3b8", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.08em" }}>Logged in as</p>
-              <p style={{ fontSize: 11, color: "#f1f5f9", margin: 0, fontWeight: 600 }}>{adminUser?.email || adminUser?.name || "Admin"}</p>
+              <p style={{ fontSize: 10, color: "rgba(245,240,232,0.7)", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.08em" }}>Logged in as</p>
+              <p style={{ fontSize: 11, color: "#f5f0e8", margin: 0, fontWeight: 600 }}>{adminUser?.email || adminUser?.name || "Admin"}</p>
             </div>
           )}
           <button onClick={signOut}
@@ -294,57 +294,57 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main area */}
       <div style={{ marginLeft: isMobile ? 0 : collapsed ? 64 : SIDEBAR_W, flex: 1, display: "flex", flexDirection: "column", transition: "margin-left 0.2s ease", minWidth: 0 }}>
         {/* Top header */}
-        <header style={{ height: 64, background: "#0f172a", borderBottom: "1px solid #1e2d40", display: "flex", alignItems: "center", justifyContent: "space-between", padding: isMobile ? "0 16px" : "0 32px", position: "sticky", top: 0, zIndex: 40 }}>
+        <header style={{ height: 64, background: "#ffffff", borderBottom: "1px solid #e8dfd0", display: "flex", alignItems: "center", justifyContent: "space-between", padding: isMobile ? "0 16px" : "0 32px", position: "sticky", top: 0, zIndex: 40 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             {isMobile && (
               <button onClick={() => setMobileOpen((o) => !o)}
-                style={{ background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8", display: "flex", padding: 4 }}>
+                style={{ background: "transparent", border: "none", cursor: "pointer", color: "#6b5a45", display: "flex", padding: 4 }}>
                 <Menu size={20} />
               </button>
             )}
-            <h2 style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>{pageTitle}</h2>
+            <h2 style={{ fontSize: 16, fontWeight: 700, color: "#1a0f00", margin: 0 }}>{pageTitle}</h2>
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             {/* Bell */}
             <div style={{ position: "relative" }}>
               <button onClick={handleBellOpen}
-                style={{ position: "relative", background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8", display: "flex", alignItems: "center", padding: 6, borderRadius: 8, transition: "color 0.15s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#f1f5f9")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
+                style={{ position: "relative", background: "transparent", border: "none", cursor: "pointer", color: "#6b5a45", display: "flex", alignItems: "center", padding: 6, borderRadius: 8, transition: "color 0.15s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#1a0f00")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#6b5a45")}
               >
                 <Bell size={18} />
                 {unreadCount > 0 && (
-                  <span style={{ position: "absolute", top: 2, right: 2, width: 16, height: 16, background: "#ef4444", borderRadius: "50%", fontSize: 10, fontWeight: 800, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ position: "absolute", top: 2, right: 2, width: 16, height: 16, background: "#c0392b", borderRadius: "50%", fontSize: 10, fontWeight: 800, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {unreadCount}
                   </span>
                 )}
               </button>
 
               {bellOpen && (
-                <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 340, background: "#0f172a", border: "1px solid #1e2d40", borderRadius: 14, boxShadow: "0 20px 48px rgba(0,0,0,0.5)", overflow: "hidden", zIndex: 60 }}>
-                  <div style={{ padding: "14px 16px", borderBottom: "1px solid #1e2d40", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <p style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", margin: 0 }}>Notifications</p>
-                    <button onClick={() => setBellOpen(false)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8" }}><X size={14} /></button>
+                <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 340, background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, boxShadow: "0 20px 48px rgba(0,0,0,0.18)", overflow: "hidden", zIndex: 60 }}>
+                  <div style={{ padding: "14px 16px", borderBottom: "1px solid #e8dfd0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <p style={{ fontSize: 13, fontWeight: 700, color: "#1a0f00", margin: 0 }}>Notifications</p>
+                    <button onClick={() => setBellOpen(false)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "#6b5a45" }}><X size={14} /></button>
                   </div>
                   {notifications.length === 0 ? (
-                    <p style={{ padding: "20px 16px", fontSize: 12, color: "#64748b", textAlign: "center", margin: 0 }}>No notifications</p>
+                    <p style={{ padding: "20px 16px", fontSize: 12, color: "#6b5a45", textAlign: "center", margin: 0 }}>No notifications</p>
                   ) : (
                     notifications.slice(0, 8).map((n) => (
                       <div
                         key={n.id}
                         onClick={() => handleNotifClick(n)}
-                        style={{ padding: "14px 16px", borderBottom: "1px solid #1e2d4060", display: "flex", gap: 10, alignItems: "flex-start", cursor: "pointer", background: n.is_read ? "transparent" : "rgba(0,212,255,0.03)" }}
+                        style={{ padding: "14px 16px", borderBottom: "1px solid #e8dfd060", display: "flex", gap: 10, alignItems: "flex-start", cursor: "pointer", background: n.is_read ? "transparent" : "rgba(15,76,129,0.04)" }}
                       >
-                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: n.is_read ? "#1e2d40" : "#00d4ff", flexShrink: 0, marginTop: 4 }} />
+                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: n.is_read ? "#d4c9b8" : "#0f4c81", flexShrink: 0, marginTop: 4 }} />
                         <div>
-                          <p style={{ fontSize: 12, color: "#f1f5f9", margin: "0 0 4px", lineHeight: 1.5 }}>{n.message}</p>
-                          <p style={{ fontSize: 11, color: "#475569", margin: 0 }}>{timeAgo(n.created_at)}</p>
+                          <p style={{ fontSize: 12, color: "#1a0f00", margin: "0 0 4px", lineHeight: 1.5 }}>{n.message}</p>
+                          <p style={{ fontSize: 11, color: "#6b5a45", margin: 0 }}>{timeAgo(n.created_at)}</p>
                         </div>
                       </div>
                     ))
                   )}
-                  <Link href="/notifications" onClick={() => setBellOpen(false)} style={{ display: "block", padding: "12px 16px", textAlign: "center", fontSize: 12, color: "#00d4ff", textDecoration: "none", fontWeight: 600 }}>
+                  <Link href="/notifications" onClick={() => setBellOpen(false)} style={{ display: "block", padding: "12px 16px", textAlign: "center", fontSize: 12, color: "#0f4c81", textDecoration: "none", fontWeight: 600 }}>
                     View all
                   </Link>
                 </div>
@@ -354,16 +354,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Admin avatar */}
             {!isMobile && (
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ width: 34, height: 34, borderRadius: "50%", background: "rgba(0,212,255,0.12)", border: "2px solid rgba(0,212,255,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, color: "#00d4ff" }}>
+                <div style={{ width: 34, height: 34, borderRadius: "50%", background: "rgba(15,76,129,0.12)", border: "2px solid rgba(15,76,129,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, color: "#0f4c81" }}>
                   {(adminUser?.name || adminUser?.email || "Admin").split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase()}
                 </div>
-                <span style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500 }}>{adminUser?.name || "Admin"}</span>
+                <span style={{ fontSize: 12, color: "#6b5a45", fontWeight: 500 }}>{adminUser?.name || "Admin"}</span>
               </div>
             )}
           </div>
         </header>
 
-        <main style={{ flex: 1, background: "#0a0f1e", minHeight: "calc(100vh - 64px)" }}>
+        <main style={{ flex: 1, background: "#f5f0e8", minHeight: "calc(100vh - 64px)" }}>
           {children}
         </main>
       </div>

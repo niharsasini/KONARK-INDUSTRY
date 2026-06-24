@@ -24,13 +24,13 @@ const BANNER_TYPES = [
 ];
 
 const INPUT: React.CSSProperties = {
-  width: "100%", background: "#0a0f1e", border: "1px solid #1e2d40",
-  borderRadius: 8, padding: "10px 14px", color: "#f1f5f9",
+  width: "100%", background: "#ffffff", border: "1px solid #d4c9b8",
+  borderRadius: 8, padding: "10px 14px", color: "#1a0f00",
   fontSize: 13, outline: "none", boxSizing: "border-box",
 };
 
 const LABEL: React.CSSProperties = {
-  display: "block", fontSize: 11, fontWeight: 600, color: "#94a3b8",
+  display: "block", fontSize: 11, fontWeight: 600, color: "#6b5a45",
   textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 7,
 };
 
@@ -89,7 +89,7 @@ export default function ContentPage() {
     return (
       <div style={{ padding: "32px 40px", maxWidth: 700 }}>
         {[...Array(4)].map((_, i) => (
-          <div key={i} style={{ height: 70, background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, marginBottom: 16, opacity: 1 - i * 0.15 }} />
+          <div key={i} style={{ height: 70, background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, marginBottom: 16, opacity: 1 - i * 0.15 }} />
         ))}
       </div>
     );
@@ -100,7 +100,7 @@ export default function ContentPage() {
       <div style={{ padding: "32px 40px" }}>
         <div style={{ background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 14, padding: 32, textAlign: "center" }}>
           <p style={{ color: "#ef4444", fontSize: 14, fontWeight: 600, margin: "0 0 14px" }}>{error}</p>
-          <button onClick={fetchSettings} style={{ padding: "9px 20px", borderRadius: 8, border: "none", background: "#00d4ff", color: "#0a0f1e", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+          <button onClick={fetchSettings} style={{ padding: "9px 20px", borderRadius: 8, border: "none", background: "#0f4c81", color: "#ffffff", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
             Retry
           </button>
         </div>
@@ -113,9 +113,9 @@ export default function ContentPage() {
   return (
     <div style={{ padding: "32px 40px", maxWidth: 700 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 800, color: "#f1f5f9", margin: 0 }}>Content Management</h1>
+        <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a0f00", margin: 0 }}>Content Management</h1>
         {saved && (
-          <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", borderRadius: 8, fontSize: 13, color: "#10b981", fontWeight: 600 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", background: "rgba(26,122,74,0.1)", border: "1px solid rgba(26,122,74,0.3)", borderRadius: 8, fontSize: 13, color: "#1a7a4a", fontWeight: 600 }}>
             <Check size={14} /> Saved!
           </div>
         )}
@@ -128,13 +128,13 @@ export default function ContentPage() {
       )}
 
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 24 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 18px" }}>Announcement Banner</h3>
+        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Announcement Banner</h3>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", marginBottom: 14 }}>
-            <span style={{ fontSize: 13, color: "#94a3b8" }}>Show banner on site</span>
+            <span style={{ fontSize: 13, color: "#6b5a45" }}>Show banner on site</span>
             <button
               onClick={() => setForm((f) => (f ? { ...f, announcement_banner_enabled: !f.announcement_banner_enabled } : f))}
-              style={{ width: 42, height: 22, borderRadius: 11, border: "none", cursor: "pointer", background: form.announcement_banner_enabled ? "#00d4ff" : "#1e2d40", position: "relative", transition: "background 0.2s" }}
+              style={{ width: 42, height: 22, borderRadius: 11, border: "none", cursor: "pointer", background: form.announcement_banner_enabled ? "#0f4c81" : "#e8dfd0", position: "relative", transition: "background 0.2s" }}
             >
               <span style={{ position: "absolute", top: 3, left: form.announcement_banner_enabled ? 22 : 3, width: 16, height: 16, borderRadius: "50%", background: "#fff", transition: "left 0.2s" }} />
             </button>
@@ -147,9 +147,9 @@ export default function ContentPage() {
                 onClick={() => setForm((f) => (f ? { ...f, announcement_banner_type: t.value } : f))}
                 style={{
                   padding: "6px 14px", borderRadius: 999, fontSize: 12, fontWeight: 600, cursor: "pointer",
-                  border: `1px solid ${form.announcement_banner_type === t.value ? "#00d4ff" : "#1e2d40"}`,
-                  background: form.announcement_banner_type === t.value ? "rgba(0,212,255,0.1)" : "transparent",
-                  color: form.announcement_banner_type === t.value ? "#00d4ff" : "#94a3b8",
+                  border: `1px solid ${form.announcement_banner_type === t.value ? "#0f4c81" : "#e8dfd0"}`,
+                  background: form.announcement_banner_type === t.value ? "rgba(15,76,129,0.1)" : "transparent",
+                  color: form.announcement_banner_type === t.value ? "#0f4c81" : "#6b5a45",
                 }}
               >
                 {t.label}
@@ -170,20 +170,20 @@ export default function ContentPage() {
           </div>
         </div>
 
-        <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 24 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 18px" }}>Homepage</h3>
+        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Homepage</h3>
           <label style={LABEL}>Hero Tagline</label>
           <input value={form.hero_tagline || ""} onChange={set("hero_tagline")} placeholder="Powering Odisha's Green Future" style={INPUT} />
         </div>
 
-        <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 24 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 18px" }}>Footer</h3>
+        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Footer</h3>
           <label style={LABEL}>Footer Tagline</label>
           <input value={form.footer_tagline || ""} onChange={set("footer_tagline")} placeholder="Odisha's leading EV & energy brand" style={INPUT} />
         </div>
 
-        <div style={{ background: "#111827", border: "1px solid #1e2d40", borderRadius: 14, padding: 24 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", margin: "0 0 18px" }}>Contact &amp; WhatsApp</h3>
+        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Contact &amp; WhatsApp</h3>
           <div style={{ marginBottom: 14 }}>
             <label style={LABEL}>Company Phone Number</label>
             <input value={form.company_phone} onChange={set("company_phone")} placeholder="+919437611129" style={INPUT} />
@@ -197,7 +197,7 @@ export default function ContentPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          style={{ padding: "12px 28px", borderRadius: 10, border: "none", background: "#00d4ff", color: "#0a0f1e", fontSize: 14, fontWeight: 800, cursor: saving ? "not-allowed" : "pointer", alignSelf: "flex-start", opacity: saving ? 0.7 : 1 }}
+          style={{ padding: "12px 28px", borderRadius: 10, border: "none", background: "#0f4c81", color: "#ffffff", fontSize: 14, fontWeight: 800, cursor: saving ? "not-allowed" : "pointer", alignSelf: "flex-start", opacity: saving ? 0.7 : 1 }}
         >
           {saving ? "Saving..." : "Save Changes"}
         </button>

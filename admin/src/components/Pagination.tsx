@@ -38,11 +38,11 @@ export function Pagination({
         alignItems: "center",
         justifyContent: "space-between",
         padding: "16px 0",
-        borderTop: "1px solid #1e2d40",
+        borderTop: "1px solid #e8dfd0",
         marginTop: 16,
       }}
     >
-      <span style={{ color: "#64748b", fontSize: 13 }}>
+      <span style={{ color: "#6b5a45", fontSize: 13 }}>
         Showing {start}–{end} of {totalItems}
       </span>
       <div style={{ display: "flex", gap: 8 }}>
@@ -50,9 +50,9 @@ export function Pagination({
           onClick={() => onPageChange(page - 1)}
           disabled={page === 1}
           style={{
-            background: "#0f172a",
-            border: "1px solid #1e2d40",
-            color: page === 1 ? "#334155" : "#f1f5f9",
+            background: "#ffffff",
+            border: "1px solid #e8dfd0",
+            color: page === 1 ? "#6b5a45" : "#1a0f00",
             padding: "6px 14px",
             borderRadius: 8,
             cursor: page === 1 ? "not-allowed" : "pointer",
@@ -67,9 +67,9 @@ export function Pagination({
             key={pageNum}
             onClick={() => onPageChange(pageNum)}
             style={{
-              background: pageNum === page ? "#00d4ff" : "#0f172a",
-              border: "1px solid #1e2d40",
-              color: pageNum === page ? "#0a0f1e" : "#f1f5f9",
+              background: pageNum === page ? "#0f4c81" : "#ffffff",
+              border: "1px solid #e8dfd0",
+              color: pageNum === page ? "#ffffff" : "#1a0f00",
               padding: "6px 12px",
               borderRadius: 8,
               cursor: "pointer",
@@ -85,9 +85,9 @@ export function Pagination({
           onClick={() => onPageChange(page + 1)}
           disabled={page === totalPages}
           style={{
-            background: "#0f172a",
-            border: "1px solid #1e2d40",
-            color: page === totalPages ? "#334155" : "#f1f5f9",
+            background: "#ffffff",
+            border: "1px solid #e8dfd0",
+            color: page === totalPages ? "#6b5a45" : "#1a0f00",
             padding: "6px 14px",
             borderRadius: 8,
             cursor: page === totalPages ? "not-allowed" : "pointer",

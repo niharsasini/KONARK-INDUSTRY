@@ -15,12 +15,11 @@ const QUICK_LINKS = [
 
 function Skeleton() {
   return (
-    <div style={{ animation: "pulse 1.5s infinite" }}>
-      <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 20, padding: 32, height: 120, marginBottom: 24 }} />
+    <div>
+      <div className="skeleton" style={{ borderRadius: 20, height: 120, marginBottom: 24 }} />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 24 }}>
-        {[1, 2, 3].map((i) => <div key={i} style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 14, height: 80 }} />)}
+        {[1, 2, 3].map((i) => <div key={i} className="skeleton" style={{ borderRadius: 14, height: 80 }} />)}
       </div>
-      <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}`}</style>
     </div>
   );
 }
@@ -58,7 +57,7 @@ export default function ProfilePage() {
   };
 
   if (loading) return (
-    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
+    <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px" }}><Skeleton /></div>
     </div>
   );
@@ -73,46 +72,46 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #050a14 0%, #080f1e 40%, #050a14 100%)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
+    <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "My Profile" }]} />
 
         {/* Profile header */}
-        <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 20, padding: "32px", display: "flex", alignItems: "center", gap: 24, marginBottom: 24, flexWrap: "wrap" }}>
-          <div style={{ width: 72, height: 72, borderRadius: "50%", flexShrink: 0, background: "linear-gradient(135deg, rgba(56,189,248,0.2), rgba(129,140,248,0.2))", border: "2px solid rgba(56,189,248,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "#38bdf8" }}>
+        <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: "32px", display: "flex", alignItems: "center", gap: 24, marginBottom: 24, flexWrap: "wrap", boxShadow: "var(--shadow-sm)" }}>
+          <div style={{ width: 72, height: 72, borderRadius: "50%", flexShrink: 0, background: "var(--grad-navy)", border: "2px solid rgba(15,76,129,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "#ffffff" }}>
             {initial}
           </div>
           <div style={{ flex: 1 }}>
-            <h1 style={{ fontSize: 22, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>{displayName}</h1>
-            {user?.email && <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 2px" }}>{user.email}</p>}
-            {user?.phone && <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 2px" }}>{user.phone}</p>}
-            {user?.city && <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>📍 {user.city}</p>}
+            <h1 style={{ fontSize: 22, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 4px" }}>{displayName}</h1>
+            {user?.email && <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 2px" }}>{user.email}</p>}
+            {user?.phone && <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: "0 0 2px" }}>{user.phone}</p>}
+            {user?.city && <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: 0 }}>📍 {user.city}</p>}
           </div>
         </div>
 
         {/* Stats row */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 24 }}>
           {STATS.map((s) => (
-            <div key={s.label} style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 14, padding: "20px 16px", textAlign: "center" }}>
-              <p style={{ fontSize: 28, fontWeight: 800, color: "#38bdf8", margin: "0 0 4px" }}>{s.value}</p>
-              <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>{s.label}</p>
+            <div key={s.label} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, padding: "20px 16px", textAlign: "center", boxShadow: "var(--shadow-sm)" }}>
+              <p style={{ fontSize: 28, fontWeight: 800, color: "var(--navy)", margin: "0 0 4px" }}>{s.value}</p>
+              <p style={{ fontSize: 12, color: "var(--text-muted)", margin: 0 }}>{s.label}</p>
             </div>
           ))}
         </div>
 
         {/* Quick links */}
-        <div style={{ background: "#0c1525", border: "1px solid #1c3050", borderRadius: 16, padding: "8px" }}>
+        <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "8px", boxShadow: "var(--shadow-sm)" }}>
           {QUICK_LINKS.map((link, i) => (
-            <Link key={link.label} href={link.href} style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", borderRadius: 10, textDecoration: "none", borderBottom: i < QUICK_LINKS.length - 1 ? "1px solid #1c3050" : "none", transition: "background 0.15s" }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.03)")}
+            <Link key={link.label} href={link.href} style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", borderRadius: 10, textDecoration: "none", borderBottom: i < QUICK_LINKS.length - 1 ? "1px solid var(--border-light)" : "none", transition: "background 0.15s" }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg-section)")}
               onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
             >
               <span style={{ fontSize: 20, width: 36, textAlign: "center" }}>{link.icon}</span>
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 14, fontWeight: 600, color: "#f1f5f9", margin: 0 }}>{link.label}</p>
-                <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>{link.desc}</p>
+                <p style={{ fontSize: 14, fontWeight: 600, color: "var(--text-heading)", margin: 0 }}>{link.label}</p>
+                <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: 0 }}>{link.desc}</p>
               </div>
-              <svg viewBox="0 0 20 20" fill="currentColor" style={{ width: 16, height: 16, color: "#475569" }}>
+              <svg viewBox="0 0 20 20" fill="currentColor" style={{ width: 16, height: 16, color: "var(--text-subtle)" }}>
                 <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" />
               </svg>
             </Link>
@@ -120,7 +119,7 @@ export default function ProfilePage() {
         </div>
 
         <div style={{ marginTop: 24, textAlign: "center" }}>
-          <button onClick={handleSignOut} style={{ fontSize: 13, color: "#64748b", background: "transparent", border: "none", cursor: "pointer", textDecoration: "underline" }}>
+          <button onClick={handleSignOut} style={{ fontSize: 13, color: "var(--text-subtle)", background: "transparent", border: "none", cursor: "pointer", textDecoration: "underline" }}>
             Sign out
           </button>
         </div>
