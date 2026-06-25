@@ -87,6 +87,9 @@ const ProductCard = ({ product }) => {
         border: `1px solid ${hovered ? "#d4c9b8" : "#e8dfd0"}`,
         borderRadius: 16,
         overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
         transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
         transform: hovered ? "translateY(-6px)" : "translateY(0)",
         boxShadow: hovered
@@ -136,7 +139,7 @@ const ProductCard = ({ product }) => {
 
       {/* 🖼️ Image area */}
       <div style={{
-        position: "relative", height: 220, overflow: "hidden",
+        position: "relative", height: 220, flexShrink: 0, overflow: "hidden",
         background: "linear-gradient(135deg, #f9f4ec, #f5f0e8)",
       }}>
         {images[imgIndex]?.startsWith("http") ? (
@@ -195,7 +198,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* 📦 Body */}
-      <div style={{ padding: "16px 18px 18px" }}>
+      <div style={{ padding: "16px 18px 18px", display: "flex", flexDirection: "column", flex: 1 }}>
         {product.category && (
           <p style={{ fontSize: 11, color: "#0f4c81", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", margin: "0 0 4px" }}>
             {product.category}
@@ -212,6 +215,7 @@ const ProductCard = ({ product }) => {
           </p>
         )}
 
+        <div style={{ marginTop: "auto" }}>
         <p style={{
           fontSize: typeof product.price === "number" && product.price > 0 ? 22 : isUpcoming ? 15 : 13,
           fontWeight: typeof product.price === "number" && product.price > 0 ? 800 : 700,
@@ -272,6 +276,7 @@ const ProductCard = ({ product }) => {
         {/* Made in India */}
         <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px solid #e8dfd0", fontSize: 10, color: "#8c7a66", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
           🇮🇳 Made in India
+        </div>
         </div>
       </div>
     </motion.div>

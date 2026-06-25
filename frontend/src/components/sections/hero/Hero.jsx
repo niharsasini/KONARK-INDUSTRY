@@ -78,7 +78,7 @@ export default function Hero() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % DECK.length);
-    }, 3000);
+    }, 4000);
     return () => clearInterval(timer);
   }, []);
 
@@ -198,11 +198,15 @@ export default function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
                   transition={{ duration: 0.4 }}
-                  className="hero-rotating-word"
                   style={{
                     fontSize: "clamp(40px, 6vw, 72px)", fontWeight: 900,
                     letterSpacing: "-2px", margin: 0,
-                    background: "linear-gradient(135deg, #0f4c81, #c17f24)",
+                    backgroundImage: "linear-gradient(135deg, #0f4c81, #c17f24)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    color: "transparent",
+                    display: "inline-block",
                   }}
                 >
                   {ROTATING_WORDS[wordIndex]}

@@ -263,7 +263,7 @@ export default function ProductsPage() {
                 <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setTypeFilter("all"); }} style={{ marginTop: 12, padding: "8px 20px", background: "var(--navy)", color: "#fff", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer" }}>Clear Filters</button>
               </div>
             ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 24 }}>
                 {filtered.map((p) => <ProductCard key={p.id} product={p} />)}
               </div>
             )}
