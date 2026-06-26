@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { products, CATEGORIES } from "@/components/product/ProductData";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
@@ -72,25 +72,41 @@ export default function Hero() {
   const settings = useSiteSettings();
   const heroTagline = settings?.hero_tagline || "Powering Odisha since 2014";
   const [current, setCurrent] = useState(0);
+  const [deckVisible, setDeckVisible] = useState(true);
   const [wordIndex, setWordIndex] = useState(0);
+  const [wordVisible, setWordVisible] = useState(true);
   const touchStartX = useRef(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % DECK.length);
+      setDeckVisible(false);
+      setTimeout(() => {
+        setCurrent((prev) => (prev + 1) % DECK.length);
+        setDeckVisible(true);
+      }, 400);
     }, 4000);
     return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
     const wordTimer = setInterval(() => {
-      setWordIndex((i) => (i + 1) % ROTATING_WORDS.length);
-    }, 2600);
+      setWordVisible(false);
+      setTimeout(() => {
+        setWordIndex((i) => (i + 1) % ROTATING_WORDS.length);
+        setWordVisible(true);
+      }, 300);
+    }, 3000);
     return () => clearInterval(wordTimer);
   }, []);
 
-  const advance = () => setCurrent((prev) => (prev + 1) % DECK.length);
-  const goBack = () => setCurrent((prev) => (prev - 1 + DECK.length) % DECK.length);
+  const advance = () => {
+    setDeckVisible(false);
+    setTimeout(() => { setCurrent((prev) => (prev + 1) % DECK.length); setDeckVisible(true); }, 400);
+  };
+  const goBack = () => {
+    setDeckVisible(false);
+    setTimeout(() => { setCurrent((prev) => (prev - 1 + DECK.length) % DECK.length); setDeckVisible(true); }, 400);
+  };
 
   const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
   const onTouchEnd = (e) => {
@@ -106,7 +122,8 @@ export default function Hero() {
     <section
       className="hero-section"
       style={{
-        minHeight: "calc(100vh - 64px - var(--banner-h, 0px))",
+        minHeight: "calc(100vh - var(--banner-h, 0px))",
+        paddingTop: "calc(64px + var(--banner-h, 0px))",
         background: "transparent",
         overflow: "hidden",
         position: "relative",
@@ -189,29 +206,25 @@ export default function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
-              style={{ minHeight: "1.2em" }}
             >
-              <AnimatePresence mode="wait">
-                <motion.h1
-                  key={wordIndex}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.4 }}
-                  style={{
-                    fontSize: "clamp(40px, 6vw, 72px)", fontWeight: 900,
-                    letterSpacing: "-2px", margin: 0,
-                    backgroundImage: "linear-gradient(135deg, #0f4c81, #c17f24)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    color: "transparent",
-                    display: "inline-block",
-                  }}
-                >
-                  {ROTATING_WORDS[wordIndex]}
-                </motion.h1>
-              </AnimatePresence>
+              <span style={{
+                display: "block",
+                background: "linear-gradient(135deg, #0f4c81 0%, #c17f24 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                fontSize: "clamp(40px, 6vw, 72px)",
+                fontWeight: 900,
+                letterSpacing: "-2px",
+                lineHeight: 1.1,
+                minHeight: "1.15em",
+                margin: 0,
+                opacity: wordVisible ? 1 : 0,
+                transform: wordVisible ? "translateY(0)" : "translateY(10px)",
+                transition: "opacity 0.3s ease, transform 0.3s ease",
+              }}>
+                {ROTATING_WORDS[wordIndex]}
+              </span>
             </motion.div>
           </div>
 
@@ -327,15 +340,15 @@ export default function Hero() {
             })}
 
             {/* Front card */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={current}
-                initial={{ x: 55, y: -22, opacity: 0, rotate: 9, scale: 0.88 }}
-                animate={{ x: 0, y: 0, opacity: 1, rotate: 0, scale: 1 }}
-                exit={{ x: -70, y: 8, opacity: 0, rotate: -8, scale: 0.9 }}
-                transition={{ duration: 0.48, ease: [0.25, 0.46, 0.45, 0.94] }}
+            <div
+              style={{
+                position: "relative", zIndex: 4,
+                opacity: deckVisible ? 1 : 0,
+                transition: "opacity 0.4s ease",
+              }}
+            >
+              <div
                 style={{
-                  position: "relative", zIndex: 3,
                   background: "rgba(255,255,255,0.08)",
                   backdropFilter: "blur(20px)",
                   border: "1px solid rgba(255,255,255,0.15)",
@@ -343,7 +356,6 @@ export default function Hero() {
                   padding: 24,
                   cursor: card.slug ? "pointer" : "default",
                   boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
-                  transformStyle: "preserve-3d",
                   animation: "floatCard 6s ease-in-out infinite",
                 }}
                 onClick={() => { if (card.slug) router.push(`/products/${card.slug}`); }}
@@ -421,8 +433,8 @@ export default function Hero() {
                     Register Interest →
                   </Link>
                 )}
-              </motion.div>
-            </AnimatePresence>
+              </div>
+            </div>
           </div>
 
           {/* Dot indicators */}

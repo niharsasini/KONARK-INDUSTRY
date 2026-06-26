@@ -13,3 +13,20 @@
 .page-top-padding {
   padding-top: calc(64px + var(--banner-h, 0px));
 }
+
+.section {
+  padding: 80px 0;
+}
+.section-sm {
+  padding: 48px 0;
+}
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+@media (max-width: 768px) {
+  .section { padding: 48px 0; }
+  .section-sm { padding: 32px 0; }
+  .container { padding: 0 16px; }
+}

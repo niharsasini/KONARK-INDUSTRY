@@ -66,7 +66,7 @@ export default function Navbar() {
     setServiceOpen(false);
   };
   const closeProduct = () => {
-    productTimer.current = setTimeout(() => setProductOpen(false), 100);
+    productTimer.current = setTimeout(() => setProductOpen(false), 150);
   };
   const openService = () => {
     clearTimeout(serviceTimer.current);
@@ -74,7 +74,7 @@ export default function Navbar() {
     setProductOpen(false);
   };
   const closeService = () => {
-    serviceTimer.current = setTimeout(() => setServiceOpen(false), 100);
+    serviceTimer.current = setTimeout(() => setServiceOpen(false), 150);
   };
 
   const signOut = () => {
@@ -84,8 +84,8 @@ export default function Navbar() {
   };
 
   const navStyle = scrolled
-    ? { background: "rgba(245, 240, 232, 0.92)", backdropFilter: "blur(20px)", borderBottom: "1px solid #d4c9b8", boxShadow: "0 2px 20px rgba(26,15,0,0.08)" }
-    : { background: "transparent", borderBottom: "none" };
+    ? { background: "rgba(245, 240, 232, 0.97)", backdropFilter: "blur(20px)", borderBottom: "1px solid #d4c9b8", boxShadow: "0 2px 20px rgba(26,15,0,0.08)" }
+    : { background: "rgba(245, 240, 232, 0.85)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(212,201,184,0.5)" };
 
   return (
     <>

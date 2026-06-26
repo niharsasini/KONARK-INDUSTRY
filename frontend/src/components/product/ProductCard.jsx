@@ -84,17 +84,17 @@ const ProductCard = ({ product }) => {
         position: "relative",
         cursor: "pointer",
         background: "#ffffff",
-        border: `1px solid ${hovered ? "#d4c9b8" : "#e8dfd0"}`,
-        borderRadius: 16,
+        border: `1px solid ${hovered ? "rgba(15,76,129,0.3)" : "#e8dfd0"}`,
+        borderRadius: 20,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         height: "100%",
-        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-        transform: hovered ? "translateY(-6px)" : "translateY(0)",
+        transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+        transform: hovered ? "translateY(-8px) scale(1.01)" : "translateY(0) scale(1)",
         boxShadow: hovered
-          ? "0 16px 48px rgba(26,15,0,0.12)"
-          : "0 1px 4px rgba(26,15,0,0.08)",
+          ? "0 20px 60px rgba(26,15,0,0.12), 0 0 0 1px rgba(15,76,129,0.1)"
+          : "0 2px 8px rgba(26,15,0,0.06)",
       }}
     >
       {/* ⭐ Rating Badge */}

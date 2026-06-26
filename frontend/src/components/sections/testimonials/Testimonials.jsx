@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
@@ -39,6 +39,129 @@ function Stars({ count, size = 14 }) {
         </svg>
       ))}
     </div>
+  );
+}
+
+const PRODUCT_OPTIONS = [
+  "EV Scooter X1", "E-Rickshaw Standard", "BLDC Fan", "Inverter AC", "LFP Battery", "AC Repair Service", "Solar Inverter", "Battery Swap", "Other",
+];
+
+function ReviewForm() {
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [name, setName] = useState("");
+  const [product, setProduct] = useState("");
+  const [review, setReview] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = useCallback(async (e) => {
+    e.preventDefault();
+    if (!rating || !name || !review) return;
+    setSubmitting(true);
+    try {
+      const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+      await fetch(`${BACKEND}/api/v1/testimonials`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, product_used: product, rating, comment: review }),
+      });
+    } catch {}
+    setSubmitting(false);
+    setSubmitted(true);
+  }, [rating, name, product, review]);
+
+  if (submitted) {
+    return (
+      <div style={{ textAlign: "center", padding: "40px 20px" }}>
+        <div style={{ fontSize: 48, marginBottom: 12 }}>🎉</div>
+        <p style={{ fontSize: 18, fontWeight: 700, color: "#1a0f00", margin: "0 0 8px" }}>Thank you for your review!</p>
+        <p style={{ fontSize: 14, color: "#6b5a45" }}>Your experience is pending approval and will appear here soon.</p>
+      </div>
+    );
+  }
+
+  const displayRating = hoverRating || rating;
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      {/* Star selector */}
+      <div>
+        <p style={{ fontSize: 14, fontWeight: 600, color: "#1a0f00", margin: "0 0 10px" }}>Your Rating</p>
+        <div style={{ display: "flex", gap: 8 }}>
+          {[1, 2, 3, 4, 5].map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => setRating(s)}
+              onMouseEnter={() => setHoverRating(s)}
+              onMouseLeave={() => setHoverRating(0)}
+              style={{
+                fontSize: 36, background: "none", border: "none", cursor: "pointer",
+                color: s <= displayRating ? "#c17f24" : "#e8dfd0",
+                transition: "color 0.15s, transform 0.15s",
+                transform: s <= displayRating ? "scale(1.15)" : "scale(1)",
+                padding: 0,
+              }}
+            >
+              ★
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }} className="review-form-fields">
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          <label style={{ fontSize: 13, fontWeight: 600, color: "#1a0f00" }}>Your Name *</label>
+          <input
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Rajesh Kumar"
+            style={{ padding: "10px 14px", border: "1px solid #e8dfd0", borderRadius: 10, fontSize: 14, color: "#1a0f00", background: "#f9f4ec", outline: "none" }}
+          />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          <label style={{ fontSize: 13, fontWeight: 600, color: "#1a0f00" }}>Product / Service</label>
+          <select
+            value={product}
+            onChange={(e) => setProduct(e.target.value)}
+            style={{ padding: "10px 14px", border: "1px solid #e8dfd0", borderRadius: 10, fontSize: 14, color: product ? "#1a0f00" : "#8c7a66", background: "#f9f4ec", outline: "none" }}
+          >
+            <option value="">Select product…</option>
+            {PRODUCT_OPTIONS.map((p) => (
+              <option key={p} value={p}>{p}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <label style={{ fontSize: 13, fontWeight: 600, color: "#1a0f00" }}>Your Experience *</label>
+        <textarea
+          required
+          value={review}
+          onChange={(e) => setReview(e.target.value)}
+          placeholder="Share your honest experience — what you loved, what could improve…"
+          rows={4}
+          style={{ padding: "12px 14px", border: "1px solid #e8dfd0", borderRadius: 10, fontSize: 14, color: "#1a0f00", background: "#f9f4ec", outline: "none", resize: "vertical", lineHeight: 1.6 }}
+        />
+      </div>
+
+      <button
+        type="submit"
+        disabled={submitting || !rating || !name || !review}
+        style={{
+          padding: "13px 32px", borderRadius: 10, border: "none", cursor: submitting || !rating || !name || !review ? "not-allowed" : "pointer",
+          background: "linear-gradient(135deg, #0f4c81, #0a3460)", color: "#fff",
+          fontSize: 15, fontWeight: 700, transition: "all 0.25s",
+          opacity: submitting || !rating || !name || !review ? 0.5 : 1,
+          alignSelf: "flex-start",
+        }}
+      >
+        {submitting ? "Submitting…" : "Submit Review"}
+      </button>
+    </form>
   );
 }
 
@@ -230,6 +353,29 @@ export default function Testimonials() {
             </motion.div>
           ))}
         </div>
+
+        {/* Review Form */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={statsIn ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          style={{
+            background: "#ffffff",
+            border: "1px solid #e8dfd0",
+            borderRadius: 20,
+            padding: "32px 40px",
+            maxWidth: 640,
+            margin: "48px auto 0",
+          }}
+        >
+          <h3 style={{ fontSize: 22, fontWeight: 700, color: "#1a0f00", margin: "0 0 4px" }}>
+            How was your experience?
+          </h3>
+          <p style={{ fontSize: 14, color: "#8c7a66", margin: "0 0 24px" }}>
+            Share your story — help other customers in Odisha make better decisions.
+          </p>
+          <ReviewForm />
+        </motion.div>
       </div>
 
       <style>{`
@@ -237,6 +383,7 @@ export default function Testimonials() {
           .t-container { padding: 0 20px !important; }
           .t-bento-grid { grid-template-columns: 1fr !important; }
           .t-stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .review-form-fields { grid-template-columns: 1fr !important; }
         }
         @media (max-width: 1024px) {
           .t-bento-grid { grid-template-columns: 55% 45% !important; }

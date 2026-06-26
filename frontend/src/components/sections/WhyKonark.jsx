@@ -5,29 +5,36 @@ import { useInView } from "react-intersection-observer";
 
 const FEATURES = [
   {
-    num: "01", icon: "⚡", color: "#c17f24",
-    title: "Odisha's Own EV Brand",
-    body: "We design, manufacture, and service our own electric vehicles right here in Bhubaneswar. No middlemen. No import markup. Just honest Odisha-made technology at fair prices.",
+    num: "01", icon: "🔧", color: "#c17f24",
+    title: "Expert Technicians",
+    body: "Certified professionals come to your doorstep. All our service engineers are trained and certified for EV, AC, and solar systems — no unqualified third-party contractors.",
     fromX: -60,
   },
   {
-    num: "02", icon: "🔋", color: "#1a6aab",
-    title: "Complete Energy Ecosystem",
-    body: "From manufacturing LFP batteries to installing solar and wind power plants — we cover the full energy chain. One company handles everything from production to installation to maintenance.",
+    num: "02", icon: "⚡", color: "#1a6aab",
+    title: "Same-Day Service",
+    body: "Book before 2 PM, get service the same day. Across 18+ cities in Odisha, we guarantee fast response times so your home or business is never left without power.",
     fromX: 60,
   },
   {
     num: "03", icon: "🏭", color: "#d97706",
-    title: "Factory Direct Pricing",
-    body: "Because we make what we sell, you get factory prices without distributor markups. Our Bhubaneswar factory produces EV scooters, rickshaws, batteries, fans and ACs under one roof.",
+    title: "Made in Odisha",
+    body: "Every scooter, battery, and appliance is manufactured locally in Bhubaneswar. Direct factory pricing with no middlemen — 100% quality assured from our own production line.",
     fromX: -60,
   },
   {
-    num: "04", icon: "🤝", color: "#1a7a4a",
-    title: "Trusted by Govt. Bodies",
-    body: "Recognised by Startup India (DIPP182913), Startup Odisha (OSP/SP/02193), and registered under MSME (UDYAM-OD-19-0064755). Our credentials are public and verifiable.",
+    num: "04", icon: "💰", color: "#1a7a4a",
+    title: "Best Prices",
+    body: "Factory-to-customer pricing means you pay what the product is worth — not what a distributor chain adds on top. Transparent pricing with no hidden fees on any product or service.",
     fromX: 60,
   },
+];
+
+const STATS = [
+  { value: "25,000+", label: "Happy Customers" },
+  { value: "18+", label: "Cities Covered" },
+  { value: "4.8★", label: "Average Rating" },
+  { value: "10+", label: "Years in Odisha" },
 ];
 
 function FeatureCard({ f, index, inView }) {
@@ -105,11 +112,38 @@ export default function WhyKonark() {
             <FeatureCard key={f.title} f={f} index={i} inView={gridIn} />
           ))}
         </div>
+
+        {/* Stats row */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginTop: 48, padding: "0 24px" }} className="why-stats-row">
+          {STATS.map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 20 }}
+              animate={gridIn ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.4 + i * 0.1 }}
+              style={{
+                background: "rgba(245,240,232,0.06)",
+                border: "1px solid rgba(245,240,232,0.1)",
+                borderRadius: 16,
+                padding: "24px 16px",
+                textAlign: "center",
+              }}
+            >
+              <p style={{ fontSize: "clamp(28px, 3vw, 48px)", fontWeight: 900, margin: "0 0 6px", color: "#c17f24", lineHeight: 1 }}>
+                {stat.value}
+              </p>
+              <p style={{ fontSize: 13, color: "rgba(245,240,232,0.6)", margin: 0, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                {stat.label}
+              </p>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       <style>{`
         @media (max-width: 768px) {
           .why-features-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+          .why-stats-row { grid-template-columns: repeat(2, 1fr) !important; }
         }
       `}</style>
     </section>
