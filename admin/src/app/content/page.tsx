@@ -6,6 +6,9 @@ import { getSettings, updateSettings } from "@/lib/adminApi";
 type Settings = {
   company_phone: string;
   hero_tagline: string | null;
+  hero_heading: string | null;
+  hero_subheading: string | null;
+  hero_rotating_words: string;
   footer_tagline: string | null;
   announcement_banner_enabled: boolean;
   announcement_banner_text: string;
@@ -13,6 +16,10 @@ type Settings = {
   announcement_banner_emoji: string;
   announcement_banner_type: string;
   whatsapp_message_template: string;
+  stats_customers: string;
+  stats_cities: string;
+  stats_rating: string;
+  stats_satisfaction: string;
 };
 
 const BANNER_TYPES = [
@@ -47,9 +54,14 @@ export default function ContentPage() {
     getSettings()
       .then((data) => {
         const s = data as Record<string, unknown>;
+        const rawWords = s.hero_rotating_words;
+        const wordsStr = Array.isArray(rawWords) ? (rawWords as string[]).join(", ") : ((rawWords as string) || "Konark., Innovation., Sustainability., Odisha.");
         setForm({
           company_phone: (s.company_phone as string) || "",
           hero_tagline: (s.hero_tagline as string) || "",
+          hero_heading: (s.hero_heading as string) || "",
+          hero_subheading: (s.hero_subheading as string) || "",
+          hero_rotating_words: wordsStr,
           footer_tagline: (s.footer_tagline as string) || "",
           announcement_banner_enabled: Boolean(s.announcement_banner_enabled),
           announcement_banner_text: (s.announcement_banner_text as string) || "",
@@ -57,6 +69,10 @@ export default function ContentPage() {
           announcement_banner_emoji: (s.announcement_banner_emoji as string) || "🎉",
           announcement_banner_type: (s.announcement_banner_type as string) || "announcement",
           whatsapp_message_template: (s.whatsapp_message_template as string) || "",
+          stats_customers: (s.stats_customers as string) || "25,000+",
+          stats_cities: (s.stats_cities as string) || "18+",
+          stats_rating: (s.stats_rating as string) || "4.8★",
+          stats_satisfaction: (s.stats_satisfaction as string) || "99%",
         });
       })
       .catch((err) => setError(err.message || "Failed to load settings"))
@@ -75,7 +91,14 @@ export default function ContentPage() {
     setSaving(true);
     setError(null);
     try {
-      await updateSettings({ ...form });
+      const payload = {
+        ...form,
+        hero_rotating_words: form.hero_rotating_words
+          .split(",")
+          .map((w) => w.trim())
+          .filter(Boolean),
+      };
+      await updateSettings(payload);
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
     } catch (err) {
@@ -171,9 +194,46 @@ export default function ContentPage() {
         </div>
 
         <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Homepage</h3>
-          <label style={LABEL}>Hero Tagline</label>
-          <input value={form.hero_tagline || ""} onChange={set("hero_tagline")} placeholder="Powering Odisha's Green Future" style={INPUT} />
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Hero Content</h3>
+          <div style={{ marginBottom: 14 }}>
+            <label style={LABEL}>Tagline (small badge text)</label>
+            <input value={form.hero_tagline || ""} onChange={set("hero_tagline")} placeholder="Powering Odisha since 2014" style={INPUT} />
+          </div>
+          <div style={{ marginBottom: 14 }}>
+            <label style={LABEL}>Heading (optional override)</label>
+            <input value={form.hero_heading || ""} onChange={set("hero_heading")} placeholder="Electric Vehicles & Energy Solutions" style={INPUT} />
+          </div>
+          <div style={{ marginBottom: 14 }}>
+            <label style={LABEL}>Subheading / Description</label>
+            <textarea rows={3} value={form.hero_subheading || ""} onChange={set("hero_subheading")} placeholder="We make electric scooters, e-rickshaws, and batteries in Bhubaneswar..." style={{ ...INPUT, resize: "vertical", fontFamily: "inherit" }} />
+          </div>
+          <div>
+            <label style={LABEL}>Rotating Words (comma-separated)</label>
+            <input value={form.hero_rotating_words} onChange={set("hero_rotating_words")} placeholder="Konark., Innovation., Sustainability., Odisha." style={INPUT} />
+            <p style={{ fontSize: 11, color: "#9b8a75", marginTop: 6 }}>These words cycle in the animated hero headline. Separate with commas.</p>
+          </div>
+        </div>
+
+        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Homepage Stats</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+            <div>
+              <label style={LABEL}>Customers</label>
+              <input value={form.stats_customers} onChange={set("stats_customers")} placeholder="25,000+" style={INPUT} />
+            </div>
+            <div>
+              <label style={LABEL}>Cities Covered</label>
+              <input value={form.stats_cities} onChange={set("stats_cities")} placeholder="18+" style={INPUT} />
+            </div>
+            <div>
+              <label style={LABEL}>Average Rating</label>
+              <input value={form.stats_rating} onChange={set("stats_rating")} placeholder="4.8★" style={INPUT} />
+            </div>
+            <div>
+              <label style={LABEL}>Satisfaction Rate</label>
+              <input value={form.stats_satisfaction} onChange={set("stats_satisfaction")} placeholder="99%" style={INPUT} />
+            </div>
+          </div>
         </div>
 
         <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>

@@ -26,8 +26,8 @@ export default function Navbar() {
   const [serviceOpen, setServiceOpen] = useState(false);
   const [expandedSection, setExpandedSection] = useState(null);
   const [user, setUser] = useState(null);
-  const productTimer = useRef(null);
-  const serviceTimer = useRef(null);
+  const productsTimerRef = useRef(null);
+  const servicesTimerRef = useRef(null);
 
   const searchPreview = searchQuery.length > 1
     ? ProductData.filter((p) =>
@@ -60,21 +60,48 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  const openProduct = () => {
-    clearTimeout(productTimer.current);
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        setProductOpen(false);
+        setServiceOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  const openProducts = () => {
+    clearTimeout(productsTimerRef.current);
+    clearTimeout(servicesTimerRef.current);
+    servicesTimerRef.current = setTimeout(() => setServiceOpen(false), 0);
     setProductOpen(true);
-    setServiceOpen(false);
   };
-  const closeProduct = () => {
-    productTimer.current = setTimeout(() => setProductOpen(false), 150);
+  const closeProducts = () => {
+    productsTimerRef.current = setTimeout(() => setProductOpen(false), 200);
   };
-  const openService = () => {
-    clearTimeout(serviceTimer.current);
+  const keepProducts = () => {
+    clearTimeout(productsTimerRef.current);
+    setProductOpen(true);
+  };
+
+  const openServices = () => {
+    clearTimeout(servicesTimerRef.current);
+    clearTimeout(productsTimerRef.current);
+    productsTimerRef.current = setTimeout(() => setProductOpen(false), 0);
     setServiceOpen(true);
-    setProductOpen(false);
   };
-  const closeService = () => {
-    serviceTimer.current = setTimeout(() => setServiceOpen(false), 150);
+  const closeServices = () => {
+    servicesTimerRef.current = setTimeout(() => setServiceOpen(false), 200);
+  };
+  const keepServices = () => {
+    clearTimeout(servicesTimerRef.current);
+    setServiceOpen(true);
+  };
+
+  const closeAll = () => {
+    setProductOpen(false);
+    setServiceOpen(false);
   };
 
   const signOut = () => {
@@ -100,8 +127,8 @@ export default function Navbar() {
                 <div
                   key={link.label}
                   style={{ position: "relative" }}
-                  onMouseEnter={link.hasDropdown === "products" ? openProduct : openService}
-                  onMouseLeave={link.hasDropdown === "products" ? closeProduct : closeService}
+                  onMouseEnter={link.hasDropdown === "products" ? openProducts : openServices}
+                  onMouseLeave={link.hasDropdown === "products" ? closeProducts : closeServices}
                 >
                   <Link
                     href={link.href}
@@ -118,15 +145,15 @@ export default function Navbar() {
                     {link.hasDropdown === "products" && productOpen && (
                       <ProductsMegaMenu
                         key="products-menu"
-                        onPanelEnter={() => clearTimeout(productTimer.current)}
-                        onPanelLeave={closeProduct}
+                        onPanelEnter={keepProducts}
+                        onPanelLeave={closeProducts}
                       />
                     )}
                     {link.hasDropdown === "services" && serviceOpen && (
                       <ServicesMegaMenu
                         key="services-menu"
-                        onPanelEnter={() => clearTimeout(serviceTimer.current)}
-                        onPanelLeave={closeService}
+                        onPanelEnter={keepServices}
+                        onPanelLeave={closeServices}
                       />
                     )}
                   </AnimatePresence>
@@ -135,6 +162,7 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
+                  onClick={closeAll}
                   style={{ position: "relative", padding: "8px 14px", fontSize: 14, fontWeight: pathname === link.href ? 700 : 500, color: pathname === link.href ? "#0f4c81" : "#6b5a45", borderRadius: 8, textDecoration: "none", transition: "color 0.2s" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#1a0f00")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = pathname === link.href ? "#0f4c81" : "#6b5a45")}

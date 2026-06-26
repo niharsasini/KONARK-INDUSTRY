@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const FEATURES = [
   {
@@ -30,11 +31,11 @@ const FEATURES = [
   },
 ];
 
-const STATS = [
-  { value: "25,000+", label: "Happy Customers" },
-  { value: "18+", label: "Cities Covered" },
-  { value: "4.8★", label: "Average Rating" },
-  { value: "10+", label: "Years in Odisha" },
+const STATS_FALLBACK = [
+  { key: "stats_customers", label: "Happy Customers", fallback: "25,000+" },
+  { key: "stats_cities", label: "Cities Covered", fallback: "18+" },
+  { key: "stats_rating", label: "Average Rating", fallback: "4.8★" },
+  { key: null, label: "Years in Odisha", fallback: "10+" },
 ];
 
 function FeatureCard({ f, index, inView }) {
@@ -77,6 +78,11 @@ function FeatureCard({ f, index, inView }) {
 }
 
 export default function WhyKonark() {
+  const settings = useSiteSettings();
+  const STATS = STATS_FALLBACK.map((s) => ({
+    value: s.key ? (settings?.[s.key] || s.fallback) : s.fallback,
+    label: s.label,
+  }));
   const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true });
   const { ref: gridRef, inView: gridIn } = useInView({ threshold: 0.05, triggerOnce: true });
 

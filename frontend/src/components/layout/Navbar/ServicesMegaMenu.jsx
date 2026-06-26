@@ -16,7 +16,7 @@ export default function ServicesMegaMenu({ onPanelEnter, onPanelLeave }) {
       onMouseLeave={onPanelLeave}
       style={{
         position: "absolute",
-        top: "calc(100% + 8px)",
+        top: "calc(100% + 4px)",
         left: 0,
         background: "rgba(255, 255, 255, 0.96)",
         backdropFilter: "blur(20px)",
@@ -31,6 +31,8 @@ export default function ServicesMegaMenu({ onPanelEnter, onPanelLeave }) {
         gap: 0,
       }}
     >
+      {/* Transparent bridge — covers the gap between nav link and panel */}
+      <div style={{ position: "absolute", top: -8, left: 0, right: 0, height: 8, background: "transparent" }} />
       {/* Column 1 — Home & EV Services */}
       <div style={{ paddingRight: 20, borderRight: "1px solid var(--border-light)" }}>
         <ColHeader emoji="🏠" title="Home & EV Services" color="var(--navy)" />

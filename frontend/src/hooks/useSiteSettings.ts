@@ -23,6 +23,13 @@ export interface PublicSiteSettings {
   whatsapp_message_template: string;
   maintenance_mode: boolean;
   maintenance_message: string;
+  hero_heading: string | null;
+  hero_subheading: string | null;
+  hero_rotating_words: string[] | null;
+  stats_customers: string | null;
+  stats_cities: string | null;
+  stats_rating: string | null;
+  stats_satisfaction: string | null;
 }
 
 let cachedSettings: PublicSiteSettings | null = null;

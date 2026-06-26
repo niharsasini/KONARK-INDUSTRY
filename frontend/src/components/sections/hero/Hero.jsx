@@ -67,24 +67,34 @@ const DECK = [
   })),
 ];
 
+const CARD_ANIM = {
+  idle: { opacity: 1, transform: "translateX(0) rotate(0deg) scale(1)", transition: "all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)" },
+  exit: { opacity: 0, transform: "translateX(-60px) rotate(-3deg) scale(0.95)", transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)" },
+  enter: { opacity: 0, transform: "translateX(80px) rotate(3deg) scale(0.97)", transition: "none" },
+};
+
 export default function Hero() {
   const router = useRouter();
   const settings = useSiteSettings();
   const heroTagline = settings?.hero_tagline || "Powering Odisha since 2014";
+  const heroSubheading = settings?.hero_subheading ||
+    "We make electric scooters, e-rickshaws, and batteries in Bhubaneswar.\nWe fix your AC, EV charger, and electrical faults at your doorstep.\nOne company. Every power need. Across Odisha.";
+  const rotatingWords = (settings?.hero_rotating_words?.length ? settings.hero_rotating_words : ROTATING_WORDS);
   const [current, setCurrent] = useState(0);
-  const [deckVisible, setDeckVisible] = useState(true);
+  const [animState, setAnimState] = useState("idle");
   const [wordIndex, setWordIndex] = useState(0);
   const [wordVisible, setWordVisible] = useState(true);
   const touchStartX = useRef(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setDeckVisible(false);
+      setAnimState("exit");
       setTimeout(() => {
         setCurrent((prev) => (prev + 1) % DECK.length);
-        setDeckVisible(true);
+        setAnimState("enter");
+        setTimeout(() => setAnimState("idle"), 50);
       }, 400);
-    }, 4000);
+    }, 4500);
     return () => clearInterval(timer);
   }, []);
 
@@ -92,21 +102,23 @@ export default function Hero() {
     const wordTimer = setInterval(() => {
       setWordVisible(false);
       setTimeout(() => {
-        setWordIndex((i) => (i + 1) % ROTATING_WORDS.length);
+        setWordIndex((i) => (i + 1) % rotatingWords.length);
         setWordVisible(true);
       }, 300);
     }, 3000);
     return () => clearInterval(wordTimer);
   }, []);
 
-  const advance = () => {
-    setDeckVisible(false);
-    setTimeout(() => { setCurrent((prev) => (prev + 1) % DECK.length); setDeckVisible(true); }, 400);
+  const throwCard = (nextFn) => {
+    setAnimState("exit");
+    setTimeout(() => {
+      nextFn();
+      setAnimState("enter");
+      setTimeout(() => setAnimState("idle"), 50);
+    }, 400);
   };
-  const goBack = () => {
-    setDeckVisible(false);
-    setTimeout(() => { setCurrent((prev) => (prev - 1 + DECK.length) % DECK.length); setDeckVisible(true); }, 400);
-  };
+  const advance = () => throwCard(() => setCurrent((prev) => (prev + 1) % DECK.length));
+  const goBack = () => throwCard(() => setCurrent((prev) => (prev - 1 + DECK.length) % DECK.length));
 
   const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
   const onTouchEnd = (e) => {
@@ -223,7 +235,7 @@ export default function Hero() {
                 transform: wordVisible ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 0.3s ease, transform 0.3s ease",
               }}>
-                {ROTATING_WORDS[wordIndex]}
+                {rotatingWords[wordIndex]}
               </span>
             </motion.div>
           </div>
@@ -235,9 +247,9 @@ export default function Hero() {
             transition={{ delay: 0.6, duration: 0.6 }}
             style={{ fontSize: 17, color: "#6b5a45", lineHeight: 1.7, marginTop: 20, maxWidth: 480 }}
           >
-            We make electric scooters, e-rickshaws, and batteries in Bhubaneswar.
-            We fix your AC, EV charger, and electrical faults at your doorstep.
-            One company. Every power need. Across Odisha.
+            {heroSubheading.split("\n").map((line, i) => (
+              <span key={i}>{line}{i < heroSubheading.split("\n").length - 1 ? <br /> : null}</span>
+            ))}
           </motion.p>
 
           {/* Buttons */}
@@ -339,100 +351,63 @@ export default function Hero() {
               );
             })}
 
-            {/* Front card */}
-            <div
-              style={{
-                position: "relative", zIndex: 4,
-                opacity: deckVisible ? 1 : 0,
-                transition: "opacity 0.4s ease",
-              }}
-            >
+            {/* Front card — physical card throw animation */}
+            <div style={{ position: "relative", zIndex: 4, ...CARD_ANIM[animState] }}>
               <div
                 style={{
-                  background: "rgba(255,255,255,0.08)",
-                  backdropFilter: "blur(20px)",
-                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "rgba(255,255,255,0.12)",
+                  backdropFilter: "blur(24px)",
+                  border: "1px solid rgba(255,255,255,0.2)",
                   borderRadius: 24,
-                  padding: 24,
+                  overflow: "hidden",
+                  boxShadow: "0 32px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.2)",
                   cursor: card.slug ? "pointer" : "default",
-                  boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
-                  animation: "floatCard 6s ease-in-out infinite",
+                  animation: animState === "idle" ? "floatCard 6s ease-in-out infinite" : "none",
                 }}
                 onClick={() => { if (card.slug) router.push(`/products/${card.slug}`); }}
               >
-                {/* Image with badge inside */}
-                <div style={{
-                  width: "100%", height: 240,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "rgba(0,0,0,0.2)", borderRadius: 12,
-                  overflow: "hidden", marginBottom: 16,
-                  position: "relative",
-                }}>
-                  <span style={{
-                    position: "absolute", top: 12, left: 12, zIndex: 1,
-                    fontSize: 10, fontWeight: 700, letterSpacing: "0.12em",
-                    textTransform: "uppercase", color: "#1a0f00",
-                    background: "#fff",
-                    padding: "3px 10px", borderRadius: 4,
-                  }}>
-                    {card.badge}
-                  </span>
+                {/* Image area — full width to edges */}
+                <div style={{ height: 220, position: "relative", overflow: "hidden", background: "rgba(0,0,0,0.2)" }}>
                   <img
                     src={card.src}
                     alt={card.name}
-                    style={{
-                      maxHeight: 220, maxWidth: "90%", objectFit: "contain",
-                      filter: "drop-shadow(0 4px 24px rgba(0,0,0,0.35))",
-                    }}
+                    style={{ width: "100%", height: "100%", objectFit: "contain", padding: 16, boxSizing: "border-box", filter: "drop-shadow(0 4px 24px rgba(0,0,0,0.35))" }}
                   />
+                  <span style={{
+                    position: "absolute", top: 12, left: 12,
+                    background: "rgba(193,127,36,0.9)", color: "#fff",
+                    fontSize: 10, fontWeight: 800, padding: "4px 12px",
+                    borderRadius: 20, letterSpacing: "1px", textTransform: "uppercase",
+                  }}>
+                    {card.badge}
+                  </span>
                 </div>
 
-                {/* Name */}
-                <p style={{ fontSize: 17, fontWeight: 700, color: "#fff", margin: "0 0 4px" }}>
-                  {card.name}
-                </p>
-
-                {/* Price */}
-                <p style={{
-                  fontSize: 22, fontWeight: 800,
-                  color: "#c17f24",
-                  margin: "0 0 14px",
-                }}>
-                  {card.price ? `₹${card.price.toLocaleString("en-IN")}` : "Coming Soon"}
-                </p>
-
-                {/* Spec chips */}
-                <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
-                  {card.specs.map((s) => (
-                    <span key={s} style={{
-                      fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.85)",
-                      background: "rgba(255,255,255,0.1)",
-                      border: "1px solid rgba(255,255,255,0.2)",
-                      padding: "4px 10px", borderRadius: 6,
-                    }}>
-                      {s}
-                    </span>
-                  ))}
+                {/* Info panel */}
+                <div style={{ padding: "16px 20px 20px", background: "rgba(10,20,40,0.7)", backdropFilter: "blur(8px)" }}>
+                  <p style={{ color: "#fff", fontSize: 18, fontWeight: 800, margin: "0 0 4px", lineHeight: 1.2 }}>
+                    {card.name}
+                  </p>
+                  <p style={{ color: "#c17f24", fontSize: 17, fontWeight: 700, margin: "0 0 10px" }}>
+                    {card.price ? `₹${card.price.toLocaleString("en-IN")}` : "Coming Soon"}
+                  </p>
+                  <div style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
+                    {card.specs.map((s) => (
+                      <span key={s} style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.8)", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", padding: "3px 10px", borderRadius: 20 }}>
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                  {card.slug ? (
+                    <Link href={`/products/${card.slug}`} onClick={(e) => e.stopPropagation()} style={{ fontSize: 13, color: "#c17f24", textDecoration: "none", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 4 }}>
+                      View Product →
+                    </Link>
+                  ) : (
+                    <Link href="/contact?interest=ev-car" onClick={(e) => e.stopPropagation()} style={{ fontSize: 13, color: "#c17f24", textDecoration: "none", fontWeight: 600 }}>
+                      Register Interest →
+                    </Link>
+                  )}
                 </div>
-
-                {/* CTA */}
-                {card.slug ? (
-                  <Link
-                    href={`/products/${card.slug}`}
-                    onClick={(e) => e.stopPropagation()}
-                    style={{ fontSize: 12, color: "#c17f24", textDecoration: "none", fontWeight: 600 }}
-                  >
-                    View Product →
-                  </Link>
-                ) : (
-                  <Link
-                    href="/contact?interest=ev-car"
-                    onClick={(e) => e.stopPropagation()}
-                    style={{ fontSize: 12, color: "#c17f24", textDecoration: "none", fontWeight: 600 }}
-                  >
-                    Register Interest →
-                  </Link>
-                )}
               </div>
             </div>
           </div>
@@ -471,7 +446,7 @@ export default function Hero() {
                   background: "rgba(255,255,255,0.06)",
                   border: "1px solid rgba(255,255,255,0.12)", borderRadius: 10,
                   textDecoration: "none", fontSize: 11,
-                  color: "rgba(255,255,255,0.7)", fontWeight: 600, textAlign: "center",
+                  color: "#ffffff", fontWeight: 600, textAlign: "center",
                   transition: "all 0.2s",
                 }}
                 onMouseEnter={(e) => {
@@ -480,7 +455,7 @@ export default function Hero() {
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
-                  e.currentTarget.style.color = "rgba(255,255,255,0.7)";
+                  e.currentTarget.style.color = "#ffffff";
                 }}
               >
                 <span style={{ fontSize: 18 }}>{c.icon}</span>

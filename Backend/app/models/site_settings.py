@@ -63,6 +63,19 @@ class SiteSettings(Document):
     # Footer tagline shown under the logo in the site footer
     footer_tagline: Optional[str] = None
 
+    # --- Hero Content ---
+    hero_heading: Optional[str] = None
+    hero_subheading: Optional[str] = None
+    hero_rotating_words: list = Field(default_factory=lambda: [
+        "Konark.", "Innovation.", "Sustainability.", "Odisha."
+    ])
+
+    # --- Homepage Stats ---
+    stats_customers: str = "25,000+"
+    stats_cities: str = "18+"
+    stats_rating: str = "4.8★"
+    stats_satisfaction: str = "99%"
+
     # --- Announcement Banner ---
     # Whether the top-of-site announcement banner is visible
     announcement_banner_enabled: bool = False

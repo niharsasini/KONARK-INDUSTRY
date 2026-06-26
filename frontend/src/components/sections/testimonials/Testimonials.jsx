@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const CARD_COLORS = ["#0f4c81", "#c17f24", "#f97316"];
 
@@ -23,11 +24,11 @@ const FALLBACK_TESTIMONIALS = [
   },
 ];
 
-const STATS = [
-  { value: "25,000+", label: "Customers" },
-  { value: "18+", label: "Cities" },
-  { value: "4.8★", label: "Average Rating" },
-  { value: "99%", label: "Satisfaction" },
+const STATS_FALLBACK = [
+  { key: "stats_customers", label: "Customers", fallback: "25,000+" },
+  { key: "stats_cities", label: "Cities", fallback: "18+" },
+  { key: "stats_rating", label: "Average Rating", fallback: "4.8★" },
+  { key: "stats_satisfaction", label: "Satisfaction", fallback: "99%" },
 ];
 
 function Stars({ count, size = 14 }) {
@@ -166,6 +167,12 @@ function ReviewForm() {
 }
 
 export default function Testimonials() {
+  const settings = useSiteSettings();
+  const STATS = STATS_FALLBACK.map((s) => ({
+    value: settings?.[s.key] || s.fallback,
+    label: s.label,
+  }));
+
   const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true });
   const { ref: gridRef, inView: gridIn } = useInView({ threshold: 0.05, triggerOnce: true });
   const { ref: statsRef, inView: statsIn } = useInView({ threshold: 0.1, triggerOnce: true });
