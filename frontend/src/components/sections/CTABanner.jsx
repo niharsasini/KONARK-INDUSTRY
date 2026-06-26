@@ -10,7 +10,7 @@ const FLOATING_CHIPS = [
 
 export default function CTABanner() {
   return (
-    <section className="cta-section" style={{ minHeight: 500, display: "flex", alignItems: "center", borderTop: "1px solid rgba(255,255,255,0.12)" }}>
+    <section className="cta-section" style={{ minHeight: 500, display: "flex", alignItems: "center", borderTop: "1px solid rgba(255,255,255,0.12)", background: "linear-gradient(135deg, #0f4c81, #1a0f00)" }}>
       {/* Glows */}
       <div style={{ position: "absolute", top: "-10%", right: "-5%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(193,127,36,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "-10%", left: "-5%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
@@ -76,19 +76,19 @@ export default function CTABanner() {
           transition={{ duration: 0.5, delay: 0.35 }}
           viewport={{ once: true }}
         >
-          <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", background: "linear-gradient(135deg, #c17f24, #9a6419)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 12, textDecoration: "none", transition: "all 0.2s", boxShadow: "0 8px 24px rgba(193,127,36,0.35)" }}
+          <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "0 32px", height: 48, background: "linear-gradient(135deg, #c17f24, #9a6419)", color: "#1a0f00", fontWeight: 800, fontSize: 15, borderRadius: 12, textDecoration: "none", transition: "all 0.2s", boxShadow: "0 8px 24px rgba(193,127,36,0.35)" }}
             onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.04)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}
           >
             🛒 Shop Products
           </Link>
-          <Link href="/services/enquiry" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", background: "#fff", color: "#0f4c81", fontWeight: 700, fontSize: 15, borderRadius: 12, textDecoration: "none", transition: "all 0.2s" }}
+          <Link href="/services/enquiry" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "0 32px", height: 48, background: "#fff", color: "#0f4c81", fontWeight: 700, fontSize: 15, borderRadius: 12, textDecoration: "none", transition: "all 0.2s", border: "1.5px solid #0f4c81" }}
             onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.04)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}
           >
             🔧 Book a Service
           </Link>
-          <Link href="/battery-swap" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", background: "transparent", color: "#fff", fontWeight: 700, fontSize: 15, borderRadius: 12, textDecoration: "none", border: "1px solid rgba(255,255,255,0.4)", transition: "all 0.2s" }}
+          <Link href="/battery-swap" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "0 32px", height: 48, background: "transparent", color: "#fff", fontWeight: 700, fontSize: 15, borderRadius: 12, textDecoration: "none", border: "1.5px solid rgba(255,255,255,0.5)", transition: "all 0.2s" }}
             onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.transform = "scale(1.04)"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.transform = "scale(1)"; }}
           >
