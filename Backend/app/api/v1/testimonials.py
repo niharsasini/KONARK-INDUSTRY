@@ -1,13 +1,14 @@
 """
 testimonials.py - Company Testimonial Endpoints
-GET    /testimonials        — public: active testimonials, sorted by display_order
-POST   /testimonials        — admin: create
-PUT    /testimonials/{id}   — admin: update
-DELETE /testimonials/{id}   — admin: delete
+GET    /testimonials          — public: active testimonials, sorted by display_order
+POST   /testimonials/submit   — public: customer submits review (pending approval)
+POST   /testimonials          — admin: create
+PUT    /testimonials/{id}     — admin: update
+DELETE /testimonials/{id}     — admin: delete
 PATCH  /testimonials/{id}/toggle — admin: toggle active/inactive
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
@@ -41,6 +42,14 @@ class TestimonialUpdateRequest(BaseModel):
     is_active: Optional[bool] = None
 
 
+class PublicSubmitRequest(BaseModel):
+    name: str = Field(..., min_length=2, max_length=100)
+    rating: int = Field(default=5, ge=1, le=5)
+    comment: str = Field(..., min_length=5, max_length=1000)
+    product_used: str = ""
+    location: str = ""
+
+
 @router.get("")
 async def get_testimonials():
     """Public: active testimonials for the homepage, in display order."""
@@ -48,6 +57,27 @@ async def get_testimonials():
         Testimonial.display_order
     ).to_list()
     return testimonials
+
+
+@router.post("/submit", status_code=status.HTTP_201_CREATED)
+async def submit_testimonial_public(body: PublicSubmitRequest):
+    """
+    Public: customer submits a review. Created with is_active=False so it sits
+    in the admin Testimonials panel pending approval. Admin toggles active to publish.
+    """
+    name = body.name.strip()
+    testimonial = Testimonial(
+        name=name,
+        rating=body.rating,
+        comment=body.comment.strip(),
+        product_used=body.product_used.strip(),
+        location=body.location.strip(),
+        avatar_initials=(name[:2].upper() if name else "AN"),
+        is_active=False,
+        display_order=999,
+    )
+    await testimonial.insert()
+    return {"message": "Thank you! Your review is pending approval and will appear soon."}
 
 
 @router.get("/admin")

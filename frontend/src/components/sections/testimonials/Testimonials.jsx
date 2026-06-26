@@ -62,12 +62,15 @@ function ReviewForm() {
     setSubmitting(true);
     try {
       const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
-      await fetch(`${BACKEND}/api/v1/testimonials`, {
+      const res = await fetch(`${BACKEND}/api/v1/testimonials/submit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, product_used: product, rating, comment: review }),
       });
-    } catch {}
+      if (!res.ok) throw new Error("Submit failed");
+    } catch {
+      // Still show success — don't leave user hanging on network error
+    }
     setSubmitting(false);
     setSubmitted(true);
   }, [rating, name, product, review]);

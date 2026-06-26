@@ -11,7 +11,7 @@
 @tailwind utilities;
 
 .page-top-padding {
-  padding-top: calc(64px + var(--banner-h, 0px));
+  padding-top: calc(68px + var(--banner-h, 0px));
 }
 
 .section {

@@ -135,7 +135,7 @@ export default function Hero() {
       className="hero-section"
       style={{
         minHeight: "calc(100vh - var(--banner-h, 0px))",
-        paddingTop: "calc(64px + var(--banner-h, 0px))",
+        paddingTop: "calc(68px + var(--banner-h, 0px))",
         background: "transparent",
         overflow: "hidden",
         position: "relative",
