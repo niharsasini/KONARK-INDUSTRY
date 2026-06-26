@@ -50,7 +50,9 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await loginUser(form.email, form.password);
-      router.push("/profile");
+      const redirect = localStorage.getItem("konark_auth_redirect");
+      localStorage.removeItem("konark_auth_redirect");
+      router.push(redirect || "/profile");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Login failed. Please try again.");
     } finally {

@@ -9,6 +9,7 @@ const PROMPT_INTERVAL = 2.5 * 60 * 1000;
 
 export default function AuthPromptModal() {
   const [show, setShow] = useState(false);
+  const [pendingRedirect, setPendingRedirect] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -30,19 +31,35 @@ export default function AuthPromptModal() {
     }
   }, []);
 
+  useEffect(() => {
+    const handleRequireAuth = (e) => {
+      const isLoggedIn = localStorage.getItem("konark_token");
+      if (isLoggedIn) return;
+      setPendingRedirect(e.detail?.redirectPath || null);
+      setShow(true);
+    };
+    window.addEventListener("konark:require-auth", handleRequireAuth);
+    return () => window.removeEventListener("konark:require-auth", handleRequireAuth);
+  }, []);
+
   const dismiss = () => {
     localStorage.setItem(PROMPT_KEY, Date.now().toString());
+    setPendingRedirect(null);
     setShow(false);
   };
 
   const goRegister = () => {
     localStorage.setItem(PROMPT_KEY, (Date.now() + 24 * 60 * 60 * 1000).toString());
+    if (pendingRedirect) localStorage.setItem("konark_auth_redirect", pendingRedirect);
+    setPendingRedirect(null);
     setShow(false);
     router.push("/register");
   };
 
   const goLogin = () => {
     localStorage.setItem(PROMPT_KEY, (Date.now() + 24 * 60 * 60 * 1000).toString());
+    if (pendingRedirect) localStorage.setItem("konark_auth_redirect", pendingRedirect);
+    setPendingRedirect(null);
     setShow(false);
     router.push("/login");
   };

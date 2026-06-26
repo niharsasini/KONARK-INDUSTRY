@@ -74,7 +74,9 @@ export default function RegisterPage() {
       await registerUser(form.name, form.phone, form.email, form.password, form.city);
       const firstName = form.name.split(" ")[0];
       setToast(`Welcome to Konark, ${firstName}!`);
-      setTimeout(() => router.push("/"), 1800);
+      const redirect = localStorage.getItem("konark_auth_redirect");
+      localStorage.removeItem("konark_auth_redirect");
+      setTimeout(() => router.push(redirect || "/"), 1800);
     } catch (err: unknown) {
       setToast(err instanceof Error ? err.message : "Registration failed. Please try again.");
     } finally {

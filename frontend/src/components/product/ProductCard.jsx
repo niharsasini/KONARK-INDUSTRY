@@ -5,12 +5,14 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Star, Heart } from "lucide-react";
 import { useCartStore, useWishlistStore } from "@/store";
+import { useAuthGate } from "@/hooks/useAuthGate";
 import toast from "react-hot-toast";
 
 const ProductCard = ({ product }) => {
   const router = useRouter();
   const { addItem } = useCartStore();
   const { toggle, isInWishlist } = useWishlistStore();
+  const { requireAuth } = useAuthGate();
   const [added, setAdded] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
@@ -52,18 +54,20 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    addItem({
-      id: product.id || product.slug,
-      slug: product.slug,
-      name: product.name,
-      price: product.price || 0,
-      image: product.images?.[0] || product.image || "",
-      category: product.category || "",
-      type: product.type || "product",
-    });
-    toast.success(`${product.name} added to cart!`);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
+    requireAuth(() => {
+      addItem({
+        id: product.id || product.slug,
+        slug: product.slug,
+        name: product.name,
+        price: product.price || 0,
+        image: product.images?.[0] || product.image || "",
+        category: product.category || "",
+        type: product.type || "product",
+      });
+      toast.success(`${product.name} added to cart!`);
+      setAdded(true);
+      setTimeout(() => setAdded(false), 1500);
+    }, `/products/${product.slug}`);
   };
 
   const handleWishlist = (e) => {

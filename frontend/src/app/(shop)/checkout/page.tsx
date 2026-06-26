@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store";
 import { createOrder } from "@/lib/api";
 import toast from "react-hot-toast";
@@ -48,8 +49,18 @@ const LABEL = {
 };
 
 export default function CheckoutPage() {
+  const router = useRouter();
   const { items, subtotal, clearCart } = useCartStore();
   const [step, setStep] = useState<"details" | "payment" | "success">("details");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const token = localStorage.getItem("konark_token");
+    if (!token) {
+      localStorage.setItem("konark_auth_redirect", "/checkout");
+      router.replace("/login");
+    }
+  }, [router]);
   const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", city: "", pincode: "", notes: "", gstin: "" });
   const [payment, setPayment] = useState("cod");
   const [pincodeStatus, setPincodeStatus] = useState<"none" | "ok" | "warn">("none");
