@@ -96,7 +96,7 @@ export default function AnnouncementBanner() {
       }}
     >
       {/* Left label */}
-      <div style={{
+      <div className="announcement-label" style={{
         flexShrink: 0,
         padding: "0 16px",
         fontSize: 10,
@@ -129,6 +129,7 @@ export default function AnnouncementBanner() {
       {link && (
         <a
           href={link}
+          className="announcement-cta"
           style={{
             flexShrink: 0,
             padding: "0 16px",

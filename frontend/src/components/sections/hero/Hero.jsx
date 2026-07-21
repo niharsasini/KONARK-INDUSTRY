@@ -143,16 +143,16 @@ export default function Hero() {
     >
       {/* Split background — warm cream left, dark navy right */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
-        <div style={{
+        <div className="hero-cream-panel" style={{
           position: "absolute", left: 0, top: 0, width: "60%", height: "100%",
           background: "linear-gradient(135deg, #f5f0e8, #e3dacd)",
         }} />
-        <div style={{
+        <div className="hero-dark-panel" style={{
           position: "absolute", right: 0, top: 0, width: "45%", height: "100%",
           background: "linear-gradient(135deg, #0f4c81, #1a0f00)",
           clipPath: "polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%)",
         }} />
-        <div style={{
+        <div className="hero-dark-panel" style={{
           position: "absolute", inset: 0,
           background: "linear-gradient(to right, transparent 50%, rgba(15,76,129,0.1) 55%, transparent 60%)",
         }} />
@@ -206,8 +206,8 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 + i * 0.1, ease: "easeOut" }}
               >
-                <h1 style={{
-                  fontSize: "clamp(40px, 6vw, 72px)", fontWeight: 900,
+                <h1 className="hero-headline" style={{
+                  fontSize: "clamp(32px, 8vw, 72px)", fontWeight: 900,
                   color: "#1a0f00", lineHeight: 1.1, letterSpacing: "-2px", margin: 0,
                 }}>
                   {line.text}
@@ -219,13 +219,13 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
             >
-              <span style={{
+              <span className="hero-headline" style={{
                 display: "block",
                 background: "linear-gradient(135deg, #0f4c81 0%, #c17f24 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
-                fontSize: "clamp(40px, 6vw, 72px)",
+                fontSize: "clamp(32px, 8vw, 72px)",
                 fontWeight: 900,
                 letterSpacing: "-2px",
                 lineHeight: 1.1,
@@ -242,6 +242,7 @@ export default function Hero() {
 
           {/* Subtitle */}
           <motion.p
+            className="hero-subtitle"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.6 }}
@@ -254,12 +255,14 @@ export default function Hero() {
 
           {/* Buttons */}
           <motion.div
+            className="hero-btn-row"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.5 }}
             style={{ marginTop: 32, display: "flex", gap: 16, flexWrap: "wrap" }}
           >
             <motion.button
+              className="hero-btn-primary"
               whileTap={{ scale: 0.97 }}
               onClick={() => router.push("/products")}
               style={{
@@ -274,6 +277,7 @@ export default function Hero() {
               Shop Products →
             </motion.button>
             <motion.button
+              className="hero-btn-ghost"
               whileTap={{ scale: 0.97 }}
               onClick={() => router.push("/services/enquiry")}
               style={{
@@ -290,13 +294,14 @@ export default function Hero() {
 
           {/* Trust pills */}
           <motion.div
+            className="hero-trust-row"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.0, duration: 0.5 }}
             style={{ marginTop: 24, display: "flex", gap: 20, flexWrap: "wrap", fontSize: 13, color: "#6b5a45" }}
           >
             {TRUST_PILLS.map((pill) => (
-              <span key={pill}>{pill}</span>
+              <span className="hero-trust-pill" key={pill}>{pill}</span>
             ))}
           </motion.div>
         </div>
@@ -354,6 +359,7 @@ export default function Hero() {
             {/* Front card — physical card throw animation */}
             <div style={{ position: "relative", zIndex: 4, ...CARD_ANIM[animState] }}>
               <div
+                className="hero-product-card-inner"
                 style={{
                   background: "rgba(255,255,255,0.12)",
                   backdropFilter: "blur(24px)",
@@ -367,7 +373,7 @@ export default function Hero() {
                 onClick={() => { if (card.slug) router.push(`/products/${card.slug}`); }}
               >
                 {/* Image area — full width to edges */}
-                <div style={{ height: 220, position: "relative", overflow: "hidden", background: "rgba(0,0,0,0.2)" }}>
+                <div className="hero-product-card-imgwrap" style={{ height: 220, position: "relative", overflow: "hidden", background: "rgba(0,0,0,0.2)" }}>
                   <img
                     src={card.src}
                     alt={card.name}

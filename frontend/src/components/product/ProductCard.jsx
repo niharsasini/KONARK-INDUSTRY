@@ -142,7 +142,7 @@ const ProductCard = ({ product }) => {
       ) : null}
 
       {/* 🖼️ Image area */}
-      <div style={{
+      <div className="product-card-img" style={{
         position: "relative", height: 220, flexShrink: 0, overflow: "hidden",
         background: "linear-gradient(135deg, #f9f4ec, #f5f0e8)",
       }}>
@@ -202,14 +202,14 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* 📦 Body */}
-      <div style={{ padding: "16px 18px 18px", display: "flex", flexDirection: "column", flex: 1 }}>
+      <div className="product-card-body" style={{ padding: "16px 18px 18px", display: "flex", flexDirection: "column", flex: 1 }}>
         {product.category && (
           <p style={{ fontSize: 11, color: "#0f4c81", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", margin: "0 0 4px" }}>
             {product.category}
           </p>
         )}
 
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a0f00", margin: "0 0 6px", lineHeight: 1.3, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
+        <h3 className="product-card-name" style={{ fontSize: 16, fontWeight: 700, color: "#1a0f00", margin: "0 0 6px", lineHeight: 1.3, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
           {product.name}
         </h3>
 
@@ -220,7 +220,7 @@ const ProductCard = ({ product }) => {
         )}
 
         <div style={{ marginTop: "auto" }}>
-        <p style={{
+        <p className="product-card-price" style={{
           fontSize: typeof product.price === "number" && product.price > 0 ? 22 : isUpcoming ? 15 : 13,
           fontWeight: typeof product.price === "number" && product.price > 0 ? 800 : 700,
           color: typeof product.price === "number" && product.price > 0 ? "#c17f24" : isUpcoming ? "#5b21b6" : "#8c7a66",
@@ -231,6 +231,7 @@ const ProductCard = ({ product }) => {
 
         {isUpcoming ? (
           <button
+            className="product-card-btn"
             onClick={(e) => { e.stopPropagation(); router.push("/contact?interest=" + product.slug); }}
             style={{ width: "100%", height: 44, padding: "0 11px", background: "transparent", color: "#5b21b6", border: "2px solid #5b21b6", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "#5b21b6"; e.currentTarget.style.color = "#fff"; }}
@@ -239,11 +240,12 @@ const ProductCard = ({ product }) => {
             Register Interest
           </button>
         ) : !inStock ? (
-          <button disabled style={{ width: "100%", height: 44, padding: "0 11px", background: "#ede4d5", color: "#8c7a66", cursor: "not-allowed", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700 }}>
+          <button className="product-card-btn" disabled style={{ width: "100%", height: 44, padding: "0 11px", background: "#ede4d5", color: "#8c7a66", cursor: "not-allowed", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700 }}>
             Out of Stock
           </button>
         ) : product.type === "vehicle" ? (
           <button
+            className="product-card-btn"
             onClick={(e) => { e.stopPropagation(); goToDetails(); }}
             style={{ width: "100%", height: 44, padding: "0 11px", background: "linear-gradient(135deg, #0f4c81, #0a3460)", color: "#fff", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 12px rgba(15,76,129,0.25)", transition: "all 0.25s ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 20px rgba(15,76,129,0.35)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
@@ -253,6 +255,7 @@ const ProductCard = ({ product }) => {
           </button>
         ) : product.type === "service" ? (
           <button
+            className="product-card-btn"
             onClick={(e) => { e.stopPropagation(); goToDetails(); }}
             style={{ width: "100%", height: 44, padding: "0 11px", background: "linear-gradient(135deg, #c17f24, #9a6419)", color: "#fff", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 20px rgba(193,127,36,0.35)"; }}
@@ -262,6 +265,7 @@ const ProductCard = ({ product }) => {
           </button>
         ) : (
           <button
+            className="product-card-btn"
             onClick={handleAddToCart}
             style={{
               width: "100%", height: 44, padding: "0 11px", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer",
