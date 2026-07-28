@@ -51,7 +51,7 @@ function EvCarCard({ car }) {
     >
       <div style={{
         height: 200, position: "relative",
-        background: "linear-gradient(135deg, #f9f4ec, #ede4d5)",
+        background: "linear-gradient(135deg, var(--bg-elevated), var(--bg-surface))",
         display: "flex", alignItems: "center", justifyContent: "center", padding: 20,
         overflow: "hidden",
       }}>
@@ -151,7 +151,7 @@ export default function FeaturedProducts() {
             </span>
             <h2 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, margin: "0 0 10px", lineHeight: 1.15 }}>
               <span style={{ color: "var(--text-heading)" }}>Our Product </span>
-              <span style={{ background: "linear-gradient(135deg, #0f4c81, #c17f24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Catalogue</span>
+              <span style={{ background: "linear-gradient(135deg, var(--navy), var(--gold))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Catalogue</span>
             </h2>
             <p style={{ fontSize: 15, color: "var(--text-muted)", maxWidth: 480, margin: 0, lineHeight: 1.7 }}>
               Every scooter, battery, and appliance from our Bhubaneswar factory passes 47 quality checks.

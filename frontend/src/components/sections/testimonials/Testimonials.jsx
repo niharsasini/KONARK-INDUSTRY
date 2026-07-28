@@ -4,17 +4,17 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
-const CARD_COLORS = ["#0f4c81", "#c17f24", "#f97316"];
+const CARD_COLORS = ["var(--navy)", "var(--gold)", "#f97316"];
 
 const FALLBACK_TESTIMONIALS = [
   {
     name: "Rajesh Kumar Panda", location: "Bhubaneswar, Odisha",
-    product: "EV Scooter X1", rating: 5, initials: "RKP", color: "#0f4c81",
+    product: "EV Scooter X1", rating: 5, initials: "RKP", color: "var(--navy)",
     text: "I bought the Konark X1 eight months ago for my daily commute from Patia to Infocity — about 22km each way. It handles the route perfectly on a single charge. When I had a minor issue with the charging port, the service team came to my house the next morning and fixed it under warranty. That kind of after-sales support is rare.",
   },
   {
     name: "Sunita Mishra", location: "Cuttack, Odisha",
-    product: "LFP Battery System", rating: 5, initials: "SM", color: "#c17f24",
+    product: "LFP Battery System", rating: 5, initials: "SM", color: "var(--gold)",
     text: "We run a small rice processing unit and load-shedding was killing our productivity. We got a Konark LFP battery system with our rooftop solar in March last year. Eighteen months — zero downtime, zero issues. The investment paid back in 14 months.",
   },
   {
@@ -79,8 +79,8 @@ function ReviewForm() {
     return (
       <div style={{ textAlign: "center", padding: "40px 20px" }}>
         <div style={{ fontSize: 48, marginBottom: 12 }}>🎉</div>
-        <p style={{ fontSize: 18, fontWeight: 700, color: "#1a0f00", margin: "0 0 8px" }}>Thank you for your review!</p>
-        <p style={{ fontSize: 14, color: "#6b5a45" }}>Your experience is pending approval and will appear here soon.</p>
+        <p style={{ fontSize: 18, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 8px" }}>Thank you for your review!</p>
+        <p style={{ fontSize: 14, color: "var(--text-muted)" }}>Your experience is pending approval and will appear here soon.</p>
       </div>
     );
   }
@@ -91,7 +91,7 @@ function ReviewForm() {
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       {/* Star selector */}
       <div>
-        <p style={{ fontSize: 14, fontWeight: 600, color: "#1a0f00", margin: "0 0 10px" }}>Your Rating</p>
+        <p style={{ fontSize: 14, fontWeight: 600, color: "var(--text-heading)", margin: "0 0 10px" }}>Your Rating</p>
         <div style={{ display: "flex", gap: 8 }}>
           {[1, 2, 3, 4, 5].map((s) => (
             <button
@@ -102,7 +102,7 @@ function ReviewForm() {
               onMouseLeave={() => setHoverRating(0)}
               style={{
                 fontSize: 36, background: "none", border: "none", cursor: "pointer",
-                color: s <= displayRating ? "#c17f24" : "#e8dfd0",
+                color: s <= displayRating ? "var(--gold)" : "var(--border-subtle)",
                 transition: "color 0.15s, transform 0.15s",
                 transform: s <= displayRating ? "scale(1.15)" : "scale(1)",
                 padding: 0,
@@ -116,21 +116,21 @@ function ReviewForm() {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }} className="review-form-fields">
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          <label style={{ fontSize: 13, fontWeight: 600, color: "#1a0f00" }}>Your Name *</label>
+          <label style={{ fontSize: 13, fontWeight: 600, color: "var(--text-heading)" }}>Your Name *</label>
           <input
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Rajesh Kumar"
-            style={{ padding: "10px 14px", border: "1px solid #e8dfd0", borderRadius: 10, fontSize: 14, color: "#1a0f00", background: "#f9f4ec", outline: "none" }}
+            style={{ padding: "10px 14px", border: "1px solid var(--border-subtle)", borderRadius: 10, fontSize: 14, color: "var(--text-heading)", background: "var(--bg-elevated)", outline: "none" }}
           />
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          <label style={{ fontSize: 13, fontWeight: 600, color: "#1a0f00" }}>Product / Service</label>
+          <label style={{ fontSize: 13, fontWeight: 600, color: "var(--text-heading)" }}>Product / Service</label>
           <select
             value={product}
             onChange={(e) => setProduct(e.target.value)}
-            style={{ padding: "10px 14px", border: "1px solid #e8dfd0", borderRadius: 10, fontSize: 14, color: product ? "#1a0f00" : "#8c7a66", background: "#f9f4ec", outline: "none" }}
+            style={{ padding: "10px 14px", border: "1px solid var(--border-subtle)", borderRadius: 10, fontSize: 14, color: product ? "var(--text-heading)" : "var(--text-subtle)", background: "var(--bg-elevated)", outline: "none" }}
           >
             <option value="">Select product…</option>
             {PRODUCT_OPTIONS.map((p) => (
@@ -141,14 +141,14 @@ function ReviewForm() {
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        <label style={{ fontSize: 13, fontWeight: 600, color: "#1a0f00" }}>Your Experience *</label>
+        <label style={{ fontSize: 13, fontWeight: 600, color: "var(--text-heading)" }}>Your Experience *</label>
         <textarea
           required
           value={review}
           onChange={(e) => setReview(e.target.value)}
           placeholder="Share your honest experience — what you loved, what could improve…"
           rows={4}
-          style={{ padding: "12px 14px", border: "1px solid #e8dfd0", borderRadius: 10, fontSize: 14, color: "#1a0f00", background: "#f9f4ec", outline: "none", resize: "vertical", lineHeight: 1.6 }}
+          style={{ padding: "12px 14px", border: "1px solid var(--border-subtle)", borderRadius: 10, fontSize: 14, color: "var(--text-heading)", background: "var(--bg-elevated)", outline: "none", resize: "vertical", lineHeight: 1.6 }}
         />
       </div>
 
@@ -157,7 +157,7 @@ function ReviewForm() {
         disabled={submitting || !rating || !name || !review}
         style={{
           padding: "13px 32px", borderRadius: 10, border: "none", cursor: submitting || !rating || !name || !review ? "not-allowed" : "pointer",
-          background: "linear-gradient(135deg, #0f4c81, #0a3460)", color: "#fff",
+          background: "linear-gradient(135deg, var(--navy), var(--navy-dark))", color: "#fff",
           fontSize: 15, fontWeight: 700, transition: "all 0.25s",
           opacity: submitting || !rating || !name || !review ? 0.5 : 1,
           alignSelf: "flex-start",
@@ -225,7 +225,7 @@ export default function Testimonials() {
           </span>
           <h2 style={{ fontSize: "clamp(26px, 3.5vw, 44px)", fontWeight: 900, margin: "0 0 12px", lineHeight: 1.2 }}>
             <span style={{ color: "var(--text-heading)" }}>Real People. </span>
-            <span style={{ background: "linear-gradient(135deg, var(--navy), #c17f24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Real Results.</span>
+            <span style={{ background: "linear-gradient(135deg, var(--navy), var(--gold))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Real Results.</span>
           </h2>
           <p style={{ fontSize: 15, color: "var(--text-muted)", maxWidth: 480, margin: "0 auto" }}>
             25,000+ customers across Odisha trust Konark Industry for their energy needs.
@@ -354,7 +354,7 @@ export default function Testimonials() {
                 textAlign: "center",
               }}
             >
-              <p style={{ fontSize: "clamp(22px, 2.5vw, 32px)", fontWeight: 900, margin: "0 0 4px", background: "linear-gradient(135deg, var(--navy), #c17f24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              <p style={{ fontSize: "clamp(22px, 2.5vw, 32px)", fontWeight: 900, margin: "0 0 4px", background: "linear-gradient(135deg, var(--navy), var(--gold))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                 {stat.value}
               </p>
               <p style={{ fontSize: 13, color: "var(--text-subtle)", margin: 0, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em" }}>
@@ -371,17 +371,17 @@ export default function Testimonials() {
           transition={{ duration: 0.6, delay: 0.4 }}
           style={{
             background: "#ffffff",
-            border: "1px solid #e8dfd0",
+            border: "1px solid var(--border-subtle)",
             borderRadius: 20,
             padding: "32px 40px",
             maxWidth: 640,
             margin: "48px auto 0",
           }}
         >
-          <h3 style={{ fontSize: 22, fontWeight: 700, color: "#1a0f00", margin: "0 0 4px" }}>
+          <h3 style={{ fontSize: 22, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 4px" }}>
             How was your experience?
           </h3>
-          <p style={{ fontSize: 14, color: "#8c7a66", margin: "0 0 24px" }}>
+          <p style={{ fontSize: 14, color: "var(--text-subtle)", margin: "0 0 24px" }}>
             Share your story — help other customers in Odisha make better decisions.
           </p>
           <ReviewForm />

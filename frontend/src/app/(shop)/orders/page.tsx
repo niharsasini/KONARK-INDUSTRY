@@ -35,11 +35,11 @@ function downloadInvoice(order: any) {
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: Arial, sans-serif; padding: 40px; color: #333; }
     .header { display:flex; justify-content:space-between; margin-bottom: 30px; }
-    .company-name { font-size:24px; font-weight:bold; color:#1a0f00; }
-    .invoice-title { font-size:28px; color:#0f4c81; font-weight:bold; }
+    .company-name { font-size:24px; font-weight:bold; color:var(--text-heading); }
+    .invoice-title { font-size:28px; color:var(--navy); font-weight:bold; }
     .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0; }
     table { width:100%; border-collapse:collapse; margin:20px 0; }
-    th { background:#0f4c81; color:white; padding:10px; text-align:left; }
+    th { background:var(--navy); color:white; padding:10px; text-align:left; }
     td { padding:10px; border-bottom:1px solid #eee; }
     .total-row { font-weight:bold; font-size:18px; }
     .badge { display:inline-block; padding:4px 12px; border-radius:20px; background:#dcfce7; color:#166534; font-size:12px; }
@@ -116,7 +116,7 @@ function downloadInvoice(order: any) {
       </tr>
       <tr class="total-row">
         <td colspan="4" style="text-align:right;padding:10px">Total:</td>
-        <td style="color:#0f4c81">₹${order.total_amount?.toLocaleString("en-IN") || 0}</td>
+        <td style="color:var(--navy)">₹${order.total_amount?.toLocaleString("en-IN") || 0}</td>
       </tr>
     </tfoot>
   </table>

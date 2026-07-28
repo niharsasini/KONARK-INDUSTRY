@@ -23,7 +23,7 @@ function SvcItem({ icon, name, desc, href, external }) {
       <div style={{
         width: 36, height: 36, borderRadius: 10, flexShrink: 0,
         background: hovered
-          ? "linear-gradient(135deg, #c17f24, #a06519)"
+          ? "linear-gradient(135deg, var(--gold), #a06519)"
           : "linear-gradient(135deg, #fdf3e3, #fde8c0)",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 18, transition: "all 0.15s ease",
@@ -31,8 +31,8 @@ function SvcItem({ icon, name, desc, href, external }) {
         <span style={{ filter: hovered ? "brightness(10)" : "none", transition: "filter 0.15s ease" }}>{icon}</span>
       </div>
       <div>
-        <div style={{ fontSize: 14, fontWeight: 600, color: "#1a0f00" }}>{name}</div>
-        {desc && <div style={{ fontSize: 12, color: "#8c7a66", marginTop: 1 }}>{desc}</div>}
+        <div style={{ fontSize: 14, fontWeight: 600, color: "var(--text-heading)" }}>{name}</div>
+        {desc && <div style={{ fontSize: 12, color: "var(--text-subtle)", marginTop: 1 }}>{desc}</div>}
       </div>
     </Tag>
   );
@@ -64,7 +64,7 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         left: "50%",
         width: 520,
         background: "#ffffff",
-        border: "1px solid #e8dfd0",
+        border: "1px solid var(--border-subtle)",
         borderRadius: 20,
         boxShadow: "0 20px 60px rgba(26,15,0,0.12), 0 0 0 1px rgba(212,201,184,0.3)",
         padding: 8,
@@ -80,8 +80,8 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         background: "linear-gradient(135deg, #fdf3e3, #fde8c0)",
         borderRadius: 14, padding: "16px 20px", marginBottom: 8,
       }}>
-        <div style={{ fontSize: 18, fontWeight: 800, color: "#1a0f00", marginBottom: 2 }}>Our Services</div>
-        <div style={{ fontSize: 12, color: "#8c7a66" }}>Doorstep service across 18+ cities in Odisha</div>
+        <div style={{ fontSize: 18, fontWeight: 800, color: "var(--text-heading)", marginBottom: 2 }}>Our Services</div>
+        <div style={{ fontSize: 12, color: "var(--text-subtle)" }}>Doorstep service across 18+ cities in Odisha</div>
       </div>
 
       {/* 2-column grid */}
@@ -89,7 +89,7 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         {/* Home & EV */}
         <div style={{ paddingRight: 8, borderRight: "1px solid #f0ebe2" }}>
           <div style={{
-            fontSize: 10, fontWeight: 700, color: "#c17f24",
+            fontSize: 10, fontWeight: 700, color: "var(--gold)",
             letterSpacing: "1.5px", textTransform: "uppercase",
             padding: "8px 12px 4px",
           }}>
@@ -103,7 +103,7 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         {/* Energy & Power */}
         <div style={{ paddingLeft: 8 }}>
           <div style={{
-            fontSize: 10, fontWeight: 700, color: "#c17f24",
+            fontSize: 10, fontWeight: 700, color: "var(--gold)",
             letterSpacing: "1.5px", textTransform: "uppercase",
             padding: "8px 12px 4px",
           }}>
@@ -124,25 +124,25 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
       }}>
         <div style={{
           width: 40, height: 40, borderRadius: 10, flexShrink: 0,
-          background: "linear-gradient(135deg, #c17f24, #a06519)",
+          background: "linear-gradient(135deg, var(--gold), #a06519)",
           display: "flex", alignItems: "center", justifyContent: "center",
           fontSize: 20,
         }}>
           ⚡
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00" }}>Battery Swap Service</div>
-          <div style={{ fontSize: 12, color: "#6b5a45" }}>Same day swap from ₹150 · Home pickup available</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)" }}>Battery Swap Service</div>
+          <div style={{ fontSize: 12, color: "var(--text-muted)" }}>Same day swap from ₹150 · Home pickup available</div>
         </div>
         <Link
           href="/battery-swap"
           style={{
-            fontSize: 13, fontWeight: 700, color: "#c17f24",
+            fontSize: 13, fontWeight: 700, color: "var(--gold)",
             textDecoration: "none", whiteSpace: "nowrap",
             transition: "color 0.15s",
           }}
           onMouseEnter={(e) => (e.currentTarget.style.color = "#a06519")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#c17f24")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--gold)")}
         >
           Book Now →
         </Link>
@@ -156,16 +156,16 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
       }}>
         <Link
           href="/services"
-          style={{ fontSize: 13, color: "#6b5a45", textDecoration: "none", fontWeight: 500, transition: "color 0.15s" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#c17f24")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#6b5a45")}
+          style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none", fontWeight: 500, transition: "color 0.15s" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
         >
           View all services →
         </Link>
         <Link
           href="/services/enquiry"
           style={{
-            background: "linear-gradient(135deg, #0f4c81, #0a3460)",
+            background: "linear-gradient(135deg, var(--navy), var(--navy-dark))",
             color: "#fff", padding: "8px 20px", borderRadius: 8,
             textDecoration: "none", fontWeight: 700, fontSize: 13,
             boxShadow: "0 4px 12px rgba(15,76,129,0.25)",

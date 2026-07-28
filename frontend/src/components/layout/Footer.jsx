@@ -29,7 +29,7 @@ function SocialIcon({ href, label, children }) {
       target="_blank"
       rel="noopener noreferrer"
       style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", transition: "all 0.2s", textDecoration: "none" }}
-      onMouseEnter={(e) => { e.currentTarget.style.background = "#0f4c81"; }}
+      onMouseEnter={(e) => { e.currentTarget.style.background = "var(--navy)"; }}
       onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; }}
     >
       {children}
@@ -72,11 +72,11 @@ export default function Footer() {
   ].filter((s) => s.href);
 
   return (
-    <footer style={{ background: "#1a0f00", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+    <footer style={{ background: "var(--text-heading)", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
       {/* CTA Band */}
       <div className="footer-top footer-top-cta">
         <div className="footer-top-inner">
-          <h2 style={{ fontSize: 28, fontWeight: 700, color: "#f5f0e8", margin: "0 0 8px" }}>
+          <h2 style={{ fontSize: 28, fontWeight: 700, color: "var(--bg-page)", margin: "0 0 8px" }}>
             Ready to power your future?
           </h2>
           <p style={{ color: "#c4b8a5", fontSize: 15, margin: "0 0 24px" }}>
@@ -85,7 +85,7 @@ export default function Footer() {
           <div className="footer-top-buttons" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <Link
               href="/products"
-              style={{ padding: "12px 28px", background: "linear-gradient(135deg, #0f4c81, #0a3460)", color: "#fff", fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: "none", transition: "all 0.2s", display: "inline-block", boxShadow: "0 4px 12px rgba(15,76,129,0.3)" }}
+              style={{ padding: "12px 28px", background: "linear-gradient(135deg, var(--navy), var(--navy-dark))", color: "#fff", fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: "none", transition: "all 0.2s", display: "inline-block", boxShadow: "0 4px 12px rgba(15,76,129,0.3)" }}
               onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 6px 20px rgba(15,76,129,0.4)")}
               onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 12px rgba(15,76,129,0.3)")}
             >
@@ -93,9 +93,9 @@ export default function Footer() {
             </Link>
             <Link
               href="/contact"
-              style={{ padding: "12px 28px", background: "transparent", color: "#f5f0e8", fontWeight: 600, fontSize: 14, borderRadius: 8, textDecoration: "none", border: "1px solid rgba(255,255,255,0.15)", transition: "all 0.2s", display: "inline-block" }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#c17f24"; e.currentTarget.style.color = "#c17f24"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.color = "#f5f0e8"; }}
+              style={{ padding: "12px 28px", background: "transparent", color: "var(--bg-page)", fontWeight: 600, fontSize: 14, borderRadius: 8, textDecoration: "none", border: "1px solid rgba(255,255,255,0.15)", transition: "all 0.2s", display: "inline-block" }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.color = "var(--gold)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.color = "var(--bg-page)"; }}
             >
               Contact Us
             </Link>
@@ -108,15 +108,15 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, textDecoration: "none" }}>
-            <div style={{ width: 36, height: 36, borderRadius: "50%", border: "2px solid #c17f24", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(193,127,36,0.1)" }}>
+            <div style={{ width: 36, height: 36, borderRadius: "50%", border: "2px solid var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(193,127,36,0.1)" }}>
               <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}>
-                <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#c17f24" strokeWidth="2" strokeLinecap="round" />
-                <circle cx="12" cy="12" r="3" fill="#c17f24" />
+                <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="12" cy="12" r="3" fill="var(--gold)" />
               </svg>
             </div>
             <div>
               <span style={{ display: "block", fontSize: 15, fontWeight: 700, color: "#fff" }}>KONARK</span>
-              <span style={{ display: "block", fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", color: "#c17f24", textTransform: "uppercase" }}>INDUSTRY</span>
+              <span style={{ display: "block", fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", color: "var(--gold)", textTransform: "uppercase" }}>INDUSTRY</span>
             </div>
           </Link>
           <p style={{ fontSize: 13, color: "#c4b8a5", lineHeight: 1.7, marginBottom: 20, whiteSpace: "pre-line" }}>
@@ -138,7 +138,7 @@ export default function Footer() {
             {PRODUCT_LINKS.map((l) => (
               <li key={l.label}>
                 <Link href={l.href} style={{ fontSize: 13, color: "#c4b8a5", textDecoration: "none", transition: "color 0.2s" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#f5f0e8")}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--bg-page)")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#c4b8a5")}
                 >
                   {l.label}
@@ -155,7 +155,7 @@ export default function Footer() {
             {COMPANY_LINKS.map((l) => (
               <li key={l.label}>
                 <Link href={l.href} style={{ fontSize: 13, color: "#c4b8a5", textDecoration: "none", transition: "color 0.2s" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#f5f0e8")}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--bg-page)")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#c4b8a5")}
                 >
                   {l.label}
@@ -176,8 +176,8 @@ export default function Footer() {
               { label: "Hours", value: "Mon–Sat, 9AM–6PM IST" },
             ].map((item) => (
               <div key={item.label}>
-                <p style={{ fontSize: 11, color: "#8c7a66", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.1em" }}>{item.label}</p>
-                <p style={{ fontSize: 13, color: "#f5f0e8", margin: 0, whiteSpace: "pre-line" }}>{item.value}</p>
+                <p style={{ fontSize: 11, color: "var(--text-subtle)", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.1em" }}>{item.label}</p>
+                <p style={{ fontSize: 13, color: "var(--bg-page)", margin: 0, whiteSpace: "pre-line" }}>{item.value}</p>
               </div>
             ))}
           </div>
@@ -186,13 +186,13 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="footer-bottom-bar footer-bottom">
-        <p style={{ fontSize: 12, color: "#8c7a66", margin: 0 }}>
+        <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: 0 }}>
           © 2024 Konark Industry Pvt. Ltd. ·{" "}
-          <Link href="/contact" style={{ color: "#8c7a66", textDecoration: "none" }}>Privacy Policy</Link>
+          <Link href="/contact" style={{ color: "var(--text-subtle)", textDecoration: "none" }}>Privacy Policy</Link>
           {" "}·{" "}
-          <Link href="/contact" style={{ color: "#8c7a66", textDecoration: "none" }}>Terms</Link>
+          <Link href="/contact" style={{ color: "var(--text-subtle)", textDecoration: "none" }}>Terms</Link>
           {" "}·{" "}
-          <Link href="/contact" style={{ color: "#8c7a66", textDecoration: "none" }}>Sitemap</Link>
+          <Link href="/contact" style={{ color: "var(--text-subtle)", textDecoration: "none" }}>Sitemap</Link>
         </p>
         <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 12px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6 }}>
           <span style={{ fontSize: 16 }}>🇮🇳</span>

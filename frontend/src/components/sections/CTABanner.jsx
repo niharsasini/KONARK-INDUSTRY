@@ -10,7 +10,7 @@ const FLOATING_CHIPS = [
 
 export default function CTABanner() {
   return (
-    <section className="cta-section" style={{ minHeight: 500, display: "flex", alignItems: "center", borderTop: "1px solid rgba(255,255,255,0.12)", background: "linear-gradient(135deg, #0f4c81, #1a0f00)" }}>
+    <section className="cta-section" style={{ minHeight: 500, display: "flex", alignItems: "center", borderTop: "1px solid rgba(255,255,255,0.12)", background: "linear-gradient(135deg, var(--navy), var(--text-heading))" }}>
       {/* Glows */}
       <div style={{ position: "absolute", top: "-10%", right: "-5%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(193,127,36,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "-10%", left: "-5%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
@@ -39,7 +39,7 @@ export default function CTABanner() {
           style={{ marginBottom: 28 }}
         >
           <span style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(193,127,36,0.15)", border: "1px solid rgba(193,127,36,0.4)", borderRadius: 100, padding: "8px 20px", fontSize: 13, fontWeight: 600, color: "#fde8a0", animation: "glow-pulse 3s ease-in-out infinite" }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#c17f24", animation: "pulse-glow 2s infinite", display: "inline-block" }} />
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--gold)", animation: "pulse-glow 2s infinite", display: "inline-block" }} />
             ⚡ Powering Odisha since 2014
           </span>
         </motion.div>
@@ -53,7 +53,7 @@ export default function CTABanner() {
         >
           <h2 className="cta-h2">
             <span style={{ display: "block", fontSize: "clamp(40px, 6vw, 68px)", color: "#fff" }}>One call.</span>
-            <span style={{ display: "block", fontSize: "clamp(40px, 6vw, 68px)", background: "linear-gradient(135deg, #c17f24 0%, #fde8a0 50%, #c17f24 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Every power</span>
+            <span style={{ display: "block", fontSize: "clamp(40px, 6vw, 68px)", background: "linear-gradient(135deg, var(--gold) 0%, #fde8a0 50%, var(--gold) 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Every power</span>
             <span style={{ display: "block", fontSize: "clamp(40px, 6vw, 68px)", color: "#fff" }}>need.</span>
           </h2>
         </motion.div>
@@ -76,13 +76,13 @@ export default function CTABanner() {
           transition={{ duration: 0.5, delay: 0.35 }}
           viewport={{ once: true }}
         >
-          <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "0 32px", height: 48, background: "linear-gradient(135deg, #c17f24, #9a6419)", color: "#1a0f00", fontWeight: 800, fontSize: 15, borderRadius: 12, textDecoration: "none", transition: "all 0.2s", boxShadow: "0 8px 24px rgba(193,127,36,0.35)" }}
+          <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "0 32px", height: 48, background: "linear-gradient(135deg, var(--gold), #9a6419)", color: "var(--text-heading)", fontWeight: 800, fontSize: 15, borderRadius: 12, textDecoration: "none", transition: "all 0.2s", boxShadow: "0 8px 24px rgba(193,127,36,0.35)" }}
             onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.04)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}
           >
             🛒 Shop Products
           </Link>
-          <Link href="/services/enquiry" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "0 32px", height: 48, background: "#fff", color: "#0f4c81", fontWeight: 700, fontSize: 15, borderRadius: 12, textDecoration: "none", transition: "all 0.2s", border: "1.5px solid #0f4c81" }}
+          <Link href="/services/enquiry" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "0 32px", height: 48, background: "#fff", color: "var(--navy)", fontWeight: 700, fontSize: 15, borderRadius: 12, textDecoration: "none", transition: "all 0.2s", border: "1.5px solid var(--navy)" }}
             onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.04)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}
           >
@@ -105,7 +105,7 @@ export default function CTABanner() {
         >
           <p style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", margin: "0 0 6px" }}>Or call us directly:</p>
           <a href="tel:+919437611129" className="cta-phone"
-            onMouseEnter={e => (e.currentTarget.style.color = "#c17f24")}
+            onMouseEnter={e => (e.currentTarget.style.color = "var(--gold)")}
             onMouseLeave={e => (e.currentTarget.style.color = "#fff")}
           >
             +91 94376 11129

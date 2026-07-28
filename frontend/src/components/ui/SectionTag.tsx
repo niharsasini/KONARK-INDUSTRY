@@ -8,7 +8,7 @@ interface SectionTagProps {
 export default function SectionTag({ children, className = "" }: SectionTagProps) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest border border-[#0f4c81]/20 text-[#0f4c81] bg-[#0f4c81]/8 ${className}`}
+      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest border border-[var(--navy)]/20 text-[var(--navy)] bg-[var(--navy)]/8 ${className}`}
     >
       {children}
     </span>

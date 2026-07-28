@@ -9,8 +9,8 @@ const CATEGORIES = [
     icon: "🛵",
     title: "Electric Vehicles",
     gradient: "linear-gradient(135deg, #e8f0f8, #d4e4f5)",
-    borderLeft: "#0f4c81",
-    color: "#0f4c81",
+    borderLeft: "var(--navy)",
+    color: "var(--navy)",
     ctaLabel: "Explore EVs →",
     ctaHref: "/products?cat=ev",
     products: ["EV Scooter X1", "E-Rickshaw Standard", "Electric Motorcycle", "EV Car (Upcoming)"],
@@ -20,8 +20,8 @@ const CATEGORIES = [
     icon: "🌀",
     title: "Home Appliances",
     gradient: "linear-gradient(135deg, #fef3e2, #fde8c0)",
-    borderLeft: "#c17f24",
-    color: "#c17f24",
+    borderLeft: "var(--gold)",
+    color: "var(--gold)",
     ctaLabel: "Shop Appliances →",
     ctaHref: "/products?cat=appliance",
     products: ["BLDC Fan 5-Star", "Inverter AC 1.5T", "Android Smart TV", "Induction Cooker"],
@@ -46,7 +46,7 @@ export default function SolutionsSection() {
   const { ref: gridRef, inView: gridIn } = useInView({ threshold: 0.05, triggerOnce: true });
 
   return (
-    <section style={{ background: "#f5f0e8", padding: "96px 24px" }}>
+    <section style={{ background: "var(--bg-page)", padding: "96px 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <motion.div
           ref={headRef}
@@ -57,20 +57,20 @@ export default function SolutionsSection() {
         >
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(193,127,36,0.4)", color: "#c17f24",
+            borderRadius: 999, border: "1px solid rgba(193,127,36,0.4)", color: "var(--gold)",
             fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em",
             background: "rgba(193,127,36,0.1)", marginBottom: 16,
           }}>
             WHAT WE MAKE
           </span>
-          <h2 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, margin: "0 0 12px", lineHeight: 1.2, color: "#1a0f00" }}>
+          <h2 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, margin: "0 0 12px", lineHeight: 1.2, color: "var(--text-heading)" }}>
             Built for{" "}
-            <span style={{ background: "linear-gradient(135deg, #0f4c81, #c17f24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+            <span style={{ background: "linear-gradient(135deg, var(--navy), var(--gold))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               Odisha.
             </span>{" "}
             Made for India.
           </h2>
-          <p style={{ fontSize: 15, color: "#6b5a45", maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
+          <p style={{ fontSize: 15, color: "var(--text-muted)", maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
             One company. Three pillars. Everything you need to live, work, and move sustainably.
           </p>
         </motion.div>
@@ -109,17 +109,17 @@ export default function SolutionsSection() {
               <div style={{ fontSize: 48, lineHeight: 1 }}>{cat.icon}</div>
 
               <div>
-                <h3 style={{ fontSize: 22, fontWeight: 800, color: "#1a0f00", margin: "0 0 8px", lineHeight: 1.3 }}>
+                <h3 style={{ fontSize: 22, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 8px", lineHeight: 1.3 }}>
                   {cat.title}
                 </h3>
-                <p style={{ fontSize: 14, color: "#6b5a45", lineHeight: 1.7, margin: 0 }}>
+                <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7, margin: 0 }}>
                   {cat.desc}
                 </p>
               </div>
 
               <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
                 {cat.products.map((p) => (
-                  <li key={p} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#2c1a0a", fontWeight: 500 }}>
+                  <li key={p} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-body)", fontWeight: 500 }}>
                     <span style={{
                       width: 18, height: 18, borderRadius: "50%", flexShrink: 0,
                       background: `${cat.color}15`, border: `1px solid ${cat.color}40`,

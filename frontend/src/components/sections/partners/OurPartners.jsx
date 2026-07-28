@@ -5,8 +5,8 @@ import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 
 const PARTNERS = [
-  { name: "OPTCL", full: "Odisha Power Transmission Corporation Ltd.", color: "#0f4c81" },
-  { name: "NALCO", full: "National Aluminium Company Limited", color: "#c17f24" },
+  { name: "OPTCL", full: "Odisha Power Transmission Corporation Ltd.", color: "var(--navy)" },
+  { name: "NALCO", full: "National Aluminium Company Limited", color: "var(--gold)" },
   { name: "NTPC", full: "National Thermal Power Corporation", color: "#f97316" },
   { name: "SAIL", full: "Steel Authority of India — Rourkela", color: "#10b981" },
   { name: "GRIDCO", full: "Grid Corporation of Odisha Ltd.", color: "#f59e0b" },
@@ -67,7 +67,7 @@ export default function OurPartners() {
           <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(15,76,129,0.3)", color: "var(--navy)", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(15,76,129,0.08)", marginBottom: 16 }}>Our Partners</span>
           <h2 style={{ fontSize: "clamp(26px, 3.5vw, 44px)", fontWeight: 900, margin: "0 0 12px", lineHeight: 1.2 }}>
             <span style={{ color: "var(--text-heading)" }}>Trusted by </span>
-            <span style={{ background: "linear-gradient(135deg, var(--navy), #c17f24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Industry Leaders</span>
+            <span style={{ background: "linear-gradient(135deg, var(--navy), var(--gold))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Industry Leaders</span>
           </h2>
           <p style={{ fontSize: 15, color: "var(--text-muted)", maxWidth: 480, margin: "0 auto", lineHeight: 1.7 }}>
             We supply to and collaborate with leading institutions, corporations, and government bodies across Odisha and eastern India.

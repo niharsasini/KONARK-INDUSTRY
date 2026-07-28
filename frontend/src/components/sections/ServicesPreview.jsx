@@ -7,13 +7,13 @@ import { useRouter } from "next/navigation";
 
 const SERVICES = [
   {
-    icon: "❄️", color: "#0f4c81",
+    icon: "❄️", color: "var(--navy)",
     title: "AC Repair & Service",
     desc: "Diagnose and fix all brands, same day if booked before noon.",
     link: "/services/enquiry", external: false, cta: "Book →",
   },
   {
-    icon: "⚡", color: "#0f4c81",
+    icon: "⚡", color: "var(--navy)",
     title: "EV Charging Station Installation",
     desc: "Install commercial and home EV charging stations. Certified installation, 1-year warranty on all equipment.",
     link: "https://www.soumyashipower.in/", external: true, cta: "Learn More →",
@@ -26,14 +26,14 @@ const SERVICES = [
     link: "/battery-swap", external: false, cta: "Book a Swap →",
   },
   {
-    icon: "☀️", color: "#c17f24",
+    icon: "☀️", color: "var(--gold)",
     title: "Solar Power Plant Installation",
     desc: "Residential and commercial solar power plants. Rooftop, ground-mount, and captive solar up to 1MW.",
     link: "https://www.soumyashipower.in/", external: true, cta: "Get Solar Quote →",
     partner: "Partner Service",
   },
   {
-    icon: "💨", color: "#0f4c81",
+    icon: "💨", color: "var(--navy)",
     title: "Wind Power Plant Installation",
     desc: "Small and large-scale wind energy solutions. Hybrid wind-solar systems for farms, industries, and institutions.",
     link: "https://www.soumyashipower.in/", external: true, cta: "Explore Wind Energy →",
@@ -69,15 +69,15 @@ function ServiceCard({ service, index, inView }) {
           {service.icon}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ fontSize: 15, fontWeight: 700, color: "#1a0f00", margin: 0 }}>{service.title}</p>
+          <p style={{ fontSize: 15, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>{service.title}</p>
           {service.partner && (
-            <span style={{ fontSize: 10, color: "#8c7a66", fontWeight: 500 }}>
+            <span style={{ fontSize: 10, color: "var(--text-subtle)", fontWeight: 500 }}>
               ↗ {service.partner}
             </span>
           )}
         </div>
       </div>
-      <p style={{ fontSize: 13, color: "#6b5a45", margin: "12px 0 0", lineHeight: 1.65, flex: 1 }}>{service.desc}</p>
+      <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "12px 0 0", lineHeight: 1.65, flex: 1 }}>{service.desc}</p>
       {service.external ? (
         <a
           href={service.link}
@@ -121,7 +121,7 @@ export default function ServicesPreview() {
         >
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(15,76,129,0.2)", color: "#0f4c81",
+            borderRadius: 999, border: "1px solid rgba(15,76,129,0.2)", color: "var(--navy)",
             fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em",
             background: "rgba(15,76,129,0.08)", marginBottom: 20,
           }}>
@@ -129,10 +129,10 @@ export default function ServicesPreview() {
           </span>
 
           <h2 style={{ fontSize: "clamp(32px, 3.5vw, 52px)", fontWeight: 900, lineHeight: 1.15, margin: "0 0 16px" }}>
-            <span style={{ color: "#1a0f00" }}>We Come</span>
+            <span style={{ color: "var(--text-heading)" }}>We Come</span>
             <br />
             <span style={{
-              background: "linear-gradient(270deg, #0f4c81, #5b21b6, #c17f24, #0f4c81)",
+              background: "linear-gradient(270deg, var(--navy), #5b21b6, var(--gold), var(--navy))",
               backgroundSize: "300% 300%",
               animation: "gradient-shift 4s ease infinite",
               WebkitBackgroundClip: "text",
@@ -141,25 +141,25 @@ export default function ServicesPreview() {
             }}>To You.</span>
           </h2>
 
-          <p style={{ fontSize: 15, color: "#6b5a45", lineHeight: 1.8, marginBottom: 32 }}>
+          <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 32 }}>
             Something broken? Our certified technicians reach your home across Odisha — usually the same day you call.
           </p>
 
           <div style={{ marginBottom: 28 }}>
-            <p style={{ fontSize: 64, fontWeight: 900, color: "#0f4c81", margin: 0, lineHeight: 1 }}>2 hrs</p>
-            <p style={{ fontSize: 12, color: "#8c7a66", textTransform: "uppercase", letterSpacing: "0.12em", marginTop: 4 }}>Average response time</p>
+            <p style={{ fontSize: 64, fontWeight: 900, color: "var(--navy)", margin: 0, lineHeight: 1 }}>2 hrs</p>
+            <p style={{ fontSize: 12, color: "var(--text-subtle)", textTransform: "uppercase", letterSpacing: "0.12em", marginTop: 4 }}>Average response time</p>
           </div>
 
           <a
             href="tel:+919437611129"
-            style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 12, textDecoration: "none", transition: "border-color 0.2s", boxShadow: "0 1px 4px rgba(26,15,0,0.06)" }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = "#0f4c81")}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = "#e8dfd0")}
+            style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", background: "#ffffff", border: "1px solid var(--border-subtle)", borderRadius: 12, textDecoration: "none", transition: "border-color 0.2s", boxShadow: "0 1px 4px rgba(26,15,0,0.06)" }}
+            onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--navy)")}
+            onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border-subtle)")}
           >
             <div style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(15,76,129,0.1)", border: "1px solid rgba(15,76,129,0.25)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 18 }}>📞</div>
             <div>
-              <p style={{ fontSize: 11, color: "#8c7a66", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.08em" }}>Call Now</p>
-              <p style={{ fontSize: 17, fontWeight: 800, color: "#0f4c81", margin: 0 }}>+91 94376 11129</p>
+              <p style={{ fontSize: 11, color: "var(--text-subtle)", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.08em" }}>Call Now</p>
+              <p style={{ fontSize: 17, fontWeight: 800, color: "var(--navy)", margin: 0 }}>+91 94376 11129</p>
             </div>
           </a>
         </motion.div>
@@ -174,18 +174,18 @@ export default function ServicesPreview() {
 
       {/* Bottom CTA bar */}
       <div style={{ maxWidth: 1280, margin: "48px auto 0", padding: "0 48px" }}>
-        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 12, padding: "20px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16, boxShadow: "0 2px 8px rgba(26,15,0,0.06)" }}>
-          <p style={{ fontSize: 15, color: "#6b5a45", margin: 0 }}>Need something not listed? Tell us what&apos;s wrong.</p>
+        <div style={{ background: "#ffffff", border: "1px solid var(--border-subtle)", borderRadius: 12, padding: "20px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16, boxShadow: "0 2px 8px rgba(26,15,0,0.06)" }}>
+          <p style={{ fontSize: 15, color: "var(--text-muted)", margin: 0 }}>Need something not listed? Tell us what&apos;s wrong.</p>
           <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
             <button
               onClick={() => router.push("/services/enquiry")}
-              style={{ padding: "10px 22px", background: "linear-gradient(135deg, #0f4c81, #0a3460)", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: "pointer", minHeight: 44 }}
+              style={{ padding: "10px 22px", background: "linear-gradient(135deg, var(--navy), var(--navy-dark))", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: "pointer", minHeight: 44 }}
             >
               Send Enquiry →
             </button>
-            <Link href="/services" style={{ fontSize: 14, color: "#6b5a45", textDecoration: "none", fontWeight: 600, transition: "color 0.2s" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "#0f4c81")}
-              onMouseLeave={e => (e.currentTarget.style.color = "#6b5a45")}
+            <Link href="/services" style={{ fontSize: 14, color: "var(--text-muted)", textDecoration: "none", fontWeight: 600, transition: "color 0.2s" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "var(--navy)")}
+              onMouseLeave={e => (e.currentTarget.style.color = "var(--text-muted)")}
             >
               View all services →
             </Link>

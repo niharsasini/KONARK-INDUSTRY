@@ -65,11 +65,11 @@ export default function EnquiryPage() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const focusStyle = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#0f4c81";
+    e.currentTarget.style.borderColor = "var(--navy)";
     e.currentTarget.style.boxShadow = "0 0 0 3px rgba(15,76,129,0.1)";
   };
   const blurStyle = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#d4c9b8";
+    e.currentTarget.style.borderColor = "var(--border-default)";
     e.currentTarget.style.boxShadow = "none";
   };
 
@@ -99,13 +99,13 @@ export default function EnquiryPage() {
           {/* Breadcrumb */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20, fontSize: 13, color: "var(--text-subtle)" }}>
             <Link href="/" style={{ color: "var(--text-subtle)", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#0f4c81")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#8c7a66")}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-subtle)")}
             >Home</Link>
             <span>›</span>
             <Link href="/services" style={{ color: "var(--text-subtle)", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#0f4c81")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#8c7a66")}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-subtle)")}
             >Services</Link>
             <span>›</span>
             <span style={{ color: "var(--text-muted)" }}>Book a Service</span>
@@ -231,7 +231,7 @@ export default function EnquiryPage() {
                           type="radio" name="urgency" value={opt.value}
                           checked={form.urgency === opt.value}
                           onChange={set("urgency")}
-                          style={{ accentColor: "#0f4c81", width: 16, height: 16 }}
+                          style={{ accentColor: "var(--navy)", width: 16, height: 16 }}
                         />
                         {opt.label}
                       </label>

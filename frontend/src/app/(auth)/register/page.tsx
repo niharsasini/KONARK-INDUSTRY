@@ -35,7 +35,7 @@ function PasswordStrength({ password }: { password: string }) {
   return (
     <div style={{ marginTop: 8, display: "flex", gap: 4, alignItems: "center" }}>
       {[1, 2, 3, 4].map((i) => (
-        <div key={i} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= score ? colors[score] : "#d4c9b8", transition: "background 0.3s" }} />
+        <div key={i} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= score ? colors[score] : "var(--border-default)", transition: "background 0.3s" }} />
       ))}
       <span style={{ fontSize: 11, color: colors[score], fontWeight: 600, marginLeft: 6, minWidth: 40 }}>{labels[score]}</span>
     </div>
@@ -54,11 +54,11 @@ export default function RegisterPage() {
     setForm((f) => ({ ...f, [k]: (e.target as HTMLInputElement).type === "checkbox" ? (e.target as HTMLInputElement).checked : e.target.value }));
 
   const focus = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#0f4c81";
+    e.currentTarget.style.borderColor = "var(--navy)";
     (e.currentTarget.style as any).boxShadow = "0 0 0 3px rgba(15,76,129,0.1)";
   };
   const blur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#d4c9b8";
+    e.currentTarget.style.borderColor = "var(--border-default)";
     (e.currentTarget.style as any).boxShadow = "none";
   };
 
@@ -156,7 +156,7 @@ export default function RegisterPage() {
           <h2 style={{ fontSize: 24, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 6px" }}>Create Your Account</h2>
           <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 28px" }}>
             Already have one?{" "}
-            <Link href="/login" style={{ color: "#0f4c81", textDecoration: "none", fontWeight: 600 }}>Sign in →</Link>
+            <Link href="/login" style={{ color: "var(--navy)", textDecoration: "none", fontWeight: 600 }}>Sign in →</Link>
           </p>
 
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -181,7 +181,7 @@ export default function RegisterPage() {
             <div>
               <label style={LABEL}>City</label>
               <select value={form.city} onChange={set("city")} style={{ ...INPUT, cursor: "pointer" }} onFocus={focus} onBlur={blur}>
-                {CITIES.map((c) => <option key={c} value={c} style={{ background: "#ffffff" }}>{c}</option>)}
+                {CITIES.map((c) => <option key={c} value={c} style={{ background: "var(--bg-card)" }}>{c}</option>)}
               </select>
             </div>
 
@@ -207,16 +207,16 @@ export default function RegisterPage() {
             </div>
 
             <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer", fontSize: 12, color: "var(--text-muted)", lineHeight: 1.5 }}>
-              <input type="checkbox" required checked={form.agree} onChange={(e) => setForm((f) => ({ ...f, agree: e.target.checked }))} style={{ marginTop: 2, accentColor: "#0f4c81", flexShrink: 0 }} />
+              <input type="checkbox" required checked={form.agree} onChange={(e) => setForm((f) => ({ ...f, agree: e.target.checked }))} style={{ marginTop: 2, accentColor: "var(--navy)", flexShrink: 0 }} />
               I agree to the{" "}
-              <Link href="/contact" style={{ color: "#0f4c81", textDecoration: "none" }}>Terms of Service</Link>{" "}
+              <Link href="/contact" style={{ color: "var(--navy)", textDecoration: "none" }}>Terms of Service</Link>{" "}
               and{" "}
-              <Link href="/contact" style={{ color: "#0f4c81", textDecoration: "none" }}>Privacy Policy</Link>
+              <Link href="/contact" style={{ color: "var(--navy)", textDecoration: "none" }}>Privacy Policy</Link>
             </label>
 
-            <button type="submit" disabled={loading} style={{ padding: "14px", background: loading ? "#0a3460" : "var(--grad-navy)", color: "#ffffff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", marginTop: 4, transition: "background 0.2s", boxShadow: "var(--shadow-navy)" }}
-              onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "#0a3460"; }}
-              onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = loading ? "#0a3460" : "#0f4c81"; }}
+            <button type="submit" disabled={loading} style={{ padding: "14px", background: loading ? "var(--navy-dark)" : "var(--grad-navy)", color: "#ffffff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", marginTop: 4, transition: "background 0.2s", boxShadow: "var(--shadow-navy)" }}
+              onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "var(--navy-dark)"; }}
+              onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = loading ? "var(--navy-dark)" : "var(--navy)"; }}
             >
               {loading ? "Creating account..." : "Create Account →"}
             </button>

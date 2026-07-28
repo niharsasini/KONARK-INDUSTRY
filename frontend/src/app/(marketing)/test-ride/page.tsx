@@ -53,11 +53,11 @@ export default function TestRidePage() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const focus = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#0f4c81";
+    e.currentTarget.style.borderColor = "var(--navy)";
     e.currentTarget.style.boxShadow = "0 0 0 3px rgba(15,76,129,0.1)";
   };
   const blur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "#d4c9b8";
+    e.currentTarget.style.borderColor = "var(--border-default)";
     e.currentTarget.style.boxShadow = "none";
   };
 
@@ -206,7 +206,7 @@ export default function TestRidePage() {
                 { icon: "💬", text: "Q&A with our EV expert — no sales pressure" },
                 { icon: "📝", text: "On-spot pricing & EMI options if interested" },
               ].map((item) => (
-                <div key={item.text} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "8px 0", borderBottom: "1px solid #e8dfd0" }}>
+                <div key={item.text} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "8px 0", borderBottom: "1px solid var(--border-subtle)" }}>
                   <span style={{ fontSize: 16, flexShrink: 0 }}>{item.icon}</span>
                   <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>{item.text}</p>
                 </div>
@@ -229,8 +229,8 @@ export default function TestRidePage() {
               color: "var(--text-muted)", fontSize: 14, fontWeight: 600,
               borderRadius: 12, textDecoration: "none", transition: "all 0.2s",
             }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0f4c81"; e.currentTarget.style.color = "#0f4c81"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#d4c9b8"; e.currentTarget.style.color = "#6b5a45"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--navy)"; e.currentTarget.style.color = "var(--navy)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-default)"; e.currentTarget.style.color = "var(--text-muted)"; }}
             >
               Browse All EV Vehicles →
             </Link>

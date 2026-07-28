@@ -36,11 +36,11 @@ export default function LoginPage() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const focus = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.style.borderColor = "#0f4c81";
+    e.currentTarget.style.borderColor = "var(--navy)";
     e.currentTarget.style.boxShadow = "0 0 0 3px rgba(15,76,129,0.1)";
   };
   const blur = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.style.borderColor = "#d4c9b8";
+    e.currentTarget.style.borderColor = "var(--border-default)";
     e.currentTarget.style.boxShadow = "none";
   };
 
@@ -118,7 +118,7 @@ export default function LoginPage() {
           <h2 style={{ fontSize: 26, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 6px" }}>Sign In</h2>
           <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 32px" }}>
             Don't have an account?{" "}
-            <Link href="/register" style={{ color: "#0f4c81", textDecoration: "none", fontWeight: 600 }}>Register free →</Link>
+            <Link href="/register" style={{ color: "var(--navy)", textDecoration: "none", fontWeight: 600 }}>Register free →</Link>
           </p>
 
           {error && (
@@ -136,7 +136,7 @@ export default function LoginPage() {
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 7 }}>
                 <label style={{ fontSize: 11, fontWeight: 600, color: "var(--text-muted)", letterSpacing: "0.08em", textTransform: "uppercase" }}>Password</label>
-                <Link href="/forgot-password" style={{ fontSize: 12, color: "#0f4c81", textDecoration: "none" }}>Forgot password?</Link>
+                <Link href="/forgot-password" style={{ fontSize: 12, color: "var(--navy)", textDecoration: "none" }}>Forgot password?</Link>
               </div>
               <div style={{ position: "relative" }}>
                 <input aria-label="Password" type={showPw ? "text" : "password"} value={form.password} onChange={set("password")} required placeholder="••••••••" style={{ ...INPUT, paddingRight: 44 }} onFocus={focus} onBlur={blur} />
@@ -146,9 +146,9 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <button type="submit" disabled={loading} style={{ padding: "14px", background: loading ? "#0a3460" : "var(--grad-navy)", color: "#ffffff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", transition: "background 0.2s", marginTop: 4, boxShadow: "var(--shadow-navy)" }}
-              onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "#0a3460"; }}
-              onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = loading ? "#0a3460" : "#0f4c81"; }}
+            <button type="submit" disabled={loading} style={{ padding: "14px", background: loading ? "var(--navy-dark)" : "var(--grad-navy)", color: "#ffffff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", transition: "background 0.2s", marginTop: 4, boxShadow: "var(--shadow-navy)" }}
+              onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "var(--navy-dark)"; }}
+              onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = loading ? "var(--navy-dark)" : "var(--navy)"; }}
             >
               {loading ? "Signing in..." : "Sign In →"}
             </button>
@@ -159,8 +159,8 @@ export default function LoginPage() {
             </div>
 
             <Link href="/products" style={{ display: "block", padding: "13px", background: "transparent", border: "1px solid var(--border-default)", color: "var(--text-muted)", fontWeight: 600, fontSize: 14, borderRadius: 10, textDecoration: "none", textAlign: "center", transition: "all 0.2s" }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0f4c81"; e.currentTarget.style.color = "#0f4c81"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#d4c9b8"; e.currentTarget.style.color = "#6b5a45"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--navy)"; e.currentTarget.style.color = "var(--navy)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-default)"; e.currentTarget.style.color = "var(--text-muted)"; }}
             >
               Continue as Guest
             </Link>

@@ -5,7 +5,7 @@ import Breadcrumb from "@/components/ui/Breadcrumb";
 
 const SERVICES = [
   {
-    color: "#0f4c81",
+    color: "var(--navy)",
     icon: "❄️",
     title: "AC Repair & Service",
     desc: "Diagnose and fix all brands, same day if booked before noon.",
@@ -13,7 +13,7 @@ const SERVICES = [
     href: "/services/enquiry", external: false,
   },
   {
-    color: "#0f4c81",
+    color: "var(--navy)",
     icon: "⚡",
     title: "EV Charging Station Installation",
     desc: "Install commercial and home EV charging stations. Certified installation, 1-year warranty on all equipment.",
@@ -29,7 +29,7 @@ const SERVICES = [
     href: "/battery-swap", external: false,
   },
   {
-    color: "#c17f24",
+    color: "var(--gold)",
     icon: "☀️",
     title: "Solar Power Plant Installation",
     desc: "Residential and commercial solar power plants. Rooftop, ground-mount, and captive solar up to 1MW.",
@@ -37,7 +37,7 @@ const SERVICES = [
     href: "https://www.soumyashipower.in/", external: true,
   },
   {
-    color: "#0f4c81",
+    color: "var(--navy)",
     icon: "💨",
     title: "Wind Power Plant Installation",
     desc: "Small and large-scale wind energy solutions. Hybrid wind-solar systems for farms, industries, and institutions.",

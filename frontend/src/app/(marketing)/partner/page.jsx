@@ -5,9 +5,9 @@ import Link from "next/link";
 import { submitEnquiry } from "@/lib/api";
 
 const BENEFITS = [
-  { title: "High Margins", desc: "Competitive pricing models with sustainable long-term profitability.", color: "#0f4c81" },
+  { title: "High Margins", desc: "Competitive pricing models with sustainable long-term profitability.", color: "var(--navy)" },
   { title: "Exclusive Territory", desc: "Protected dealer territories so you're not competing with other Konark partners.", color: "#5b21b6" },
-  { title: "Marketing Support", desc: "Co-branded marketing materials, social assets, and product training.", color: "#c17f24" },
+  { title: "Marketing Support", desc: "Co-branded marketing materials, social assets, and product training.", color: "var(--gold)" },
   { title: "Technical Training", desc: "End-to-end technical support, installation training, and documentation.", color: "#1a7a4a" },
 ];
 

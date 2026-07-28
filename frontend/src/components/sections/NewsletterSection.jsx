@@ -51,7 +51,7 @@ export default function NewsletterSection() {
         </span>
         <h2 style={{ fontSize: 'clamp(22px,3.5vw,36px)', fontWeight: 800, margin: '0 0 12px', lineHeight: 1.2 }}>
           <span style={{ color: 'var(--text-heading)' }}>Get product launches and</span>{' '}
-          <span style={{ background: 'linear-gradient(135deg,#0f4c81,#c17f24)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>offers first.</span>
+          <span style={{ background: 'linear-gradient(135deg,var(--navy),var(--gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>offers first.</span>
         </h2>
         <p style={{ fontSize: 15, color: 'var(--text-muted)', lineHeight: 1.7, margin: '0 0 32px' }}>
           Join 25,000+ customers who get our newsletter. No spam — just new products, service tips, and exclusive deals.

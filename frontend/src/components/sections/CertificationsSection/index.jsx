@@ -53,7 +53,7 @@ export default function CertificationsSection() {
             }}>
               Certified{' '}
               <span style={{
-                background: 'linear-gradient(135deg,var(--navy),#c17f24)',
+                background: 'linear-gradient(135deg,var(--navy),var(--gold))',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',

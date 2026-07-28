@@ -132,8 +132,8 @@ export default function BatterySwapTrackPage() {
                 color: "var(--text-body)", fontSize: 15, padding: "12px 16px", outline: "none",
                 fontFamily: "monospace", letterSpacing: "0.06em",
               }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#0f4c81")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#d4c9b8")}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "var(--navy)")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border-default)")}
             />
             <button type="submit" disabled={loading || !tokenInput.trim()} style={{
               padding: "12px 24px", background: loading ? "var(--border-default)" : "var(--navy)",

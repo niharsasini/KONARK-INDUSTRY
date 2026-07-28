@@ -72,7 +72,7 @@ function FeatureCard({ feature, index, isVisible }) {
             height: 52,
             flexShrink: 0,
             background: iconHovered
-              ? "linear-gradient(135deg, #c17f24, #0f4c81)"
+              ? "linear-gradient(135deg, var(--gold), var(--navy))"
               : "linear-gradient(135deg, rgba(193,127,36,0.2), rgba(15,76,129,0.2))",
             border: "1px solid rgba(193,127,36,0.25)",
             borderRadius: 14,
@@ -125,7 +125,7 @@ export default function WhyKonark() {
               display: "inline-block",
               background: "rgba(193,127,36,0.15)",
               border: "1px solid rgba(193,127,36,0.3)",
-              color: "#c17f24",
+              color: "var(--gold)",
               fontSize: 11,
               fontWeight: 700,
               letterSpacing: "2px",
@@ -203,7 +203,7 @@ export default function WhyKonark() {
                 style={{
                   fontSize: 40,
                   fontWeight: 900,
-                  background: "linear-gradient(135deg, #c17f24, #f5d08a)",
+                  background: "linear-gradient(135deg, var(--gold), #f5d08a)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",

@@ -21,16 +21,16 @@ function MenuItem({ icon, name, desc, href }) {
       <div style={{
         width: 36, height: 36, borderRadius: 10, flexShrink: 0,
         background: hovered
-          ? "linear-gradient(135deg, #0f4c81, #0a3460)"
-          : "linear-gradient(135deg, #f5f0e8, #ede4d5)",
+          ? "linear-gradient(135deg, var(--navy), var(--navy-dark))"
+          : "linear-gradient(135deg, var(--bg-page), var(--bg-surface))",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 18, transition: "all 0.15s ease",
       }}>
         <span style={{ filter: hovered ? "brightness(10)" : "none", transition: "filter 0.15s ease" }}>{icon}</span>
       </div>
       <div>
-        <div style={{ fontSize: 14, fontWeight: 600, color: "#1a0f00" }}>{name}</div>
-        {desc && <div style={{ fontSize: 12, color: "#8c7a66", marginTop: 1 }}>{desc}</div>}
+        <div style={{ fontSize: 14, fontWeight: 600, color: "var(--text-heading)" }}>{name}</div>
+        {desc && <div style={{ fontSize: 12, color: "var(--text-subtle)", marginTop: 1 }}>{desc}</div>}
       </div>
     </Link>
   );
@@ -62,7 +62,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         left: "50%",
         width: 640,
         background: "#ffffff",
-        border: "1px solid #e8dfd0",
+        border: "1px solid var(--border-subtle)",
         borderRadius: 20,
         boxShadow: "0 20px 60px rgba(26,15,0,0.12), 0 0 0 1px rgba(212,201,184,0.3)",
         padding: 8,
@@ -75,13 +75,13 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
 
       {/* Header */}
       <div style={{
-        background: "linear-gradient(135deg, #f5f0e8, #ede4d5)",
+        background: "linear-gradient(135deg, var(--bg-page), var(--bg-surface))",
         borderRadius: 14, padding: "16px 20px", marginBottom: 8,
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
-        <span style={{ fontSize: 18, fontWeight: 800, color: "#1a0f00" }}>Our Products</span>
+        <span style={{ fontSize: 18, fontWeight: 800, color: "var(--text-heading)" }}>Our Products</span>
         <span style={{
-          fontSize: 12, color: "#6b5a45", background: "rgba(255,255,255,0.7)",
+          fontSize: 12, color: "var(--text-muted)", background: "rgba(255,255,255,0.7)",
           padding: "4px 12px", borderRadius: 999, fontWeight: 500,
         }}>
           29 Products Available
@@ -93,7 +93,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         {/* EV Vehicles */}
         <div style={{ paddingRight: 8, borderRight: "1px solid #f0ebe2" }}>
           <div style={{
-            fontSize: 10, fontWeight: 700, color: "#0f4c81",
+            fontSize: 10, fontWeight: 700, color: "var(--navy)",
             letterSpacing: "1.5px", textTransform: "uppercase",
             padding: "8px 12px 4px",
           }}>
@@ -108,7 +108,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         {/* Home & Industrial */}
         <div style={{ paddingLeft: 8 }}>
           <div style={{
-            fontSize: 10, fontWeight: 700, color: "#0f4c81",
+            fontSize: 10, fontWeight: 700, color: "var(--navy)",
             letterSpacing: "1.5px", textTransform: "uppercase",
             padding: "8px 12px 4px",
           }}>
@@ -130,16 +130,16 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
       }}>
         <Link
           href="/products"
-          style={{ fontSize: 13, color: "#6b5a45", textDecoration: "none", fontWeight: 500, transition: "color 0.15s" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#0f4c81")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#6b5a45")}
+          style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none", fontWeight: 500, transition: "color 0.15s" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy)")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
         >
           View all products →
         </Link>
         <Link
           href="/products"
           style={{
-            background: "linear-gradient(135deg, #0f4c81, #0a3460)",
+            background: "linear-gradient(135deg, var(--navy), var(--navy-dark))",
             color: "#fff", padding: "8px 20px", borderRadius: 8,
             textDecoration: "none", fontWeight: 700, fontSize: 13,
             boxShadow: "0 4px 12px rgba(15,76,129,0.25)",

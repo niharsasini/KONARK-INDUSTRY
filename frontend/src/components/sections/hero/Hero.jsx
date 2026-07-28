@@ -42,7 +42,7 @@ const DECK = [
     price: p.price,
     slug: p.slug,
     badge: "FEATURED",
-    badgeColor: "#c17f24",
+    badgeColor: "var(--gold)",
     specs: [p.category.replace("Electric Vehicles", "Electric"), `⭐ ${p.rating}`],
   })),
   ...industrialProducts.map((p) => ({
@@ -52,7 +52,7 @@ const DECK = [
     price: p.isUpcoming ? null : p.price,
     slug: p.slug,
     badge: p.isUpcoming ? "UPCOMING" : p.isNew ? "NEW" : "FEATURED",
-    badgeColor: p.isUpcoming ? "#a78bfa" : "#c17f24",
+    badgeColor: p.isUpcoming ? "#a78bfa" : "var(--gold)",
     specs: [p.category, `⭐ ${p.rating}`],
   })),
   ...CAR_IMAGES.map((src) => ({
@@ -145,11 +145,11 @@ export default function Hero() {
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
         <div className="hero-cream-panel" style={{
           position: "absolute", left: 0, top: 0, width: "60%", height: "100%",
-          background: "linear-gradient(135deg, #f5f0e8, #e3dacd)",
+          background: "linear-gradient(135deg, var(--bg-page), var(--bg-surface))",
         }} />
         <div className="hero-dark-panel" style={{
           position: "absolute", right: 0, top: 0, width: "45%", height: "100%",
-          background: "linear-gradient(135deg, #0f4c81, #1a0f00)",
+          background: "linear-gradient(135deg, var(--navy), var(--text-heading))",
           clipPath: "polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%)",
         }} />
         <div className="hero-dark-panel" style={{
@@ -163,7 +163,7 @@ export default function Hero() {
         }} />
         <div style={{
           position: "absolute", bottom: 0, left: 0, right: 0, height: 3,
-          background: "linear-gradient(90deg, transparent, #c17f24, transparent)",
+          background: "linear-gradient(90deg, transparent, var(--gold), transparent)",
         }} />
       </div>
 
@@ -181,12 +181,12 @@ export default function Hero() {
             <span style={{
               display: "inline-flex", alignItems: "center", gap: 8,
               background: "rgba(15,76,129,0.1)", border: "1px solid rgba(15,76,129,0.3)",
-              color: "#0f4c81", fontSize: 12, fontWeight: 700,
+              color: "var(--navy)", fontSize: 12, fontWeight: 700,
               padding: "6px 16px", borderRadius: 20,
             }}>
               <span style={{
                 width: 8, height: 8, borderRadius: "50%",
-                background: "#0f4c81",
+                background: "var(--navy)",
                 animation: "pulse-glow 2s ease infinite",
                 display: "inline-block",
               }} />
@@ -208,7 +208,7 @@ export default function Hero() {
               >
                 <h1 className="hero-headline" style={{
                   fontSize: "clamp(32px, 8vw, 72px)", fontWeight: 900,
-                  color: "#1a0f00", lineHeight: 1.1, letterSpacing: "-2px", margin: 0,
+                  color: "var(--text-heading)", lineHeight: 1.1, letterSpacing: "-2px", margin: 0,
                 }}>
                   {line.text}
                 </h1>
@@ -221,7 +221,7 @@ export default function Hero() {
             >
               <span className="hero-headline" style={{
                 display: "block",
-                background: "linear-gradient(135deg, #0f4c81 0%, #c17f24 100%)",
+                background: "linear-gradient(135deg, var(--navy) 0%, var(--gold) 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -246,7 +246,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.6 }}
-            style={{ fontSize: 17, color: "#6b5a45", lineHeight: 1.7, marginTop: 20, maxWidth: 480 }}
+            style={{ fontSize: 17, color: "var(--text-muted)", lineHeight: 1.7, marginTop: 20, maxWidth: 480 }}
           >
             {heroSubheading.split("\n").map((line, i) => (
               <span key={i}>{line}{i < heroSubheading.split("\n").length - 1 ? <br /> : null}</span>
@@ -266,7 +266,7 @@ export default function Hero() {
               whileTap={{ scale: 0.97 }}
               onClick={() => router.push("/products")}
               style={{
-                background: "linear-gradient(135deg, #0f4c81, #0a3460)",
+                background: "linear-gradient(135deg, var(--navy), var(--navy-dark))",
                 color: "#fff", padding: "14px 32px", border: "none",
                 borderRadius: 10, fontSize: 16, fontWeight: 700, cursor: "pointer",
                 boxShadow: "0 8px 24px rgba(15,76,129,0.35)", transition: "all 0.3s ease",
@@ -281,12 +281,12 @@ export default function Hero() {
               whileTap={{ scale: 0.97 }}
               onClick={() => router.push("/services/enquiry")}
               style={{
-                background: "transparent", border: "2px solid #1a0f00", color: "#1a0f00",
+                background: "transparent", border: "2px solid var(--text-heading)", color: "var(--text-heading)",
                 padding: "12px 32px", borderRadius: 10, fontSize: 16, fontWeight: 700, cursor: "pointer",
                 transition: "all 0.2s",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "#1a0f00"; e.currentTarget.style.color = "#f5f0e8"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#1a0f00"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--text-heading)"; e.currentTarget.style.color = "var(--bg-page)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--text-heading)"; }}
             >
               Book a Service →
             </motion.button>
@@ -298,7 +298,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.0, duration: 0.5 }}
-            style={{ marginTop: 24, display: "flex", gap: 20, flexWrap: "wrap", fontSize: 13, color: "#6b5a45" }}
+            style={{ marginTop: 24, display: "flex", gap: 20, flexWrap: "wrap", fontSize: 13, color: "var(--text-muted)" }}
           >
             {TRUST_PILLS.map((pill) => (
               <span className="hero-trust-pill" key={pill}>{pill}</span>
@@ -394,7 +394,7 @@ export default function Hero() {
                   <p style={{ color: "#fff", fontSize: 18, fontWeight: 800, margin: "0 0 4px", lineHeight: 1.2 }}>
                     {card.name}
                   </p>
-                  <p style={{ color: "#c17f24", fontSize: 17, fontWeight: 700, margin: "0 0 10px" }}>
+                  <p style={{ color: "var(--gold)", fontSize: 17, fontWeight: 700, margin: "0 0 10px" }}>
                     {card.price ? `₹${card.price.toLocaleString("en-IN")}` : "Coming Soon"}
                   </p>
                   <div style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
@@ -405,11 +405,11 @@ export default function Hero() {
                     ))}
                   </div>
                   {card.slug ? (
-                    <Link href={`/products/${card.slug}`} onClick={(e) => e.stopPropagation()} style={{ fontSize: 13, color: "#c17f24", textDecoration: "none", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 4 }}>
+                    <Link href={`/products/${card.slug}`} onClick={(e) => e.stopPropagation()} style={{ fontSize: 13, color: "var(--gold)", textDecoration: "none", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 4 }}>
                       View Product →
                     </Link>
                   ) : (
-                    <Link href="/contact?interest=ev-car" onClick={(e) => e.stopPropagation()} style={{ fontSize: 13, color: "#c17f24", textDecoration: "none", fontWeight: 600 }}>
+                    <Link href="/contact?interest=ev-car" onClick={(e) => e.stopPropagation()} style={{ fontSize: 13, color: "var(--gold)", textDecoration: "none", fontWeight: 600 }}>
                       Register Interest →
                     </Link>
                   )}
@@ -427,7 +427,7 @@ export default function Hero() {
                 style={{
                   width: i === current ? 24 : 8,
                   height: 8, borderRadius: 4,
-                  background: i === current ? "#c17f24" : "rgba(255,255,255,0.2)",
+                  background: i === current ? "var(--gold)" : "rgba(255,255,255,0.2)",
                   cursor: "pointer",
                   transition: "all 300ms",
                 }}
@@ -456,8 +456,8 @@ export default function Hero() {
                   transition: "all 0.2s",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "#c17f24";
-                  e.currentTarget.style.color = "#c17f24";
+                  e.currentTarget.style.borderColor = "var(--gold)";
+                  e.currentTarget.style.color = "var(--gold)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
@@ -480,11 +480,11 @@ export default function Hero() {
           position: "absolute", bottom: 28, left: "50%",
           transform: "translateX(-50%)",
           display: "flex", flexDirection: "column", alignItems: "center",
-          gap: 4, color: "#6b5a45", zIndex: 10,
+          gap: 4, color: "var(--text-muted)", zIndex: 10,
         }}
       >
         <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase" }}>Scroll</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18, color: "#0f4c81" }}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18, color: "var(--navy)" }}>
           <path d="M6 9l6 6 6-6" />
         </svg>
       </motion.div>

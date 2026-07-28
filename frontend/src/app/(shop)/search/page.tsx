@@ -111,7 +111,7 @@ function SearchResults() {
             {query ? (
               <>
                 Results for{' '}
-                <span style={{ background: 'linear-gradient(135deg,var(--navy),#c17f24)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <span style={{ background: 'linear-gradient(135deg,var(--navy),var(--gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   "{query}"
                 </span>
               </>

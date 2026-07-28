@@ -24,11 +24,11 @@ export default function ForgotPasswordPage() {
   const [error, setError] = useState("");
 
   const focus = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.style.borderColor = "#0f4c81";
+    e.currentTarget.style.borderColor = "var(--navy)";
     e.currentTarget.style.boxShadow = "0 0 0 3px rgba(15,76,129,0.1)";
   };
   const blur = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.style.borderColor = "#d4c9b8";
+    e.currentTarget.style.borderColor = "var(--border-default)";
     e.currentTarget.style.boxShadow = "none";
   };
 
@@ -84,14 +84,14 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              style={{ padding: "14px", background: loading ? "#0a3460" : "var(--grad-navy)", color: "#ffffff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", boxShadow: "var(--shadow-navy)" }}
+              style={{ padding: "14px", background: loading ? "var(--navy-dark)" : "var(--grad-navy)", color: "#ffffff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", boxShadow: "var(--shadow-navy)" }}
             >
               {loading ? "Sending..." : "Send Reset Link"}
             </button>
           </form>
         )}
 
-        <Link href="/login" style={{ display: "block", marginTop: 20, fontSize: 13, color: "#0f4c81", textDecoration: "none", textAlign: "center" }}>
+        <Link href="/login" style={{ display: "block", marginTop: 20, fontSize: 13, color: "var(--navy)", textDecoration: "none", textAlign: "center" }}>
           ← Back to Login
         </Link>
       </div>

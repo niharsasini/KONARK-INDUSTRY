@@ -6,21 +6,21 @@ const BANNER_HEIGHT = 40;
 
 const BANNER_STYLES: Record<string, { bg: string; accent: string; icon: string; label: string; text: string }> = {
   announcement: {
-    bg: "linear-gradient(90deg, #0f4c81, #1a6aab, #0f4c81)",
+    bg: "linear-gradient(90deg, var(--navy), #1a6aab, var(--navy))",
     accent: "#fde8a0",
     text: "#fff",
     icon: "📢",
     label: "ANNOUNCEMENT",
   },
   new_product: {
-    bg: "linear-gradient(90deg, #1a0f00, #2c1a0a, #1a0f00)",
-    accent: "#c17f24",
-    text: "#f5f0e8",
+    bg: "linear-gradient(90deg, var(--text-heading), var(--text-body), var(--text-heading))",
+    accent: "var(--gold)",
+    text: "var(--bg-page)",
     icon: "🆕",
     label: "NEW PRODUCT",
   },
   offer: {
-    bg: "linear-gradient(90deg, #9a6419, #c17f24, #9a6419)",
+    bg: "linear-gradient(90deg, #9a6419, var(--gold), #9a6419)",
     accent: "#fde8a0",
     text: "#fff",
     icon: "🔥",

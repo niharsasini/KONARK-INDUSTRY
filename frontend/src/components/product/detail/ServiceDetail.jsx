@@ -118,7 +118,7 @@ export default function ServiceDetail({ product }) {
                 href={product.externalLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "linear-gradient(135deg, #c17f24, #9a6419)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "linear-gradient(135deg, var(--gold), #9a6419)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
               >
                 Visit Partner Site →
               </a>
@@ -135,7 +135,7 @@ export default function ServiceDetail({ product }) {
               </div>
               <Link
                 href={product.internalLink}
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "linear-gradient(135deg, #c17f24, #9a6419)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "linear-gradient(135deg, var(--gold), #9a6419)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
               >
                 Book a Swap →
               </Link>
@@ -192,9 +192,9 @@ export default function ServiceDetail({ product }) {
               <button
                 type="submit"
                 disabled={submitting}
-                style={{ marginTop: 4, padding: "14px", background: "linear-gradient(135deg, #c17f24, #9a6419)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: submitting ? "not-allowed" : "pointer", transition: "background 0.2s", opacity: submitting ? 0.7 : 1 }}
+                style={{ marginTop: 4, padding: "14px", background: "linear-gradient(135deg, var(--gold), #9a6419)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: submitting ? "not-allowed" : "pointer", transition: "background 0.2s", opacity: submitting ? 0.7 : 1 }}
                 onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.background = "var(--gold-dark)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, #c17f24, #9a6419)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, var(--gold), #9a6419)"; }}
               >
                 {submitting ? "Booking..." : "Book This Service →"}
               </button>
