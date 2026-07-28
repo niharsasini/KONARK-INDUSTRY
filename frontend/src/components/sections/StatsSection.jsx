@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
 const STATS = [
-  { icon: "⚡", color: "var(--navy)", num: 10, suffix: "+", label: "Years of Excellence", desc: "Founded 2014 in Bhubaneswar" },
-  { icon: "👥", color: "#5b21b6", num: 25000, suffix: "+", label: "Happy Customers", desc: "Homes, farms & factories" },
-  { icon: "📦", color: "var(--gold)", num: 50, suffix: "+", label: "Products & Services", desc: "EVs, batteries, appliances" },
-  { icon: "⭐", color: "#d97706", num: 99, suffix: "%", label: "Satisfaction Rate", desc: "Rated by verified buyers" },
+  { icon: "⚡", color: "#0D518C", num: 10, suffix: "+", label: "Years of Excellence", desc: "Founded 2014 in Bhubaneswar" },
+  { icon: "👥", color: "#4FC3F7", num: 25000, suffix: "+", label: "Happy Customers", desc: "Homes, farms & factories" },
+  { icon: "📦", color: "#F4C430", num: 50, suffix: "+", label: "Products & Services", desc: "EVs, batteries, appliances" },
+  { icon: "⭐", color: "#34C78A", num: 99, suffix: "%", label: "Satisfaction Rate", desc: "Rated by verified buyers" },
 ];
 
 function AnimatedNumber({ target, suffix, active }) {

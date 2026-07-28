@@ -28,9 +28,9 @@ function SocialIcon({ href, label, children }) {
       aria-label={label}
       target="_blank"
       rel="noopener noreferrer"
-      style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", transition: "all 0.2s", textDecoration: "none" }}
-      onMouseEnter={(e) => { e.currentTarget.style.background = "var(--navy)"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; }}
+      style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(92,103,149,0.2)", background: "rgba(22,41,82,0.5)", display: "flex", alignItems: "center", justifyContent: "center", color: "#7B8DB8", transition: "all 0.2s", textDecoration: "none" }}
+      onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(13,81,140,0.3)"; e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)"; e.currentTarget.style.color = "#4FC3F7"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(22,41,82,0.5)"; e.currentTarget.style.borderColor = "rgba(92,103,149,0.2)"; e.currentTarget.style.color = "#7B8DB8"; }}
     >
       {children}
     </a>
@@ -72,30 +72,30 @@ export default function Footer() {
   ].filter((s) => s.href);
 
   return (
-    <footer style={{ background: "var(--text-heading)", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+    <footer style={{ background: "#0A0E1A", borderTop: "1px solid rgba(92,103,149,0.15)" }}>
       {/* CTA Band */}
       <div className="footer-top footer-top-cta">
         <div className="footer-top-inner">
-          <h2 style={{ fontSize: 28, fontWeight: 700, color: "var(--bg-page)", margin: "0 0 8px" }}>
+          <h2 style={{ fontSize: 28, fontWeight: 700, color: "#E8F4FF", margin: "0 0 8px" }}>
             Ready to power your future?
           </h2>
-          <p style={{ color: "#c4b8a5", fontSize: 15, margin: "0 0 24px" }}>
+          <p style={{ color: "#7B8DB8", fontSize: 15, margin: "0 0 24px" }}>
             Join 25,000+ homes, businesses, and industries already running on Konark.
           </p>
           <div className="footer-top-buttons" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <Link
               href="/products"
-              style={{ padding: "12px 28px", background: "linear-gradient(135deg, var(--navy), var(--navy-dark))", color: "#fff", fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: "none", transition: "all 0.2s", display: "inline-block", boxShadow: "0 4px 12px rgba(15,76,129,0.3)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 6px 20px rgba(15,76,129,0.4)")}
-              onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 12px rgba(15,76,129,0.3)")}
+              style={{ padding: "12px 28px", background: "var(--grad-primary)", color: "#E8F4FF", fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: "none", transition: "all 0.2s", display: "inline-block", boxShadow: "0 4px 12px rgba(13,81,140,0.3)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 6px 20px rgba(13,81,140,0.4)")}
+              onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 12px rgba(13,81,140,0.3)")}
             >
               Explore Products
             </Link>
             <Link
               href="/contact"
-              style={{ padding: "12px 28px", background: "transparent", color: "var(--bg-page)", fontWeight: 600, fontSize: 14, borderRadius: 8, textDecoration: "none", border: "1px solid rgba(255,255,255,0.15)", transition: "all 0.2s", display: "inline-block" }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.color = "var(--gold)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.color = "var(--bg-page)"; }}
+              style={{ padding: "12px 28px", background: "transparent", color: "#E8F4FF", fontWeight: 600, fontSize: 14, borderRadius: 8, textDecoration: "none", border: "1px solid rgba(92,103,149,0.25)", transition: "all 0.2s", display: "inline-block" }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#F4C430"; e.currentTarget.style.color = "#F4C430"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.25)"; e.currentTarget.style.color = "#E8F4FF"; }}
             >
               Contact Us
             </Link>
@@ -108,18 +108,18 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, textDecoration: "none" }}>
-            <div style={{ width: 36, height: 36, borderRadius: "50%", border: "2px solid var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(193,127,36,0.1)" }}>
+            <div style={{ width: 36, height: 36, borderRadius: "50%", border: "2px solid var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(244,196,48,0.1)" }}>
               <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}>
                 <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" />
                 <circle cx="12" cy="12" r="3" fill="var(--gold)" />
               </svg>
             </div>
             <div>
-              <span style={{ display: "block", fontSize: 15, fontWeight: 700, color: "#fff" }}>KONARK</span>
-              <span style={{ display: "block", fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", color: "var(--gold)", textTransform: "uppercase" }}>INDUSTRY</span>
+              <span style={{ display: "block", fontSize: 15, fontWeight: 700, color: "#E8F4FF" }}>KONARK</span>
+              <span style={{ display: "block", fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", color: "#5C6795", textTransform: "uppercase" }}>INDUSTRY</span>
             </div>
           </Link>
-          <p style={{ fontSize: 13, color: "#c4b8a5", lineHeight: 1.7, marginBottom: 20, whiteSpace: "pre-line" }}>
+          <p style={{ fontSize: 13, color: "#7B8DB8", lineHeight: 1.7, marginBottom: 20, whiteSpace: "pre-line" }}>
             {tagline}
           </p>
           <div style={{ display: "flex", gap: 8 }}>
@@ -133,13 +133,13 @@ export default function Footer() {
 
         {/* Products */}
         <div>
-          <h4 style={{ fontSize: 13, fontWeight: 700, color: "#fff", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Products</h4>
+          <h4 style={{ fontSize: 13, fontWeight: 700, color: "#E8F4FF", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Products</h4>
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
             {PRODUCT_LINKS.map((l) => (
               <li key={l.label}>
-                <Link href={l.href} style={{ fontSize: 13, color: "#c4b8a5", textDecoration: "none", transition: "color 0.2s" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--bg-page)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#c4b8a5")}
+                <Link href={l.href} style={{ fontSize: 13, color: "#5C6795", textDecoration: "none", transition: "color 0.2s" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#4FC3F7")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#5C6795")}
                 >
                   {l.label}
                 </Link>
@@ -150,13 +150,13 @@ export default function Footer() {
 
         {/* Company */}
         <div>
-          <h4 style={{ fontSize: 13, fontWeight: 700, color: "#fff", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Company</h4>
+          <h4 style={{ fontSize: 13, fontWeight: 700, color: "#E8F4FF", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Company</h4>
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
             {COMPANY_LINKS.map((l) => (
               <li key={l.label}>
-                <Link href={l.href} style={{ fontSize: 13, color: "#c4b8a5", textDecoration: "none", transition: "color 0.2s" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--bg-page)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#c4b8a5")}
+                <Link href={l.href} style={{ fontSize: 13, color: "#5C6795", textDecoration: "none", transition: "color 0.2s" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#4FC3F7")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#5C6795")}
                 >
                   {l.label}
                 </Link>
@@ -167,7 +167,7 @@ export default function Footer() {
 
         {/* Contact */}
         <div>
-          <h4 style={{ fontSize: 13, fontWeight: 700, color: "#fff", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Contact</h4>
+          <h4 style={{ fontSize: 13, fontWeight: 700, color: "#E8F4FF", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Contact</h4>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {[
               { label: "Address", value: "Bhimatangi Housing Colony,\nBhubaneswar, Odisha 751002" },
@@ -176,8 +176,8 @@ export default function Footer() {
               { label: "Hours", value: "Mon–Sat, 9AM–6PM IST" },
             ].map((item) => (
               <div key={item.label}>
-                <p style={{ fontSize: 11, color: "var(--text-subtle)", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.1em" }}>{item.label}</p>
-                <p style={{ fontSize: 13, color: "var(--bg-page)", margin: 0, whiteSpace: "pre-line" }}>{item.value}</p>
+                <p style={{ fontSize: 11, color: "#4A5880", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.1em" }}>{item.label}</p>
+                <p style={{ fontSize: 13, color: "#B8D0E8", margin: 0, whiteSpace: "pre-line" }}>{item.value}</p>
               </div>
             ))}
           </div>
@@ -194,9 +194,9 @@ export default function Footer() {
           {" "}·{" "}
           <Link href="/contact" style={{ color: "var(--text-subtle)", textDecoration: "none" }}>Sitemap</Link>
         </p>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 12px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 12px", border: "1px solid rgba(92,103,149,0.15)", borderRadius: 6 }}>
           <span style={{ fontSize: 16 }}>🇮🇳</span>
-          <span style={{ fontSize: 12, color: "#c4b8a5", fontWeight: 600 }}>Make in India</span>
+          <span style={{ fontSize: 12, color: "#7B8DB8", fontWeight: 600 }}>Make in India</span>
         </div>
       </div>
     </footer>

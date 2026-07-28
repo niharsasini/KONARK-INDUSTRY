@@ -7,33 +7,33 @@ import { useRouter } from "next/navigation";
 
 const SERVICES = [
   {
-    icon: "❄️", color: "var(--navy)",
+    icon: "❄️", color: "#0D518C",
     title: "AC Repair & Service",
     desc: "Diagnose and fix all brands, same day if booked before noon.",
     link: "/services/enquiry", external: false, cta: "Book →",
   },
   {
-    icon: "⚡", color: "var(--navy)",
+    icon: "⚡", color: "#0D518C",
     title: "EV Charging Station Installation",
     desc: "Install commercial and home EV charging stations. Certified installation, 1-year warranty on all equipment.",
     link: "https://www.soumyashipower.in/", external: true, cta: "Learn More →",
     partner: "Partner Service",
   },
   {
-    icon: "🔋", color: "#5b21b6",
+    icon: "🔋", color: "#4FC3F7",
     title: "Battery Swap Service",
     desc: "Exchange your discharged EV battery for a fully charged one. Home pickup available. Get a swap token instantly.",
     link: "/battery-swap", external: false, cta: "Book a Swap →",
   },
   {
-    icon: "☀️", color: "var(--gold)",
+    icon: "☀️", color: "#F4C430",
     title: "Solar Power Plant Installation",
     desc: "Residential and commercial solar power plants. Rooftop, ground-mount, and captive solar up to 1MW.",
     link: "https://www.soumyashipower.in/", external: true, cta: "Get Solar Quote →",
     partner: "Partner Service",
   },
   {
-    icon: "💨", color: "var(--navy)",
+    icon: "💨", color: "#0D518C",
     title: "Wind Power Plant Installation",
     desc: "Small and large-scale wind energy solutions. Hybrid wind-solar systems for farms, industries, and institutions.",
     link: "https://www.soumyashipower.in/", external: true, cta: "Explore Wind Energy →",
@@ -54,22 +54,23 @@ function ServiceCard({ service, index, inView }) {
       onMouseLeave={() => setHovered(false)}
       className="service-glass-card"
       style={{
-        borderLeft: `4px solid ${service.color}`,
-        transform: hovered ? "translateY(-4px)" : "translateY(0)",
-        boxShadow: hovered ? "0 12px 32px rgba(26,15,0,0.1)" : "0 2px 8px rgba(26,15,0,0.06)",
+        borderLeft: `3px solid ${hovered ? "#4FC3F7" : service.color}`,
+        background: hovered ? "rgba(22,41,82,0.8)" : "rgba(22,41,82,0.5)",
+        transform: hovered ? "translateX(4px)" : "translateX(0)",
+        boxShadow: hovered ? "0 8px 32px rgba(10,14,26,0.4)" : "none",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <div style={{
-          width: 40, height: 40, borderRadius: "50%",
-          background: `${service.color}18`, border: `1px solid ${service.color}40`,
+          width: 40, height: 40, borderRadius: 12,
+          background: "rgba(13,81,140,0.2)", border: "1px solid rgba(13,81,140,0.3)",
           display: "flex", alignItems: "center", justifyContent: "center",
           fontSize: 18, flexShrink: 0,
         }}>
           {service.icon}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ fontSize: 15, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>{service.title}</p>
+          <p style={{ fontSize: 17, fontWeight: 700, color: "#E8F4FF", margin: 0 }}>{service.title}</p>
           {service.partner && (
             <span style={{ fontSize: 10, color: "var(--text-subtle)", fontWeight: 500 }}>
               ↗ {service.partner}
@@ -77,7 +78,7 @@ function ServiceCard({ service, index, inView }) {
           )}
         </div>
       </div>
-      <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "12px 0 0", lineHeight: 1.65, flex: 1 }}>{service.desc}</p>
+      <p style={{ fontSize: 13, color: "#4A5880", margin: "12px 0 0", lineHeight: 1.65, flex: 1 }}>{service.desc}</p>
       {service.external ? (
         <a
           href={service.link}
@@ -119,26 +120,14 @@ export default function ServicesPreview() {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="services-left services-left-sticky"
         >
-          <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(15,76,129,0.2)", color: "var(--navy)",
-            fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em",
-            background: "rgba(15,76,129,0.08)", marginBottom: 20,
-          }}>
+          <span className="section-tag">
             OUR SERVICES
           </span>
 
           <h2 style={{ fontSize: "clamp(32px, 3.5vw, 52px)", fontWeight: 900, lineHeight: 1.15, margin: "0 0 16px" }}>
             <span style={{ color: "var(--text-heading)" }}>We Come</span>
             <br />
-            <span style={{
-              background: "linear-gradient(270deg, var(--navy), #5b21b6, var(--gold), var(--navy))",
-              backgroundSize: "300% 300%",
-              animation: "gradient-shift 4s ease infinite",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}>To You.</span>
+            <span className="gradient-text">To You.</span>
           </h2>
 
           <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 32 }}>
@@ -146,20 +135,20 @@ export default function ServicesPreview() {
           </p>
 
           <div style={{ marginBottom: 28 }}>
-            <p style={{ fontSize: 64, fontWeight: 900, color: "var(--navy)", margin: 0, lineHeight: 1 }}>2 hrs</p>
+            <p style={{ fontSize: 64, fontWeight: 900, color: "#4FC3F7", margin: 0, lineHeight: 1 }}>2 hrs</p>
             <p style={{ fontSize: 12, color: "var(--text-subtle)", textTransform: "uppercase", letterSpacing: "0.12em", marginTop: 4 }}>Average response time</p>
           </div>
 
           <a
             href="tel:+919437611129"
-            style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", background: "#ffffff", border: "1px solid var(--border-subtle)", borderRadius: 12, textDecoration: "none", transition: "border-color 0.2s", boxShadow: "0 1px 4px rgba(26,15,0,0.06)" }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--navy)")}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border-subtle)")}
+            style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", background: "rgba(22,41,82,0.5)", border: "1px solid rgba(92,103,149,0.15)", borderRadius: 12, textDecoration: "none", transition: "border-color 0.2s" }}
+            onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)")}
+            onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(92,103,149,0.15)")}
           >
-            <div style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(15,76,129,0.1)", border: "1px solid rgba(15,76,129,0.25)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 18 }}>📞</div>
+            <div style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(13,81,140,0.2)", border: "1px solid rgba(13,81,140,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 18 }}>📞</div>
             <div>
               <p style={{ fontSize: 11, color: "var(--text-subtle)", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.08em" }}>Call Now</p>
-              <p style={{ fontSize: 17, fontWeight: 800, color: "var(--navy)", margin: 0 }}>+91 94376 11129</p>
+              <p style={{ fontSize: 17, fontWeight: 800, color: "#4FC3F7", margin: 0 }}>+91 94376 11129</p>
             </div>
           </a>
         </motion.div>
@@ -174,17 +163,17 @@ export default function ServicesPreview() {
 
       {/* Bottom CTA bar */}
       <div style={{ maxWidth: 1280, margin: "48px auto 0", padding: "0 48px" }}>
-        <div style={{ background: "#ffffff", border: "1px solid var(--border-subtle)", borderRadius: 12, padding: "20px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16, boxShadow: "0 2px 8px rgba(26,15,0,0.06)" }}>
+        <div style={{ background: "rgba(22,41,82,0.5)", border: "1px solid rgba(92,103,149,0.15)", borderRadius: 12, padding: "20px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
           <p style={{ fontSize: 15, color: "var(--text-muted)", margin: 0 }}>Need something not listed? Tell us what&apos;s wrong.</p>
           <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
             <button
               onClick={() => router.push("/services/enquiry")}
-              style={{ padding: "10px 22px", background: "linear-gradient(135deg, var(--navy), var(--navy-dark))", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: "pointer", minHeight: 44 }}
+              style={{ padding: "10px 22px", background: "var(--grad-primary)", color: "#E8F4FF", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: "pointer", minHeight: 44 }}
             >
               Send Enquiry →
             </button>
             <Link href="/services" style={{ fontSize: 14, color: "var(--text-muted)", textDecoration: "none", fontWeight: 600, transition: "color 0.2s" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "var(--navy)")}
+              onMouseEnter={e => (e.currentTarget.style.color = "#4FC3F7")}
               onMouseLeave={e => (e.currentTarget.style.color = "var(--text-muted)")}
             >
               View all services →

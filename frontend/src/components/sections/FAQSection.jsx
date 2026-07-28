@@ -57,7 +57,7 @@ export default function FAQSection() {
     <section style={{ background: 'transparent', padding: '80px 24px' }}>
       <div style={{ maxWidth: 800, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, color: 'var(--navy)', textTransform: 'uppercase', letterSpacing: '0.14em', background: 'rgba(15,76,129,0.08)', border: '1px solid rgba(15,76,129,0.2)', padding: '4px 14px', borderRadius: 999, marginBottom: 16 }}>
+          <span className="section-tag">
             FAQ
           </span>
           <h2 style={{ fontSize: 'clamp(24px,3.5vw,40px)', fontWeight: 800, color: 'var(--text-heading)', margin: 0 }}>
@@ -65,18 +65,17 @@ export default function FAQSection() {
           </h2>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {faqs.map((faq, i) => (
             <div
               key={i}
               style={{
-                background: 'var(--bg-card)',
-                border: `1px solid ${openIdx === i ? 'rgba(15,76,129,0.3)' : 'var(--border-light)'}`,
-                borderLeft: `3px solid ${openIdx === i ? 'var(--navy)' : 'transparent'}`,
-                borderRadius: 12,
+                background: 'rgba(22,41,82,0.4)',
+                border: `1px solid ${openIdx === i ? 'rgba(79,195,247,0.3)' : 'rgba(92,103,149,0.15)'}`,
+                borderLeft: `3px solid ${openIdx === i ? '#4FC3F7' : 'transparent'}`,
+                borderRadius: 14,
                 overflow: 'hidden',
                 transition: 'border-color 0.2s',
-                boxShadow: 'var(--shadow-sm)',
               }}
             >
               <button
@@ -94,16 +93,16 @@ export default function FAQSection() {
                   gap: 12,
                 }}
               >
-                <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-heading)', lineHeight: 1.4 }}>
+                <span style={{ fontSize: 15, fontWeight: 600, color: '#E8F4FF', lineHeight: 1.4 }}>
                   {faq.q}
                 </span>
-                <span style={{ fontSize: 20, color: 'var(--navy)', flexShrink: 0, fontWeight: 300 }}>
+                <span style={{ fontSize: 20, color: openIdx === i ? '#4FC3F7' : '#5C6795', flexShrink: 0, fontWeight: 300, transition: 'color 0.2s' }}>
                   {openIdx === i ? '−' : '+'}
                 </span>
               </button>
               {openIdx === i && (
                 <div style={{ padding: '0 20px 18px' }}>
-                  <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.8, margin: 0 }}>
+                  <p style={{ fontSize: 14, color: '#7B8DB8', lineHeight: 1.7, margin: 0 }}>
                     {faq.a}
                   </p>
                 </div>

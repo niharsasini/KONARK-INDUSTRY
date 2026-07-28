@@ -256,10 +256,16 @@ img {
 .stat-item {
   text-align: center;
   padding: 32px 24px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(26,15,0,0.06);
+  background: #162952;
+  border: 1px solid rgba(79,195,247,0.08);
+  border-radius: 20px;
+  box-shadow: var(--neu-shadow);
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  box-shadow: var(--neu-hover);
+  border-color: rgba(79,195,247,0.2);
 }
 
 .stat-icon {
@@ -274,9 +280,9 @@ img {
 }
 
 .stat-number {
-  font-size: 48px;
+  font-size: 44px;
   font-weight: 900;
-  background: linear-gradient(135deg, var(--navy), var(--gold));
+  background: var(--grad-heading);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -287,10 +293,11 @@ img {
 .stat-label {
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-muted);
+  color: #5C6795;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: 6px;
+  margin-top: 8px;
 }
 
 .stat-desc {
@@ -358,7 +365,9 @@ img {
 /* ===== SERVICES MOBILE ===== */
 .services-section {
   padding: 80px 0;
-  background: var(--bg-surface);
+  background: rgba(13,27,53,0.5);
+  border-top: 1px solid rgba(92,103,149,0.1);
+  border-bottom: 1px solid rgba(92,103,149,0.1);
   position: relative;
 }
 
@@ -381,31 +390,31 @@ img {
 }
 
 .service-glass-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  background: rgba(22,41,82,0.5);
+  border: 1px solid rgba(92,103,149,0.15);
   border-radius: 16px;
-  padding: 20px;
-  border-left: 4px solid var(--gold);
-  box-shadow: 0 2px 8px rgba(26,15,0,0.06);
-  transition: all 300ms;
+  padding: 24px;
+  border-left: 3px solid #0D518C;
+  transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .service-glass-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(26,15,0,0.1);
-  border-left-color: var(--navy);
+  background: rgba(22,41,82,0.8);
+  transform: translateX(4px);
+  box-shadow: 0 8px 32px rgba(10,14,26,0.4);
 }
 
 /* ===== WHY KONARK MOBILE ===== */
 .why-section {
   padding: 80px 0;
-  background-color: var(--text-heading);
+  background-color: #0A0E1A;
   background-image:
-    radial-gradient(circle, rgba(193,127,36,0.08) 1px, transparent 1px),
-    linear-gradient(135deg, var(--text-heading), var(--navy));
+    radial-gradient(circle, rgba(244,196,48,0.06) 1px, transparent 1px),
+    linear-gradient(135deg, #0A0E1A, #0D1B35);
   background-size: 30px 30px, cover;
-  color: #fff;
+  border-top: 1px solid rgba(92,103,149,0.1);
+  color: #E8F4FF;
 }
 
 .why-grid {

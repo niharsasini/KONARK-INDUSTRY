@@ -87,8 +87,8 @@ const ProductCard = ({ product }) => {
       style={{
         position: "relative",
         cursor: "pointer",
-        background: "#ffffff",
-        border: `1px solid ${hovered ? "rgba(15,76,129,0.3)" : "var(--border-subtle)"}`,
+        background: "linear-gradient(145deg, #162952, #1A3060)",
+        border: `1px solid ${hovered ? "rgba(79,195,247,0.35)" : "rgba(92,103,149,0.2)"}`,
         borderRadius: 20,
         overflow: "hidden",
         display: "flex",
@@ -97,46 +97,40 @@ const ProductCard = ({ product }) => {
         transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
         transform: hovered ? "translateY(-8px) scale(1.01)" : "translateY(0) scale(1)",
         boxShadow: hovered
-          ? "0 20px 60px rgba(26,15,0,0.12), 0 0 0 1px rgba(15,76,129,0.1)"
-          : "0 2px 8px rgba(26,15,0,0.06)",
+          ? "0 20px 60px rgba(10,14,26,0.6), 0 0 0 1px rgba(79,195,247,0.1), 0 0 40px rgba(13,81,140,0.12)"
+          : "0 4px 20px rgba(10,14,26,0.4)",
       }}
     >
-      {/* ⭐ Rating Badge */}
-      {product.rating && (
-        <div style={{ position: "absolute", top: 12, right: 44, zIndex: 20, background: "rgba(26,15,0,0.6)", backdropFilter: "blur(8px)", padding: "4px 9px", borderRadius: 100, display: "flex", alignItems: "center", gap: 4, fontSize: 11, fontWeight: 700, color: "#fff", boxShadow: "0 4px 12px rgba(0,0,0,0.2)" }}>
-          <Star size={12} color="var(--gold)" fill="var(--gold)" />
-          <span>{product.rating}</span>
-        </div>
-      )}
-
       {/* Wishlist heart — always visible */}
       <button
         onClick={handleWishlist}
         style={{
           position: "absolute", top: 12, right: 12, zIndex: 20,
           width: 36, height: 36, borderRadius: "50%",
-          background: "rgba(255,255,255,0.9)",
-          border: `1px solid ${inWishlist ? "rgba(192,57,43,0.4)" : "var(--border-subtle)"}`,
-          boxShadow: "0 2px 8px rgba(26,15,0,0.1)",
+          background: "rgba(10,14,26,0.7)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(92,103,149,0.2)",
           display: "flex", alignItems: "center", justifyContent: "center",
           cursor: "pointer", transition: "all 0.2s",
         }}
+        onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.1)"; e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.borderColor = "rgba(92,103,149,0.2)"; }}
         aria-label="Toggle wishlist"
       >
-        <Heart size={14} color={inWishlist ? "#c0392b" : "var(--text-subtle)"} fill={inWishlist ? "#c0392b" : "none"} />
+        <Heart size={14} color={inWishlist ? "#FF7043" : "#5C6795"} fill={inWishlist ? "#FF7043" : "none"} />
       </button>
 
       {/* Top-left status badge — card stays fully opaque regardless of stock status */}
       {isUpcoming ? (
-        <span style={{ position: "absolute", top: 12, left: 12, zIndex: 20, background: "#5b21b6", color: "#fff", fontSize: 10, fontWeight: 800, padding: "3px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        <span style={{ position: "absolute", top: 12, left: 12, zIndex: 20, background: "rgba(92,103,149,0.8)", color: "#E8F4FF", fontSize: 10, fontWeight: 800, padding: "3px 10px", borderRadius: 20, textTransform: "uppercase", letterSpacing: "0.8px" }}>
           Upcoming
         </span>
       ) : !inStock ? (
-        <span style={{ position: "absolute", top: 12, left: 12, zIndex: 20, background: "#c0392b", color: "#fff", fontSize: 10, fontWeight: 800, padding: "3px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        <span style={{ position: "absolute", top: 12, left: 12, zIndex: 20, background: "#FF7043", color: "#E8F4FF", fontSize: 10, fontWeight: 800, padding: "3px 10px", borderRadius: 20, textTransform: "uppercase", letterSpacing: "0.8px" }}>
           Out of Stock
         </span>
       ) : isNew ? (
-        <span style={{ position: "absolute", top: 12, left: 12, zIndex: 20, background: "#1a7a4a", color: "#fff", fontSize: 10, fontWeight: 800, padding: "3px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        <span style={{ position: "absolute", top: 12, left: 12, zIndex: 20, background: "#34C78A", color: "#0A0E1A", fontSize: 10, fontWeight: 800, padding: "3px 10px", borderRadius: 20, textTransform: "uppercase", letterSpacing: "0.8px" }}>
           New
         </span>
       ) : null}
@@ -144,7 +138,7 @@ const ProductCard = ({ product }) => {
       {/* 🖼️ Image area */}
       <div className="product-card-img" style={{
         position: "relative", height: 220, flexShrink: 0, overflow: "hidden",
-        background: "linear-gradient(135deg, var(--bg-elevated), var(--bg-page))",
+        background: "linear-gradient(135deg, #0D1B35, #162952)",
       }}>
         {images[imgIndex]?.startsWith("http") ? (
           <Image
@@ -153,8 +147,8 @@ const ProductCard = ({ product }) => {
             fill
             style={{
               objectFit: "contain", padding: 20,
-              transform: hovered ? "scale(1.06)" : "scale(1)",
-              transition: "transform 0.5s ease, opacity 0.3s ease",
+              transform: hovered ? "scale(1.07)" : "scale(1)",
+              transition: "transform 0.6s ease, opacity 0.3s ease",
             }}
             sizes="(max-width: 768px) 100vw, 400px"
           />
@@ -165,18 +159,19 @@ const ProductCard = ({ product }) => {
             style={{
               width: "100%", height: "100%", objectFit: "contain", padding: 20,
               boxSizing: "border-box",
-              transform: hovered ? "scale(1.06)" : "scale(1)",
-              transition: "transform 0.5s ease, opacity 0.3s ease",
+              transform: hovered ? "scale(1.07)" : "scale(1)",
+              transition: "transform 0.6s ease, opacity 0.3s ease",
             }}
           />
         )}
         {product.category && (
           <span style={{
             position: "absolute", bottom: 10, left: 10, zIndex: 5,
-            background: "rgba(15,76,129,0.1)", border: "1px solid rgba(15,76,129,0.2)",
-            color: "var(--navy)",
-            fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 100,
-            textTransform: "uppercase", letterSpacing: "0.06em",
+            background: "rgba(13,81,140,0.8)", backdropFilter: "blur(8px)",
+            border: "1px solid rgba(79,195,247,0.25)",
+            color: "#4FC3F7",
+            fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 20,
+            textTransform: "uppercase", letterSpacing: "0.8px",
           }}>
             {product.category}
           </span>
@@ -191,7 +186,7 @@ const ProductCard = ({ product }) => {
                   width: i === imgIndex ? 16 : 6,
                   height: 6,
                   borderRadius: 3,
-                  background: i === imgIndex ? "var(--navy)" : "rgba(26,15,0,0.2)",
+                  background: i === imgIndex ? "#4FC3F7" : "rgba(10,14,26,0.4)",
                   transition: "all 0.3s ease",
                   cursor: "pointer",
                 }}
@@ -199,31 +194,42 @@ const ProductCard = ({ product }) => {
             ))}
           </div>
         )}
+        {product.rating && (
+          <div style={{
+            position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 4,
+            background: "linear-gradient(to top, rgba(10,14,26,0.75), transparent)",
+            padding: "24px 12px 8px", display: "flex", justifyContent: "flex-end",
+            alignItems: "center", gap: 4,
+          }}>
+            <Star size={12} color="#F4C430" fill="#F4C430" />
+            <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(232,244,255,0.9)" }}>{product.rating}</span>
+          </div>
+        )}
       </div>
 
       {/* 📦 Body */}
       <div className="product-card-body" style={{ padding: "16px 18px 18px", display: "flex", flexDirection: "column", flex: 1 }}>
         {product.category && (
-          <p style={{ fontSize: 11, color: "var(--navy)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", margin: "0 0 4px" }}>
+          <p style={{ fontSize: 10, color: "#4FC3F7", fontWeight: 700, letterSpacing: "1.2px", textTransform: "uppercase", margin: "0 0 4px" }}>
             {product.category}
           </p>
         )}
 
-        <h3 className="product-card-name" style={{ fontSize: 16, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 6px", lineHeight: 1.3, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
+        <h3 className="product-card-name" style={{ fontSize: 17, fontWeight: 700, color: "#E8F4FF", margin: "0 0 6px", lineHeight: 1.3, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
           {product.name}
         </h3>
 
         {product.shortDescription && (
-          <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: "0 0 12px", lineHeight: 1.5, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
+          <p style={{ fontSize: 12, color: "#4A5880", margin: "0 0 12px", lineHeight: 1.5, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
             {product.shortDescription}
           </p>
         )}
 
         <div style={{ marginTop: "auto" }}>
         <p className="product-card-price" style={{
-          fontSize: typeof product.price === "number" && product.price > 0 ? 22 : isUpcoming ? 15 : 13,
-          fontWeight: typeof product.price === "number" && product.price > 0 ? 800 : 700,
-          color: typeof product.price === "number" && product.price > 0 ? "var(--gold)" : isUpcoming ? "#5b21b6" : "var(--text-subtle)",
+          fontSize: typeof product.price === "number" && product.price > 0 ? 24 : isUpcoming ? 15 : 13,
+          fontWeight: typeof product.price === "number" && product.price > 0 ? 900 : 700,
+          color: typeof product.price === "number" && product.price > 0 ? "#F4C430" : isUpcoming ? "#5C6795" : "#4A5880",
           margin: "0 0 12px",
         }}>
           {formattedPrice}
@@ -233,23 +239,23 @@ const ProductCard = ({ product }) => {
           <button
             className="product-card-btn"
             onClick={(e) => { e.stopPropagation(); router.push("/contact?interest=" + product.slug); }}
-            style={{ width: "100%", height: 44, padding: "0 11px", background: "transparent", color: "#5b21b6", border: "2px solid #5b21b6", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = "#5b21b6"; e.currentTarget.style.color = "#fff"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#5b21b6"; }}
+            style={{ width: "100%", height: 46, padding: "0 11px", background: "transparent", color: "#7B8DB8", border: "1.5px solid rgba(92,103,149,0.5)", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(92,103,149,0.12)"; e.currentTarget.style.color = "#E8F4FF"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#7B8DB8"; }}
           >
             Register Interest
           </button>
         ) : !inStock ? (
-          <button className="product-card-btn" disabled style={{ width: "100%", height: 44, padding: "0 11px", background: "var(--bg-surface)", color: "var(--text-subtle)", cursor: "not-allowed", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700 }}>
+          <button className="product-card-btn" disabled style={{ width: "100%", height: 46, padding: "0 11px", background: "var(--bg-surface)", color: "var(--text-subtle)", cursor: "not-allowed", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700 }}>
             Out of Stock
           </button>
         ) : product.type === "vehicle" ? (
           <button
             className="product-card-btn"
             onClick={(e) => { e.stopPropagation(); goToDetails(); }}
-            style={{ width: "100%", height: 44, padding: "0 11px", background: "linear-gradient(135deg, var(--navy), var(--navy-dark))", color: "#fff", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 12px rgba(15,76,129,0.25)", transition: "all 0.25s ease" }}
-            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 20px rgba(15,76,129,0.35)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 12px rgba(15,76,129,0.25)"; e.currentTarget.style.transform = "translateY(0)"; }}
+            style={{ width: "100%", height: 46, padding: "0 11px", background: "linear-gradient(135deg, #0D518C, #4FC3F7)", color: "#E8F4FF", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 14px rgba(13,81,140,0.3)", transition: "all 0.25s ease" }}
+            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 22px rgba(13,81,140,0.4)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 14px rgba(13,81,140,0.3)"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
             Book Test Ride
           </button>
@@ -257,8 +263,8 @@ const ProductCard = ({ product }) => {
           <button
             className="product-card-btn"
             onClick={(e) => { e.stopPropagation(); goToDetails(); }}
-            style={{ width: "100%", height: 44, padding: "0 11px", background: "linear-gradient(135deg, var(--gold), #9a6419)", color: "#fff", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
-            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 20px rgba(193,127,36,0.35)"; }}
+            style={{ width: "100%", height: 46, padding: "0 11px", background: "linear-gradient(135deg, #F4C430, #FF8F00)", color: "#0A0E1A", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
+            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 22px rgba(244,196,48,0.3)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
           >
             Book Service
@@ -268,21 +274,21 @@ const ProductCard = ({ product }) => {
             className="product-card-btn"
             onClick={handleAddToCart}
             style={{
-              width: "100%", height: 44, padding: "0 11px", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer",
+              width: "100%", height: 46, padding: "0 11px", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer",
               transition: "all 0.2s",
-              background: added ? "#1a7a4a" : "transparent",
-              color: added ? "#fff" : "var(--navy)",
-              border: added ? "none" : "2px solid var(--navy)",
+              background: added ? "#34C78A" : "transparent",
+              color: added ? "#0A0E1A" : "#4FC3F7",
+              border: added ? "none" : "1.5px solid rgba(13,81,140,0.38)",
             }}
-            onMouseEnter={(e) => { if (!added) { e.currentTarget.style.background = "var(--navy)"; e.currentTarget.style.color = "#fff"; } }}
-            onMouseLeave={(e) => { if (!added) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--navy)"; } }}
+            onMouseEnter={(e) => { if (!added) { e.currentTarget.style.background = "rgba(13,81,140,0.2)"; e.currentTarget.style.borderColor = "#4FC3F7"; } }}
+            onMouseLeave={(e) => { if (!added) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(13,81,140,0.38)"; } }}
           >
             {added ? "Added! ✓" : "Add to Cart"}
           </button>
         )}
 
         {/* Made in India */}
-        <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px solid var(--border-subtle)", fontSize: 10, color: "var(--text-subtle)", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
+        <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px solid rgba(92,103,149,0.1)", fontSize: 10, color: "#4A5880", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
           🇮🇳 Made in India
         </div>
         </div>

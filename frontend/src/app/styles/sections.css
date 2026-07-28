@@ -154,15 +154,8 @@
 
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(15,76,129,0.15), rgba(193,127,36,0.15), transparent);
+  background: linear-gradient(90deg, transparent, rgba(13,81,140,0.2), rgba(244,196,48,0.2), transparent);
   margin: 0;
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, var(--navy), var(--gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 /* ─── Global section headers ────────────────────────── */
@@ -193,9 +186,9 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(15,76,129,0.08);
-  border: 1px solid rgba(15,76,129,0.2);
-  color: var(--navy);
+  background: rgba(13,81,140,0.2);
+  border: 1px solid rgba(79,195,247,0.25);
+  color: var(--sky);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -225,18 +218,18 @@
 }
 
 .stat-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 16px;
+  background: #162952;
+  border: 1px solid rgba(79,195,247,0.08);
+  border-radius: 20px;
   padding: 32px 24px;
   text-align: center;
-  box-shadow: 0 2px 12px rgba(26,15,0,0.06);
+  box-shadow: var(--neu-shadow);
 }
 
 .stat-number {
   font-size: clamp(32px, 4vw, 48px);
   font-weight: 900;
-  background: linear-gradient(135deg, var(--navy), var(--gold));
+  background: var(--grad-heading);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -247,7 +240,7 @@
 .stat-label {
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-muted);
+  color: #5C6795;
   margin: 0 0 4px;
 }
 

@@ -8,9 +8,9 @@ const CATEGORIES = [
   {
     icon: "🛵",
     title: "Electric Vehicles",
-    gradient: "linear-gradient(135deg, #e8f0f8, #d4e4f5)",
-    borderLeft: "var(--navy)",
-    color: "var(--navy)",
+    borderTop: "#0D518C",
+    hoverBorder: "rgba(79,195,247,0.4)",
+    color: "#4FC3F7",
     ctaLabel: "Explore EVs →",
     ctaHref: "/products?cat=ev",
     products: ["EV Scooter X1", "E-Rickshaw Standard", "Electric Motorcycle", "EV Car (Upcoming)"],
@@ -19,9 +19,9 @@ const CATEGORIES = [
   {
     icon: "🌀",
     title: "Home Appliances",
-    gradient: "linear-gradient(135deg, #fef3e2, #fde8c0)",
-    borderLeft: "var(--gold)",
-    color: "var(--gold)",
+    borderTop: "#F4C430",
+    hoverBorder: "rgba(244,196,48,0.4)",
+    color: "#F4C430",
     ctaLabel: "Shop Appliances →",
     ctaHref: "/products?cat=appliance",
     products: ["BLDC Fan 5-Star", "Inverter AC 1.5T", "Android Smart TV", "Induction Cooker"],
@@ -30,9 +30,9 @@ const CATEGORIES = [
   {
     icon: "⚡",
     title: "Energy & Services",
-    gradient: "linear-gradient(135deg, #e8f5ee, #c8e6c9)",
-    borderLeft: "#1a7a4a",
-    color: "#1a7a4a",
+    borderTop: "#34C78A",
+    hoverBorder: "rgba(52,199,138,0.4)",
+    color: "#34C78A",
     ctaLabel: "View Services →",
     ctaHref: "/services",
     products: ["LFP Battery System", "Solar Inverter", "AC Repair Service", "Battery Swap"],
@@ -46,7 +46,7 @@ export default function SolutionsSection() {
   const { ref: gridRef, inView: gridIn } = useInView({ threshold: 0.05, triggerOnce: true });
 
   return (
-    <section style={{ background: "var(--bg-page)", padding: "96px 24px" }}>
+    <section style={{ background: "transparent", padding: "96px 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <motion.div
           ref={headRef}
@@ -55,17 +55,12 @@ export default function SolutionsSection() {
           transition={{ duration: 0.6 }}
           style={{ textAlign: "center", marginBottom: 56 }}
         >
-          <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
-            borderRadius: 999, border: "1px solid rgba(193,127,36,0.4)", color: "var(--gold)",
-            fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em",
-            background: "rgba(193,127,36,0.1)", marginBottom: 16,
-          }}>
+          <span className="section-tag">
             WHAT WE MAKE
           </span>
           <h2 style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 900, margin: "0 0 12px", lineHeight: 1.2, color: "var(--text-heading)" }}>
             Built for{" "}
-            <span style={{ background: "linear-gradient(135deg, var(--navy), var(--gold))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+            <span className="gradient-text">
               Odisha.
             </span>{" "}
             Made for India.
@@ -89,18 +84,16 @@ export default function SolutionsSection() {
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
               style={{
-                background: cat.gradient,
+                background: "rgba(13,27,53,0.6)",
                 borderRadius: 20,
                 padding: "32px 28px",
-                borderLeft: `4px solid ${cat.borderLeft}`,
-                border: `1px solid rgba(0,0,0,0.06)`,
-                borderLeftWidth: 4,
-                borderLeftColor: cat.borderLeft,
+                border: `1px solid ${hovered === i ? cat.hoverBorder : "rgba(13,81,140,0.3)"}`,
+                borderTop: `3px solid ${cat.borderTop}`,
                 transition: "all 0.3s ease",
                 transform: hovered === i ? "translateY(-6px)" : "translateY(0)",
                 boxShadow: hovered === i
-                  ? "0 16px 48px rgba(26,15,0,0.1)"
-                  : "0 2px 8px rgba(26,15,0,0.04)",
+                  ? "0 16px 48px rgba(10,14,26,0.5)"
+                  : "none",
                 display: "flex",
                 flexDirection: "column",
                 gap: 16,
@@ -119,7 +112,7 @@ export default function SolutionsSection() {
 
               <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
                 {cat.products.map((p) => (
-                  <li key={p} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-body)", fontWeight: 500 }}>
+                  <li key={p} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#7B8DB8", fontWeight: 500 }}>
                     <span style={{
                       width: 18, height: 18, borderRadius: "50%", flexShrink: 0,
                       background: `${cat.color}15`, border: `1px solid ${cat.color}40`,

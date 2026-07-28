@@ -4,22 +4,22 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
-const CARD_COLORS = ["var(--navy)", "var(--gold)", "#f97316"];
+const CARD_COLORS = ["#0D518C", "#F4C430", "#4FC3F7"];
 
 const FALLBACK_TESTIMONIALS = [
   {
     name: "Rajesh Kumar Panda", location: "Bhubaneswar, Odisha",
-    product: "EV Scooter X1", rating: 5, initials: "RKP", color: "var(--navy)",
+    product: "EV Scooter X1", rating: 5, initials: "RKP", color: "#0D518C",
     text: "I bought the Konark X1 eight months ago for my daily commute from Patia to Infocity — about 22km each way. It handles the route perfectly on a single charge. When I had a minor issue with the charging port, the service team came to my house the next morning and fixed it under warranty. That kind of after-sales support is rare.",
   },
   {
     name: "Sunita Mishra", location: "Cuttack, Odisha",
-    product: "LFP Battery System", rating: 5, initials: "SM", color: "var(--gold)",
+    product: "LFP Battery System", rating: 5, initials: "SM", color: "#F4C430",
     text: "We run a small rice processing unit and load-shedding was killing our productivity. We got a Konark LFP battery system with our rooftop solar in March last year. Eighteen months — zero downtime, zero issues. The investment paid back in 14 months.",
   },
   {
     name: "Pradeep Sahoo", location: "Rourkela, Odisha",
-    product: "BLDC Fan + AC Service", rating: 5, initials: "PS", color: "#f97316",
+    product: "BLDC Fan + AC Service", rating: 5, initials: "PS", color: "#4FC3F7",
     text: "First I bought six Konark BLDC fans for our office — electricity bill down by ₹2,400 from the first month. Then our old Voltas AC stopped cooling. Called Konark's service number and their technician was here within four hours. Fixed it the same day. I didn't even buy the AC from them but they serviced it anyway.",
   },
 ];
@@ -35,7 +35,7 @@ function Stars({ count, size = 14 }) {
   return (
     <div style={{ display: "flex", gap: 2 }}>
       {[1,2,3,4,5].map(s => (
-        <svg key={s} viewBox="0 0 20 20" fill={s <= count ? "#f97316" : "none"} stroke="#f97316" strokeWidth={1.5} style={{ width: size, height: size }}>
+        <svg key={s} viewBox="0 0 20 20" fill={s <= count ? "#F4C430" : "none"} stroke="#F4C430" strokeWidth={1.5} style={{ width: size, height: size }}>
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       ))}
@@ -208,8 +208,8 @@ export default function Testimonials() {
   const [featured, card2, card3] = testimonials;
 
   return (
-    <section style={{ background: "var(--bg-section)", padding: "96px 0", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: "8%", left: "5%", fontSize: 320, fontWeight: 900, color: "rgba(15,76,129,0.015)", lineHeight: 1, pointerEvents: "none", userSelect: "none", fontFamily: "Georgia, serif" }}>&quot;</div>
+    <section style={{ background: "rgba(13,27,53,0.4)", borderTop: "1px solid rgba(92,103,149,0.1)", padding: "96px 0", position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", top: "8%", left: "5%", fontSize: 320, fontWeight: 900, color: "rgba(92,103,149,0.03)", lineHeight: 1, pointerEvents: "none", userSelect: "none", fontFamily: "Georgia, serif" }}>&quot;</div>
 
       <div className="t-container" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 48px" }}>
         {/* Header */}
@@ -220,12 +220,12 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           style={{ textAlign: "center", marginBottom: 56 }}
         >
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid rgba(15,76,129,0.3)", color: "var(--navy)", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "rgba(15,76,129,0.08)", marginBottom: 16 }}>
+          <span className="section-tag">
             WHAT CUSTOMERS SAY
           </span>
           <h2 style={{ fontSize: "clamp(26px, 3.5vw, 44px)", fontWeight: 900, margin: "0 0 12px", lineHeight: 1.2 }}>
             <span style={{ color: "var(--text-heading)" }}>Real People. </span>
-            <span style={{ background: "linear-gradient(135deg, var(--navy), var(--gold))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Real Results.</span>
+            <span className="gradient-text">Real Results.</span>
           </h2>
           <p style={{ fontSize: 15, color: "var(--text-muted)", maxWidth: 480, margin: "0 auto" }}>
             25,000+ customers across Odisha trust Konark Industry for their energy needs.
@@ -240,29 +240,31 @@ export default function Testimonials() {
             animate={gridIn ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7 }}
             style={{
-              background: "linear-gradient(135deg, rgba(15,76,129,0.06), rgba(193,127,36,0.06))",
-              border: "1px solid rgba(15,76,129,0.2)",
+              background: "rgba(22,41,82,0.7)",
+              backdropFilter: "blur(16px)",
+              border: "1px solid rgba(92,103,149,0.2)",
               borderRadius: 24,
               padding: 40,
+              boxShadow: "0 8px 32px rgba(10,14,26,0.4)",
               display: "flex",
               flexDirection: "column",
               gap: 20,
             }}
           >
-            <div style={{ fontSize: 80, lineHeight: 0.8, color: "var(--navy)", opacity: 0.3, fontFamily: "Georgia, serif", userSelect: "none" }}>&ldquo;</div>
-            <p style={{ fontSize: 18, color: "var(--text-heading)", lineHeight: 2, margin: 0, fontStyle: "italic", flex: 1 }}>
+            <div style={{ fontSize: 80, lineHeight: 0.8, color: "rgba(79,195,247,0.15)", fontFamily: "Georgia, serif", userSelect: "none" }}>&ldquo;</div>
+            <p style={{ fontSize: 17, color: "#B8D0E8", lineHeight: 1.8, margin: 0, fontStyle: "italic", flex: 1 }}>
               {featured.text}
             </p>
-            <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", paddingTop: 16, borderTop: "1px solid rgba(15,76,129,0.1)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", paddingTop: 16, borderTop: "1px solid rgba(92,103,149,0.15)" }}>
               <div style={{ width: 56, height: 56, borderRadius: "50%", background: `${featured.color}20`, border: `2px solid ${featured.color}60`, display: "flex", alignItems: "center", justifyContent: "center", color: featured.color, fontSize: 14, fontWeight: 700, flexShrink: 0 }}>
                 {featured.initials}
               </div>
               <div>
-                <p style={{ fontSize: 16, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>{featured.name}</p>
-                <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "2px 0 6px" }}>{featured.location}</p>
+                <p style={{ fontSize: 16, fontWeight: 700, color: "#E8F4FF", margin: 0 }}>{featured.name}</p>
+                <p style={{ fontSize: 13, color: "#5C6795", margin: "2px 0 6px" }}>{featured.location}</p>
                 <Stars count={featured.rating} />
               </div>
-              <span style={{ marginLeft: "auto", fontSize: 11, color: featured.color, fontWeight: 600, background: `${featured.color}12`, padding: "4px 12px", borderRadius: 100, border: `1px solid ${featured.color}30` }}>
+              <span style={{ marginLeft: "auto", fontSize: 11, color: "#4FC3F7", fontWeight: 600, background: "rgba(13,81,140,0.2)", padding: "4px 12px", borderRadius: 100, border: "1px solid rgba(79,195,247,0.2)" }}>
                 {featured.product}
               </span>
             </div>
@@ -276,8 +278,8 @@ export default function Testimonials() {
               animate={gridIn ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.15 }}
               style={{
-                background: "var(--bg-card)",
-                border: "1px solid var(--border-light)",
+                background: "rgba(22,41,82,0.5)",
+                border: "1px solid rgba(92,103,149,0.15)",
                 borderRadius: 20,
                 padding: 28,
                 flex: 1,
@@ -309,8 +311,8 @@ export default function Testimonials() {
               animate={gridIn ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
               style={{
-                background: "var(--bg-card)",
-                border: "1px solid var(--border-light)",
+                background: "rgba(22,41,82,0.5)",
+                border: "1px solid rgba(92,103,149,0.15)",
                 borderRadius: 20,
                 padding: 28,
                 flex: 1,
@@ -370,8 +372,8 @@ export default function Testimonials() {
           animate={statsIn ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
           style={{
-            background: "#ffffff",
-            border: "1px solid var(--border-subtle)",
+            background: "rgba(22,41,82,0.5)",
+            border: "1px solid rgba(92,103,149,0.15)",
             borderRadius: 20,
             padding: "32px 40px",
             maxWidth: 640,

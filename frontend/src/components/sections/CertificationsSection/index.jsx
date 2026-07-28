@@ -14,7 +14,8 @@ export default function CertificationsSection() {
     <>
       <section className="certs-section" style={{
         padding: '80px 0',
-        background: 'transparent',
+        background: 'rgba(10,14,26,0.6)',
+        borderTop: '1px solid rgba(92,103,149,0.1)',
         position: 'relative',
       }}>
         <div ref={ref} style={{
@@ -28,19 +29,7 @@ export default function CertificationsSection() {
 
           {/* LEFT COLUMN */}
           <div className="certs-left">
-            <span style={{
-              display: 'inline-block',
-              background: 'rgba(15,76,129,0.08)',
-              border: '1px solid rgba(15,76,129,0.2)',
-              color: 'var(--navy)',
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              padding: '5px 14px',
-              borderRadius: '100px',
-              marginBottom: '16px',
-            }}>
+            <span className="section-tag">
               GOVT. RECOGNISED
             </span>
 
@@ -52,12 +41,7 @@ export default function CertificationsSection() {
               marginBottom: '16px',
             }}>
               Certified{' '}
-              <span style={{
-                background: 'linear-gradient(135deg,var(--navy),var(--gold))',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}>by India.</span>
+              <span className="gradient-text">by India.</span>
             </h2>
 
             <p style={{
