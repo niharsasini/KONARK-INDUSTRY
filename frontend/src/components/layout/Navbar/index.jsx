@@ -95,15 +95,15 @@ export default function Navbar() {
 
   const navStyle = scrolled
     ? {
-        background: "rgba(245,240,232,0.95)",
-        backdropFilter: "blur(24px) saturate(200%)",
-        borderBottom: "1px solid rgba(212,201,184,0.5)",
-        boxShadow: "0 4px 24px rgba(26,15,0,0.06)",
+        background: "rgba(13,27,53,0.92)",
+        backdropFilter: "blur(24px) saturate(180%)",
+        borderBottom: "1px solid rgba(92,103,149,0.2)",
+        boxShadow: "0 4px 24px rgba(10,14,26,0.4)",
       }
     : {
-        background: "rgba(245,240,232,0.75)",
-        backdropFilter: "blur(20px) saturate(180%)",
-        borderBottom: "1px solid rgba(212,201,184,0.3)",
+        background: "rgba(10,14,26,0.6)",
+        backdropFilter: "blur(16px) saturate(150%)",
+        borderBottom: "1px solid rgba(92,103,149,0.1)",
       };
 
   return (
@@ -138,27 +138,27 @@ export default function Navbar() {
                   <button
                     style={{
                       display: "flex", alignItems: "center", gap: 4,
-                      padding: "8px 16px", fontSize: 14, fontWeight: 500,
-                      color: activeDropdown === link.hasDropdown ? "var(--text-heading)" : "var(--text-muted)",
+                      padding: "8px 14px", fontSize: 14, fontWeight: activeDropdown === link.hasDropdown ? 700 : 500,
+                      color: activeDropdown === link.hasDropdown ? "var(--sky)" : "var(--text-muted)",
                       borderRadius: 8, border: "none",
-                      background: activeDropdown === link.hasDropdown ? "rgba(15,76,129,0.06)" : "transparent",
+                      background: activeDropdown === link.hasDropdown ? "rgba(92,103,149,0.08)" : "transparent",
                       cursor: "pointer", letterSpacing: "0.2px",
                       transition: "all 0.2s ease",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.color = "var(--text-heading)";
-                      e.currentTarget.style.background = "rgba(15,76,129,0.06)";
+                      e.currentTarget.style.background = "rgba(92,103,149,0.08)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.color = activeDropdown === link.hasDropdown ? "var(--text-heading)" : "var(--text-muted)";
-                      e.currentTarget.style.background = activeDropdown === link.hasDropdown ? "rgba(15,76,129,0.06)" : "transparent";
+                      e.currentTarget.style.color = activeDropdown === link.hasDropdown ? "var(--sky)" : "var(--text-muted)";
+                      e.currentTarget.style.background = activeDropdown === link.hasDropdown ? "rgba(92,103,149,0.08)" : "transparent";
                     }}
                   >
                     {link.label}
                     <svg
                       viewBox="0 0 20 20" fill="currentColor"
                       style={{
-                        width: 14, height: 14, opacity: 0.55,
+                        width: 14, height: 14, color: "var(--slate)", opacity: 0.85,
                         transform: activeDropdown === link.hasDropdown ? "rotate(180deg)" : "rotate(0deg)",
                         transition: "transform 0.25s ease",
                         flexShrink: 0,
@@ -189,27 +189,27 @@ export default function Navbar() {
                   href={link.href}
                   style={{
                     position: "relative", display: "inline-flex", alignItems: "center",
-                    padding: "8px 16px", fontSize: 14, letterSpacing: "0.2px",
+                    padding: "8px 14px", fontSize: 14, letterSpacing: "0.2px",
                     fontWeight: pathname === link.href ? 700 : 500,
-                    color: pathname === link.href ? "var(--navy)" : "var(--text-muted)",
+                    color: pathname === link.href ? "var(--sky)" : "var(--text-muted)",
                     borderRadius: 8, textDecoration: "none",
                     transition: "all 0.2s ease",
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = "var(--text-heading)";
-                    e.currentTarget.style.background = "rgba(15,76,129,0.06)";
+                    e.currentTarget.style.background = "rgba(92,103,149,0.08)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = pathname === link.href ? "var(--navy)" : "var(--text-muted)";
+                    e.currentTarget.style.color = pathname === link.href ? "var(--sky)" : "var(--text-muted)";
                     e.currentTarget.style.background = "transparent";
                   }}
                 >
                   {link.label}
                   {pathname === link.href && (
                     <span style={{
-                      position: "absolute", bottom: 2, left: "50%",
+                      position: "absolute", bottom: -2, left: "50%",
                       transform: "translateX(-50%)", width: 4, height: 4,
-                      borderRadius: "50%", background: "var(--navy)",
+                      borderRadius: "50%", background: "var(--sky)",
                     }} />
                   )}
                 </Link>
@@ -232,23 +232,21 @@ export default function Navbar() {
               <Link
                 href="/services/enquiry"
                 style={{
-                  padding: "8px 18px", borderRadius: 8, textDecoration: "none",
-                  border: "1.5px solid var(--navy)", color: "var(--navy)",
+                  padding: "8px 18px", borderRadius: 10, textDecoration: "none",
+                  border: "1.5px solid rgba(13,81,140,0.6)", color: "var(--sky)",
                   fontSize: 14, fontWeight: 600,
                   transition: "all 0.25s ease", whiteSpace: "nowrap",
                   display: "inline-block",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "var(--navy)";
-                  e.currentTarget.style.color = "#fff";
+                  e.currentTarget.style.background = "rgba(13,81,140,0.2)";
+                  e.currentTarget.style.borderColor = "var(--sky)";
                   e.currentTarget.style.transform = "translateY(-1px)";
-                  e.currentTarget.style.boxShadow = "0 4px 12px rgba(15,76,129,0.25)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.color = "var(--navy)";
+                  e.currentTarget.style.borderColor = "rgba(13,81,140,0.6)";
                   e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
                 }}
               >
                 Book Service
@@ -257,20 +255,21 @@ export default function Navbar() {
                 href="/products"
                 style={{
                   padding: "8px 20px",
-                  background: "linear-gradient(135deg, var(--navy), var(--navy-dark))",
-                  color: "#fff", fontSize: 14, fontWeight: 700,
-                  borderRadius: 8, textDecoration: "none",
+                  background: "var(--grad-primary)",
+                  color: "var(--text-heading)", fontSize: 14, fontWeight: 700,
+                  borderRadius: 10, textDecoration: "none",
                   transition: "all 0.25s ease", whiteSpace: "nowrap",
-                  boxShadow: "0 2px 8px rgba(15,76,129,0.3)",
+                  boxShadow: "0 4px 14px rgba(13,81,140,0.35)",
                   display: "inline-block",
+                  animation: "pulseGlow 3s ease infinite",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-1px)";
-                  e.currentTarget.style.boxShadow = "0 6px 20px rgba(15,76,129,0.4)";
+                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(13,81,140,0.45)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 2px 8px rgba(15,76,129,0.3)";
+                  e.currentTarget.style.boxShadow = "0 4px 14px rgba(13,81,140,0.35)";
                 }}
               >
                 Shop Now
@@ -282,15 +281,15 @@ export default function Navbar() {
             <Link
               href="/wishlist"
               aria-label="Wishlist"
-              style={{ position: "relative", padding: 8, color: "var(--text-muted)", borderRadius: 8, display: "flex", transition: "color 0.2s", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#c0392b")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+              style={{ position: "relative", padding: 8, color: "var(--slate)", borderRadius: 8, display: "flex", transition: "all 0.2s ease", textDecoration: "none" }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = "var(--sky)"; e.currentTarget.style.transform = "scale(1.1)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "var(--slate)"; e.currentTarget.style.transform = "scale(1)"; }}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 20, height: 20 }}>
                 <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
               </svg>
               {wishlistCount > 0 && (
-                <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "#c0392b", color: "#fff", fontSize: 10, fontWeight: 700, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "var(--orange)", color: "#0A0E1A", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   {wishlistCount > 9 ? "9+" : wishlistCount}
                 </span>
               )}
@@ -298,9 +297,9 @@ export default function Navbar() {
 
             <Link
               href="/cart"
-              style={{ position: "relative", padding: 8, color: "var(--text-muted)", borderRadius: 8, display: "flex", transition: "color 0.2s", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+              style={{ position: "relative", padding: 8, color: "var(--slate)", borderRadius: 8, display: "flex", transition: "all 0.2s ease", textDecoration: "none" }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = "var(--sky)"; e.currentTarget.style.transform = "scale(1.1)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "var(--slate)"; e.currentTarget.style.transform = "scale(1)"; }}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 20, height: 20 }}>
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
@@ -308,7 +307,7 @@ export default function Navbar() {
                 <path d="M16 10a4 4 0 01-8 0" />
               </svg>
               {cartCount > 0 && (
-                <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "var(--navy)", color: "#fff", fontSize: 10, fontWeight: 700, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "var(--sky)", color: "#0A0E1A", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   {cartCount > 9 ? "9+" : cartCount}
                 </span>
               )}

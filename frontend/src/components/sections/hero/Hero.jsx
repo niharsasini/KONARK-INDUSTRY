@@ -2,11 +2,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { products, CATEGORIES } from "@/components/product/ProductData";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
-const TRUST_PILLS = ["✓ ISI Certified", "✓ 2-Year Warranty", "✓ Doorstep Service"];
+const TRUST_PILLS = ["ISI Certified", "2-Year Warranty", "Doorstep Service"];
 
 const CATEGORY_CHIPS = [
   { icon: "⚡", label: "EV Scooters", href: "/products?cat=ev" },
@@ -52,7 +51,7 @@ const DECK = [
     price: p.isUpcoming ? null : p.price,
     slug: p.slug,
     badge: p.isUpcoming ? "UPCOMING" : p.isNew ? "NEW" : "FEATURED",
-    badgeColor: p.isUpcoming ? "#a78bfa" : "var(--gold)",
+    badgeColor: p.isUpcoming ? "var(--sky)" : "var(--gold)",
     specs: [p.category, `⭐ ${p.rating}`],
   })),
   ...CAR_IMAGES.map((src) => ({
@@ -62,7 +61,7 @@ const DECK = [
     price: null,
     slug: null,
     badge: "UPCOMING",
-    badgeColor: "#a78bfa",
+    badgeColor: "var(--sky)",
     specs: ["Electric", "New Model 2025"],
   })),
 ];
@@ -137,183 +136,177 @@ export default function Hero() {
         minHeight: "calc(100vh - var(--banner-h, 0px))",
         paddingTop: "calc(68px + var(--banner-h, 0px))",
         background: "transparent",
-        overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
         position: "relative",
+        overflow: "hidden",
       }}
     >
-      {/* Split background — warm cream left, dark navy right */}
-      <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
-        <div className="hero-cream-panel" style={{
-          position: "absolute", left: 0, top: 0, width: "60%", height: "100%",
-          background: "linear-gradient(135deg, var(--bg-page), var(--bg-surface))",
-        }} />
-        <div className="hero-dark-panel" style={{
-          position: "absolute", right: 0, top: 0, width: "45%", height: "100%",
-          background: "linear-gradient(135deg, var(--navy), var(--text-heading))",
-          clipPath: "polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%)",
-        }} />
-        <div className="hero-dark-panel" style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(to right, transparent 50%, rgba(15,76,129,0.1) 55%, transparent 60%)",
-        }} />
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: "radial-gradient(circle, rgba(15,76,129,0.08) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-        }} />
-        <div style={{
-          position: "absolute", bottom: 0, left: 0, right: 0, height: 3,
-          background: "linear-gradient(90deg, transparent, var(--gold), transparent)",
-        }} />
-      </div>
+      {/* Animated background layers */}
+      <div style={{
+        position: "absolute", width: 700, height: 700, borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(13,81,140,0.2) 0%, transparent 65%)",
+        top: -200, right: -150, animation: "orbFloat1 14s ease-in-out infinite", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", width: 500, height: 500, borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(92,103,149,0.15) 0%, transparent 65%)",
+        bottom: -150, left: -100, animation: "orbFloat2 18s ease-in-out infinite", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", width: 300, height: 300, borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(79,195,247,0.06) 0%, transparent 70%)",
+        top: "40%", left: "45%", animation: "orbFloat1 22s ease-in-out infinite reverse", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: "linear-gradient(rgba(92,103,149,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(92,103,149,0.04) 1px, transparent 1px)",
+        backgroundSize: "48px 48px", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", left: 0, right: 0, height: 1,
+        background: "linear-gradient(90deg, transparent 0%, rgba(79,195,247,0.3) 50%, transparent 100%)",
+        animation: "scanLine 10s linear infinite", pointerEvents: "none",
+      }} />
 
       {/* Content */}
       <div className="hero-container" style={{ position: "relative", zIndex: 2 }}>
         {/* LEFT */}
-        <div className="hero-left" style={{ paddingRight: 48 }}>
+        <div className="hero-left">
           {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.6 }}
-            style={{ marginBottom: 16 }}
-          >
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            background: "rgba(13,81,140,0.2)", border: "1px solid rgba(79,195,247,0.3)",
+            borderRadius: 999, padding: "6px 16px", marginBottom: 20,
+            animation: "fadeInUp 0.5s ease",
+          }}>
             <span style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              background: "rgba(15,76,129,0.1)", border: "1px solid rgba(15,76,129,0.3)",
-              color: "var(--navy)", fontSize: 12, fontWeight: 700,
-              padding: "6px 16px", borderRadius: 20,
-            }}>
-              <span style={{
-                width: 8, height: 8, borderRadius: "50%",
-                background: "var(--navy)",
-                animation: "pulse-glow 2s ease infinite",
-                display: "inline-block",
-              }} />
+              width: 7, height: 7, borderRadius: "50%",
+              background: "var(--sky)",
+              animation: "pulseGlow 2s ease infinite",
+              display: "inline-block",
+            }} />
+            <span style={{ color: "var(--sky)", fontSize: 12, fontWeight: 700, letterSpacing: "0.5px" }}>
               {heroTagline}
             </span>
-          </motion.div>
+          </div>
 
           {/* Headline */}
-          <div style={{ marginBottom: 0 }}>
-            {[
-              { text: "Power Your" },
-              { text: "World With" },
-            ].map((line, i) => (
-              <motion.div
-                key={line.text}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.2 + i * 0.1, ease: "easeOut" }}
+          <div>
+            {["Power Your", "World With"].map((line, i) => (
+              <h1
+                key={line}
+                className="hero-headline"
+                style={{
+                  fontSize: "clamp(38px, 5.5vw, 72px)", fontWeight: 900,
+                  color: "var(--text-heading)", letterSpacing: "-2px", lineHeight: 1.05, margin: 0,
+                  animation: `fadeInUp 0.6s ease ${0.1 + i * 0.1}s both`,
+                }}
               >
-                <h1 className="hero-headline" style={{
-                  fontSize: "clamp(32px, 8vw, 72px)", fontWeight: 900,
-                  color: "var(--text-heading)", lineHeight: 1.1, letterSpacing: "-2px", margin: 0,
-                }}>
-                  {line.text}
-                </h1>
-              </motion.div>
+                {line}
+              </h1>
             ))}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
-            >
-              <span className="hero-headline" style={{
+            <span
+              className="hero-headline gradient-text"
+              style={{
                 display: "block",
-                background: "linear-gradient(135deg, var(--navy) 0%, var(--gold) 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                fontSize: "clamp(32px, 8vw, 72px)",
+                fontSize: "clamp(38px, 5.5vw, 72px)",
                 fontWeight: 900,
                 letterSpacing: "-2px",
-                lineHeight: 1.1,
-                minHeight: "1.15em",
-                margin: 0,
+                lineHeight: 1.05,
+                minHeight: "1.1em",
                 opacity: wordVisible ? 1 : 0,
                 transform: wordVisible ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 0.3s ease, transform 0.3s ease",
-              }}>
-                {rotatingWords[wordIndex]}
-              </span>
-            </motion.div>
+              }}
+            >
+              {rotatingWords[wordIndex]}
+            </span>
           </div>
 
           {/* Subtitle */}
-          <motion.p
+          <p
             className="hero-subtitle"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-            style={{ fontSize: 17, color: "var(--text-muted)", lineHeight: 1.7, marginTop: 20, maxWidth: 480 }}
+            style={{
+              fontSize: 16, color: "var(--text-muted)", lineHeight: 1.7,
+              marginTop: 20, marginBottom: 32, maxWidth: 460,
+              animation: "fadeInUp 0.6s ease 0.2s both",
+            }}
           >
             {heroSubheading.split("\n").map((line, i) => (
               <span key={i}>{line}{i < heroSubheading.split("\n").length - 1 ? <br /> : null}</span>
             ))}
-          </motion.p>
+          </p>
 
           {/* Buttons */}
-          <motion.div
+          <div
             className="hero-btn-row"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-            style={{ marginTop: 32, display: "flex", gap: 16, flexWrap: "wrap" }}
+            style={{ display: "flex", gap: 14, flexWrap: "wrap", animation: "fadeInUp 0.6s ease 0.3s both" }}
           >
-            <motion.button
+            <button
               className="hero-btn-primary"
-              whileTap={{ scale: 0.97 }}
               onClick={() => router.push("/products")}
               style={{
-                background: "linear-gradient(135deg, var(--navy), var(--navy-dark))",
-                color: "#fff", padding: "14px 32px", border: "none",
-                borderRadius: 10, fontSize: 16, fontWeight: 700, cursor: "pointer",
-                boxShadow: "0 8px 24px rgba(15,76,129,0.35)", transition: "all 0.3s ease",
+                background: "var(--grad-primary)",
+                color: "var(--text-heading)", padding: "14px 32px", border: "none",
+                borderRadius: 12, fontSize: 15, fontWeight: 800, cursor: "pointer",
+                boxShadow: "0 8px 28px rgba(13,81,140,0.4)", transition: "all 0.3s ease",
+                animation: "pulseGlow 3s ease infinite",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(15,76,129,0.45)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(15,76,129,0.35)"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 14px 36px rgba(13,81,140,0.5)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(13,81,140,0.4)"; }}
             >
               Shop Products →
-            </motion.button>
-            <motion.button
+            </button>
+            <button
               className="hero-btn-ghost"
-              whileTap={{ scale: 0.97 }}
               onClick={() => router.push("/services/enquiry")}
               style={{
-                background: "transparent", border: "2px solid var(--text-heading)", color: "var(--text-heading)",
-                padding: "12px 32px", borderRadius: 10, fontSize: 16, fontWeight: 700, cursor: "pointer",
-                transition: "all 0.2s",
+                background: "rgba(92,103,149,0.12)", color: "var(--text-heading)",
+                padding: "13px 32px", borderRadius: 12, fontSize: 15, fontWeight: 600, cursor: "pointer",
+                border: "1.5px solid rgba(92,103,149,0.35)", transition: "all 0.3s ease",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--text-heading)"; e.currentTarget.style.color = "var(--bg-page)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--text-heading)"; }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(92,103,149,0.22)";
+                e.currentTarget.style.borderColor = "var(--sky)";
+                e.currentTarget.style.color = "var(--sky)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(92,103,149,0.12)";
+                e.currentTarget.style.borderColor = "rgba(92,103,149,0.35)";
+                e.currentTarget.style.color = "var(--text-heading)";
+              }}
             >
               Book a Service →
-            </motion.button>
-          </motion.div>
+            </button>
+          </div>
 
           {/* Trust pills */}
-          <motion.div
+          <div
             className="hero-trust-row"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.0, duration: 0.5 }}
-            style={{ marginTop: 24, display: "flex", gap: 20, flexWrap: "wrap", fontSize: 13, color: "var(--text-muted)" }}
+            style={{ marginTop: 28, display: "flex", gap: 24, flexWrap: "wrap", animation: "fadeInUp 0.6s ease 0.4s both" }}
           >
             {TRUST_PILLS.map((pill) => (
-              <span className="hero-trust-pill" key={pill}>{pill}</span>
+              <span
+                className="hero-trust-pill"
+                key={pill}
+                style={{ color: "var(--text-subtle)", fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}
+              >
+                <span style={{ color: "var(--green)", fontWeight: 700 }}>✓</span>
+                {pill}
+              </span>
             ))}
-          </motion.div>
+          </div>
         </div>
 
-        {/* RIGHT — playing card deck on dark navy */}
+        {/* RIGHT — glass card deck */}
         <div
           className="hero-right-col"
           style={{ perspective: "1200px" }}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
-          <div style={{ position: "relative", width: "100%", maxWidth: 360, margin: "0 auto", minHeight: 380 }}>
+          <div style={{ position: "relative", width: "100%", maxWidth: 340, margin: "0 auto", minHeight: 380 }}>
             {/* Stack back cards */}
             {[
               { deckOffset: 3, rotate: -6, tx: -18, ty: 12, opacity: 0.3, zIndex: 1 },
@@ -328,9 +321,9 @@ export default function Hero() {
                   onClick={() => setCurrent(deckIdx)}
                   style={{
                     position: "absolute", inset: 0,
-                    background: "rgba(255,255,255,0.06)",
+                    background: "rgba(22,41,82,0.5)",
                     backdropFilter: "blur(4px)",
-                    border: "1px solid rgba(255,255,255,0.12)",
+                    border: "1px solid rgba(79,195,247,0.12)",
                     borderRadius: 24,
                     transform: `rotate(${rotate}deg) translate(${tx}px, ${ty}px)`,
                     transformOrigin: "center bottom",
@@ -356,24 +349,27 @@ export default function Hero() {
               );
             })}
 
-            {/* Front card — physical card throw animation */}
+            {/* Front card — glassmorphism, physical card throw animation */}
             <div style={{ position: "relative", zIndex: 4, ...CARD_ANIM[animState] }}>
               <div
                 className="hero-product-card-inner"
                 style={{
-                  background: "rgba(255,255,255,0.12)",
+                  background: "rgba(22,41,82,0.7)",
                   backdropFilter: "blur(24px)",
-                  border: "1px solid rgba(255,255,255,0.2)",
+                  border: "1px solid rgba(79,195,247,0.15)",
                   borderRadius: 24,
                   overflow: "hidden",
-                  boxShadow: "0 32px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.2)",
+                  boxShadow: "0 32px 80px rgba(10,14,26,0.6), 0 0 0 1px rgba(79,195,247,0.08), inset 0 1px 0 rgba(255,255,255,0.06)",
                   cursor: card.slug ? "pointer" : "default",
-                  animation: animState === "idle" ? "floatCard 6s ease-in-out infinite" : "none",
+                  animation: animState === "idle" ? "float 6s ease-in-out infinite" : "none",
                 }}
                 onClick={() => { if (card.slug) router.push(`/products/${card.slug}`); }}
               >
-                {/* Image area — full width to edges */}
-                <div className="hero-product-card-imgwrap" style={{ height: 220, position: "relative", overflow: "hidden", background: "rgba(0,0,0,0.2)" }}>
+                {/* Image area */}
+                <div className="hero-product-card-imgwrap" style={{
+                  height: 220, position: "relative", overflow: "hidden",
+                  background: "linear-gradient(135deg, var(--bg-surface), var(--bg-card))",
+                }}>
                   <img
                     src={card.src}
                     alt={card.name}
@@ -381,35 +377,52 @@ export default function Hero() {
                   />
                   <span style={{
                     position: "absolute", top: 12, left: 12,
-                    background: "rgba(193,127,36,0.9)", color: "#fff",
+                    background: "rgba(13,81,140,0.8)", color: "var(--sky)",
                     fontSize: 10, fontWeight: 800, padding: "4px 12px",
-                    borderRadius: 20, letterSpacing: "1px", textTransform: "uppercase",
+                    borderRadius: 20, letterSpacing: "1.2px", textTransform: "uppercase",
+                    display: "inline-block",
                   }}>
                     {card.badge}
                   </span>
                 </div>
 
                 {/* Info panel */}
-                <div style={{ padding: "16px 20px 20px", background: "rgba(10,20,40,0.7)", backdropFilter: "blur(8px)" }}>
-                  <p style={{ color: "#fff", fontSize: 18, fontWeight: 800, margin: "0 0 4px", lineHeight: 1.2 }}>
+                <div style={{ padding: "20px 24px 24px", background: "rgba(10,14,26,0.5)" }}>
+                  <p style={{ color: "var(--text-heading)", fontSize: 20, fontWeight: 800, margin: "0 0 4px", lineHeight: 1.2 }}>
                     {card.name}
                   </p>
-                  <p style={{ color: "var(--gold)", fontSize: 17, fontWeight: 700, margin: "0 0 10px" }}>
+                  <p style={{ color: "var(--gold)", fontSize: 18, fontWeight: 700, margin: "0 0 14px" }}>
                     {card.price ? `₹${card.price.toLocaleString("en-IN")}` : "Coming Soon"}
                   </p>
-                  <div style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", gap: 8, marginBottom: 0, flexWrap: "wrap" }}>
                     {card.specs.map((s) => (
-                      <span key={s} style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.8)", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", padding: "3px 10px", borderRadius: 20 }}>
+                      <span key={s} style={{
+                        fontSize: 11, color: "var(--text-muted)",
+                        background: "rgba(92,103,149,0.15)", border: "1px solid rgba(92,103,149,0.25)",
+                        padding: "3px 10px", borderRadius: 20,
+                      }}>
                         {s}
                       </span>
                     ))}
                   </div>
                   {card.slug ? (
-                    <Link href={`/products/${card.slug}`} onClick={(e) => e.stopPropagation()} style={{ fontSize: 13, color: "var(--gold)", textDecoration: "none", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 4 }}>
+                    <Link
+                      href={`/products/${card.slug}`}
+                      onClick={(e) => e.stopPropagation()}
+                      style={{ fontSize: 14, color: "var(--sky)", textDecoration: "none", fontWeight: 600, marginTop: 14, display: "inline-flex", alignItems: "center", gap: 4 }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-heading)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--sky)")}
+                    >
                       View Product →
                     </Link>
                   ) : (
-                    <Link href="/contact?interest=ev-car" onClick={(e) => e.stopPropagation()} style={{ fontSize: 13, color: "var(--gold)", textDecoration: "none", fontWeight: 600 }}>
+                    <Link
+                      href="/contact?interest=ev-car"
+                      onClick={(e) => e.stopPropagation()}
+                      style={{ fontSize: 14, color: "var(--sky)", textDecoration: "none", fontWeight: 600, marginTop: 14, display: "inline-flex", alignItems: "center", gap: 4 }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-heading)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--sky)")}
+                    >
                       Register Interest →
                     </Link>
                   )}
@@ -425,9 +438,9 @@ export default function Hero() {
                 key={i}
                 onClick={() => setCurrent(i)}
                 style={{
-                  width: i === current ? 24 : 8,
-                  height: 8, borderRadius: 4,
-                  background: i === current ? "var(--gold)" : "rgba(255,255,255,0.2)",
+                  width: i === current ? 20 : 6,
+                  height: 6, borderRadius: i === current ? 3 : "50%",
+                  background: i === current ? "var(--sky)" : "rgba(92,103,149,0.4)",
                   cursor: "pointer",
                   transition: "all 300ms",
                 }}
@@ -436,58 +449,51 @@ export default function Hero() {
           </div>
 
           {/* Category chips */}
-          <motion.div
-            className="hero-category-chips"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.5 }}
-          >
+          <div className="hero-category-chips" style={{ animation: "fadeInUp 0.6s ease 0.5s both" }}>
             {CATEGORY_CHIPS.map((c) => (
               <Link
                 key={c.label}
                 href={c.href}
                 style={{
-                  flex: 1, minWidth: 0, display: "flex", flexDirection: "column",
-                  alignItems: "center", gap: 4, padding: "10px 8px",
-                  background: "rgba(255,255,255,0.06)",
-                  border: "1px solid rgba(255,255,255,0.12)", borderRadius: 10,
-                  textDecoration: "none", fontSize: 11,
-                  color: "#ffffff", fontWeight: 600, textAlign: "center",
-                  transition: "all 0.2s",
+                  flex: 1, minWidth: 0, display: "flex", alignItems: "center", justifyContent: "center",
+                  gap: 8, padding: "10px 18px",
+                  background: "rgba(22,41,82,0.6)",
+                  backdropFilter: "blur(12px)",
+                  border: "1px solid rgba(92,103,149,0.2)", borderRadius: 12,
+                  textDecoration: "none", fontSize: 12,
+                  color: "var(--text-body)", fontWeight: 600, textAlign: "center",
+                  transition: "all 0.2s ease",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "var(--gold)";
-                  e.currentTarget.style.color = "var(--gold)";
+                  e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)";
+                  e.currentTarget.style.color = "var(--sky)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
-                  e.currentTarget.style.color = "#ffffff";
+                  e.currentTarget.style.borderColor = "rgba(92,103,149,0.2)";
+                  e.currentTarget.style.color = "var(--text-body)";
                 }}
               >
-                <span style={{ fontSize: 18 }}>{c.icon}</span>
+                <span style={{ fontSize: 16, color: "var(--gold)" }}>{c.icon}</span>
                 {c.label} →
               </Link>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-        style={{
-          position: "absolute", bottom: 28, left: "50%",
-          transform: "translateX(-50%)",
-          display: "flex", flexDirection: "column", alignItems: "center",
-          gap: 4, color: "var(--text-muted)", zIndex: 10,
-        }}
-      >
-        <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase" }}>Scroll</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18, color: "var(--navy)" }}>
+      <div style={{
+        position: "absolute", bottom: 28, left: "50%",
+        transform: "translateX(-50%)",
+        display: "flex", flexDirection: "column", alignItems: "center",
+        gap: 4, color: "rgba(92,103,149,0.5)", zIndex: 10,
+        animation: "float 1.5s ease-in-out infinite",
+      }}>
+        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase" }}>Scroll</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18 }}>
           <path d="M6 9l6 6 6-6" />
         </svg>
-      </motion.div>
+      </div>
     </section>
   );
 }

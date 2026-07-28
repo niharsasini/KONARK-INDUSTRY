@@ -15,7 +15,7 @@ function SvcItem({ icon, name, desc, href, external }) {
         display: "flex", alignItems: "center", gap: 12,
         padding: "10px 12px", borderRadius: 10,
         textDecoration: "none",
-        background: hovered ? "rgba(193,127,36,0.06)" : "transparent",
+        background: hovered ? "rgba(244,196,48,0.12)" : "transparent",
         transform: hovered ? "translateX(4px)" : "translateX(0)",
         transition: "all 0.15s ease",
       }}
@@ -23,8 +23,8 @@ function SvcItem({ icon, name, desc, href, external }) {
       <div style={{
         width: 36, height: 36, borderRadius: 10, flexShrink: 0,
         background: hovered
-          ? "linear-gradient(135deg, var(--gold), #a06519)"
-          : "linear-gradient(135deg, #fdf3e3, #fde8c0)",
+          ? "linear-gradient(135deg, var(--gold), var(--gold-dark))"
+          : "linear-gradient(135deg, var(--bg-surface), var(--bg-card))",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 18, transition: "all 0.15s ease",
       }}>
@@ -63,10 +63,11 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         top: "calc(100% + 4px)",
         left: "50%",
         width: 520,
-        background: "#ffffff",
-        border: "1px solid var(--border-subtle)",
+        background: "rgba(13,27,53,0.97)",
+        backdropFilter: "blur(24px)",
+        border: "1px solid rgba(92,103,149,0.2)",
         borderRadius: 20,
-        boxShadow: "0 20px 60px rgba(26,15,0,0.12), 0 0 0 1px rgba(212,201,184,0.3)",
+        boxShadow: "0 24px 60px rgba(10,14,26,0.7), 0 0 0 1px rgba(79,195,247,0.05)",
         padding: 8,
         zIndex: 1000,
         ...(isOpen ? visible : hidden),
@@ -77,17 +78,18 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
 
       {/* Header */}
       <div style={{
-        background: "linear-gradient(135deg, #fdf3e3, #fde8c0)",
+        background: "rgba(244,196,48,0.12)",
+        border: "1px solid rgba(244,196,48,0.2)",
         borderRadius: 14, padding: "16px 20px", marginBottom: 8,
       }}>
         <div style={{ fontSize: 18, fontWeight: 800, color: "var(--text-heading)", marginBottom: 2 }}>Our Services</div>
-        <div style={{ fontSize: 12, color: "var(--text-subtle)" }}>Doorstep service across 18+ cities in Odisha</div>
+        <div style={{ fontSize: 12, color: "var(--slate)" }}>Doorstep service across 18+ cities in Odisha</div>
       </div>
 
       {/* 2-column grid */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", padding: "0 4px 4px" }}>
         {/* Home & EV */}
-        <div style={{ paddingRight: 8, borderRight: "1px solid #f0ebe2" }}>
+        <div style={{ paddingRight: 8, borderRight: "1px solid rgba(92,103,149,0.12)" }}>
           <div style={{
             fontSize: 10, fontWeight: 700, color: "var(--gold)",
             letterSpacing: "1.5px", textTransform: "uppercase",
@@ -117,14 +119,14 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
 
       {/* Featured card */}
       <div style={{
-        background: "linear-gradient(135deg, rgba(193,127,36,0.08), rgba(15,76,129,0.08))",
-        border: "1px solid rgba(193,127,36,0.2)",
+        background: "linear-gradient(135deg, rgba(244,196,48,0.08), rgba(13,81,140,0.08))",
+        border: "1px solid rgba(244,196,48,0.2)",
         borderRadius: 12, padding: "14px 16px", margin: "4px 4px 8px",
         display: "flex", alignItems: "center", gap: 12,
       }}>
         <div style={{
           width: 40, height: 40, borderRadius: 10, flexShrink: 0,
-          background: "linear-gradient(135deg, var(--gold), #a06519)",
+          background: "linear-gradient(135deg, var(--gold), var(--gold-dark))",
           display: "flex", alignItems: "center", justifyContent: "center",
           fontSize: 20,
         }}>
@@ -141,7 +143,7 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
             textDecoration: "none", whiteSpace: "nowrap",
             transition: "color 0.15s",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#a06519")}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold-dark)")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "var(--gold)")}
         >
           Book Now →
@@ -150,7 +152,7 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
 
       {/* Footer */}
       <div style={{
-        borderTop: "1px solid #f0ebe2",
+        borderTop: "1px solid rgba(92,103,149,0.12)",
         padding: "12px 20px 8px",
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
@@ -165,19 +167,19 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         <Link
           href="/services/enquiry"
           style={{
-            background: "linear-gradient(135deg, var(--navy), var(--navy-dark))",
-            color: "#fff", padding: "8px 20px", borderRadius: 8,
+            background: "var(--grad-primary)",
+            color: "var(--text-heading)", padding: "8px 20px", borderRadius: 8,
             textDecoration: "none", fontWeight: 700, fontSize: 13,
-            boxShadow: "0 4px 12px rgba(15,76,129,0.25)",
+            boxShadow: "0 4px 12px rgba(13,81,140,0.25)",
             transition: "all 0.2s ease",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = "translateY(-1px)";
-            e.currentTarget.style.boxShadow = "0 6px 20px rgba(15,76,129,0.35)";
+            e.currentTarget.style.boxShadow = "0 6px 20px rgba(13,81,140,0.35)";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 4px 12px rgba(15,76,129,0.25)";
+            e.currentTarget.style.boxShadow = "0 4px 12px rgba(13,81,140,0.25)";
           }}
         >
           Book a Service →

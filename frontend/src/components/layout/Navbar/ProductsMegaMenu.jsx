@@ -13,7 +13,7 @@ function MenuItem({ icon, name, desc, href }) {
         display: "flex", alignItems: "center", gap: 12,
         padding: "10px 12px", borderRadius: 10,
         textDecoration: "none",
-        background: hovered ? "rgba(15,76,129,0.06)" : "transparent",
+        background: hovered ? "rgba(13,81,140,0.12)" : "transparent",
         transform: hovered ? "translateX(4px)" : "translateX(0)",
         transition: "all 0.15s ease",
       }}
@@ -21,8 +21,8 @@ function MenuItem({ icon, name, desc, href }) {
       <div style={{
         width: 36, height: 36, borderRadius: 10, flexShrink: 0,
         background: hovered
-          ? "linear-gradient(135deg, var(--navy), var(--navy-dark))"
-          : "linear-gradient(135deg, var(--bg-page), var(--bg-surface))",
+          ? "linear-gradient(135deg, var(--navy), var(--sky))"
+          : "linear-gradient(135deg, var(--bg-surface), var(--bg-card))",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 18, transition: "all 0.15s ease",
       }}>
@@ -61,10 +61,11 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         top: "calc(100% + 4px)",
         left: "50%",
         width: 640,
-        background: "#ffffff",
-        border: "1px solid var(--border-subtle)",
+        background: "rgba(13,27,53,0.97)",
+        backdropFilter: "blur(24px)",
+        border: "1px solid rgba(92,103,149,0.2)",
         borderRadius: 20,
-        boxShadow: "0 20px 60px rgba(26,15,0,0.12), 0 0 0 1px rgba(212,201,184,0.3)",
+        boxShadow: "0 24px 60px rgba(10,14,26,0.7), 0 0 0 1px rgba(79,195,247,0.05)",
         padding: 8,
         zIndex: 1000,
         ...(isOpen ? visible : hidden),
@@ -75,13 +76,14 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
 
       {/* Header */}
       <div style={{
-        background: "linear-gradient(135deg, var(--bg-page), var(--bg-surface))",
+        background: "rgba(13,81,140,0.12)",
+        border: "1px solid rgba(13,81,140,0.2)",
         borderRadius: 14, padding: "16px 20px", marginBottom: 8,
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
         <span style={{ fontSize: 18, fontWeight: 800, color: "var(--text-heading)" }}>Our Products</span>
         <span style={{
-          fontSize: 12, color: "var(--text-muted)", background: "rgba(255,255,255,0.7)",
+          fontSize: 12, color: "var(--slate)", background: "rgba(10,14,26,0.3)",
           padding: "4px 12px", borderRadius: 999, fontWeight: 500,
         }}>
           29 Products Available
@@ -91,9 +93,9 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
       {/* 2-column grid */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", padding: "0 4px 4px" }}>
         {/* EV Vehicles */}
-        <div style={{ paddingRight: 8, borderRight: "1px solid #f0ebe2" }}>
+        <div style={{ paddingRight: 8, borderRight: "1px solid rgba(92,103,149,0.12)" }}>
           <div style={{
-            fontSize: 10, fontWeight: 700, color: "var(--navy)",
+            fontSize: 10, fontWeight: 700, color: "var(--sky)",
             letterSpacing: "1.5px", textTransform: "uppercase",
             padding: "8px 12px 4px",
           }}>
@@ -108,7 +110,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         {/* Home & Industrial */}
         <div style={{ paddingLeft: 8 }}>
           <div style={{
-            fontSize: 10, fontWeight: 700, color: "var(--navy)",
+            fontSize: 10, fontWeight: 700, color: "var(--sky)",
             letterSpacing: "1.5px", textTransform: "uppercase",
             padding: "8px 12px 4px",
           }}>
@@ -123,7 +125,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
 
       {/* Footer */}
       <div style={{
-        borderTop: "1px solid #f0ebe2",
+        borderTop: "1px solid rgba(92,103,149,0.12)",
         padding: "12px 20px 8px",
         display: "flex", justifyContent: "space-between", alignItems: "center",
         marginTop: 4,
@@ -131,7 +133,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         <Link
           href="/products"
           style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none", fontWeight: 500, transition: "color 0.15s" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy)")}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--sky)")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
         >
           View all products →
@@ -139,19 +141,19 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         <Link
           href="/products"
           style={{
-            background: "linear-gradient(135deg, var(--navy), var(--navy-dark))",
-            color: "#fff", padding: "8px 20px", borderRadius: 8,
+            background: "var(--grad-primary)",
+            color: "var(--text-heading)", padding: "8px 20px", borderRadius: 8,
             textDecoration: "none", fontWeight: 700, fontSize: 13,
-            boxShadow: "0 4px 12px rgba(15,76,129,0.25)",
+            boxShadow: "0 4px 12px rgba(13,81,140,0.25)",
             transition: "all 0.2s ease",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = "translateY(-1px)";
-            e.currentTarget.style.boxShadow = "0 6px 20px rgba(15,76,129,0.35)";
+            e.currentTarget.style.boxShadow = "0 6px 20px rgba(13,81,140,0.35)";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 4px 12px rgba(15,76,129,0.25)";
+            e.currentTarget.style.boxShadow = "0 4px 12px rgba(13,81,140,0.25)";
           }}
         >
           Shop Now →
