@@ -76,7 +76,9 @@ img {
   display: none;
   position: fixed;
   inset: 0;
-  background: var(--bg-page);
+  background: rgba(10,14,26,0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   z-index: 998;
   flex-direction: column;
   overflow-y: auto;
@@ -95,33 +97,38 @@ img {
 }
 
 .mobile-nav-item {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text-heading);
+  font-size: 18px;
+  font-weight: 500;
+  color: #B8D0E8;
   text-decoration: none;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--border-subtle);
+  padding: 16px 24px;
+  margin: 0 -24px;
+  border-bottom: 1px solid rgba(92,103,149,0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: color 0.15s, background 0.15s;
 }
 
 .mobile-nav-item:active,
 .mobile-nav-item:hover {
-  color: var(--navy);
+  color: #E8F4FF;
+  background: rgba(13,81,140,0.1);
 }
 
 .mobile-nav-sub {
   font-size: 15px;
   font-weight: 500;
-  color: var(--text-muted);
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--bg-surface);
+  color: #7B8DB8;
+  padding: 12px 24px 12px 40px;
+  border-bottom: 1px solid rgba(92,103,149,0.1);
   display: block;
   text-decoration: none;
+  transition: color 0.15s;
 }
 
-.mobile-nav-sub:active { color: var(--navy); }
+.mobile-nav-sub:active,
+.mobile-nav-sub:hover { color: #4FC3F7; }
 
 .mobile-menu-actions {
   margin-top: 32px;
@@ -133,7 +140,7 @@ img {
 .mobile-menu-actions a,
 .mobile-menu-actions button {
   width: 100%;
-  padding: 16px;
+  padding: 14px;
   font-size: 16px;
   font-weight: 700;
   border-radius: 12px;
@@ -144,20 +151,21 @@ img {
 }
 
 .mobile-btn-primary {
-  background: linear-gradient(135deg, var(--navy), var(--navy-dark));
-  color: #fff;
+  background: linear-gradient(135deg, #0D518C, #4FC3F7);
+  color: #E8F4FF;
   border: none;
+  box-shadow: var(--shadow-navy);
 }
 
 .mobile-btn-ghost {
   background: transparent;
-  color: var(--text-heading);
-  border: 2px solid var(--text-heading);
+  color: #4FC3F7;
+  border: 1.5px solid rgba(13,81,140,0.6);
 }
 
 .mobile-btn-purple {
-  background: #5b21b6;
-  color: #fff;
+  background: var(--grad-gold);
+  color: var(--bg-page);
   border: none;
 }
 

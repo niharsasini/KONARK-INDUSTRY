@@ -63,11 +63,11 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
         placeholder="/productimg/name.png or paste URL"
         style={{
           flex: 1,
-          background: "#ffffff",
-          border: "1px solid #d4c9b8",
+          background: "var(--bg-card)",
+          border: "1px solid rgba(92,103,149,0.3)",
           borderRadius: 8,
           padding: "10px 14px",
-          color: "#1a0f00",
+          color: "var(--text-heading)",
           fontSize: 13,
           outline: "none",
           boxSizing: "border-box",
@@ -75,9 +75,9 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
       />
       <label
         style={{
-          background: uploading ? "#e8dfd0" : "#ffffff",
-          border: uploading ? "1px solid #d4c9b8" : "1px dashed #d4c9b8",
-          color: uploading ? "#6b5a45" : "#6b5a45",
+          background: uploading ? "rgba(92,103,149,0.2)" : "var(--bg-card)",
+          border: uploading ? "1px solid rgba(92,103,149,0.3)" : "1px dashed rgba(92,103,149,0.3)",
+          color: uploading ? "var(--text-muted)" : "var(--text-muted)",
           padding: "10px 14px",
           borderRadius: 8,
           cursor: uploading ? "not-allowed" : "pointer",
@@ -106,8 +106,8 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
             height: 48,
             objectFit: "cover",
             borderRadius: 8,
-            border: "1px solid #e8dfd0",
-            background: "#f9f4ec",
+            border: "1px solid rgba(92,103,149,0.2)",
+            background: "var(--bg-surface)",
             flexShrink: 0,
           }}
           onError={(e) => {

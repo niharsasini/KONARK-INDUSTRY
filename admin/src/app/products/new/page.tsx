@@ -17,13 +17,13 @@ const CATEGORIES = [
 ];
 
 const inputStyle: React.CSSProperties = {
-  width: "100%", background: "#ffffff", border: "1px solid #e8dfd0",
-  borderRadius: 8, padding: "11px 14px", color: "#1a0f00",
+  width: "100%", background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)",
+  borderRadius: 8, padding: "11px 14px", color: "var(--text-heading)",
   fontSize: 13, outline: "none", boxSizing: "border-box",
 };
 
 const labelStyle: React.CSSProperties = {
-  fontSize: 11, color: "#6b5a45", display: "block",
+  fontSize: 11, color: "var(--text-muted)", display: "block",
   marginBottom: 7, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600,
 };
 
@@ -102,24 +102,24 @@ export default function NewProductPage() {
   return (
     <div style={{ padding: "32px 40px", maxWidth: 800 }}>
       <div style={{ marginBottom: 28 }}>
-        <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "#6b5a45", textDecoration: "none", marginBottom: 16 }}>
+        <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "var(--text-muted)", textDecoration: "none", marginBottom: 16 }}>
           <ArrowLeft size={14} /> Back to Products
         </Link>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: "#1a0f00", margin: 0 }}>Add New Product</h1>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: "var(--text-heading)", margin: 0 }}>Add New Product</h1>
       </div>
 
       {saved && (
-        <div style={{ padding: "14px 20px", background: "rgba(26,122,74,0.1)", border: "1px solid rgba(26,122,74,0.3)", borderRadius: 10, marginBottom: 24, fontSize: 13, color: "#1a7a4a", fontWeight: 600 }}>
+        <div style={{ padding: "14px 20px", background: "rgba(52,199,138,0.1)", border: "1px solid rgba(52,199,138,0.3)", borderRadius: 10, marginBottom: 24, fontSize: 13, color: "var(--green)", fontWeight: 600 }}>
           ✅ Product created successfully! Redirecting...
         </div>
       )}
       {error && (
-        <div style={{ padding: "14px 20px", background: "rgba(192,57,43,0.1)", border: "1px solid rgba(192,57,43,0.3)", borderRadius: 10, marginBottom: 24, fontSize: 13, color: "#c0392b", fontWeight: 600 }}>
+        <div style={{ padding: "14px 20px", background: "rgba(255,112,67,0.1)", border: "1px solid rgba(255,112,67,0.3)", borderRadius: 10, marginBottom: 24, fontSize: 13, color: "var(--orange)", fontWeight: 600 }}>
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 16, padding: "32px" }}>
+      <form onSubmit={handleSubmit} style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 16, padding: "32px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
           <div style={{ gridColumn: "1 / -1" }}>
             <label style={labelStyle}>Product Name *</label>
@@ -148,7 +148,7 @@ export default function NewProductPage() {
             <label style={labelStyle}>Type *</label>
             <div style={{ display: "flex", gap: 16, paddingTop: 8 }}>
               {["vehicle", "product", "service"].map((t) => (
-                <label key={t} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "#6b5a45", cursor: "pointer", textTransform: "capitalize" }}>
+                <label key={t} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "var(--text-muted)", cursor: "pointer", textTransform: "capitalize" }}>
                   <input type="radio" name="type" value={t} checked={form.type === t} onChange={set("type")} />
                   {t}
                 </label>
@@ -174,7 +174,7 @@ export default function NewProductPage() {
           <div style={{ gridColumn: "1 / -1" }}>
             <label style={labelStyle}>
               Product Images
-              <span style={{ color: "#6b5a45", fontSize: 12, marginLeft: 8, textTransform: "none", letterSpacing: "normal", fontWeight: 400 }}>
+              <span style={{ color: "var(--text-muted)", fontSize: 12, marginLeft: 8, textTransform: "none", letterSpacing: "normal", fontWeight: 400 }}>
                 (Add up to 5 image paths)
               </span>
             </label>
@@ -182,12 +182,12 @@ export default function NewProductPage() {
             {images.map((img, i) => (
               <div key={i} style={{ marginBottom: 10 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                  <span style={{ color: "#6b5a45", fontSize: 13 }}>Image {i + 1}</span>
+                  <span style={{ color: "var(--text-muted)", fontSize: 13 }}>Image {i + 1}</span>
                   {images.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeImageField(i)}
-                      style={{ background: "transparent", border: "1px solid #c0392b", color: "#c0392b", borderRadius: 6, padding: "2px 8px", cursor: "pointer", fontSize: 12 }}
+                      style={{ background: "transparent", border: "1px solid var(--orange)", color: "var(--orange)", borderRadius: 6, padding: "2px 8px", cursor: "pointer", fontSize: 12 }}
                     >
                       Remove
                     </button>
@@ -201,7 +201,7 @@ export default function NewProductPage() {
               <button
                 type="button"
                 onClick={addImageField}
-                style={{ background: "transparent", border: "1px dashed #d4c9b8", color: "#6b5a45", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13, width: "100%", marginTop: 4 }}
+                style={{ background: "transparent", border: "1px dashed rgba(92,103,149,0.3)", color: "var(--text-muted)", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13, width: "100%", marginTop: 4 }}
               >
                 + Add Another Image
               </button>
@@ -215,38 +215,38 @@ export default function NewProductPage() {
                 <div key={i} style={{ display: "flex", gap: 8 }}>
                   <input value={row.key} onChange={(e) => updateSpec(i, "key", e.target.value)} placeholder="Key (e.g. Range)" style={{ ...inputStyle, flex: 1 }} />
                   <input value={row.val} onChange={(e) => updateSpec(i, "val", e.target.value)} placeholder="Value (e.g. 200 km)" style={{ ...inputStyle, flex: 1 }} />
-                  <button type="button" onClick={() => removeSpecRow(i)} style={{ background: "transparent", border: "1px solid #e8dfd0", borderRadius: 8, color: "#c0392b", cursor: "pointer", padding: "0 12px" }}>
+                  <button type="button" onClick={() => removeSpecRow(i)} style={{ background: "transparent", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 8, color: "var(--orange)", cursor: "pointer", padding: "0 12px" }}>
                     <Trash2 size={14} />
                   </button>
                 </div>
               ))}
             </div>
-            <button type="button" onClick={addSpecRow} style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 8, border: "1px solid #e8dfd0", background: "transparent", color: "#0f4c81", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+            <button type="button" onClick={addSpecRow} style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 8, border: "1px solid rgba(92,103,149,0.2)", background: "transparent", color: "var(--navy)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
               <Plus size={13} /> Add Spec
             </button>
           </div>
 
           <div style={{ gridColumn: "1 / -1", display: "flex", gap: 28 }}>
-            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "#6b5a45" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "var(--text-muted)" }}>
               <input type="checkbox" checked={form.inStock} onChange={(e) => setForm((f) => ({ ...f, inStock: e.target.checked }))} />
               In Stock
             </label>
-            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "#6b5a45" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "var(--text-muted)" }}>
               <input type="checkbox" checked={form.isNew} onChange={(e) => setForm((f) => ({ ...f, isNew: e.target.checked }))} />
               Mark as New
             </label>
-            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "#6b5a45" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "var(--text-muted)" }}>
               <input type="checkbox" checked={form.isFeatured} onChange={(e) => setForm((f) => ({ ...f, isFeatured: e.target.checked }))} />
               Featured
             </label>
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: 12, paddingTop: 20, borderTop: "1px solid #e8dfd0" }}>
-          <button type="submit" disabled={loading} style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 28px", background: "#0f4c81", color: "#ffffff", fontWeight: 700, fontSize: 14, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1 }}>
+        <div style={{ display: "flex", gap: 12, paddingTop: 20, borderTop: "1px solid rgba(92,103,149,0.2)" }}>
+          <button type="submit" disabled={loading} style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 28px", background: "var(--navy)", color: "var(--text-heading)", fontWeight: 700, fontSize: 14, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1 }}>
             <Save size={15} /> {loading ? "Saving..." : "Save Product"}
           </button>
-          <Link href="/products" style={{ display: "flex", alignItems: "center", padding: "12px 24px", background: "transparent", border: "1px solid #e8dfd0", borderRadius: 10, color: "#6b5a45", fontSize: 14, textDecoration: "none" }}>
+          <Link href="/products" style={{ display: "flex", alignItems: "center", padding: "12px 24px", background: "transparent", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 10, color: "var(--text-muted)", fontSize: 14, textDecoration: "none" }}>
             Cancel
           </Link>
         </div>

@@ -31,13 +31,13 @@ const BANNER_TYPES = [
 ];
 
 const INPUT: React.CSSProperties = {
-  width: "100%", background: "#ffffff", border: "1px solid #d4c9b8",
-  borderRadius: 8, padding: "10px 14px", color: "#1a0f00",
+  width: "100%", background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.3)",
+  borderRadius: 8, padding: "10px 14px", color: "var(--text-heading)",
   fontSize: 13, outline: "none", boxSizing: "border-box",
 };
 
 const LABEL: React.CSSProperties = {
-  display: "block", fontSize: 11, fontWeight: 600, color: "#6b5a45",
+  display: "block", fontSize: 11, fontWeight: 600, color: "var(--text-muted)",
   textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 7,
 };
 
@@ -112,7 +112,7 @@ export default function ContentPage() {
     return (
       <div style={{ padding: "32px 40px", maxWidth: 700 }}>
         {[...Array(4)].map((_, i) => (
-          <div key={i} style={{ height: 70, background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, marginBottom: 16, opacity: 1 - i * 0.15 }} />
+          <div key={i} style={{ height: 70, background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, marginBottom: 16, opacity: 1 - i * 0.15 }} />
         ))}
       </div>
     );
@@ -121,9 +121,9 @@ export default function ContentPage() {
   if (error && !form) {
     return (
       <div style={{ padding: "32px 40px" }}>
-        <div style={{ background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 14, padding: 32, textAlign: "center" }}>
-          <p style={{ color: "#ef4444", fontSize: 14, fontWeight: 600, margin: "0 0 14px" }}>{error}</p>
-          <button onClick={fetchSettings} style={{ padding: "9px 20px", borderRadius: 8, border: "none", background: "#0f4c81", color: "#ffffff", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+        <div style={{ background: "rgba(255,92,92,0.06)", border: "1px solid rgba(255,92,92,0.25)", borderRadius: 14, padding: 32, textAlign: "center" }}>
+          <p style={{ color: "var(--red)", fontSize: 14, fontWeight: 600, margin: "0 0 14px" }}>{error}</p>
+          <button onClick={fetchSettings} style={{ padding: "9px 20px", borderRadius: 8, border: "none", background: "var(--navy)", color: "var(--text-heading)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
             Retry
           </button>
         </div>
@@ -136,28 +136,28 @@ export default function ContentPage() {
   return (
     <div style={{ padding: "32px 40px", maxWidth: 700 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a0f00", margin: 0 }}>Content Management</h1>
+        <h1 style={{ fontSize: 22, fontWeight: 800, color: "var(--text-heading)", margin: 0 }}>Content Management</h1>
         {saved && (
-          <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", background: "rgba(26,122,74,0.1)", border: "1px solid rgba(26,122,74,0.3)", borderRadius: 8, fontSize: 13, color: "#1a7a4a", fontWeight: 600 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", background: "rgba(52,199,138,0.1)", border: "1px solid rgba(52,199,138,0.3)", borderRadius: 8, fontSize: 13, color: "var(--green)", fontWeight: 600 }}>
             <Check size={14} /> Saved!
           </div>
         )}
       </div>
 
       {error && (
-        <div style={{ padding: "12px 16px", marginBottom: 20, background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 8, fontSize: 13, color: "#ef4444" }}>
+        <div style={{ padding: "12px 16px", marginBottom: 20, background: "rgba(255,92,92,0.08)", border: "1px solid rgba(255,92,92,0.25)", borderRadius: 8, fontSize: 13, color: "var(--red)" }}>
           {error}
         </div>
       )}
 
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Announcement Banner</h3>
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 18px" }}>Announcement Banner</h3>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", marginBottom: 14 }}>
-            <span style={{ fontSize: 13, color: "#6b5a45" }}>Show banner on site</span>
+            <span style={{ fontSize: 13, color: "var(--text-muted)" }}>Show banner on site</span>
             <button
               onClick={() => setForm((f) => (f ? { ...f, announcement_banner_enabled: !f.announcement_banner_enabled } : f))}
-              style={{ width: 42, height: 22, borderRadius: 11, border: "none", cursor: "pointer", background: form.announcement_banner_enabled ? "#0f4c81" : "#e8dfd0", position: "relative", transition: "background 0.2s" }}
+              style={{ width: 42, height: 22, borderRadius: 11, border: "none", cursor: "pointer", background: form.announcement_banner_enabled ? "var(--navy)" : "rgba(92,103,149,0.2)", position: "relative", transition: "background 0.2s" }}
             >
               <span style={{ position: "absolute", top: 3, left: form.announcement_banner_enabled ? 22 : 3, width: 16, height: 16, borderRadius: "50%", background: "#fff", transition: "left 0.2s" }} />
             </button>
@@ -170,9 +170,9 @@ export default function ContentPage() {
                 onClick={() => setForm((f) => (f ? { ...f, announcement_banner_type: t.value } : f))}
                 style={{
                   padding: "6px 14px", borderRadius: 999, fontSize: 12, fontWeight: 600, cursor: "pointer",
-                  border: `1px solid ${form.announcement_banner_type === t.value ? "#0f4c81" : "#e8dfd0"}`,
-                  background: form.announcement_banner_type === t.value ? "rgba(15,76,129,0.1)" : "transparent",
-                  color: form.announcement_banner_type === t.value ? "#0f4c81" : "#6b5a45",
+                  border: `1px solid ${form.announcement_banner_type === t.value ? "var(--navy)" : "rgba(92,103,149,0.2)"}`,
+                  background: form.announcement_banner_type === t.value ? "rgba(13,81,140,0.1)" : "transparent",
+                  color: form.announcement_banner_type === t.value ? "var(--navy)" : "var(--text-muted)",
                 }}
               >
                 {t.label}
@@ -193,8 +193,8 @@ export default function ContentPage() {
           </div>
         </div>
 
-        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Hero Content</h3>
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 18px" }}>Hero Content</h3>
           <div style={{ marginBottom: 14 }}>
             <label style={LABEL}>Tagline (small badge text)</label>
             <input value={form.hero_tagline || ""} onChange={set("hero_tagline")} placeholder="Powering Odisha since 2014" style={INPUT} />
@@ -210,12 +210,12 @@ export default function ContentPage() {
           <div>
             <label style={LABEL}>Rotating Words (comma-separated)</label>
             <input value={form.hero_rotating_words} onChange={set("hero_rotating_words")} placeholder="Konark., Innovation., Sustainability., Odisha." style={INPUT} />
-            <p style={{ fontSize: 11, color: "#9b8a75", marginTop: 6 }}>These words cycle in the animated hero headline. Separate with commas.</p>
+            <p style={{ fontSize: 11, color: "var(--text-subtle)", marginTop: 6 }}>These words cycle in the animated hero headline. Separate with commas.</p>
           </div>
         </div>
 
-        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Homepage Stats</h3>
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 18px" }}>Homepage Stats</h3>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
             <div>
               <label style={LABEL}>Customers</label>
@@ -236,14 +236,14 @@ export default function ContentPage() {
           </div>
         </div>
 
-        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Footer</h3>
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 18px" }}>Footer</h3>
           <label style={LABEL}>Footer Tagline</label>
           <input value={form.footer_tagline || ""} onChange={set("footer_tagline")} placeholder="Odisha's leading EV & energy brand" style={INPUT} />
         </div>
 
-        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 18px" }}>Contact &amp; WhatsApp</h3>
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 18px" }}>Contact &amp; WhatsApp</h3>
           <div style={{ marginBottom: 14 }}>
             <label style={LABEL}>Company Phone Number</label>
             <input value={form.company_phone} onChange={set("company_phone")} placeholder="+919437611129" style={INPUT} />
@@ -257,7 +257,7 @@ export default function ContentPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          style={{ padding: "12px 28px", borderRadius: 10, border: "none", background: "#0f4c81", color: "#ffffff", fontSize: 14, fontWeight: 800, cursor: saving ? "not-allowed" : "pointer", alignSelf: "flex-start", opacity: saving ? 0.7 : 1 }}
+          style={{ padding: "12px 28px", borderRadius: 10, border: "none", background: "var(--navy)", color: "var(--text-heading)", fontSize: 14, fontWeight: 800, cursor: saving ? "not-allowed" : "pointer", alignSelf: "flex-start", opacity: saving ? 0.7 : 1 }}
         >
           {saving ? "Saving..." : "Save Changes"}
         </button>

@@ -19,12 +19,12 @@ const TIME_SLOT_OPTIONS = ["Morning 9-12", "Afternoon 12-4", "Evening 4-7"];
 const CITIES = ["Bhubaneswar", "Cuttack", "Puri", "Rourkela", "Berhampur", "Sambalpur", "Balasore", "Other"];
 
 const STATUS_COLORS: Record<string, { bg: string; color: string; border: string }> = {
-  pending:     { bg: "rgba(193,127,36,0.12)",  color: "#c17f24",  border: "rgba(193,127,36,0.3)" },
-  confirmed:   { bg: "rgba(15,76,129,0.12)",   color: "#0f4c81",  border: "rgba(15,76,129,0.3)" },
+  pending:     { bg: "rgba(244,196,48,0.12)",  color: "var(--gold)",  border: "rgba(244,196,48,0.3)" },
+  confirmed:   { bg: "rgba(13,81,140,0.12)",   color: "var(--navy)",  border: "rgba(13,81,140,0.3)" },
   assigned:    { bg: "rgba(124,58,237,0.12)",  color: "#7c3aed",  border: "rgba(124,58,237,0.3)" },
   in_progress: { bg: "rgba(59,130,246,0.12)",  color: "#3b82f6",  border: "rgba(59,130,246,0.3)" },
-  completed:   { bg: "rgba(26,122,74,0.12)",   color: "#1a7a4a",  border: "rgba(26,122,74,0.3)" },
-  cancelled:   { bg: "rgba(192,57,43,0.12)",   color: "#c0392b",  border: "rgba(192,57,43,0.3)" },
+  completed:   { bg: "rgba(52,199,138,0.12)",   color: "var(--green)",  border: "rgba(52,199,138,0.3)" },
+  cancelled:   { bg: "rgba(255,112,67,0.12)",   color: "var(--orange)",  border: "rgba(255,112,67,0.3)" },
 };
 
 function StatusBadge({ status }: { status: string }) {
@@ -196,8 +196,8 @@ export default function BatterySwapAdminPage() {
   }
 
   const StatCard = ({ label, value, color }: { label: string; value: number; color: string }) => (
-    <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 12, padding: "16px 20px", flex: "1 1 120px" }}>
-      <p style={{ color: "#6b5a45", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>{label}</p>
+    <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 12, padding: "16px 20px", flex: "1 1 120px" }}>
+      <p style={{ color: "var(--text-muted)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 6px" }}>{label}</p>
       <p style={{ color, fontSize: 26, fontWeight: 900, margin: 0 }}>{value}</p>
     </div>
   );
@@ -207,12 +207,12 @@ export default function BatterySwapAdminPage() {
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
         <div>
-          <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a0f00", margin: 0 }}>🔋 Battery Swap Requests</h1>
-          <p style={{ color: "#6b5a45", fontSize: 13, margin: "4px 0 0" }}>Manage and process all battery swap service requests</p>
+          <h1 style={{ fontSize: 22, fontWeight: 800, color: "var(--text-heading)", margin: 0 }}>🔋 Battery Swap Requests</h1>
+          <p style={{ color: "var(--text-muted)", fontSize: 13, margin: "4px 0 0" }}>Manage and process all battery swap service requests</p>
         </div>
         <button onClick={loadData} style={{
-          padding: "8px 16px", background: "transparent", border: "1px solid #e8dfd0",
-          borderRadius: 8, color: "#6b5a45", fontSize: 13, cursor: "pointer",
+          padding: "8px 16px", background: "transparent", border: "1px solid rgba(92,103,149,0.2)",
+          borderRadius: 8, color: "var(--text-muted)", fontSize: 13, cursor: "pointer",
         }}>
           ↻ Refresh
         </button>
@@ -221,14 +221,14 @@ export default function BatterySwapAdminPage() {
       {/* Stats */}
       {stats && (
         <div style={{ display: "flex", gap: 12, marginBottom: 24, flexWrap: "wrap" }}>
-          <StatCard label="Total" value={stats.total} color="#1a0f00" />
-          <StatCard label="Pending" value={stats.pending} color="#c17f24" />
-          <StatCard label="Confirmed" value={stats.confirmed} color="#0f4c81" />
+          <StatCard label="Total" value={stats.total} color="var(--text-heading)" />
+          <StatCard label="Pending" value={stats.pending} color="var(--gold)" />
+          <StatCard label="Confirmed" value={stats.confirmed} color="var(--navy)" />
           <StatCard label="Assigned" value={stats.assigned} color="#7c3aed" />
           <StatCard label="In Progress" value={stats.in_progress} color="#3b82f6" />
-          <StatCard label="Completed" value={stats.completed} color="#1a7a4a" />
-          <StatCard label="Done Today" value={stats.completed_today} color="#1a7a4a" />
-          {stats.unread > 0 && <StatCard label="Unread" value={stats.unread} color="#c0392b" />}
+          <StatCard label="Completed" value={stats.completed} color="var(--green)" />
+          <StatCard label="Done Today" value={stats.completed_today} color="var(--green)" />
+          {stats.unread > 0 && <StatCard label="Unread" value={stats.unread} color="var(--orange)" />}
         </div>
       )}
 
@@ -240,25 +240,25 @@ export default function BatterySwapAdminPage() {
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && loadData()}
           style={{
-            flex: "1 1 200px", background: "#ffffff", border: "1px solid #e8dfd0",
-            borderRadius: 8, color: "#1a0f00", fontSize: 13, padding: "8px 12px", outline: "none",
+            flex: "1 1 200px", background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)",
+            borderRadius: 8, color: "var(--text-heading)", fontSize: 13, padding: "8px 12px", outline: "none",
           }}
         />
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}
-          style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 8, color: "#1a0f00", fontSize: 13, padding: "8px 12px", cursor: "pointer" }}
+          style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 8, color: "var(--text-heading)", fontSize: 13, padding: "8px 12px", cursor: "pointer" }}
         >
           <option value="">All Statuses</option>
           {STATUS_OPTIONS.map((s) => <option key={s} value={s}>{s.replace("_", " ")}</option>)}
         </select>
         <select value={cityFilter} onChange={(e) => setCityFilter(e.target.value)}
-          style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 8, color: "#1a0f00", fontSize: 13, padding: "8px 12px", cursor: "pointer" }}
+          style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 8, color: "var(--text-heading)", fontSize: 13, padding: "8px 12px", cursor: "pointer" }}
         >
           <option value="">All Cities</option>
           {CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
         </select>
         <button onClick={loadData} style={{
-          padding: "8px 16px", background: "#0f4c81", border: "none", borderRadius: 8,
-          color: "#ffffff", fontSize: 13, fontWeight: 700, cursor: "pointer",
+          padding: "8px 16px", background: "var(--navy)", border: "none", borderRadius: 8,
+          color: "var(--text-heading)", fontSize: 13, fontWeight: 700, cursor: "pointer",
         }}>
           Apply
         </button>
@@ -267,17 +267,17 @@ export default function BatterySwapAdminPage() {
       <div style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
         {/* Table */}
         <div style={{ flex: selectedId ? "0 0 55%" : "1", overflow: "auto" }}>
-          <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 12, overflow: "hidden" }}>
+          <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 12, overflow: "hidden" }}>
             {loading ? (
-              <div style={{ padding: 40, textAlign: "center", color: "#6b5a45" }}>Loading...</div>
+              <div style={{ padding: 40, textAlign: "center", color: "var(--text-muted)" }}>Loading...</div>
             ) : swaps.length === 0 ? (
-              <div style={{ padding: 40, textAlign: "center", color: "#6b5a45" }}>No battery swap requests found.</div>
+              <div style={{ padding: 40, textAlign: "center", color: "var(--text-muted)" }}>No battery swap requests found.</div>
             ) : (
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid #e8dfd0", background: "#f9f4ec" }}>
+                  <tr style={{ borderBottom: "1px solid rgba(92,103,149,0.2)", background: "var(--bg-surface)" }}>
                     {["Token", "Customer", "Battery", "Date", "Slot", "Location", "Status", ""].map((h) => (
-                      <th key={h} style={{ padding: "10px 12px", fontSize: 11, color: "#6b5a45", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", textAlign: "left", whiteSpace: "nowrap" }}>{h}</th>
+                      <th key={h} style={{ padding: "10px 12px", fontSize: 11, color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", textAlign: "left", whiteSpace: "nowrap" }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -287,34 +287,34 @@ export default function BatterySwapAdminPage() {
                       key={sw.id}
                       onClick={() => openDetail(sw.id)}
                       style={{
-                        borderBottom: "1px solid #e8dfd0", cursor: "pointer",
-                        background: selectedId === sw.id ? "rgba(15,76,129,0.05)" : "transparent",
+                        borderBottom: "1px solid rgba(92,103,149,0.2)", cursor: "pointer",
+                        background: selectedId === sw.id ? "rgba(13,81,140,0.05)" : "transparent",
                         transition: "background 0.15s",
                       }}
-                      onMouseEnter={(e) => { if (selectedId !== sw.id) (e.currentTarget as HTMLTableRowElement).style.background = "#f9f4ec"; }}
+                      onMouseEnter={(e) => { if (selectedId !== sw.id) (e.currentTarget as HTMLTableRowElement).style.background = "var(--bg-surface)"; }}
                       onMouseLeave={(e) => { if (selectedId !== sw.id) (e.currentTarget as HTMLTableRowElement).style.background = "transparent"; }}
                     >
                       <td style={{ padding: "10px 12px" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                          {!sw.is_read && <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0f4c81", flexShrink: 0 }} />}
-                          <span style={{ fontFamily: "monospace", color: "#0f4c81", fontSize: 12, fontWeight: 700 }}>{sw.token_number}</span>
+                          {!sw.is_read && <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--navy)", flexShrink: 0 }} />}
+                          <span style={{ fontFamily: "monospace", color: "var(--navy)", fontSize: 12, fontWeight: 700 }}>{sw.token_number}</span>
                         </div>
                       </td>
                       <td style={{ padding: "10px 12px" }}>
-                        <p style={{ color: "#1a0f00", fontSize: 13, fontWeight: 600, margin: 0 }}>{sw.name}</p>
-                        <p style={{ color: "#6b5a45", fontSize: 11, margin: 0 }}>{sw.phone}</p>
+                        <p style={{ color: "var(--text-heading)", fontSize: 13, fontWeight: 600, margin: 0 }}>{sw.name}</p>
+                        <p style={{ color: "var(--text-muted)", fontSize: 11, margin: 0 }}>{sw.phone}</p>
                       </td>
-                      <td style={{ padding: "10px 12px", color: "#6b5a45", fontSize: 12 }}>
+                      <td style={{ padding: "10px 12px", color: "var(--text-muted)", fontSize: 12 }}>
                         <p style={{ margin: 0 }}>{sw.battery_capacity}</p>
-                        <p style={{ margin: 0, color: "#6b5a45", fontSize: 11 }}>{sw.battery_type}</p>
+                        <p style={{ margin: 0, color: "var(--text-muted)", fontSize: 11 }}>{sw.battery_type}</p>
                       </td>
-                      <td style={{ padding: "10px 12px", color: "#6b5a45", fontSize: 12, whiteSpace: "nowrap" }}>{formatDate(sw.preferred_date)}</td>
-                      <td style={{ padding: "10px 12px", color: "#6b5a45", fontSize: 11 }}>{sw.preferred_time_slot.replace(" ", "\n")}</td>
-                      <td style={{ padding: "10px 12px", color: "#6b5a45", fontSize: 11 }}>{sw.swap_location}</td>
+                      <td style={{ padding: "10px 12px", color: "var(--text-muted)", fontSize: 12, whiteSpace: "nowrap" }}>{formatDate(sw.preferred_date)}</td>
+                      <td style={{ padding: "10px 12px", color: "var(--text-muted)", fontSize: 11 }}>{sw.preferred_time_slot.replace(" ", "\n")}</td>
+                      <td style={{ padding: "10px 12px", color: "var(--text-muted)", fontSize: 11 }}>{sw.swap_location}</td>
                       <td style={{ padding: "10px 12px" }}><StatusBadge status={sw.status} /></td>
                       <td style={{ padding: "10px 12px" }}>
                         <button onClick={(e) => { e.stopPropagation(); handleDelete(sw.id); }} style={{
-                          background: "transparent", border: "none", color: "#6b5a45", cursor: "pointer", fontSize: 14, padding: 4,
+                          background: "transparent", border: "none", color: "var(--text-muted)", cursor: "pointer", fontSize: 14, padding: 4,
                         }} title="Delete">🗑</button>
                       </td>
                     </tr>
@@ -328,36 +328,36 @@ export default function BatterySwapAdminPage() {
 
         {/* Detail panel */}
         {selectedId && (
-          <div style={{ flex: "0 0 44%", background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 16, overflow: "hidden" }}>
+          <div style={{ flex: "0 0 44%", background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 16, overflow: "hidden" }}>
             {detailLoading ? (
-              <div style={{ padding: 40, textAlign: "center", color: "#6b5a45" }}>Loading details...</div>
+              <div style={{ padding: 40, textAlign: "center", color: "var(--text-muted)" }}>Loading details...</div>
             ) : detail ? (
               <div>
                 {/* Panel header */}
-                <div style={{ padding: "16px 20px", borderBottom: "1px solid #e8dfd0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ padding: "16px 20px", borderBottom: "1px solid rgba(92,103,149,0.2)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
-                    <p style={{ color: "#6b5a45", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>Swap Token</p>
-                    <p style={{ color: "#0f4c81", fontFamily: "monospace", fontSize: 18, fontWeight: 900, margin: 0 }}>{detail.token_number}</p>
+                    <p style={{ color: "var(--text-muted)", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>Swap Token</p>
+                    <p style={{ color: "var(--navy)", fontFamily: "monospace", fontSize: 18, fontWeight: 900, margin: 0 }}>{detail.token_number}</p>
                   </div>
                   <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                     <StatusBadge status={detail.status} />
                     <button onClick={() => { setSelectedId(null); setDetail(null); }}
-                      style={{ background: "transparent", border: "none", color: "#6b5a45", cursor: "pointer", fontSize: 18, padding: 4 }}>×</button>
+                      style={{ background: "transparent", border: "none", color: "var(--text-muted)", cursor: "pointer", fontSize: 18, padding: 4 }}>×</button>
                   </div>
                 </div>
 
                 <div style={{ padding: "16px 20px", maxHeight: "80vh", overflowY: "auto" }}>
                   {/* Customer info */}
                   <div style={{ marginBottom: 16 }}>
-                    <p style={{ color: "#6b5a45", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 10px" }}>Customer</p>
-                    <div style={{ background: "#f9f4ec", borderRadius: 10, padding: 14 }}>
-                      <div style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(15,76,129,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, fontWeight: 800, color: "#0f4c81", marginBottom: 10 }}>
+                    <p style={{ color: "var(--text-muted)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 10px" }}>Customer</p>
+                    <div style={{ background: "var(--bg-surface)", borderRadius: 10, padding: 14 }}>
+                      <div style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(13,81,140,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, fontWeight: 800, color: "var(--navy)", marginBottom: 10 }}>
                         {detail.name.charAt(0)}
                       </div>
                       {[["Name", detail.name], ["Phone", detail.phone], ["Email", detail.email || "—"], ["City", detail.city], ["Address", detail.address]].map(([k, v]) => (
-                        <div key={k as string} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #e8dfd0" }}>
-                          <span style={{ color: "#6b5a45", fontSize: 12 }}>{k}</span>
-                          <span style={{ color: "#1a0f00", fontSize: 12, fontWeight: 500, textAlign: "right", maxWidth: "60%" }}>{v}</span>
+                        <div key={k as string} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid rgba(92,103,149,0.2)" }}>
+                          <span style={{ color: "var(--text-muted)", fontSize: 12 }}>{k}</span>
+                          <span style={{ color: "var(--text-heading)", fontSize: 12, fontWeight: 500, textAlign: "right", maxWidth: "60%" }}>{v}</span>
                         </div>
                       ))}
                     </div>
@@ -365,8 +365,8 @@ export default function BatterySwapAdminPage() {
 
                   {/* Battery info */}
                   <div style={{ marginBottom: 16 }}>
-                    <p style={{ color: "#6b5a45", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 10px" }}>Battery Details</p>
-                    <div style={{ background: "#f9f4ec", borderRadius: 10, padding: 14 }}>
+                    <p style={{ color: "var(--text-muted)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 10px" }}>Battery Details</p>
+                    <div style={{ background: "var(--bg-surface)", borderRadius: 10, padding: 14 }}>
                       {detail.battery_photo_url && (
                         <img
                           src={`${BASE_URL}${detail.battery_photo_url}`}
@@ -382,15 +382,15 @@ export default function BatterySwapAdminPage() {
                         ["Charge", `${detail.current_charge_percent}%`],
                         detail.battery_serial_number ? ["Serial #", detail.battery_serial_number] : null,
                       ].filter((x): x is string[] => Boolean(x)).map(([k, v]) => (
-                        <div key={k as string} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #e8dfd0" }}>
-                          <span style={{ color: "#6b5a45", fontSize: 12 }}>{k}</span>
-                          <span style={{ color: "#1a0f00", fontSize: 12, fontWeight: 500 }}>{v}</span>
+                        <div key={k as string} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid rgba(92,103,149,0.2)" }}>
+                          <span style={{ color: "var(--text-muted)", fontSize: 12 }}>{k}</span>
+                          <span style={{ color: "var(--text-heading)", fontSize: 12, fontWeight: 500 }}>{v}</span>
                         </div>
                       ))}
                       {detail.any_physical_damage && (
-                        <div style={{ marginTop: 8, padding: "8px 10px", background: "rgba(192,57,43,0.08)", border: "1px solid rgba(192,57,43,0.2)", borderRadius: 6 }}>
-                          <p style={{ color: "#c0392b", fontSize: 12, fontWeight: 700, margin: "0 0 4px" }}>⚠️ Physical Damage Reported</p>
-                          {detail.damage_description && <p style={{ color: "#6b5a45", fontSize: 12, margin: 0 }}>{detail.damage_description}</p>}
+                        <div style={{ marginTop: 8, padding: "8px 10px", background: "rgba(255,112,67,0.08)", border: "1px solid rgba(255,112,67,0.2)", borderRadius: 6 }}>
+                          <p style={{ color: "var(--orange)", fontSize: 12, fontWeight: 700, margin: "0 0 4px" }}>⚠️ Physical Damage Reported</p>
+                          {detail.damage_description && <p style={{ color: "var(--text-muted)", fontSize: 12, margin: 0 }}>{detail.damage_description}</p>}
                         </div>
                       )}
                     </div>
@@ -398,46 +398,46 @@ export default function BatterySwapAdminPage() {
 
                   {/* Schedule */}
                   <div style={{ marginBottom: 16 }}>
-                    <p style={{ color: "#6b5a45", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 10px" }}>Schedule Requested</p>
-                    <div style={{ background: "#f9f4ec", borderRadius: 10, padding: 14 }}>
+                    <p style={{ color: "var(--text-muted)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 10px" }}>Schedule Requested</p>
+                    <div style={{ background: "var(--bg-surface)", borderRadius: 10, padding: 14 }}>
                       {[
                         ["Preferred Date", formatDate(detail.preferred_date)],
                         ["Time Slot", detail.preferred_time_slot],
                         ["Location", detail.swap_location],
                         detail.special_instructions ? ["Instructions", detail.special_instructions] : null,
                       ].filter((x): x is string[] => Boolean(x)).map(([k, v]) => (
-                        <div key={k as string} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #e8dfd0" }}>
-                          <span style={{ color: "#6b5a45", fontSize: 12 }}>{k}</span>
-                          <span style={{ color: "#1a0f00", fontSize: 12, fontWeight: 500, maxWidth: "60%", textAlign: "right" }}>{v}</span>
+                        <div key={k as string} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid rgba(92,103,149,0.2)" }}>
+                          <span style={{ color: "var(--text-muted)", fontSize: 12 }}>{k}</span>
+                          <span style={{ color: "var(--text-heading)", fontSize: 12, fontWeight: 500, maxWidth: "60%", textAlign: "right" }}>{v}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
                   {/* Admin update form */}
-                  <div style={{ background: "#f9f4ec", border: "1px solid rgba(15,76,129,0.15)", borderRadius: 12, padding: 16 }}>
-                    <p style={{ color: "#0f4c81", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 14px" }}>Admin Actions</p>
+                  <div style={{ background: "var(--bg-surface)", border: "1px solid rgba(13,81,140,0.15)", borderRadius: 12, padding: 16 }}>
+                    <p style={{ color: "var(--navy)", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 14px" }}>Admin Actions</p>
 
                     {[
                       { label: "Status", content: (
                         <select value={updateStatus} onChange={(e) => setUpdateStatus(e.target.value)}
-                          style={{ width: "100%", background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 6, color: "#1a0f00", fontSize: 13, padding: "8px 10px" }}>
+                          style={{ width: "100%", background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 6, color: "var(--text-heading)", fontSize: 13, padding: "8px 10px" }}>
                           {STATUS_OPTIONS.map((s) => <option key={s} value={s}>{s.replace("_", " ")}</option>)}
                         </select>
                       )},
                       { label: "Assign Technician", content: (
                         <select value={updateTech} onChange={(e) => setUpdateTech(e.target.value)}
-                          style={{ width: "100%", background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 6, color: "#1a0f00", fontSize: 13, padding: "8px 10px" }}>
+                          style={{ width: "100%", background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 6, color: "var(--text-heading)", fontSize: 13, padding: "8px 10px" }}>
                           {technicians.map((t) => <option key={t} value={t}>{t}</option>)}
                         </select>
                       )},
                       { label: "Confirmed Date", content: (
                         <input type="date" value={updateDate} onChange={(e) => setUpdateDate(e.target.value)}
-                          style={{ width: "100%", background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 6, color: "#1a0f00", fontSize: 13, padding: "8px 10px", boxSizing: "border-box" as const }} />
+                          style={{ width: "100%", background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 6, color: "var(--text-heading)", fontSize: 13, padding: "8px 10px", boxSizing: "border-box" as const }} />
                       )},
                       { label: "Confirmed Slot", content: (
                         <select value={updateSlot} onChange={(e) => setUpdateSlot(e.target.value)}
-                          style={{ width: "100%", background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 6, color: "#1a0f00", fontSize: 13, padding: "8px 10px" }}>
+                          style={{ width: "100%", background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 6, color: "var(--text-heading)", fontSize: 13, padding: "8px 10px" }}>
                           <option value="">Same as requested</option>
                           {TIME_SLOT_OPTIONS.map((t) => <option key={t} value={t}>{t}</option>)}
                         </select>
@@ -445,32 +445,32 @@ export default function BatterySwapAdminPage() {
                       { label: "Swap Fee (₹)", content: (
                         <input type="number" value={updateFee} onChange={(e) => setUpdateFee(e.target.value)}
                           placeholder="150"
-                          style={{ width: "100%", background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 6, color: "#1a0f00", fontSize: 13, padding: "8px 10px", boxSizing: "border-box" as const }} />
+                          style={{ width: "100%", background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 6, color: "var(--text-heading)", fontSize: 13, padding: "8px 10px", boxSizing: "border-box" as const }} />
                       )},
                       { label: "Admin Notes", content: (
                         <textarea value={adminNotes} onChange={(e) => setAdminNotes(e.target.value)} rows={2}
                           placeholder="Internal notes..."
-                          style={{ width: "100%", background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 6, color: "#1a0f00", fontSize: 13, padding: "8px 10px", boxSizing: "border-box" as const, resize: "vertical" }} />
+                          style={{ width: "100%", background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 6, color: "var(--text-heading)", fontSize: 13, padding: "8px 10px", boxSizing: "border-box" as const, resize: "vertical" }} />
                       )},
                       { label: "Technician Notes", content: (
                         <textarea value={techNotes} onChange={(e) => setTechNotes(e.target.value)} rows={2}
                           placeholder="Technician observations..."
-                          style={{ width: "100%", background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 6, color: "#1a0f00", fontSize: 13, padding: "8px 10px", boxSizing: "border-box" as const, resize: "vertical" }} />
+                          style={{ width: "100%", background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 6, color: "var(--text-heading)", fontSize: 13, padding: "8px 10px", boxSizing: "border-box" as const, resize: "vertical" }} />
                       )},
                     ].map(({ label, content }) => (
                       <div key={label} style={{ marginBottom: 12 }}>
-                        <label style={{ fontSize: 11, color: "#6b5a45", display: "block", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.08em" }}>{label}</label>
+                        <label style={{ fontSize: 11, color: "var(--text-muted)", display: "block", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.08em" }}>{label}</label>
                         {content}
                       </div>
                     ))}
 
                     {saveMsg && (
-                      <p style={{ fontSize: 12, color: saveMsg.startsWith("✓") ? "#1a7a4a" : "#c0392b", margin: "0 0 10px" }}>{saveMsg}</p>
+                      <p style={{ fontSize: 12, color: saveMsg.startsWith("✓") ? "var(--green)" : "var(--orange)", margin: "0 0 10px" }}>{saveMsg}</p>
                     )}
 
                     <button onClick={handleUpdate} disabled={saving} style={{
-                      width: "100%", padding: "10px", background: saving ? "#d4c9b8" : "#0f4c81",
-                      border: "none", borderRadius: 8, color: saving ? "#6b5a45" : "#ffffff",
+                      width: "100%", padding: "10px", background: saving ? "rgba(92,103,149,0.3)" : "var(--navy)",
+                      border: "none", borderRadius: 8, color: saving ? "var(--text-muted)" : "var(--text-heading)",
                       fontSize: 13, fontWeight: 700, cursor: saving ? "not-allowed" : "pointer",
                     }}>
                       {saving ? "Saving..." : "Update Request"}
@@ -495,7 +495,7 @@ export default function BatterySwapAdminPage() {
           <img
             src={`${BASE_URL}${detail.battery_photo_url}`}
             alt="Battery full"
-            style={{ maxWidth: "90vw", maxHeight: "85vh", borderRadius: 12, border: "2px solid #e8dfd0" }}
+            style={{ maxWidth: "90vw", maxHeight: "85vh", borderRadius: 12, border: "2px solid rgba(92,103,149,0.2)" }}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

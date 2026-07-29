@@ -9,12 +9,12 @@ const LIMIT = 20;
 const STATUSES = ["pending", "confirmed", "packed", "shipped", "delivered", "cancelled"];
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
-  pending: { bg: "rgba(193,127,36,0.12)", color: "#c17f24" },
-  confirmed: { bg: "rgba(15,76,129,0.12)", color: "#0f4c81" },
-  packed: { bg: "rgba(15,76,129,0.12)", color: "#0f4c81" },
-  shipped: { bg: "rgba(15,76,129,0.12)", color: "#0f4c81" },
-  delivered: { bg: "rgba(26,122,74,0.12)", color: "#1a7a4a" },
-  cancelled: { bg: "rgba(192,57,43,0.12)", color: "#c0392b" },
+  pending: { bg: "rgba(244,196,48,0.12)", color: "var(--gold)" },
+  confirmed: { bg: "rgba(13,81,140,0.12)", color: "var(--navy)" },
+  packed: { bg: "rgba(13,81,140,0.12)", color: "var(--navy)" },
+  shipped: { bg: "rgba(13,81,140,0.12)", color: "var(--navy)" },
+  delivered: { bg: "rgba(52,199,138,0.12)", color: "var(--green)" },
+  cancelled: { bg: "rgba(255,112,67,0.12)", color: "var(--orange)" },
 };
 
 type OrderItem = { name: string; qty: number; price: number; category: string };
@@ -103,11 +103,11 @@ export default function OrdersPage() {
   const totalPages = Math.max(1, Math.ceil(total / LIMIT));
 
   const INPUT: React.CSSProperties = {
-    background: "#ffffff",
-    border: "1px solid #e8dfd0",
+    background: "var(--bg-card)",
+    border: "1px solid rgba(92,103,149,0.2)",
     borderRadius: 8,
     padding: "9px 14px",
-    color: "#1a0f00",
+    color: "var(--text-heading)",
     fontSize: 13,
     outline: "none",
   };
@@ -116,12 +116,12 @@ export default function OrdersPage() {
     <div style={{ padding: "32px 40px", maxWidth: 1400 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28 }}>
         <div>
-          <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a0f00", margin: "0 0 4px" }}>Orders</h1>
-          <p style={{ fontSize: 13, color: "#6b5a45", margin: 0 }}>{total} total orders</p>
+          <h1 style={{ fontSize: 22, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 4px" }}>Orders</h1>
+          <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>{total} total orders</p>
         </div>
         <button
           onClick={() => exportOrders()}
-          style={{ padding: "9px 18px", borderRadius: 8, border: "1px solid #e8dfd0", background: "transparent", color: "#6b5a45", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+          style={{ padding: "9px 18px", borderRadius: 8, border: "1px solid rgba(92,103,149,0.2)", background: "transparent", color: "var(--text-muted)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
         >
           Export CSV
         </button>
@@ -135,9 +135,9 @@ export default function OrdersPage() {
             borderRadius: 8,
             fontSize: 13,
             fontWeight: 600,
-            background: toastMsg.ok ? "rgba(26,122,74,0.12)" : "rgba(192,57,43,0.12)",
-            color: toastMsg.ok ? "#1a7a4a" : "#c0392b",
-            border: `1px solid ${toastMsg.ok ? "rgba(26,122,74,0.3)" : "rgba(192,57,43,0.3)"}`,
+            background: toastMsg.ok ? "rgba(52,199,138,0.12)" : "rgba(255,112,67,0.12)",
+            color: toastMsg.ok ? "var(--green)" : "var(--orange)",
+            border: `1px solid ${toastMsg.ok ? "rgba(52,199,138,0.3)" : "rgba(255,112,67,0.3)"}`,
           }}
         >
           {toastMsg.text}
@@ -146,7 +146,7 @@ export default function OrdersPage() {
 
       {/* Stats row (counts within current page only) */}
       <div style={{ display: "flex", gap: 10, marginBottom: 24, flexWrap: "wrap" }}>
-        <div style={{ padding: "7px 14px", borderRadius: 100, background: "#ffffff", border: "1px solid #e8dfd0", fontSize: 12, fontWeight: 700, color: "#1a0f00" }}>
+        <div style={{ padding: "7px 14px", borderRadius: 100, background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", fontSize: 12, fontWeight: 700, color: "var(--text-heading)" }}>
           Total: {total}
         </div>
         {STATUSES.map((s) => (
@@ -175,29 +175,29 @@ export default function OrdersPage() {
       </div>
 
       {loading ? (
-        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
           {[...Array(5)].map((_, i) => (
-            <div key={i} style={{ height: 44, background: "#f9f4ec", borderRadius: 8, marginBottom: 10, opacity: 1 - i * 0.12 }} />
+            <div key={i} style={{ height: 44, background: "var(--bg-surface)", borderRadius: 8, marginBottom: 10, opacity: 1 - i * 0.12 }} />
           ))}
         </div>
       ) : error ? (
-        <div style={{ background: "rgba(192,57,43,0.06)", border: "1px solid rgba(192,57,43,0.25)", borderRadius: 14, padding: 32, textAlign: "center" }}>
-          <p style={{ color: "#c0392b", fontSize: 14, fontWeight: 600, margin: "0 0 14px" }}>{error}</p>
-          <button onClick={fetchOrders} style={{ padding: "9px 20px", borderRadius: 8, border: "none", background: "#0f4c81", color: "#ffffff", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+        <div style={{ background: "rgba(255,112,67,0.06)", border: "1px solid rgba(255,112,67,0.25)", borderRadius: 14, padding: 32, textAlign: "center" }}>
+          <p style={{ color: "var(--orange)", fontSize: 14, fontWeight: 600, margin: "0 0 14px" }}>{error}</p>
+          <button onClick={fetchOrders} style={{ padding: "9px 20px", borderRadius: 8, border: "none", background: "var(--navy)", color: "var(--text-heading)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
             Retry
           </button>
         </div>
       ) : orders.length === 0 ? (
-        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 48, textAlign: "center" }}>
-          <p style={{ fontSize: 14, color: "#6b5a45" }}>No orders found</p>
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 48, textAlign: "center" }}>
+          <p style={{ fontSize: 14, color: "var(--text-muted)" }}>No orders found</p>
         </div>
       ) : (
-        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, overflow: "hidden" }}>
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, overflow: "hidden" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
-              <tr style={{ borderBottom: "1px solid #e8dfd0", background: "#f9f4ec" }}>
+              <tr style={{ borderBottom: "1px solid rgba(92,103,149,0.2)", background: "var(--bg-surface)" }}>
                 {["Order #", "Customer", "Phone", "Items", "Amount", "Status", "Date", "Actions"].map((h) => (
-                  <th key={h} style={{ padding: "12px 16px", textAlign: "left", fontSize: 11, fontWeight: 600, color: "#6b5a45", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
+                  <th key={h} style={{ padding: "12px 16px", textAlign: "left", fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
                     {h}
                   </th>
                 ))}
@@ -205,22 +205,22 @@ export default function OrdersPage() {
             </thead>
             <tbody>
               {orders.map((o) => (
-                <tr key={o.order_number} style={{ borderBottom: "1px solid #e8dfd060" }}>
-                  <td style={{ padding: "14px 16px", fontSize: 12, color: "#0f4c81", fontFamily: "monospace", fontWeight: 600 }}>{o.order_number}</td>
+                <tr key={o.order_number} style={{ borderBottom: "1px solid rgba(92,103,149,0.08)" }}>
+                  <td style={{ padding: "14px 16px", fontSize: 12, color: "var(--navy)", fontFamily: "monospace", fontWeight: 600 }}>{o.order_number}</td>
                   <td style={{ padding: "14px 16px" }}>
-                    <p style={{ fontSize: 13, fontWeight: 600, color: "#1a0f00", margin: "0 0 2px" }}>{o.customer_name}</p>
-                    <p style={{ fontSize: 11, color: "#6b5a45", margin: 0 }}>{o.city}</p>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-heading)", margin: "0 0 2px" }}>{o.customer_name}</p>
+                    <p style={{ fontSize: 11, color: "var(--text-muted)", margin: 0 }}>{o.city}</p>
                   </td>
-                  <td style={{ padding: "14px 16px", fontSize: 12, color: "#6b5a45", whiteSpace: "nowrap" }}>{o.customer_phone}</td>
+                  <td style={{ padding: "14px 16px", fontSize: 12, color: "var(--text-muted)", whiteSpace: "nowrap" }}>{o.customer_phone}</td>
                   <td style={{ padding: "14px 16px", maxWidth: 220 }}>
                     {(o.items || []).slice(0, 2).map((it, i) => (
-                      <p key={i} style={{ fontSize: 12, color: "#6b5a45", margin: "0 0 2px" }}>
+                      <p key={i} style={{ fontSize: 12, color: "var(--text-muted)", margin: "0 0 2px" }}>
                         • {it.name} x{it.qty}
                       </p>
                     ))}
-                    {(o.items || []).length > 2 && <p style={{ fontSize: 11, color: "#6b5a45", margin: 0 }}>+{o.items.length - 2} more</p>}
+                    {(o.items || []).length > 2 && <p style={{ fontSize: 11, color: "var(--text-muted)", margin: 0 }}>+{o.items.length - 2} more</p>}
                   </td>
-                  <td style={{ padding: "14px 16px", fontSize: 13, fontWeight: 700, color: "#1a0f00", whiteSpace: "nowrap" }}>
+                  <td style={{ padding: "14px 16px", fontSize: 13, fontWeight: 700, color: "var(--text-heading)", whiteSpace: "nowrap" }}>
                     ₹{o.total_amount?.toLocaleString("en-IN")}
                   </td>
                   <td style={{ padding: "14px 16px" }}>
@@ -247,13 +247,13 @@ export default function OrdersPage() {
                       ))}
                     </select>
                   </td>
-                  <td style={{ padding: "14px 16px", fontSize: 12, color: "#6b5a45", whiteSpace: "nowrap" }}>
+                  <td style={{ padding: "14px 16px", fontSize: 12, color: "var(--text-muted)", whiteSpace: "nowrap" }}>
                     {new Date(o.created_at).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                   </td>
                   <td style={{ padding: "14px 16px" }}>
                     <button
                       onClick={() => router.push(`/orders/${o.order_number}`)}
-                      style={{ padding: "5px 10px", borderRadius: 6, border: "1px solid #e8dfd0", background: "transparent", color: "#6b5a45", fontSize: 11, cursor: "pointer", fontWeight: 500 }}
+                      style={{ padding: "5px 10px", borderRadius: 6, border: "1px solid rgba(92,103,149,0.2)", background: "transparent", color: "var(--text-muted)", fontSize: 11, cursor: "pointer", fontWeight: 500 }}
                     >
                       View →
                     </button>

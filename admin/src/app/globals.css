@@ -1,0 +1,38 @@
+:root {
+  /* ── BACKGROUNDS ── */
+  --bg-page:        #0A0E1A;
+  --bg-surface:     #0D1B35;
+  --bg-card:        #162952;
+
+  /* ── BRAND BLUES ── */
+  --navy:           #0D518C;
+  --navy-dark:      #0A3D6B;
+  --sky:            #4FC3F7;
+
+  /* ── ACCENTS ── */
+  --gold:           #F4C430;
+  --green:          #34C78A;
+  --orange:         #FF7043;
+  --red:            #FF5C5C;
+  --slate:          #5C6795;
+
+  /* ── TEXT ── */
+  --text-heading:   #E8F4FF;
+  --text-body:      #B8D0E8;
+  --text-muted:     #7B8DB8;
+  --text-subtle:    #4A5880;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

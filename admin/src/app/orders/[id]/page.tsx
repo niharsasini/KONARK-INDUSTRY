@@ -9,12 +9,12 @@ import ErrorState from "@/components/ErrorState";
 const STATUSES = ["pending", "confirmed", "packed", "shipped", "delivered"];
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
-  pending: { bg: "rgba(193,127,36,0.12)", color: "#c17f24" },
-  confirmed: { bg: "rgba(15,76,129,0.12)", color: "#0f4c81" },
-  packed: { bg: "rgba(15,76,129,0.12)", color: "#0f4c81" },
-  shipped: { bg: "rgba(15,76,129,0.12)", color: "#0f4c81" },
-  delivered: { bg: "rgba(26,122,74,0.12)", color: "#1a7a4a" },
-  cancelled: { bg: "rgba(192,57,43,0.12)", color: "#c0392b" },
+  pending: { bg: "rgba(244,196,48,0.12)", color: "var(--gold)" },
+  confirmed: { bg: "rgba(13,81,140,0.12)", color: "var(--navy)" },
+  packed: { bg: "rgba(13,81,140,0.12)", color: "var(--navy)" },
+  shipped: { bg: "rgba(13,81,140,0.12)", color: "var(--navy)" },
+  delivered: { bg: "rgba(52,199,138,0.12)", color: "var(--green)" },
+  cancelled: { bg: "rgba(255,112,67,0.12)", color: "var(--orange)" },
 };
 
 type OrderItem = { name: string; qty: number; price: number; category?: string };
@@ -188,36 +188,36 @@ export default function OrderDetailPage() {
   return (
     <div style={{ padding: "32px 40px", maxWidth: 1000 }}>
       <button onClick={() => router.push("/orders")}
-        style={{ display: "flex", alignItems: "center", gap: 6, background: "transparent", border: "none", color: "#6b5a45", fontSize: 13, cursor: "pointer", marginBottom: 20, padding: 0 }}>
+        style={{ display: "flex", alignItems: "center", gap: 6, background: "transparent", border: "none", color: "var(--text-muted)", fontSize: 13, cursor: "pointer", marginBottom: 20, padding: 0 }}>
         <ArrowLeft size={14} /> Back to Orders
       </button>
 
       {toastMsg && (
-        <div style={{ padding: "10px 16px", marginBottom: 16, borderRadius: 8, fontSize: 13, fontWeight: 600, background: toastMsg.ok ? "rgba(26,122,74,0.12)" : "rgba(192,57,43,0.12)", color: toastMsg.ok ? "#1a7a4a" : "#c0392b", border: `1px solid ${toastMsg.ok ? "rgba(26,122,74,0.3)" : "rgba(192,57,43,0.3)"}` }}>
+        <div style={{ padding: "10px 16px", marginBottom: 16, borderRadius: 8, fontSize: 13, fontWeight: 600, background: toastMsg.ok ? "rgba(52,199,138,0.12)" : "rgba(255,112,67,0.12)", color: toastMsg.ok ? "var(--green)" : "var(--orange)", border: `1px solid ${toastMsg.ok ? "rgba(52,199,138,0.3)" : "rgba(255,112,67,0.3)"}` }}>
           {toastMsg.text}
         </div>
       )}
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28, flexWrap: "wrap", gap: 16 }}>
         <div>
-          <p style={{ fontSize: 12, color: "#6b5a45", fontFamily: "monospace", margin: "0 0 6px" }}>{order.order_number}</p>
-          <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a0f00", margin: "0 0 8px" }}>{order.customer_name}</h1>
+          <p style={{ fontSize: 12, color: "var(--text-muted)", fontFamily: "monospace", margin: "0 0 6px" }}>{order.order_number}</p>
+          <h1 style={{ fontSize: 22, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 8px" }}>{order.customer_name}</h1>
           <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: STATUS_COLORS[order.order_status]?.bg, color: STATUS_COLORS[order.order_status]?.color, textTransform: "capitalize" }}>
             {order.order_status}
           </span>
         </div>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           <button onClick={() => printInvoice(order)}
-            style={{ display: "flex", alignItems: "center", gap: 7, padding: "10px 18px", borderRadius: 8, border: "1px solid #e8dfd0", background: "transparent", color: "#6b5a45", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+            style={{ display: "flex", alignItems: "center", gap: 7, padding: "10px 18px", borderRadius: 8, border: "1px solid rgba(92,103,149,0.2)", background: "transparent", color: "var(--text-muted)", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
             <Printer size={14} /> Print Invoice
           </button>
           <select value={order.order_status} disabled={updating} onChange={(e) => handleStatusChange(e.target.value)}
-            style={{ padding: "10px 14px", borderRadius: 8, border: "1px solid #e8dfd0", background: "#ffffff", color: "#1a0f00", fontSize: 13, cursor: "pointer", outline: "none" }}>
+            style={{ padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(92,103,149,0.2)", background: "var(--bg-card)", color: "var(--text-heading)", fontSize: 13, cursor: "pointer", outline: "none" }}>
             {STATUSES.map((s) => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
           </select>
           {canCancel && (
             <button onClick={handleCancel} disabled={cancelling}
-              style={{ padding: "10px 18px", borderRadius: 8, border: "1px solid #c0392b", background: "#c0392b", color: "#ffffff", fontSize: 13, fontWeight: 700, cursor: cancelling ? "not-allowed" : "pointer" }}>
+              style={{ padding: "10px 18px", borderRadius: 8, border: "1px solid var(--orange)", background: "var(--orange)", color: "var(--text-heading)", fontSize: 13, fontWeight: 700, cursor: cancelling ? "not-allowed" : "pointer" }}>
               {cancelling ? "Cancelling..." : "Cancel Order"}
             </button>
           )}
@@ -226,21 +226,21 @@ export default function OrderDetailPage() {
 
       {/* Customer & delivery info */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 24 }}>
-        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
-          <h2 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 16px" }}>Customer</h2>
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
+          <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 16px" }}>Customer</h2>
           {[
             ["Name", order.customer_name],
             ["Phone", order.customer_phone],
             ["Email", order.customer_email || "—"],
           ].map(([k, v]) => (
             <div key={k} style={{ marginBottom: 10 }}>
-              <p style={{ fontSize: 10, color: "#6b5a45", textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 3px", fontWeight: 600 }}>{k}</p>
-              <p style={{ fontSize: 13, color: "#1a0f00", margin: 0 }}>{v}</p>
+              <p style={{ fontSize: 10, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 3px", fontWeight: 600 }}>{k}</p>
+              <p style={{ fontSize: 13, color: "var(--text-heading)", margin: 0 }}>{v}</p>
             </div>
           ))}
         </div>
-        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
-          <h2 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 16px" }}>Delivery</h2>
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
+          <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 16px" }}>Delivery</h2>
           {[
             ["Address", `${order.delivery_address}, ${order.city} ${order.pincode}`],
             ["Payment Method", order.payment_method?.toUpperCase()],
@@ -248,47 +248,47 @@ export default function OrderDetailPage() {
             ["Order Date", new Date(order.created_at).toLocaleString("en-IN")],
           ].map(([k, v]) => (
             <div key={k} style={{ marginBottom: 10 }}>
-              <p style={{ fontSize: 10, color: "#6b5a45", textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 3px", fontWeight: 600 }}>{k}</p>
-              <p style={{ fontSize: 13, color: "#1a0f00", margin: 0, textTransform: k === "Payment Status" ? "capitalize" : "none" }}>{v}</p>
+              <p style={{ fontSize: 10, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 3px", fontWeight: 600 }}>{k}</p>
+              <p style={{ fontSize: 13, color: "var(--text-heading)", margin: 0, textTransform: k === "Payment Status" ? "capitalize" : "none" }}>{v}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Items */}
-      <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24, marginBottom: 24 }}>
-        <h2 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 16px" }}>Items Ordered</h2>
+      <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24, marginBottom: 24 }}>
+        <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 16px" }}>Items Ordered</h2>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
-            <tr style={{ borderBottom: "1px solid #e8dfd0" }}>
+            <tr style={{ borderBottom: "1px solid rgba(92,103,149,0.2)" }}>
               {["Item", "Qty", "Price", "Total"].map((h, i) => (
-                <th key={h} style={{ padding: "8px 6px", textAlign: i === 0 ? "left" : "right", fontSize: 10, color: "#6b5a45", textTransform: "uppercase", letterSpacing: "0.06em" }}>{h}</th>
+                <th key={h} style={{ padding: "8px 6px", textAlign: i === 0 ? "left" : "right", fontSize: 10, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {order.items.map((it, i) => (
-              <tr key={i} style={{ borderBottom: "1px solid #e8dfd060" }}>
-                <td style={{ padding: "10px 6px", fontSize: 13, color: "#1a0f00" }}>{it.name}</td>
-                <td style={{ padding: "10px 6px", fontSize: 13, color: "#6b5a45", textAlign: "right" }}>{it.qty}</td>
-                <td style={{ padding: "10px 6px", fontSize: 13, color: "#6b5a45", textAlign: "right" }}>₹{it.price.toLocaleString("en-IN")}</td>
-                <td style={{ padding: "10px 6px", fontSize: 13, color: "#1a0f00", fontWeight: 600, textAlign: "right" }}>₹{(it.qty * it.price).toLocaleString("en-IN")}</td>
+              <tr key={i} style={{ borderBottom: "1px solid rgba(92,103,149,0.08)" }}>
+                <td style={{ padding: "10px 6px", fontSize: 13, color: "var(--text-heading)" }}>{it.name}</td>
+                <td style={{ padding: "10px 6px", fontSize: 13, color: "var(--text-muted)", textAlign: "right" }}>{it.qty}</td>
+                <td style={{ padding: "10px 6px", fontSize: 13, color: "var(--text-muted)", textAlign: "right" }}>₹{it.price.toLocaleString("en-IN")}</td>
+                <td style={{ padding: "10px 6px", fontSize: 13, color: "var(--text-heading)", fontWeight: 600, textAlign: "right" }}>₹{(it.qty * it.price).toLocaleString("en-IN")}</td>
               </tr>
             ))}
           </tbody>
         </table>
-        <div style={{ marginTop: 16, paddingTop: 16, borderTop: "1px solid #e8dfd0", display: "flex", flexDirection: "column", gap: 6, alignItems: "flex-end" }}>
-          <p style={{ fontSize: 13, color: "#6b5a45", margin: 0 }}>Subtotal: ₹{order.subtotal.toLocaleString("en-IN")}</p>
-          <p style={{ fontSize: 13, color: "#6b5a45", margin: 0 }}>Delivery: ₹{order.delivery_charge.toLocaleString("en-IN")}</p>
-          <p style={{ fontSize: 13, color: "#6b5a45", margin: 0 }}>GST: ₹{order.gst_amount.toLocaleString("en-IN")}</p>
-          <p style={{ fontSize: 18, fontWeight: 800, color: "#1a0f00", margin: 0 }}>Total: ₹{order.total_amount.toLocaleString("en-IN")}</p>
+        <div style={{ marginTop: 16, paddingTop: 16, borderTop: "1px solid rgba(92,103,149,0.2)", display: "flex", flexDirection: "column", gap: 6, alignItems: "flex-end" }}>
+          <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>Subtotal: ₹{order.subtotal.toLocaleString("en-IN")}</p>
+          <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>Delivery: ₹{order.delivery_charge.toLocaleString("en-IN")}</p>
+          <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>GST: ₹{order.gst_amount.toLocaleString("en-IN")}</p>
+          <p style={{ fontSize: 18, fontWeight: 800, color: "var(--text-heading)", margin: 0 }}>Total: ₹{order.total_amount.toLocaleString("en-IN")}</p>
         </div>
       </div>
 
       {order.notes && (
-        <div style={{ background: "#ffffff", border: "1px solid #e8dfd0", borderRadius: 14, padding: 24 }}>
-          <h2 style={{ fontSize: 14, fontWeight: 700, color: "#1a0f00", margin: "0 0 10px" }}>Order Notes</h2>
-          <p style={{ fontSize: 13, color: "#6b5a45", margin: 0, lineHeight: 1.6 }}>{order.notes}</p>
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
+          <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 10px" }}>Order Notes</h2>
+          <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0, lineHeight: 1.6 }}>{order.notes}</p>
         </div>
       )}
     </div>

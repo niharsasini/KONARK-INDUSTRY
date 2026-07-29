@@ -38,11 +38,11 @@ export function Pagination({
         alignItems: "center",
         justifyContent: "space-between",
         padding: "16px 0",
-        borderTop: "1px solid #e8dfd0",
+        borderTop: "1px solid rgba(92,103,149,0.2)",
         marginTop: 16,
       }}
     >
-      <span style={{ color: "#6b5a45", fontSize: 13 }}>
+      <span style={{ color: "var(--text-muted)", fontSize: 13 }}>
         Showing {start}–{end} of {totalItems}
       </span>
       <div style={{ display: "flex", gap: 8 }}>
@@ -50,9 +50,9 @@ export function Pagination({
           onClick={() => onPageChange(page - 1)}
           disabled={page === 1}
           style={{
-            background: "#ffffff",
-            border: "1px solid #e8dfd0",
-            color: page === 1 ? "#6b5a45" : "#1a0f00",
+            background: "var(--bg-card)",
+            border: "1px solid rgba(92,103,149,0.2)",
+            color: page === 1 ? "var(--text-muted)" : "var(--text-heading)",
             padding: "6px 14px",
             borderRadius: 8,
             cursor: page === 1 ? "not-allowed" : "pointer",
@@ -67,9 +67,9 @@ export function Pagination({
             key={pageNum}
             onClick={() => onPageChange(pageNum)}
             style={{
-              background: pageNum === page ? "#0f4c81" : "#ffffff",
-              border: "1px solid #e8dfd0",
-              color: pageNum === page ? "#ffffff" : "#1a0f00",
+              background: pageNum === page ? "var(--navy)" : "var(--bg-card)",
+              border: "1px solid rgba(92,103,149,0.2)",
+              color: pageNum === page ? "var(--text-heading)" : "var(--text-heading)",
               padding: "6px 12px",
               borderRadius: 8,
               cursor: "pointer",
@@ -85,9 +85,9 @@ export function Pagination({
           onClick={() => onPageChange(page + 1)}
           disabled={page === totalPages}
           style={{
-            background: "#ffffff",
-            border: "1px solid #e8dfd0",
-            color: page === totalPages ? "#6b5a45" : "#1a0f00",
+            background: "var(--bg-card)",
+            border: "1px solid rgba(92,103,149,0.2)",
+            color: page === totalPages ? "var(--text-muted)" : "var(--text-heading)",
             padding: "6px 14px",
             borderRadius: 8,
             cursor: page === totalPages ? "not-allowed" : "pointer",
