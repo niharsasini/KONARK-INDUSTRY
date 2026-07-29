@@ -170,10 +170,10 @@ export default function FeaturedProducts() {
                 display: "flex", alignItems: "center", gap: 6, flexShrink: 0,
                 padding: "8px 20px", borderRadius: 999, fontSize: 13, fontWeight: activeTab === i ? 700 : 500,
                 cursor: "pointer", transition: "all 0.25s",
-                background: activeTab === i ? "linear-gradient(135deg, #0D518C, #4FC3F7)" : "rgba(22,41,82,0.4)",
-                color: activeTab === i ? "#E8F4FF" : "#7B8DB8",
-                border: activeTab === i ? "none" : "1px solid rgba(92,103,149,0.2)",
-                boxShadow: activeTab === i ? "0 4px 14px rgba(13,81,140,0.3)" : "none",
+                background: activeTab === i ? "#162952" : "rgba(22,41,82,0.4)",
+                color: activeTab === i ? "#4FC3F7" : "#7B8DB8",
+                border: activeTab === i ? "1px solid rgba(79,195,247,0.15)" : "1px solid rgba(92,103,149,0.2)",
+                boxShadow: activeTab === i ? "var(--neu-shadow)" : "none",
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== i) {

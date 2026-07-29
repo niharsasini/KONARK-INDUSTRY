@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
-const BANNER_HEIGHT = 40;
+const BANNER_HEIGHT = 38;
 
 const BANNER_STYLES: Record<string, { bg: string; accent: string; icon: string; label: string; text: string }> = {
   announcement: {
-    bg: "linear-gradient(90deg, #0A0E1A, #0D518C, #162952, #0D518C, #0A0E1A)",
+    bg: "linear-gradient(90deg, #0B1120 0%, #0D518C 25%, #162952 50%, #0D518C 75%, #0B1120 100%)",
     accent: "var(--sky)",
     text: "var(--text-heading)",
     icon: "📢",
@@ -87,19 +87,19 @@ export default function AnnouncementBanner() {
         height: BANNER_HEIGHT,
         zIndex: 1000,
         background: style.bg,
-        backgroundSize: "200% 100%",
-        animation: "bannerScan 4s ease infinite",
+        backgroundSize: "300% 100%",
+        animation: "bannerScan 6s ease infinite",
         display: "flex",
         alignItems: "center",
         overflow: "hidden",
-        borderBottom: `1px solid ${style.accent}33`,
+        borderBottom: `1px solid rgba(79,195,247,0.12)`,
       }}
     >
       {/* Left label */}
       <div className="announcement-label" style={{
         flexShrink: 0,
         padding: "0 16px",
-        fontSize: 10,
+        fontSize: 9,
         fontWeight: 800,
         letterSpacing: 2,
         color: style.accent,
@@ -108,7 +108,7 @@ export default function AnnouncementBanner() {
         display: "flex",
         alignItems: "center",
         gap: 6,
-        background: "rgba(0,0,0,0.2)",
+        background: "rgba(79,195,247,0.1)",
         whiteSpace: "nowrap",
       }}>
         {icon} {style.label}
@@ -116,7 +116,7 @@ export default function AnnouncementBanner() {
 
       {/* Scrolling ticker */}
       <div style={{ flex: 1, overflow: "hidden", position: "relative" }}>
-        <div className="banner-ticker-track" style={{ color: style.text, fontSize: 13, fontWeight: 600 }}>
+        <div className="banner-ticker-track" style={{ color: "rgba(232,244,255,0.8)", fontSize: 12, fontWeight: 500 }}>
           {[0, 1, 2].map((i) => (
             <span key={i} className="banner-ticker-item">
               {icon} {settings.announcement_banner_text}

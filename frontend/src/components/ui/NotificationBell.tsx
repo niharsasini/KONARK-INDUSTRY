@@ -12,7 +12,7 @@ type Notification = {
 };
 
 const TYPE_ICON = { order: ShoppingBag, booking: Wrench, battery_swap: Battery };
-const TYPE_COLOR = { order: "#10b981", booking: "#5b21b6", battery_swap: "var(--navy)" };
+const TYPE_COLOR = { order: "var(--green)", booking: "var(--gold)", battery_swap: "var(--navy)" };
 const LAST_SEEN_KEY = "konark_notifications_last_seen";
 const POLL_MS = 60000;
 
@@ -73,20 +73,27 @@ export default function NotificationBell() {
       <button
         onClick={handleToggle}
         aria-label="Notifications"
-        style={{ position: "relative", padding: 8, color: "var(--text-muted)", borderRadius: 8, display: "flex", border: "none", background: "transparent", cursor: "pointer", transition: "color 0.2s" }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy)")}
-        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+        style={{
+          position: "relative", width: 40, height: 40, color: "var(--slate)",
+          background: "var(--bg-card)", borderRadius: 12, boxShadow: "var(--neu-shadow)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          border: "none", cursor: "pointer", transition: "all 0.2s ease",
+        }}
+        onMouseEnter={(e) => { e.currentTarget.style.color = "var(--sky)"; e.currentTarget.style.boxShadow = "var(--neu-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.color = "var(--slate)"; e.currentTarget.style.boxShadow = "var(--neu-shadow)"; e.currentTarget.style.transform = "translateY(0)"; }}
+        onMouseDown={(e) => { e.currentTarget.style.boxShadow = "var(--neu-pressed)"; e.currentTarget.style.transform = "scale(0.97)"; }}
+        onMouseUp={(e) => { e.currentTarget.style.boxShadow = "var(--neu-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
       >
-        <Bell size={20} />
+        <Bell size={18} />
         {unreadCount > 0 && (
-          <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "#ef4444", color: "#fff", fontSize: 10, fontWeight: 700, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <span style={{ position: "absolute", top: -4, right: -4, width: 18, height: 18, background: "linear-gradient(135deg, #0D518C, #4FC3F7)", color: "var(--text-heading)", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(13,81,140,0.4)" }}>
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
       </button>
 
       {open && (
-        <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 320, maxHeight: 400, overflowY: "auto", background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, boxShadow: "0 20px 48px rgba(26,15,0,0.18)", zIndex: 300 }}>
+        <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 320, maxHeight: 400, overflowY: "auto", background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, boxShadow: "0 20px 48px rgba(11,17,32,0.5)", zIndex: 300 }}>
           <div style={{ padding: "14px 16px", borderBottom: "1px solid var(--border-light)" }}>
             <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>Notifications</p>
           </div>
@@ -106,7 +113,7 @@ export default function NotificationBell() {
                   <div>
                     <p style={{ fontSize: 12, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 2px" }}>{n.title}</p>
                     <p style={{ fontSize: 11, color: "var(--text-muted)", margin: "0 0 4px", lineHeight: 1.4 }}>{n.message}</p>
-                    <p style={{ fontSize: 10, color: "#475569", margin: 0 }}>{timeAgo(n.created_at)}</p>
+                    <p style={{ fontSize: 10, color: "var(--text-subtle)", margin: 0 }}>{timeAgo(n.created_at)}</p>
                   </div>
                 </div>
               );

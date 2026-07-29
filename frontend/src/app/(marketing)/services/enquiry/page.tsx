@@ -20,15 +20,16 @@ const SERVICE_OPTIONS = [
 
 const INPUT_STYLE: React.CSSProperties = {
   background: "var(--bg-card)",
-  border: "1px solid var(--border-default)",
-  borderRadius: 10,
-  padding: "12px 16px",
-  color: "var(--text-body)",
+  boxShadow: "var(--neu-inset)",
+  border: "1px solid rgba(92,103,149,0.1)",
+  borderRadius: 12,
+  padding: "13px 16px",
+  color: "var(--text-heading)",
   fontSize: 15,
   width: "100%",
   outline: "none",
   boxSizing: "border-box",
-  transition: "border-color 0.2s, box-shadow 0.2s",
+  transition: "all 0.2s ease",
 };
 
 const LABEL_STYLE: React.CSSProperties = {
@@ -65,12 +66,12 @@ export default function EnquiryPage() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const focusStyle = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "var(--navy)";
-    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(15,76,129,0.1)";
+    e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)";
+    e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(79,195,247,0.08)";
   };
   const blurStyle = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "var(--border-default)";
-    e.currentTarget.style.boxShadow = "none";
+    e.currentTarget.style.borderColor = "rgba(92,103,149,0.1)";
+    e.currentTarget.style.boxShadow = "var(--neu-inset)";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

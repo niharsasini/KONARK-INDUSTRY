@@ -261,7 +261,7 @@ export default function Navbar() {
                   transition: "all 0.25s ease", whiteSpace: "nowrap",
                   boxShadow: "0 4px 14px rgba(13,81,140,0.35)",
                   display: "inline-block",
-                  animation: "pulseGlow 3s ease infinite",
+                  animation: "glowPulse 3s ease-in-out infinite",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-1px)";
@@ -281,15 +281,22 @@ export default function Navbar() {
             <Link
               href="/wishlist"
               aria-label="Wishlist"
-              style={{ position: "relative", padding: 8, color: "var(--slate)", borderRadius: 8, display: "flex", transition: "all 0.2s ease", textDecoration: "none" }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = "var(--sky)"; e.currentTarget.style.transform = "scale(1.1)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = "var(--slate)"; e.currentTarget.style.transform = "scale(1)"; }}
+              style={{
+                position: "relative", width: 40, height: 40, color: "var(--slate)",
+                background: "var(--bg-card)", borderRadius: 12, boxShadow: "var(--neu-shadow)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                transition: "all 0.2s ease", textDecoration: "none", cursor: "pointer",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = "var(--sky)"; e.currentTarget.style.boxShadow = "var(--neu-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "var(--slate)"; e.currentTarget.style.boxShadow = "var(--neu-shadow)"; e.currentTarget.style.transform = "translateY(0)"; }}
+              onMouseDown={(e) => { e.currentTarget.style.boxShadow = "var(--neu-pressed)"; e.currentTarget.style.transform = "scale(0.97)"; }}
+              onMouseUp={(e) => { e.currentTarget.style.boxShadow = "var(--neu-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 20, height: 20 }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18 }}>
                 <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
               </svg>
               {wishlistCount > 0 && (
-                <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "var(--orange)", color: "#0A0E1A", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ position: "absolute", top: -4, right: -4, width: 18, height: 18, background: "linear-gradient(135deg, #0D518C, #4FC3F7)", color: "var(--text-heading)", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(13,81,140,0.4)" }}>
                   {wishlistCount > 9 ? "9+" : wishlistCount}
                 </span>
               )}
@@ -297,17 +304,25 @@ export default function Navbar() {
 
             <Link
               href="/cart"
-              style={{ position: "relative", padding: 8, color: "var(--slate)", borderRadius: 8, display: "flex", transition: "all 0.2s ease", textDecoration: "none" }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = "var(--sky)"; e.currentTarget.style.transform = "scale(1.1)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = "var(--slate)"; e.currentTarget.style.transform = "scale(1)"; }}
+              aria-label="Cart"
+              style={{
+                position: "relative", width: 40, height: 40, color: "var(--slate)",
+                background: "var(--bg-card)", borderRadius: 12, boxShadow: "var(--neu-shadow)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                transition: "all 0.2s ease", textDecoration: "none", cursor: "pointer",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = "var(--sky)"; e.currentTarget.style.boxShadow = "var(--neu-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "var(--slate)"; e.currentTarget.style.boxShadow = "var(--neu-shadow)"; e.currentTarget.style.transform = "translateY(0)"; }}
+              onMouseDown={(e) => { e.currentTarget.style.boxShadow = "var(--neu-pressed)"; e.currentTarget.style.transform = "scale(0.97)"; }}
+              onMouseUp={(e) => { e.currentTarget.style.boxShadow = "var(--neu-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 20, height: 20 }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18 }}>
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                 <line x1="3" y1="6" x2="21" y2="6" />
                 <path d="M16 10a4 4 0 01-8 0" />
               </svg>
               {cartCount > 0 && (
-                <span style={{ position: "absolute", top: -2, right: -2, width: 16, height: 16, background: "var(--sky)", color: "#0A0E1A", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ position: "absolute", top: -4, right: -4, width: 18, height: 18, background: "linear-gradient(135deg, #0D518C, #4FC3F7)", color: "var(--text-heading)", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(13,81,140,0.4)" }}>
                   {cartCount > 9 ? "9+" : cartCount}
                 </span>
               )}

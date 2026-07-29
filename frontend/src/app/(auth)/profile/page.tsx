@@ -78,7 +78,7 @@ export default function ProfilePage() {
 
         {/* Profile header */}
         <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: "32px", display: "flex", alignItems: "center", gap: 24, marginBottom: 24, flexWrap: "wrap", boxShadow: "var(--shadow-sm)" }}>
-          <div style={{ width: 72, height: 72, borderRadius: "50%", flexShrink: 0, background: "var(--grad-navy)", border: "2px solid rgba(15,76,129,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "#ffffff" }}>
+          <div style={{ width: 72, height: 72, borderRadius: "50%", flexShrink: 0, background: "linear-gradient(135deg, #0D518C, #5C6795)", boxShadow: "var(--neu-shadow)", border: "3px solid rgba(79,195,247,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "var(--text-heading)" }}>
             {initial}
           </div>
           <div style={{ flex: 1 }}>

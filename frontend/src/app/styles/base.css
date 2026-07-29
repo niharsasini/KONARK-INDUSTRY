@@ -13,22 +13,28 @@ html {
 }
 
 body {
-  background-color: var(--bg-page) !important;
+  background-color: #0B1120 !important;
   background-image:
     radial-gradient(
-      ellipse 80% 60% at 15% 0%,
-      rgba(13, 81, 140, 0.18) 0%,
+      ellipse 100% 50% at 50% -10%,
+      rgba(13, 81, 140, 0.25) 0%,
       transparent 60%
     ),
     radial-gradient(
-      ellipse 60% 40% at 85% 100%,
+      ellipse 40% 60% at -5% 40%,
       rgba(92, 103, 149, 0.12) 0%,
       transparent 60%
     ),
     radial-gradient(
-      ellipse 40% 40% at 50% 50%,
-      rgba(13, 81, 140, 0.05) 0%,
-      transparent 70%
+      ellipse 50% 40% at 100% 100%,
+      rgba(13, 81, 140, 0.1) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      #0B1120 0%,
+      #0D1428 50%,
+      #0B1120 100%
     ) !important;
   background-attachment: fixed !important;
   color: var(--text-body);

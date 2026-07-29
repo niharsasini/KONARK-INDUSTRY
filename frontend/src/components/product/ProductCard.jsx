@@ -87,18 +87,18 @@ const ProductCard = ({ product }) => {
       style={{
         position: "relative",
         cursor: "pointer",
-        background: "linear-gradient(145deg, #162952, #1A3060)",
-        border: `1px solid ${hovered ? "rgba(79,195,247,0.35)" : "rgba(92,103,149,0.2)"}`,
+        background: "linear-gradient(160deg, #162952 0%, #132447 100%)",
+        border: `1px solid ${hovered ? "rgba(79,195,247,0.2)" : "rgba(79,195,247,0.07)"}`,
         borderRadius: 20,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         height: "100%",
-        transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-        transform: hovered ? "translateY(-8px) scale(1.01)" : "translateY(0) scale(1)",
+        transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+        transform: hovered ? "translateY(-6px)" : "translateY(0)",
         boxShadow: hovered
-          ? "0 20px 60px rgba(10,14,26,0.6), 0 0 0 1px rgba(79,195,247,0.1), 0 0 40px rgba(13,81,140,0.12)"
-          : "0 4px 20px rgba(10,14,26,0.4)",
+          ? "0 20px 50px rgba(11,17,32,0.6), 0 0 0 1px rgba(79,195,247,0.08)"
+          : "0 4px 20px rgba(11,17,32,0.5)",
       }}
     >
       {/* Wishlist heart — always visible */}
@@ -138,7 +138,7 @@ const ProductCard = ({ product }) => {
       {/* 🖼️ Image area */}
       <div className="product-card-img" style={{
         position: "relative", height: 220, flexShrink: 0, overflow: "hidden",
-        background: "linear-gradient(135deg, #0D1B35, #162952)",
+        background: "linear-gradient(135deg, #0F1A2E, #162952)",
       }}>
         {images[imgIndex]?.startsWith("http") ? (
           <Image
@@ -210,12 +210,12 @@ const ProductCard = ({ product }) => {
       {/* 📦 Body */}
       <div className="product-card-body" style={{ padding: "16px 18px 18px", display: "flex", flexDirection: "column", flex: 1 }}>
         {product.category && (
-          <p style={{ fontSize: 10, color: "#4FC3F7", fontWeight: 700, letterSpacing: "1.2px", textTransform: "uppercase", margin: "0 0 4px" }}>
+          <p style={{ fontSize: 9, color: "#4FC3F7", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 4px" }}>
             {product.category}
           </p>
         )}
 
-        <h3 className="product-card-name" style={{ fontSize: 17, fontWeight: 700, color: "#E8F4FF", margin: "0 0 6px", lineHeight: 1.3, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
+        <h3 className="product-card-name" style={{ fontSize: 16, fontWeight: 700, color: "#E8F4FF", margin: "0 0 6px", lineHeight: 1.3, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
           {product.name}
         </h3>
 
@@ -227,8 +227,8 @@ const ProductCard = ({ product }) => {
 
         <div style={{ marginTop: "auto" }}>
         <p className="product-card-price" style={{
-          fontSize: typeof product.price === "number" && product.price > 0 ? 24 : isUpcoming ? 15 : 13,
-          fontWeight: typeof product.price === "number" && product.price > 0 ? 900 : 700,
+          fontSize: typeof product.price === "number" && product.price > 0 ? 22 : isUpcoming ? 15 : 13,
+          fontWeight: typeof product.price === "number" && product.price > 0 ? 800 : 700,
           color: typeof product.price === "number" && product.price > 0 ? "#F4C430" : isUpcoming ? "#5C6795" : "#4A5880",
           margin: "0 0 12px",
         }}>
@@ -239,21 +239,21 @@ const ProductCard = ({ product }) => {
           <button
             className="product-card-btn"
             onClick={(e) => { e.stopPropagation(); router.push("/contact?interest=" + product.slug); }}
-            style={{ width: "100%", height: 46, padding: "0 11px", background: "transparent", color: "#7B8DB8", border: "1.5px solid rgba(92,103,149,0.5)", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
+            style={{ width: "100%", height: 44, padding: "0 11px", background: "transparent", color: "#7B8DB8", border: "1.5px solid rgba(92,103,149,0.5)", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(92,103,149,0.12)"; e.currentTarget.style.color = "#E8F4FF"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#7B8DB8"; }}
           >
             Register Interest
           </button>
         ) : !inStock ? (
-          <button className="product-card-btn" disabled style={{ width: "100%", height: 46, padding: "0 11px", background: "var(--bg-surface)", color: "var(--text-subtle)", cursor: "not-allowed", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700 }}>
+          <button className="product-card-btn" disabled style={{ width: "100%", height: 44, padding: "0 11px", background: "var(--bg-surface)", color: "var(--text-subtle)", cursor: "not-allowed", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700 }}>
             Out of Stock
           </button>
         ) : product.type === "vehicle" ? (
           <button
             className="product-card-btn"
             onClick={(e) => { e.stopPropagation(); goToDetails(); }}
-            style={{ width: "100%", height: 46, padding: "0 11px", background: "linear-gradient(135deg, #0D518C, #4FC3F7)", color: "#E8F4FF", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 14px rgba(13,81,140,0.3)", transition: "all 0.25s ease" }}
+            style={{ width: "100%", height: 44, padding: "0 11px", background: "linear-gradient(135deg, #0D518C, #4FC3F7)", color: "#E8F4FF", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 14px rgba(13,81,140,0.3)", transition: "all 0.25s ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 22px rgba(13,81,140,0.4)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 14px rgba(13,81,140,0.3)"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
@@ -263,7 +263,7 @@ const ProductCard = ({ product }) => {
           <button
             className="product-card-btn"
             onClick={(e) => { e.stopPropagation(); goToDetails(); }}
-            style={{ width: "100%", height: 46, padding: "0 11px", background: "linear-gradient(135deg, #F4C430, #FF8F00)", color: "#0A0E1A", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
+            style={{ width: "100%", height: 44, padding: "0 11px", background: "linear-gradient(135deg, #F4C430, #FF8F00)", color: "#0B1120", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 22px rgba(244,196,48,0.3)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
           >
@@ -274,10 +274,10 @@ const ProductCard = ({ product }) => {
             className="product-card-btn"
             onClick={handleAddToCart}
             style={{
-              width: "100%", height: 46, padding: "0 11px", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer",
+              width: "100%", height: 44, padding: "0 11px", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer",
               transition: "all 0.2s",
               background: added ? "#34C78A" : "transparent",
-              color: added ? "#0A0E1A" : "#4FC3F7",
+              color: added ? "#0B1120" : "#4FC3F7",
               border: added ? "none" : "1.5px solid rgba(13,81,140,0.38)",
             }}
             onMouseEnter={(e) => { if (!added) { e.currentTarget.style.background = "rgba(13,81,140,0.2)"; e.currentTarget.style.borderColor = "#4FC3F7"; } }}

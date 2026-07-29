@@ -77,7 +77,7 @@ export default function Hero() {
   const settings = useSiteSettings();
   const heroTagline = settings?.hero_tagline || "Powering Odisha since 2014";
   const heroSubheading = settings?.hero_subheading ||
-    "We make electric scooters, e-rickshaws, and batteries in Bhubaneswar.\nWe fix your AC, EV charger, and electrical faults at your doorstep.\nOne company. Every power need. Across Odisha.";
+    "We make EVs, batteries and appliances in Bhubaneswar.\nOne company. Every power need.";
   const rotatingWords = (settings?.hero_rotating_words?.length ? settings.hero_rotating_words : ROTATING_WORDS);
   const [current, setCurrent] = useState(0);
   const [animState, setAnimState] = useState("idle");
@@ -142,31 +142,49 @@ export default function Hero() {
         overflow: "hidden",
       }}
     >
-      {/* Animated background layers */}
-      <div style={{
-        position: "absolute", width: 700, height: 700, borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(13,81,140,0.2) 0%, transparent 65%)",
-        top: -200, right: -150, animation: "orbFloat1 14s ease-in-out infinite", pointerEvents: "none",
-      }} />
-      <div style={{
-        position: "absolute", width: 500, height: 500, borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(92,103,149,0.15) 0%, transparent 65%)",
-        bottom: -150, left: -100, animation: "orbFloat2 18s ease-in-out infinite", pointerEvents: "none",
-      }} />
-      <div style={{
-        position: "absolute", width: 300, height: 300, borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(79,195,247,0.06) 0%, transparent 70%)",
-        top: "40%", left: "45%", animation: "orbFloat1 22s ease-in-out infinite reverse", pointerEvents: "none",
-      }} />
+      {/* Animated background layers — cinematic IMAX-style depth */}
+      {/* 1. Cinematic gradient base */}
       <div style={{
         position: "absolute", inset: 0,
-        backgroundImage: "linear-gradient(rgba(92,103,149,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(92,103,149,0.04) 1px, transparent 1px)",
-        backgroundSize: "48px 48px", pointerEvents: "none",
+        background: "linear-gradient(160deg, #0B1120 0%, #0F1E3A 30%, #162952 60%, #0F1A2E 80%, #0B1120 100%)",
+        pointerEvents: "none",
       }} />
+      {/* 2. Top center glow (main spotlight) */}
+      <div style={{
+        position: "absolute", width: 900, height: 600, borderRadius: "50%",
+        background: "radial-gradient(ellipse, rgba(13,81,140,0.35) 0%, rgba(79,195,247,0.08) 40%, transparent 70%)",
+        top: -200, left: "50%", transform: "translateX(-50%)",
+        animation: "orbFloat1 16s ease-in-out infinite", pointerEvents: "none",
+      }} />
+      {/* 3. Right accent (product card side) */}
+      <div style={{
+        position: "absolute", width: 600, height: 600, borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(13,81,140,0.2) 0%, transparent 65%)",
+        top: -100, right: -100, animation: "orbFloat2 20s ease-in-out infinite", pointerEvents: "none",
+      }} />
+      {/* 4. Bottom left warm accent */}
+      <div style={{
+        position: "absolute", width: 400, height: 400, borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(244,196,48,0.06) 0%, transparent 70%)",
+        bottom: 0, left: 0, animation: "orbFloat1 24s ease-in-out infinite reverse", pointerEvents: "none",
+      }} />
+      {/* 5. Fine grid */}
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: "linear-gradient(rgba(79,195,247,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(79,195,247,0.025) 1px, transparent 1px)",
+        backgroundSize: "60px 60px", pointerEvents: "none",
+      }} />
+      {/* 6. Horizontal light beam */}
+      <div style={{
+        position: "absolute", left: 0, right: 0, height: 200, top: "40%",
+        background: "linear-gradient(180deg, transparent 0%, rgba(13,81,140,0.04) 50%, transparent 100%)",
+        pointerEvents: "none",
+      }} />
+      {/* 7. Scan line */}
       <div style={{
         position: "absolute", left: 0, right: 0, height: 1,
-        background: "linear-gradient(90deg, transparent 0%, rgba(79,195,247,0.3) 50%, transparent 100%)",
-        animation: "scanLine 10s linear infinite", pointerEvents: "none",
+        background: "linear-gradient(90deg, transparent 0%, rgba(79,195,247,0.2) 30%, rgba(244,196,48,0.1) 70%, transparent 100%)",
+        animation: "scanLine 12s linear infinite", pointerEvents: "none",
       }} />
 
       {/* Content */}
@@ -176,17 +194,17 @@ export default function Hero() {
           {/* Badge */}
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 8,
-            background: "rgba(13,81,140,0.2)", border: "1px solid rgba(79,195,247,0.3)",
-            borderRadius: 999, padding: "6px 16px", marginBottom: 20,
+            background: "rgba(13,81,140,0.15)", border: "1px solid rgba(79,195,247,0.2)",
+            borderRadius: 999, padding: "6px 18px", marginBottom: 24,
             animation: "fadeInUp 0.5s ease",
           }}>
             <span style={{
-              width: 7, height: 7, borderRadius: "50%",
+              width: 6, height: 6, borderRadius: "50%",
               background: "var(--sky)",
               animation: "pulseGlow 2s ease infinite",
               display: "inline-block",
             }} />
-            <span style={{ color: "var(--sky)", fontSize: 12, fontWeight: 700, letterSpacing: "0.5px" }}>
+            <span style={{ color: "var(--sky)", fontSize: 12, fontWeight: 600, letterSpacing: "0.3px" }}>
               {heroTagline}
             </span>
           </div>
@@ -198,8 +216,8 @@ export default function Hero() {
                 key={line}
                 className="hero-headline"
                 style={{
-                  fontSize: "clamp(38px, 5.5vw, 72px)", fontWeight: 900,
-                  color: "var(--text-heading)", letterSpacing: "-2px", lineHeight: 1.05, margin: 0,
+                  fontSize: "clamp(40px, 5.5vw, 68px)", fontWeight: 800,
+                  color: "var(--text-heading)", letterSpacing: "-1.5px", lineHeight: 1.1, margin: 0,
                   animation: `fadeInUp 0.6s ease ${0.1 + i * 0.1}s both`,
                 }}
               >
@@ -207,14 +225,20 @@ export default function Hero() {
               </h1>
             ))}
             <span
-              className="hero-headline gradient-text"
+              className="hero-headline"
               style={{
                 display: "block",
-                fontSize: "clamp(38px, 5.5vw, 72px)",
-                fontWeight: 900,
-                letterSpacing: "-2px",
-                lineHeight: 1.05,
+                fontSize: "clamp(40px, 5.5vw, 68px)",
+                fontWeight: 800,
+                letterSpacing: "-1.5px",
+                lineHeight: 1.1,
                 minHeight: "1.1em",
+                background: "linear-gradient(135deg, #4FC3F7 0%, #A5D8F7 50%, #F4C430 100%)",
+                backgroundSize: "200% 200%",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                animation: "gradientText 5s ease infinite",
                 opacity: wordVisible ? 1 : 0,
                 transform: wordVisible ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 0.3s ease, transform 0.3s ease",
@@ -228,8 +252,8 @@ export default function Hero() {
           <p
             className="hero-subtitle"
             style={{
-              fontSize: 16, color: "var(--text-muted)", lineHeight: 1.7,
-              marginTop: 20, marginBottom: 32, maxWidth: 460,
+              fontSize: 15, color: "var(--slate)", lineHeight: 1.7, fontWeight: 400,
+              marginTop: 20, marginBottom: 32, maxWidth: 420,
               animation: "fadeInUp 0.6s ease 0.2s both",
             }}
           >
@@ -247,14 +271,15 @@ export default function Hero() {
               className="hero-btn-primary"
               onClick={() => router.push("/products")}
               style={{
-                background: "var(--grad-primary)",
-                color: "var(--text-heading)", padding: "14px 32px", border: "none",
-                borderRadius: 12, fontSize: 15, fontWeight: 800, cursor: "pointer",
-                boxShadow: "0 8px 28px rgba(13,81,140,0.4)", transition: "all 0.3s ease",
-                animation: "pulseGlow 3s ease infinite",
+                height: 48, background: "linear-gradient(135deg, #0D518C, #1A6AB5)",
+                color: "var(--text-heading)", padding: "0 28px", border: "1px solid rgba(79,195,247,0.2)",
+                borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer",
+                boxShadow: "0 8px 24px rgba(13,81,140,0.35), inset 0 1px 0 rgba(255,255,255,0.1)",
+                transition: "all 0.3s ease",
+                animation: "glowPulse 3s ease-in-out infinite",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 14px 36px rgba(13,81,140,0.5)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(13,81,140,0.4)"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 14px 36px rgba(13,81,140,0.45)"; e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(13,81,140,0.35), inset 0 1px 0 rgba(255,255,255,0.1)"; e.currentTarget.style.borderColor = "rgba(79,195,247,0.2)"; }}
             >
               Shop Products →
             </button>
@@ -262,35 +287,36 @@ export default function Hero() {
               className="hero-btn-ghost"
               onClick={() => router.push("/services/enquiry")}
               style={{
-                background: "rgba(92,103,149,0.12)", color: "var(--text-heading)",
-                padding: "13px 32px", borderRadius: 12, fontSize: 15, fontWeight: 600, cursor: "pointer",
-                border: "1.5px solid rgba(92,103,149,0.35)", transition: "all 0.3s ease",
+                height: 48, background: "rgba(22,41,82,0.4)", color: "var(--text-body)",
+                padding: "0 28px", borderRadius: 12, fontSize: 14, fontWeight: 500, cursor: "pointer",
+                border: "1px solid rgba(92,103,149,0.25)", backdropFilter: "blur(8px)",
+                transition: "all 0.3s ease",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(92,103,149,0.22)";
-                e.currentTarget.style.borderColor = "var(--sky)";
-                e.currentTarget.style.color = "var(--sky)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(92,103,149,0.12)";
-                e.currentTarget.style.borderColor = "rgba(92,103,149,0.35)";
+                e.currentTarget.style.background = "rgba(22,41,82,0.7)";
+                e.currentTarget.style.borderColor = "rgba(79,195,247,0.3)";
                 e.currentTarget.style.color = "var(--text-heading)";
               }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(22,41,82,0.4)";
+                e.currentTarget.style.borderColor = "rgba(92,103,149,0.25)";
+                e.currentTarget.style.color = "var(--text-body)";
+              }}
             >
-              Book a Service →
+              Book a Service
             </button>
           </div>
 
           {/* Trust pills */}
           <div
             className="hero-trust-row"
-            style={{ marginTop: 28, display: "flex", gap: 24, flexWrap: "wrap", animation: "fadeInUp 0.6s ease 0.4s both" }}
+            style={{ marginTop: 24, display: "flex", gap: 20, flexWrap: "wrap", animation: "fadeInUp 0.6s ease 0.4s both" }}
           >
             {TRUST_PILLS.map((pill) => (
               <span
                 className="hero-trust-pill"
                 key={pill}
-                style={{ color: "var(--text-subtle)", fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}
+                style={{ color: "var(--text-subtle)", fontSize: 12, display: "flex", alignItems: "center", gap: 6 }}
               >
                 <span style={{ color: "var(--green)", fontWeight: 700 }}>✓</span>
                 {pill}
@@ -361,7 +387,7 @@ export default function Hero() {
                   overflow: "hidden",
                   boxShadow: "0 32px 80px rgba(10,14,26,0.6), 0 0 0 1px rgba(79,195,247,0.08), inset 0 1px 0 rgba(255,255,255,0.06)",
                   cursor: card.slug ? "pointer" : "default",
-                  animation: animState === "idle" ? "float 6s ease-in-out infinite" : "none",
+                  animation: animState === "idle" ? "floatCard 7s ease-in-out infinite" : "none",
                 }}
                 onClick={() => { if (card.slug) router.push(`/products/${card.slug}`); }}
               >

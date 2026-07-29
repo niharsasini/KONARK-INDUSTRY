@@ -1,14 +1,14 @@
 :root {
-  /* ── BACKGROUNDS ── */
-  --bg-page:        #0A0E1A;
-  --bg-surface:     #0D1B35;
+  /* ── BACKGROUNDS (cinematic midnight blue, not pure black) ── */
+  --bg-page:        #0B1120;
+  --bg-surface:     #0F1A2E;
   --bg-card:        #162952;
-  --bg-card-hover:  #1E3870;
-  --bg-elevated:    #1A3060;
-  --bg-overlay:     rgba(10, 14, 26, 0.85);
-  --bg-section:     #0D1B35;
-  --bg-section-alt: #0A0E1A;
-  --bg-dark:        #0A0E1A;
+  --bg-card-hover:  #1C3362;
+  --bg-elevated:    #1A2E52;
+  --bg-overlay:     rgba(11, 17, 32, 0.85);
+  --bg-section:     #0F1A2E;
+  --bg-section-alt: #0B1120;
+  --bg-dark:        #0B1120;
   --bg-dark-card:   #162952;
 
   /* ── BRAND BLUES (from #0D518C family) ── */
@@ -68,17 +68,18 @@
   --grad-primary:   linear-gradient(135deg, #0D518C, #4FC3F7);
   --grad-navy:      linear-gradient(135deg, #0D518C, #0A3D6B);
   --grad-gold:      linear-gradient(135deg, #F4C430, #FF8F00);
-  --grad-hero:      linear-gradient(135deg, #0A0E1A 0%, #0D1B35 50%, #162952 100%);
-  --grad-card:      linear-gradient(145deg, #162952, #1E3870);
+  --grad-hero:      linear-gradient(135deg, #0B1120 0%, #0F1A2E 50%, #162952 100%);
+  --grad-card:      linear-gradient(145deg, #162952, #1C3362);
   --grad-heading:   linear-gradient(135deg, #4FC3F7, #F4C430);
-  --grad-surface:   linear-gradient(180deg, #0D1B35, #0A0E1A);
-  --grad-warm:      linear-gradient(135deg, #0D1B35, #0A0E1A);
-  --grad-section:   linear-gradient(180deg, #0D1B35 0%, #0A0E1A 100%);
+  --grad-surface:   linear-gradient(180deg, #0F1A2E, #0B1120);
+  --grad-warm:      linear-gradient(135deg, #0F1A2E, #0B1120);
+  --grad-section:   linear-gradient(180deg, #0F1A2E 0%, #0B1120 100%);
 
   /* ── NEUMORPHISM (on #162952 surface) ── */
-  --neu-shadow:     5px 5px 12px #0A1A35, -4px -4px 12px #1E3870;
-  --neu-inset:      inset 3px 3px 8px #0A1A35, inset -3px -3px 8px #1E3870;
-  --neu-hover:      8px 8px 16px #0A1A35, -6px -6px 16px #1E3870;
+  --neu-shadow:     6px 6px 14px #0D1A3A, -5px -5px 14px #1E3870;
+  --neu-inset:      inset 4px 4px 10px #0D1A3A, inset -3px -3px 10px #1E3870;
+  --neu-hover:      8px 8px 20px #0D1A3A, -6px -6px 20px #1E3870;
+  --neu-pressed:    inset 5px 5px 12px #0D1A3A, inset -4px -4px 12px #1E3870;
 
   /* ── SHADOWS ── */
   --shadow-sm:      0 2px 8px rgba(10,14,26,0.4);
