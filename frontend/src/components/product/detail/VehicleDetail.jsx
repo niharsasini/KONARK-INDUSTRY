@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
@@ -11,6 +11,30 @@ export default function VehicleDetail({ product }) {
   const [form, setForm] = useState({ name: "", phone: "", city: "", date: "" });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".vehicle-image-area", {
+        x: -60, opacity: 0, blur: 6,
+        duration: 0.8, start: "top 90%",
+      });
+      await animateIn(".vehicle-info-panel", {
+        x: 60, opacity: 0,
+        duration: 0.8, delay: 0.1, start: "top 90%",
+      });
+      await animateIn(".spec-card", {
+        y: 32, opacity: 0, scale: 0.92,
+        stagger: 0.08, duration: 0.5,
+        delay: 0.3,
+      });
+      await animateIn(".specs-table", {
+        y: 40, opacity: 0,
+        duration: 0.6, delay: 0.4,
+      });
+    };
+    run();
+  }, [product?.slug]);
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -65,7 +89,7 @@ export default function VehicleDetail({ product }) {
       </div>
 
       {/* Cinematic hero image */}
-      <div style={{
+      <div className="vehicle-image-area" style={{
         maxWidth: 1280, margin: "24px auto 0", padding: "0 24px",
         background: "linear-gradient(145deg, var(--bg-surface), var(--bg-section))",
         borderRadius: 24, overflow: "hidden",
@@ -103,7 +127,7 @@ export default function VehicleDetail({ product }) {
           background: "var(--border-light)", borderRadius: 14, overflow: "hidden", marginTop: 24,
         }} className="spec-strip">
           {VEHICLE_HIGHLIGHTS.map((s) => (
-            <div key={s.label} style={{ background: "var(--bg-card)", borderRadius: 14, boxShadow: "var(--neu-shadow)", border: "1px solid rgba(79,195,247,0.06)", padding: "20px 16px", textAlign: "center" }}>
+            <div key={s.label} className="spec-card" style={{ background: "var(--bg-card)", borderRadius: 14, boxShadow: "var(--neu-shadow)", border: "1px solid rgba(13,81,140,0.06)", padding: "20px 16px", textAlign: "center" }}>
               <p style={{ fontSize: 22, margin: "0 0 4px" }}>{s.icon}</p>
               <p style={{ fontSize: 12, color: "var(--slate)", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 4px" }}>{s.label}</p>
               <p style={{ fontSize: 20, fontWeight: 800, color: "var(--sky)", margin: 0 }}>{s.value}</p>
@@ -115,7 +139,7 @@ export default function VehicleDetail({ product }) {
       {/* Main content */}
       <div style={{ maxWidth: 1280, margin: "48px auto 0", padding: "0 24px", display: "grid", gridTemplateColumns: "1fr 400px", gap: 48, alignItems: "start" }} className="vehicle-grid">
         {/* Left: info */}
-        <div>
+        <div className="vehicle-info-panel">
           <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 4, background: "rgba(15,76,129,0.1)", color: "var(--navy)", border: "1px solid rgba(15,76,129,0.25)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
             {product.category}
           </span>
@@ -140,7 +164,7 @@ export default function VehicleDetail({ product }) {
               fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none",
               transition: "all 0.2s", display: "inline-block",
             } : {
-              padding: "14px 32px", background: "var(--grad-primary)", color: "var(--text-heading)",
+              padding: "14px 32px", background: "var(--grad-primary)", color: "#FFFFFF",
               fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none",
               transition: "all 0.2s", display: "inline-block", boxShadow: "var(--shadow-navy)",
             }}
@@ -243,7 +267,7 @@ export default function VehicleDetail({ product }) {
               <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-heading)", marginBottom: 14 }}>
                 {isUpcoming ? "🚀 Upcoming New Model — Specifications" : "Full Specifications"}
               </h3>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 40px" }}>
+              <div className="specs-table" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 40px" }}>
                 {specs.map(([k, v], i) => (
                   <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid var(--border-light)" }}>
                     <span style={{ fontSize: 13, color: "var(--text-muted)" }}>{k}</span>
@@ -290,9 +314,9 @@ export default function VehicleDetail({ product }) {
                     onChange={(e) => setForm((prev) => ({ ...prev, [f.k]: e.target.value }))}
                     required
                     placeholder={f.placeholder}
-                    style={{ width: "100%", background: "rgba(10,14,26,0.6)", border: "1px solid rgba(92,103,149,0.25)", borderRadius: 10, padding: "12px 16px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s, box-shadow 0.2s" }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = "var(--sky)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(79,195,247,0.1)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.25)"; e.currentTarget.style.boxShadow = "none"; }}
+                    style={{ width: "100%", background: "#F5F7FF", border: "1px solid rgba(148,163,184,0.25)", borderRadius: 10, padding: "12px 16px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s, box-shadow 0.2s" }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = "var(--sky)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(13,81,140,0.1)"; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(148,163,184,0.25)"; e.currentTarget.style.boxShadow = "none"; }}
                   />
                 </div>
               ))}
@@ -303,15 +327,15 @@ export default function VehicleDetail({ product }) {
                   value={form.date}
                   onChange={(e) => setForm((prev) => ({ ...prev, date: e.target.value }))}
                   required
-                  style={{ width: "100%", background: "rgba(10,14,26,0.6)", border: "1px solid rgba(92,103,149,0.25)", borderRadius: 10, padding: "12px 16px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", colorScheme: "dark", transition: "border-color 0.2s, box-shadow 0.2s" }}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = "var(--sky)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(79,195,247,0.1)"; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.25)"; e.currentTarget.style.boxShadow = "none"; }}
+                  style={{ width: "100%", background: "#F5F7FF", border: "1px solid rgba(148,163,184,0.25)", borderRadius: 10, padding: "12px 16px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", colorScheme: "dark", transition: "border-color 0.2s, box-shadow 0.2s" }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "var(--sky)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(13,81,140,0.1)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(148,163,184,0.25)"; e.currentTarget.style.boxShadow = "none"; }}
                 />
               </div>
               <button
                 type="submit"
                 disabled={submitting}
-                style={{ marginTop: 4, padding: "14px", background: "var(--grad-primary)", color: "var(--text-heading)", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: submitting ? "not-allowed" : "pointer", transition: "opacity 0.2s", opacity: submitting ? 0.7 : 1, boxShadow: "var(--shadow-navy)" }}
+                style={{ marginTop: 4, padding: "14px", background: "var(--grad-primary)", color: "#FFFFFF", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: submitting ? "not-allowed" : "pointer", transition: "opacity 0.2s", opacity: submitting ? 0.7 : 1, boxShadow: "var(--shadow-navy)" }}
                 onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.opacity = "0.9"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.opacity = submitting ? "0.7" : "1"; }}
               >

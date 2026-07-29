@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { submitContactForm } from "@/lib/api";
 
@@ -8,7 +8,7 @@ const inputStyle = {
   width: "100%",
   background: "var(--bg-card)",
   boxShadow: "var(--neu-inset)",
-  border: "1px solid rgba(92,103,149,0.1)",
+  border: "1px solid rgba(148,163,184,0.1)",
   color: "var(--text-heading)",
   fontSize: 14,
   padding: "13px 16px",
@@ -22,6 +22,23 @@ export default function ContactPage() {
   const [form, setForm] = useState({ name: "", phone: "", email: "", subject: "General Inquiry", message: "" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".contact-header", {
+        y: 40, opacity: 0, blur: 8, duration: 0.7,
+      });
+      await animateIn(".contact-info-card", {
+        y: 48, opacity: 0, scale: 0.94,
+        stagger: 0.1, duration: 0.65, delay: 0.1,
+      });
+      await animateIn(".contact-form-card", {
+        x: 40, opacity: 0, blur: 4, duration: 0.7,
+      });
+    };
+    run();
+  }, []);
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -42,7 +59,7 @@ export default function ContactPage() {
   return (
     <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       {/* Hero */}
-      <div style={{ background: "var(--bg-card)", borderBottom: "1px solid var(--border-light)", padding: "80px 24px 60px", textAlign: "center" }}>
+      <div className="contact-header" style={{ background: "var(--bg-card)", borderBottom: "1px solid var(--border-light)", padding: "80px 24px 60px", textAlign: "center" }}>
         <div style={{ display: "flex", gap: 6, alignItems: "center", justifyContent: "center", marginBottom: 20, fontSize: 12, color: "var(--text-muted)" }}>
           <Link href="/" style={{ color: "var(--text-muted)", textDecoration: "none" }}>Home</Link>
           <span>/</span>
@@ -72,7 +89,7 @@ export default function ContactPage() {
               { label: "Email", value: "konarkindustrie@gmail.com", sub: "We reply within 4 working hours", icon: "✉️" },
               { label: "Address", value: "Bhimatangi Housing Colony, Bhubaneswar, Odisha 751002", sub: "", icon: "📍" },
             ].map((item) => (
-              <div key={item.label} style={{ background: "var(--bg-card)", borderRadius: 16, padding: "18px 20px", display: "flex", gap: 14, alignItems: "flex-start", boxShadow: "var(--neu-shadow)" }}>
+              <div key={item.label} className="contact-info-card" style={{ background: "var(--bg-card)", borderRadius: 16, padding: "18px 20px", display: "flex", gap: 14, alignItems: "flex-start", boxShadow: "var(--neu-shadow)" }}>
                 <span style={{ fontSize: 20, flexShrink: 0 }}>{item.icon}</span>
                 <div>
                   <p style={{ fontSize: 11, color: "var(--text-muted)", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.1em" }}>{item.label}</p>
@@ -99,7 +116,7 @@ export default function ContactPage() {
         </div>
 
         {/* Right: form */}
-        <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: "36px 32px", boxShadow: "var(--shadow-md)" }}>
+        <div className="contact-form-card" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: "36px 32px", boxShadow: "var(--shadow-md)" }}>
           <h2 style={{ fontSize: 22, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 6px" }}>Send Us a Message</h2>
           <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 28px" }}>Fill out the form and we'll get back to you within 4 hours.</p>
 
@@ -114,34 +131,34 @@ export default function ContactPage() {
               <div>
                 <label style={{ fontSize: 12, color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Full Name *</label>
                 <input required name="name" placeholder="Your full name" value={form.name} onChange={handleChange} style={inputStyle}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)"; e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(79,195,247,0.08)"; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.1)"; e.currentTarget.style.boxShadow = "var(--neu-inset)"; }} />
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)"; e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(13,81,140,0.08)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(148,163,184,0.1)"; e.currentTarget.style.boxShadow = "var(--neu-inset)"; }} />
               </div>
               <div>
                 <label style={{ fontSize: 12, color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Phone Number *</label>
                 <input required name="phone" placeholder="+91 XXXXX XXXXX" value={form.phone} onChange={handleChange} style={inputStyle}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)"; e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(79,195,247,0.08)"; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.1)"; e.currentTarget.style.boxShadow = "var(--neu-inset)"; }} />
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)"; e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(13,81,140,0.08)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(148,163,184,0.1)"; e.currentTarget.style.boxShadow = "var(--neu-inset)"; }} />
               </div>
               <div>
                 <label style={{ fontSize: 12, color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Email Address *</label>
                 <input required type="email" name="email" placeholder="you@example.com" value={form.email} onChange={handleChange} style={inputStyle}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)"; e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(79,195,247,0.08)"; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.1)"; e.currentTarget.style.boxShadow = "var(--neu-inset)"; }} />
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)"; e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(13,81,140,0.08)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(148,163,184,0.1)"; e.currentTarget.style.boxShadow = "var(--neu-inset)"; }} />
               </div>
               <div>
                 <label style={{ fontSize: 12, color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Subject</label>
                 <select name="subject" value={form.subject} onChange={handleChange} style={{ ...inputStyle, cursor: "pointer" }}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)"; e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(79,195,247,0.08)"; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.1)"; e.currentTarget.style.boxShadow = "var(--neu-inset)"; }}>
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)"; e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(13,81,140,0.08)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(148,163,184,0.1)"; e.currentTarget.style.boxShadow = "var(--neu-inset)"; }}>
                   {["General Inquiry", "Product Question", "Bulk Order", "Partnership", "Support"].map((o) => <option key={o}>{o}</option>)}
                 </select>
               </div>
               <div>
                 <label style={{ fontSize: 12, color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Message</label>
                 <textarea name="message" rows={4} placeholder="Write your message here..." value={form.message} onChange={handleChange} style={{ ...inputStyle, resize: "vertical" }}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)"; e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(79,195,247,0.08)"; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.1)"; e.currentTarget.style.boxShadow = "var(--neu-inset)"; }} />
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)"; e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(13,81,140,0.08)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(148,163,184,0.1)"; e.currentTarget.style.boxShadow = "var(--neu-inset)"; }} />
               </div>
               <button
                 type="submit"

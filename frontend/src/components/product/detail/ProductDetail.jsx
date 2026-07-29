@@ -44,6 +44,25 @@ export default function ProductDetail({ product }) {
     setRecentProducts(getRecentlyViewed().filter((p) => p.slug !== product.slug));
   }, [product.slug]);
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".product-gallery", {
+        x: -60, opacity: 0, blur: 6,
+        duration: 0.8, start: "top 90%",
+      });
+      await animateIn(".product-info-panel", {
+        x: 60, opacity: 0,
+        duration: 0.8, delay: 0.1, start: "top 90%",
+      });
+      await animateIn(".review-item", {
+        y: 32, opacity: 0,
+        stagger: 0.08, duration: 0.5,
+      });
+    };
+    run();
+  }, [product.slug]);
+
   const handleAddToCart = () => {
     for (let i = 0; i < qty; i++) {
       addItem({
@@ -90,10 +109,12 @@ export default function ProductDetail({ product }) {
       {/* Main two-col */}
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "32px 24px", display: "grid", gridTemplateColumns: "45% 55%", gap: 40, alignItems: "start" }} className="detail-grid">
         {/* LEFT: image gallery */}
-        <ProductImageGallery images={images} productName={product.name} isNew={product.isNew} />
+        <div className="product-gallery">
+          <ProductImageGallery images={images} productName={product.name} isNew={product.isNew} />
+        </div>
 
         {/* RIGHT: details */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+        <div className="product-info-panel" style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 4, background: `${badgeColor}18`, color: badgeColor, border: `1px solid ${badgeColor}30`, textTransform: "uppercase", letterSpacing: "0.08em", width: "fit-content" }}>
             {product.category}
           </span>
@@ -133,18 +154,18 @@ export default function ProductDetail({ product }) {
           {/* Quantity */}
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 13, color: "var(--text-muted)", fontWeight: 500 }}>Qty:</span>
-            <div style={{ display: "flex", alignItems: "center", background: "rgba(22,41,82,0.6)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 10, overflow: "hidden" }}>
+            <div style={{ display: "flex", alignItems: "center", background: "rgba(255,255,255,0.6)", border: "1px solid rgba(148,163,184,0.2)", borderRadius: 10, overflow: "hidden" }}>
               <button
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
                 style={{ width: 36, height: 36, background: "rgba(13,81,140,0.2)", border: "1px solid rgba(13,81,140,0.3)", color: "var(--sky)", fontSize: 18, cursor: "pointer", transition: "background 0.2s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(13,81,140,0.4)")}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.4)")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(13,81,140,0.2)")}
               >−</button>
               <span style={{ width: 40, textAlign: "center", fontSize: 14, fontWeight: 600, color: "var(--text-heading)" }}>{qty}</span>
               <button
                 onClick={() => setQty((q) => Math.min(10, q + 1))}
                 style={{ width: 36, height: 36, background: "rgba(13,81,140,0.2)", border: "1px solid rgba(13,81,140,0.3)", color: "var(--sky)", fontSize: 18, cursor: "pointer", transition: "background 0.2s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(13,81,140,0.4)")}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.4)")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(13,81,140,0.2)")}
               >+</button>
             </div>
@@ -155,7 +176,7 @@ export default function ProductDetail({ product }) {
             <div style={{ display: "flex", gap: 8 }}>
               <button
                 onClick={handleAddToCart}
-                style={{ flex: 1, padding: "14px", background: "var(--grad-primary)", color: "var(--text-heading)", fontWeight: 700, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer", transition: "opacity 0.2s", boxShadow: "var(--shadow-navy)" }}
+                style={{ flex: 1, padding: "14px", background: "var(--grad-primary)", color: "#FFFFFF", fontWeight: 700, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer", transition: "opacity 0.2s", boxShadow: "var(--shadow-navy)" }}
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >
@@ -170,7 +191,7 @@ export default function ProductDetail({ product }) {
             </div>
             <button
               onClick={() => setEnquiryOpen(true)}
-              style={{ padding: "14px", background: "var(--grad-gold)", color: "var(--bg-page)", fontWeight: 700, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer", transition: "opacity 0.2s", boxShadow: "var(--shadow-gold)" }}
+              style={{ padding: "14px", background: "var(--grad-gold)", color: "var(--text-heading)", fontWeight: 700, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer", transition: "opacity 0.2s", boxShadow: "var(--shadow-gold)" }}
               onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
               onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
             >

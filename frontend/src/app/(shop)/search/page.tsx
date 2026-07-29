@@ -97,11 +97,25 @@ function SearchResults() {
       .catch(() => {})
   }, [query])
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import('@/lib/gsapUtils')
+      await animateIn('.search-header', {
+        y: 32, opacity: 0, duration: 0.6,
+      })
+      await animateIn('.search-result-card', {
+        y: 40, opacity: 0, blur: 4,
+        stagger: 0.07, duration: 0.55,
+      })
+    }
+    run()
+  }, [results])
+
   return (
     <div style={{ background: 'var(--bg-page)', minHeight: '100vh', paddingTop: '80px' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 24px' }}>
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Search Results' }]} />
-        <div style={{ marginBottom: '32px' }}>
+        <div className="search-header" style={{ marginBottom: '32px' }}>
           <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
             <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
             {' '}/{' '}
@@ -125,7 +139,9 @@ function SearchResults() {
         {results.length > 0 ? (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px' }}>
             {results.map((product: any) => (
-              <ProductCard key={product.id} product={product} />
+              <div key={product.id} className="search-result-card">
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         ) : (

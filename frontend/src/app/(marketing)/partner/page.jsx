@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { submitEnquiry } from "@/lib/api";
 
@@ -45,6 +45,23 @@ export default function PartnerPage() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".partner-header", {
+        y: 48, opacity: 0, blur: 8, duration: 0.8,
+      });
+      await animateIn(".partner-benefit", {
+        x: -32, opacity: 0,
+        stagger: 0.1, duration: 0.6,
+      });
+      await animateIn(".partner-form", {
+        y: 48, opacity: 0, duration: 0.7,
+      });
+    };
+    run();
+  }, []);
+
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
@@ -71,7 +88,7 @@ export default function PartnerPage() {
   return (
     <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       {/* Hero */}
-      <div style={{ background: "var(--bg-card)", borderBottom: "1px solid var(--border-light)", padding: "80px 24px 60px", textAlign: "center" }}>
+      <div className="partner-header" style={{ background: "var(--bg-card)", borderBottom: "1px solid var(--border-light)", padding: "80px 24px 60px", textAlign: "center" }}>
         <div style={{ display: "flex", gap: 6, alignItems: "center", justifyContent: "center", marginBottom: 20, fontSize: 12, color: "var(--text-muted)" }}>
           <Link href="/" style={{ color: "var(--text-muted)", textDecoration: "none" }}>Home</Link>
           <span>/</span>
@@ -114,7 +131,7 @@ export default function PartnerPage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
             {PARTNER_TYPES.map((p) => (
-              <div key={p.title} style={{ display: "flex", alignItems: "flex-start", gap: 14, background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 12, padding: "18px 20px", transition: "border-color 0.2s", boxShadow: "var(--shadow-sm)" }}
+              <div key={p.title} className="partner-benefit" style={{ display: "flex", alignItems: "flex-start", gap: 14, background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 12, padding: "18px 20px", transition: "border-color 0.2s", boxShadow: "var(--shadow-sm)" }}
                 onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--navy)")}
                 onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--border-light)")}
               >
@@ -156,7 +173,7 @@ export default function PartnerPage() {
             <p style={{ fontSize: 14, color: "var(--text-muted)" }}>Fill out the form and our partnerships team will contact you within 2 business days.</p>
           </div>
 
-          <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: "36px 32px", boxShadow: "var(--shadow-md)" }}>
+          <div className="partner-form" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: "36px 32px", boxShadow: "var(--shadow-md)" }}>
             {success ? (
               <div style={{ textAlign: "center", padding: "40px 0" }}>
                 <div style={{ fontSize: 40, marginBottom: 16 }}>✅</div>

@@ -5,8 +5,8 @@ import { useInView } from "react-intersection-observer";
 
 const STATS = [
   { icon: "⚡", color: "#0D518C", num: 10, suffix: "+", label: "Years of Excellence", desc: "Founded 2014 in Bhubaneswar" },
-  { icon: "👥", color: "#4FC3F7", num: 25000, suffix: "+", label: "Happy Customers", desc: "Homes, farms & factories" },
-  { icon: "📦", color: "#F4C430", num: 50, suffix: "+", label: "Products & Services", desc: "EVs, batteries, appliances" },
+  { icon: "👥", color: "#0EA5E9", num: 25000, suffix: "+", label: "Happy Customers", desc: "Homes, farms & factories" },
+  { icon: "📦", color: "#D97706", num: 50, suffix: "+", label: "Products & Services", desc: "EVs, batteries, appliances" },
   { icon: "⭐", color: "#34C78A", num: 99, suffix: "%", label: "Satisfaction Rate", desc: "Rated by verified buyers" },
 ];
 
@@ -37,6 +37,16 @@ function AnimatedNumber({ target, suffix, active }) {
 
 export default function StatsSection() {
   const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true });
+
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".stats-section", {
+        opacity: 1, blur: 6, duration: 0.8, start: "top 85%",
+      });
+    };
+    run();
+  }, []);
 
   return (
     <section className="stats-section">

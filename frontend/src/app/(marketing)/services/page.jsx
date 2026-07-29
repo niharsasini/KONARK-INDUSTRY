@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 
@@ -55,10 +56,25 @@ const SERVICES = [
 ];
 
 export default function ServicesPage() {
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".services-hero", {
+        y: 48, opacity: 0, blur: 8, duration: 0.8,
+      });
+      await animateIn(".service-card-item", {
+        y: 56, opacity: 0, scale: 0.94,
+        stagger: 0.1, duration: 0.65,
+        start: "top 80%",
+      });
+    };
+    run();
+  }, []);
+
   return (
     <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       {/* Hero */}
-      <div style={{ background: "var(--bg-card)", borderBottom: "1px solid var(--border-light)", padding: "80px 24px 60px" }}>
+      <div className="services-hero" style={{ background: "var(--bg-card)", borderBottom: "1px solid var(--border-light)", padding: "80px 24px 60px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Services" }]} />
           <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid var(--border-navy)", color: "var(--navy)", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "var(--navy-bg)", marginBottom: 20 }}>
@@ -106,6 +122,7 @@ export default function ServicesPage() {
             {SERVICES.map((s) => (
               <div
                 key={s.title}
+                className="service-card-item"
                 style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderTop: `2px solid ${s.color}`, borderRadius: 16, padding: "28px 24px", transition: "all 0.2s", boxShadow: "var(--shadow-sm)" }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = s.color; e.currentTarget.style.transform = "translateY(-3px)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-light)"; e.currentTarget.style.borderTopColor = s.color; e.currentTarget.style.transform = "none"; }}

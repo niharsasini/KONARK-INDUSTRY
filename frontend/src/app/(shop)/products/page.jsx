@@ -70,6 +70,26 @@ export default function ProductsPage() {
     return list;
   }, [selectedCategories, typeFilter, minRating, sortBy, priceRange, productsList]);
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".products-page-header", {
+        y: 48, opacity: 0, blur: 8,
+        duration: 0.7, start: "top 90%",
+      });
+      await animateIn(".products-filter-sidebar", {
+        x: -40, opacity: 0,
+        duration: 0.6, delay: 0.1,
+      });
+      await animateIn(".product-card-wrapper", {
+        y: 56, opacity: 0, blur: 4,
+        stagger: 0.06, duration: 0.65,
+        start: "top 85%",
+      });
+    };
+    run();
+  }, [filtered]);
+
   const categoryCounts = useMemo(() => {
     const counts = {};
     allProducts.forEach((p) => { counts[p.category] = (counts[p.category] || 0) + 1; });
@@ -77,7 +97,7 @@ export default function ProductsPage() {
   }, [allProducts]);
 
   const Sidebar = () => (
-    <div style={{ background: "rgba(22,41,82,0.5)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 20, padding: 24, display: "flex", flexDirection: "column", gap: 20 }}>
+    <div style={{ background: "rgba(255,255,255,0.5)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(148,163,184,0.2)", borderRadius: 20, padding: 24, display: "flex", flexDirection: "column", gap: 20 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>Filters</h3>
         <button
@@ -98,7 +118,7 @@ export default function ProductsPage() {
             style={{
               display: "flex", alignItems: "center", width: "100%",
               gap: 8, padding: "7px 10px", marginBottom: 4, cursor: "pointer",
-              border: `1px solid ${typeFilter === t.value ? "rgba(79,195,247,0.3)" : "transparent"}`,
+              border: `1px solid ${typeFilter === t.value ? "rgba(13,81,140,0.3)" : "transparent"}`,
               borderRadius: 10, background: typeFilter === t.value ? "rgba(13,81,140,0.2)" : "transparent",
               color: typeFilter === t.value ? "var(--sky)" : "var(--text-muted)",
               fontSize: 13, fontWeight: typeFilter === t.value ? 600 : 400, transition: "all 0.15s",
@@ -115,7 +135,7 @@ export default function ProductsPage() {
       <div>
         <p style={{ fontSize: 11, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Category</p>
         {CATEGORIES.map((cat) => (
-          <label key={cat} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "7px 0", cursor: "pointer", borderBottom: "1px solid rgba(92,103,149,0.2)" }}>
+          <label key={cat} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "7px 0", cursor: "pointer", borderBottom: "1px solid rgba(148,163,184,0.2)" }}>
             <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <input
                 type="checkbox"
@@ -182,7 +202,7 @@ export default function ProductsPage() {
         <p style={{ fontSize: 12, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Minimum Rating</p>
         <button
           onClick={() => setMinRating(minRating === 4 ? 0 : 4)}
-          style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", border: `1px solid ${minRating === 4 ? "rgba(79,195,247,0.3)" : "rgba(92,103,149,0.25)"}`, borderRadius: 10, background: minRating === 4 ? "rgba(13,81,140,0.2)" : "transparent", color: minRating === 4 ? "var(--sky)" : "var(--text-muted)", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
+          style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", border: `1px solid ${minRating === 4 ? "rgba(13,81,140,0.3)" : "rgba(148,163,184,0.25)"}`, borderRadius: 10, background: minRating === 4 ? "rgba(13,81,140,0.2)" : "transparent", color: minRating === 4 ? "var(--sky)" : "var(--text-muted)", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
         >
           4★ & above
         </button>
@@ -193,7 +213,7 @@ export default function ProductsPage() {
   return (
     <div style={{ background: "var(--bg-page)", minHeight: "100vh" }}>
       {/* Hero */}
-      <div style={{ background: "linear-gradient(180deg, var(--bg-surface), transparent)", padding: "40px 0 32px" }}>
+      <div className="products-page-header" style={{ background: "linear-gradient(180deg, var(--bg-surface), transparent)", padding: "40px 0 32px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
           <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 12, fontSize: 12, color: "var(--text-muted)" }}>
             <Link href="/" style={{ color: "var(--text-muted)", textDecoration: "none" }}>Home</Link>
@@ -249,7 +269,7 @@ export default function ProductsPage() {
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: 28, alignItems: "start" }} className="products-layout">
-          <div className="hide-mobile-filter"><Sidebar /></div>
+          <div className="hide-mobile-filter products-filter-sidebar"><Sidebar /></div>
 
           <div>
             {/* Sort bar */}
@@ -258,7 +278,7 @@ export default function ProductsPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                style={{ background: "rgba(22,41,82,0.6)", border: "1px solid rgba(92,103,149,0.25)", color: "var(--text-heading)", fontSize: 13, padding: "8px 14px", borderRadius: 10, outline: "none", cursor: "pointer" }}
+                style={{ background: "rgba(255,255,255,0.6)", border: "1px solid rgba(148,163,184,0.25)", color: "var(--text-heading)", fontSize: 13, padding: "8px 14px", borderRadius: 10, outline: "none", cursor: "pointer" }}
               >
                 {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
@@ -271,7 +291,7 @@ export default function ProductsPage() {
               </div>
             ) : (
               <div className="products-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 24 }}>
-                {filtered.map((p) => <ProductCard key={p.id} product={p} />)}
+                {filtered.map((p) => <div key={p.id} className="product-card-wrapper"><ProductCard product={p} /></div>)}
               </div>
             )}
           </div>

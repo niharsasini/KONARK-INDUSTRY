@@ -61,11 +61,11 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         top: "calc(100% + 4px)",
         left: "50%",
         width: 640,
-        background: "rgba(13,27,53,0.97)",
+        background: "rgba(255,255,255,0.97)",
         backdropFilter: "blur(24px)",
-        border: "1px solid rgba(92,103,149,0.2)",
+        border: "1px solid rgba(148,163,184,0.2)",
         borderRadius: 20,
-        boxShadow: "0 24px 60px rgba(10,14,26,0.7), 0 0 0 1px rgba(79,195,247,0.05)",
+        boxShadow: "0 24px 60px rgba(15,23,42,0.7), 0 0 0 1px rgba(13,81,140,0.05)",
         padding: 8,
         zIndex: 1000,
         ...(isOpen ? visible : hidden),
@@ -83,7 +83,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
       }}>
         <span style={{ fontSize: 18, fontWeight: 800, color: "var(--text-heading)" }}>Our Products</span>
         <span style={{
-          fontSize: 12, color: "var(--slate)", background: "rgba(10,14,26,0.3)",
+          fontSize: 12, color: "var(--slate)", background: "rgba(255,255,255,0.6)",
           padding: "4px 12px", borderRadius: 999, fontWeight: 500,
         }}>
           29 Products Available
@@ -93,7 +93,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
       {/* 2-column grid */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", padding: "0 4px 4px" }}>
         {/* EV Vehicles */}
-        <div style={{ paddingRight: 8, borderRight: "1px solid rgba(92,103,149,0.12)" }}>
+        <div style={{ paddingRight: 8, borderRight: "1px solid rgba(148,163,184,0.12)" }}>
           <div style={{
             fontSize: 10, fontWeight: 700, color: "var(--sky)",
             letterSpacing: "1.5px", textTransform: "uppercase",
@@ -125,7 +125,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
 
       {/* Footer */}
       <div style={{
-        borderTop: "1px solid rgba(92,103,149,0.12)",
+        borderTop: "1px solid rgba(148,163,184,0.12)",
         padding: "12px 20px 8px",
         display: "flex", justifyContent: "space-between", alignItems: "center",
         marginTop: 4,
@@ -142,7 +142,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
           href="/products"
           style={{
             background: "var(--grad-primary)",
-            color: "var(--text-heading)", padding: "8px 20px", borderRadius: 8,
+            color: "#FFFFFF", padding: "8px 20px", borderRadius: 8,
             textDecoration: "none", fontWeight: 700, fontSize: 13,
             boxShadow: "0 4px 12px rgba(13,81,140,0.25)",
             transition: "all 0.2s ease",

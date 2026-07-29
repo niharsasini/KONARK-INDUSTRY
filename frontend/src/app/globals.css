@@ -42,7 +42,7 @@
 
 .navy-btn {
   background: var(--grad-primary);
-  color: var(--text-heading);
+  color: var(--text-on-accent);
   border: none;
   border-radius: var(--radius-md);
   font-weight: 700;
@@ -56,18 +56,17 @@
 }
 
 .ghost-btn {
-  background: rgba(92,103,149,0.1);
-  color: var(--text-heading);
-  border: 1.5px solid var(--border-default);
+  background: #FFFFFF;
+  color: var(--navy);
+  border: 1.5px solid rgba(13,81,140,0.25);
   border-radius: var(--radius-md);
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
 }
 .ghost-btn:hover {
-  background: rgba(92,103,149,0.2);
-  border-color: var(--sky);
-  color: var(--sky);
+  border-color: var(--navy);
+  background: rgba(13,81,140,0.04);
 }
 
 .neu-card {
@@ -80,15 +79,21 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(13,81,140,0.12);
-  border: 1px solid rgba(79,195,247,0.18);
-  color: var(--sky);
+  background: rgba(13,81,140,0.08);
+  border: 1px solid rgba(13,81,140,0.2);
+  color: var(--navy);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   padding: 4px 14px;
   border-radius: var(--radius-full);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: rgba(13,81,140,0.4) !important;
+  box-shadow: 0 0 0 3px rgba(13,81,140,0.08) !important;
 }
 
 .section-title {

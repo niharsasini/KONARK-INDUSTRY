@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
@@ -50,7 +50,7 @@ function FeatureCard({ feature, index, isVisible }) {
         onMouseLeave={() => { setHovered(false); setIconHovered(false); }}
         style={{
           background: "#162952",
-          border: `1px solid ${hovered ? "rgba(79,195,247,0.15)" : "rgba(79,195,247,0.06)"}`,
+          border: `1px solid ${hovered ? "rgba(13,81,140,0.3)" : "rgba(13,81,140,0.15)"}`,
           borderRadius: 20,
           padding: "28px 24px",
           display: "flex",
@@ -72,8 +72,8 @@ function FeatureCard({ feature, index, isVisible }) {
             height: 52,
             flexShrink: 0,
             background: iconHovered
-              ? "linear-gradient(135deg, #0D518C, #4FC3F7)"
-              : "linear-gradient(135deg, rgba(13,81,140,0.25), rgba(92,103,149,0.15))",
+              ? "linear-gradient(135deg, #0D518C, #0EA5E9)"
+              : "linear-gradient(135deg, rgba(13,81,140,0.25), rgba(148,163,184,0.15))",
             border: "1px solid rgba(13,81,140,0.3)",
             borderRadius: 14,
             display: "flex",
@@ -90,7 +90,7 @@ function FeatureCard({ feature, index, isVisible }) {
           <div style={{ color: "#E8F4FF", fontSize: 17, fontWeight: 700, marginBottom: 6 }}>
             {feature.title}
           </div>
-          <p style={{ color: "#4A5880", fontSize: 13, lineHeight: 1.7, margin: 0 }}>
+          <p style={{ color: "#94A3B8", fontSize: 13, lineHeight: 1.7, margin: 0 }}>
             {feature.desc}
           </p>
         </div>
@@ -106,6 +106,16 @@ export default function WhyKonark() {
     label: s.label,
   }));
   const { ref, isVisible } = useScrollReveal(0.15);
+
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".why-section", {
+        opacity: 1, blur: 6, duration: 0.8, start: "top 85%",
+      });
+    };
+    run();
+  }, []);
 
   return (
     <section className="why-section" style={{ padding: "64px 0" }}>
@@ -124,8 +134,8 @@ export default function WhyKonark() {
             style={{
               display: "inline-block",
               background: "rgba(13,81,140,0.2)",
-              border: "1px solid rgba(79,195,247,0.25)",
-              color: "#4FC3F7",
+              border: "1px solid rgba(13,81,140,0.25)",
+              color: "#0EA5E9",
               fontSize: 11,
               fontWeight: 700,
               letterSpacing: "2px",
@@ -145,12 +155,12 @@ export default function WhyKonark() {
               margin: "0 0 12px",
             }}
           >
-            Built Different. Built for <span style={{ color: "#F4C430" }}>Odisha.</span>
+            Built Different. Built for <span style={{ color: "#D97706" }}>Odisha.</span>
           </h2>
           <p
             style={{
               fontSize: 16,
-              color: "#4A5880",
+              color: "#94A3B8",
               maxWidth: 480,
               margin: "0 auto",
               textAlign: "center",
@@ -181,7 +191,7 @@ export default function WhyKonark() {
           className="why-stats-row"
           style={{
             display: "flex",
-            borderTop: "1px solid rgba(92,103,149,0.08)",
+            borderTop: "1px solid rgba(148,163,184,0.08)",
             marginTop: 40,
             paddingTop: 40,
             opacity: isVisible ? 1 : 0,
@@ -196,14 +206,14 @@ export default function WhyKonark() {
                 flex: 1,
                 textAlign: "center",
                 padding: "0 20px",
-                borderRight: i < STATS.length - 1 ? "1px solid rgba(92,103,149,0.08)" : "none",
+                borderRight: i < STATS.length - 1 ? "1px solid rgba(148,163,184,0.08)" : "none",
               }}
             >
               <span
                 style={{
                   fontSize: 40,
                   fontWeight: 900,
-                  color: "#F4C430",
+                  color: "#D97706",
                   display: "block",
                   lineHeight: 1,
                 }}
@@ -213,7 +223,7 @@ export default function WhyKonark() {
               <span
                 style={{
                   fontSize: 13,
-                  color: "#5C6795",
+                  color: "#64748B",
                   marginTop: 6,
                   display: "block",
                 }}
@@ -232,7 +242,7 @@ export default function WhyKonark() {
           .why-stats-row > div {
             flex: 0 0 50% !important;
             border-right: none !important;
-            border-bottom: 1px solid rgba(92,103,149,0.08);
+            border-bottom: 1px solid rgba(148,163,184,0.08);
             padding: 16px 0 !important;
           }
         }

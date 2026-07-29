@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
@@ -38,6 +38,19 @@ function ResetPasswordForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".auth-card", {
+        y: 60, opacity: 0,
+        scale: 0.93, blur: 12,
+        duration: 0.8, ease: "back.out(1.2)",
+        start: "top 90%",
+      });
+    };
+    run();
+  }, []);
 
   const focus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.currentTarget.style.borderColor = "var(--navy)";
@@ -79,7 +92,7 @@ function ResetPasswordForm() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg-page)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
-      <div style={{ width: "100%", maxWidth: 420, background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: 40, boxShadow: "var(--shadow-md)" }}>
+      <div className="auth-card" style={{ width: "100%", maxWidth: 420, background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: 40, boxShadow: "var(--shadow-md)" }}>
         <h1 style={{ fontSize: 22, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 8px" }}>Reset Password</h1>
         <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 28px", lineHeight: 1.6 }}>
           Choose a new password for your account.

@@ -10,7 +10,7 @@ export default function ProductImageGallery({ images, productName, isNew }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <div
-        style={{ background: "linear-gradient(135deg, var(--bg-surface), var(--bg-card))", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 20, padding: 32, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 340, position: "relative", cursor: "zoom-in" }}
+        style={{ background: "linear-gradient(135deg, var(--bg-surface), var(--bg-card))", border: "1px solid rgba(148,163,184,0.2)", borderRadius: 20, padding: 32, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 340, position: "relative", cursor: "zoom-in" }}
         onClick={() => setIsZoomed(true)}
       >
         {isNew && (
@@ -38,7 +38,7 @@ export default function ProductImageGallery({ images, productName, isNew }) {
             <button
               key={idx}
               onClick={() => setActiveImage(idx)}
-              style={{ width: 64, height: 64, borderRadius: 12, border: `2px solid ${activeImage === idx ? "var(--sky)" : "rgba(92,103,149,0.15)"}`, background: "rgba(22,41,82,0.5)", cursor: "pointer", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: 4, transition: "border-color 0.2s", position: "relative" }}
+              style={{ width: 64, height: 64, borderRadius: 12, border: `2px solid ${activeImage === idx ? "var(--sky)" : "rgba(148,163,184,0.15)"}`, background: "rgba(255,255,255,0.5)", cursor: "pointer", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: 4, transition: "border-color 0.2s", position: "relative" }}
             >
               <Image src={img} alt={`View ${idx + 1}`} fill style={{ objectFit: "contain", padding: 4 }} />
             </button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import StepIndicator from "@/components/forms/battery-swap/StepIndicator";
 import SwapSuccess from "@/components/forms/battery-swap/SwapSuccess";
@@ -183,6 +183,23 @@ export default function BatterySwapPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".swap-hero", {
+        y: 48, opacity: 0, blur: 8, duration: 0.8,
+      });
+      await animateIn(".swap-step-card", {
+        y: 40, opacity: 0, scale: 0.94,
+        stagger: 0.1, duration: 0.6,
+      });
+      await animateIn(".swap-form-container", {
+        y: 48, opacity: 0, blur: 4, duration: 0.7,
+      });
+    };
+    run();
+  }, [step]);
+
   // ═══ SUCCESS STATE ══════════════════════════════════════════════════════════
 
   if (result) {
@@ -211,7 +228,7 @@ export default function BatterySwapPage() {
       </div>
 
       {/* Hero */}
-      <section style={{ position: "relative", overflow: "hidden", padding: "20px 24px 80px", textAlign: "center" }}>
+      <section className="swap-hero" style={{ position: "relative", overflow: "hidden", padding: "20px 24px 80px", textAlign: "center" }}>
         <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(15,76,129,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
           <span style={{
@@ -255,25 +272,25 @@ export default function BatterySwapPage() {
           )}
 
           {step === 1 && (
-            <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "32px", marginBottom: 0, boxShadow: "var(--shadow-sm)" }}>
+            <div className="swap-form-container" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "32px", marginBottom: 0, boxShadow: "var(--shadow-sm)" }}>
               <Step1Details form={form} />
             </div>
           )}
 
           {step === 2 && (
-            <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "32px", marginBottom: 0, boxShadow: "var(--shadow-sm)" }}>
+            <div className="swap-form-container" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "32px", marginBottom: 0, boxShadow: "var(--shadow-sm)" }}>
               <Step2Battery form={form} />
             </div>
           )}
 
           {step === 3 && (
-            <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "32px", marginBottom: 0, boxShadow: "var(--shadow-sm)" }}>
+            <div className="swap-form-container" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "32px", marginBottom: 0, boxShadow: "var(--shadow-sm)" }}>
               <Step3Schedule form={form} />
             </div>
           )}
 
           {step === 4 && (
-            <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "32px", marginBottom: 0, boxShadow: "var(--shadow-sm)" }}>
+            <div className="swap-form-container" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "32px", marginBottom: 0, boxShadow: "var(--shadow-sm)" }}>
               <Step4Review form={form} />
             </div>
           )}

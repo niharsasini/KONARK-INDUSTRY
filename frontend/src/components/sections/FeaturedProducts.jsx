@@ -41,9 +41,9 @@ function EvCarCard({ car }) {
       style={{
         width: "100%", flexShrink: 0,
         background: "var(--bg-card)",
-        border: `1px solid ${hovered ? "rgba(79,195,247,0.35)" : "var(--border-default)"}`,
+        border: `1px solid ${hovered ? "rgba(13,81,140,0.35)" : "var(--border-default)"}`,
         borderRadius: 20, overflow: "hidden",
-        boxShadow: hovered ? "0 16px 48px rgba(10,14,26,0.5)" : "var(--shadow-sm)",
+        boxShadow: hovered ? "0 16px 48px rgba(15,23,42,0.5)" : "var(--shadow-sm)",
         cursor: "pointer",
         transition: "border-color 0.2s, box-shadow 0.2s",
         display: "flex", flexDirection: "column",
@@ -61,19 +61,19 @@ function EvCarCard({ car }) {
           loading="lazy"
           style={{
             maxHeight: 160, maxWidth: "85%", objectFit: "contain",
-            filter: hovered ? "drop-shadow(0 0 20px rgba(79,195,247,0.35))" : "none",
+            filter: hovered ? "drop-shadow(0 0 20px rgba(13,81,140,0.35))" : "none",
             transition: "filter 0.3s",
           }}
         />
-        <span style={{ position: "absolute", top: 12, left: 12, background: "rgba(92,103,149,0.8)", color: "#E8F4FF", fontSize: 9, fontWeight: 800, padding: "2px 8px", borderRadius: 4, textTransform: "uppercase" }}>UPCOMING</span>
-        <span style={{ position: "absolute", top: 12, right: 12, background: "rgba(79,195,247,0.1)", border: "1px solid rgba(79,195,247,0.3)", color: "#4FC3F7", fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 4 }}>
+        <span style={{ position: "absolute", top: 12, left: 12, background: "rgba(148,163,184,0.8)", color: "#0F172A", fontSize: 9, fontWeight: 800, padding: "2px 8px", borderRadius: 4, textTransform: "uppercase" }}>UPCOMING</span>
+        <span style={{ position: "absolute", top: 12, right: 12, background: "rgba(13,81,140,0.1)", border: "1px solid rgba(13,81,140,0.3)", color: "#0EA5E9", fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 4 }}>
           Electric · {car.bodyType}
         </span>
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 3, background: "linear-gradient(90deg, #4FC3F7, transparent)" }} />
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 3, background: "linear-gradient(90deg, #0EA5E9, transparent)" }} />
       </div>
       <div style={{ padding: "14px 16px", flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
         <p style={{ fontSize: 15, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>{car.name}</p>
-        <p style={{ fontSize: 13, fontStyle: "italic", color: "#5C6795", margin: 0, fontWeight: 700 }}>Coming Soon</p>
+        <p style={{ fontSize: 13, fontStyle: "italic", color: "#64748B", margin: 0, fontWeight: 700 }}>Coming Soon</p>
       </div>
       <div style={{ padding: "12px 16px", borderTop: "1px solid var(--border-light)" }}>
         <Link
@@ -82,11 +82,11 @@ function EvCarCard({ car }) {
           style={{
             display: "flex", alignItems: "center", justifyContent: "center",
             padding: "8px 10px", fontSize: 12, fontWeight: 700,
-            background: "transparent", color: "#4FC3F7",
-            border: "1px solid #4FC3F7", borderRadius: 8,
+            background: "transparent", color: "#0EA5E9",
+            border: "1px solid #0EA5E9", borderRadius: 8,
             textDecoration: "none", transition: "background 0.2s",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(79,195,247,0.08)")}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(13,81,140,0.08)")}
           onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
         >
           Register Interest →
@@ -109,6 +109,16 @@ export default function FeaturedProducts() {
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".products-section", {
+        opacity: 1, blur: 6, duration: 0.8, start: "top 85%",
+      });
+    };
+    run();
+  }, []);
+
   const tab = TABS[activeTab];
   const regularProducts = tab.isEvCars ? [] : products.filter(tab.filter).slice(0, 8);
   const carsToShow = (tab.isEvCars || tab.includesCars) ? carProducts : [];
@@ -124,7 +134,7 @@ export default function FeaturedProducts() {
         position: "absolute", top: "50%", left: "50%",
         transform: "translate(-50%, -50%)",
         fontSize: "clamp(120px, 20vw, 220px)",
-        fontWeight: 900, color: "rgba(92,103,149,0.04)",
+        fontWeight: 900, color: "rgba(148,163,184,0.04)",
         pointerEvents: "none", userSelect: "none", whiteSpace: "nowrap",
         zIndex: 0,
       }}>
@@ -151,9 +161,9 @@ export default function FeaturedProducts() {
               Every scooter, battery, and appliance from our Bhubaneswar factory passes 47 quality checks.
             </p>
           </div>
-          <Link href="/products" style={{ padding: "10px 22px", borderRadius: 999, border: "1px solid rgba(92,103,149,0.25)", color: "#7B8DB8", fontSize: 14, fontWeight: 600, textDecoration: "none", transition: "all 0.2s", whiteSpace: "nowrap", alignSelf: "flex-end", background: "transparent" }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)"; e.currentTarget.style.color = "#4FC3F7"; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.25)"; e.currentTarget.style.color = "#7B8DB8"; }}
+          <Link href="/products" style={{ padding: "10px 22px", borderRadius: 999, border: "1px solid rgba(148,163,184,0.25)", color: "#475569", fontSize: 14, fontWeight: 600, textDecoration: "none", transition: "all 0.2s", whiteSpace: "nowrap", alignSelf: "flex-end", background: "transparent" }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)"; e.currentTarget.style.color = "#0EA5E9"; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(148,163,184,0.25)"; e.currentTarget.style.color = "#475569"; }}
           >
             View all {productCount}+ →
           </Link>
@@ -170,23 +180,23 @@ export default function FeaturedProducts() {
                 display: "flex", alignItems: "center", gap: 6, flexShrink: 0,
                 padding: "8px 20px", borderRadius: 999, fontSize: 13, fontWeight: activeTab === i ? 700 : 500,
                 cursor: "pointer", transition: "all 0.25s",
-                background: activeTab === i ? "#162952" : "rgba(22,41,82,0.4)",
-                color: activeTab === i ? "#4FC3F7" : "#7B8DB8",
-                border: activeTab === i ? "1px solid rgba(79,195,247,0.15)" : "1px solid rgba(92,103,149,0.2)",
+                background: activeTab === i ? "#FFFFFF" : "rgba(13,81,140,0.4)",
+                color: activeTab === i ? "#0EA5E9" : "#475569",
+                border: activeTab === i ? "1px solid rgba(13,81,140,0.15)" : "1px solid rgba(148,163,184,0.2)",
                 boxShadow: activeTab === i ? "var(--neu-shadow)" : "none",
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== i) {
-                  e.currentTarget.style.background = "rgba(22,41,82,0.7)";
-                  e.currentTarget.style.borderColor = "rgba(79,195,247,0.3)";
-                  e.currentTarget.style.color = "#E8F4FF";
+                  e.currentTarget.style.background = "rgba(255,255,255,0.7)";
+                  e.currentTarget.style.borderColor = "rgba(13,81,140,0.3)";
+                  e.currentTarget.style.color = "#0F172A";
                 }
               }}
               onMouseLeave={(e) => {
                 if (activeTab !== i) {
-                  e.currentTarget.style.background = "rgba(22,41,82,0.4)";
-                  e.currentTarget.style.borderColor = "rgba(92,103,149,0.2)";
-                  e.currentTarget.style.color = "#7B8DB8";
+                  e.currentTarget.style.background = "rgba(255,255,255,0.4)";
+                  e.currentTarget.style.borderColor = "rgba(148,163,184,0.2)";
+                  e.currentTarget.style.color = "#475569";
                 }
               }}
             >
@@ -215,9 +225,9 @@ export default function FeaturedProducts() {
       </div>
 
       <div style={{ textAlign: "center", marginTop: 40 }}>
-        <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 32px", borderRadius: 999, border: "1px solid rgba(92,103,149,0.25)", background: "transparent", color: "#7B8DB8", fontSize: 14, fontWeight: 600, textDecoration: "none", transition: "all 0.2s", margin: "0 24px" }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)"; e.currentTarget.style.color = "#4FC3F7"; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.25)"; e.currentTarget.style.color = "#7B8DB8"; }}
+        <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 32px", borderRadius: 999, border: "1px solid rgba(148,163,184,0.25)", background: "transparent", color: "#475569", fontSize: 14, fontWeight: 600, textDecoration: "none", transition: "all 0.2s", margin: "0 24px" }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)"; e.currentTarget.style.color = "#0EA5E9"; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(148,163,184,0.25)"; e.currentTarget.style.color = "#475569"; }}
         >
           View All {productCount}+ Products →
         </Link>

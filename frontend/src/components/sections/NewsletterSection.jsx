@@ -39,7 +39,7 @@ export default function NewsletterSection() {
     <section
       ref={ref}
       style={{
-        background: 'rgba(13,27,53,0.7)', borderTop: '1px solid rgba(92,103,149,0.1)', borderBottom: '1px solid rgba(92,103,149,0.1)', padding: '60px 24px',
+        background: 'rgba(255,255,255,0.7)', borderTop: '1px solid rgba(148,163,184,0.1)', borderBottom: '1px solid rgba(148,163,184,0.1)', padding: '60px 24px',
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
         transition: 'all 0.6s cubic-bezier(0.4,0,0.2,1)',
@@ -70,14 +70,14 @@ export default function NewsletterSection() {
               required
               placeholder="Enter your email address"
               aria-label="Email address for newsletter"
-              style={{ flex: 1, background: 'rgba(22,41,82,0.6)', border: '1px solid rgba(92,103,149,0.25)', borderRadius: 10, padding: '12px 16px', color: '#E8F4FF', fontSize: 14, outline: 'none', transition: 'border-color 0.2s' }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = '#4FC3F7')}
-              onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(92,103,149,0.25)')}
+              style={{ flex: 1, background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(148,163,184,0.25)', borderRadius: 10, padding: '12px 16px', color: '#0F172A', fontSize: 14, outline: 'none', transition: 'border-color 0.2s' }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = '#0EA5E9')}
+              onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(148,163,184,0.25)')}
             />
             <button
               type="submit"
               disabled={loading}
-              style={{ padding: '12px 24px', background: loading ? 'var(--navy-light)' : 'var(--grad-primary)', color: '#E8F4FF', fontWeight: 700, fontSize: 14, borderRadius: 10, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', whiteSpace: 'nowrap' }}
+              style={{ padding: '12px 24px', background: loading ? 'var(--navy-light)' : 'var(--grad-primary)', color: '#0F172A', fontWeight: 700, fontSize: 14, borderRadius: 10, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', whiteSpace: 'nowrap' }}
             >
               {loading ? '...' : 'Subscribe →'}
             </button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { submitTestRide } from "@/lib/api";
 import Breadcrumb from "@/components/ui/Breadcrumb";
@@ -48,6 +48,20 @@ export default function TestRidePage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".test-ride-header", {
+        y: 48, opacity: 0, blur: 8, duration: 0.8,
+      });
+      await animateIn(".test-ride-form", {
+        y: 48, opacity: 0, scale: 0.96,
+        blur: 4, duration: 0.75, delay: 0.2,
+      });
+    };
+    run();
+  }, []);
 
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -112,7 +126,7 @@ export default function TestRidePage() {
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "60px 24px" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Test Ride" }]} />
         {/* Header */}
-        <div style={{ maxWidth: 600, marginBottom: 60 }}>
+        <div className="test-ride-header" style={{ maxWidth: 600, marginBottom: 60 }}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px",
             borderRadius: 999, border: "1px solid var(--border-navy)",
@@ -139,7 +153,7 @@ export default function TestRidePage() {
         {/* Two column grid */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: 48, alignItems: "start" }} className="test-ride-grid">
           {/* Form */}
-          <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: "36px", boxShadow: "var(--shadow-sm)" }}>
+          <div className="test-ride-form" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: "36px", boxShadow: "var(--shadow-sm)" }}>
             <h2 style={{ fontSize: 20, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 28px" }}>Your Details</h2>
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               {error && (

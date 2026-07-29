@@ -4,6 +4,8 @@ import Footer from "@/components/layout/Footer";
 import ClientAuthModal from "@/components/ui/ClientAuthModal";
 import ClientWidgets from "@/components/ui/ClientWidgets";
 import AnnouncementBanner from "@/components/ui/AnnouncementBanner";
+import { PageTransition } from "@/components/ui/PageTransition";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { LocalBusinessJsonLd } from "@/components/ui/JsonLd";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
@@ -48,9 +50,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <LocalBusinessJsonLd />
       </head>
       <body style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+        <ScrollProgress />
         <AnnouncementBanner />
         <Navbar />
-        <main style={{ flex: 1 }}>{children}</main>
+        <PageTransition>
+          <main style={{ flex: 1 }}>{children}</main>
+        </PageTransition>
         <Footer />
         <ClientAuthModal />
         <ClientWidgets />

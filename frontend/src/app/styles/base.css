@@ -13,28 +13,22 @@ html {
 }
 
 body {
-  background-color: #0B1120 !important;
+  background-color: #F5F7FF !important;
   background-image:
     radial-gradient(
-      ellipse 100% 50% at 50% -10%,
-      rgba(13, 81, 140, 0.25) 0%,
+      ellipse 80% 50% at 50% -20%,
+      rgba(13, 81, 140, 0.06) 0%,
       transparent 60%
     ),
     radial-gradient(
-      ellipse 40% 60% at -5% 40%,
-      rgba(92, 103, 149, 0.12) 0%,
+      ellipse 40% 60% at 0% 60%,
+      rgba(14, 165, 233, 0.04) 0%,
       transparent 60%
     ),
     radial-gradient(
-      ellipse 50% 40% at 100% 100%,
-      rgba(13, 81, 140, 0.1) 0%,
+      ellipse 50% 40% at 100% 80%,
+      rgba(13, 81, 140, 0.04) 0%,
       transparent 60%
-    ),
-    linear-gradient(
-      180deg,
-      #0B1120 0%,
-      #0D1428 50%,
-      #0B1120 100%
     ) !important;
   background-attachment: fixed !important;
   color: var(--text-body);
@@ -49,17 +43,17 @@ body {
 }
 
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg-page); }
+::-webkit-scrollbar-track { background: #EEF2FF; }
 ::-webkit-scrollbar-thumb {
-  background: var(--navy);
+  background: rgba(13, 81, 140, 0.3);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--sky);
+  background: var(--navy);
 }
 
 ::selection {
-  background: rgba(13, 81, 140, 0.35);
+  background: rgba(13, 81, 140, 0.12);
   color: var(--text-heading);
 }
 

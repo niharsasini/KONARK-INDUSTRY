@@ -169,6 +169,20 @@ export default function OrdersPage() {
     fetchOrders();
   }, []);
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".orders-header", {
+        y: 32, opacity: 0, duration: 0.6,
+      });
+      await animateIn(".order-card", {
+        y: 48, opacity: 0, blur: 4,
+        stagger: 0.1, duration: 0.6,
+      });
+    };
+    run();
+  }, [orders]);
+
   const handleCancel = async (orderNumber: string) => {
     if (!confirm("Are you sure you want to cancel this order?")) return;
     setCancellingId(orderNumber);
@@ -187,8 +201,10 @@ export default function OrdersPage() {
     <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "My Orders" }]} />
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 6px" }}>My Orders</h1>
-        <p style={{ fontSize: 14, color: "var(--text-muted)", margin: "0 0 32px" }}>Track and manage your Konark orders</p>
+        <div className="orders-header">
+          <h1 style={{ fontSize: 26, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 6px" }}>My Orders</h1>
+          <p style={{ fontSize: 14, color: "var(--text-muted)", margin: "0 0 32px" }}>Track and manage your Konark orders</p>
+        </div>
 
         {loading ? (
           <Skeleton />
@@ -217,7 +233,7 @@ export default function OrdersPage() {
               const firstItem = order.items?.[0];
               const canCancel = CANCELLABLE_STATUSES.includes(orderStatus);
               return (
-                <div key={order.id || order.order_number} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, padding: "20px 24px", boxShadow: "var(--shadow-sm)" }}>
+                <div key={order.id || order.order_number} className="order-card" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, padding: "20px 24px", boxShadow: "var(--shadow-sm)" }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
                     <div>
                       <span style={{ fontSize: 13, fontWeight: 700, color: "var(--text-heading)" }}>

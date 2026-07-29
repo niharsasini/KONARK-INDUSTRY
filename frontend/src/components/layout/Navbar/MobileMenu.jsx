@@ -89,7 +89,7 @@ export default function MobileMenu({ menuOpen, setMenuOpen, expandedSection, set
           <Link className="mobile-btn-ghost" href="/services/enquiry" onClick={() => setMenuOpen(false)}>Book a Service</Link>
         </div>
 
-        <div style={{ textAlign: "center", marginTop: 32, paddingTop: 24, borderTop: "1px solid rgba(92,103,149,0.1)" }}>
+        <div style={{ textAlign: "center", marginTop: 32, paddingTop: 24, borderTop: "1px solid rgba(148,163,184,0.1)" }}>
           <a href="tel:+919437611129" style={{ fontSize: 22, color: "var(--sky)", fontWeight: 800, display: "block", marginBottom: 6, textDecoration: "none" }}>
             📞 +91 94376 11129
           </a>

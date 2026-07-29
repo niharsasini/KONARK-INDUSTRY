@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { submitEnquiry } from "@/lib/api";
 import Breadcrumb from "@/components/ui/Breadcrumb";
@@ -21,7 +21,7 @@ const SERVICE_OPTIONS = [
 const INPUT_STYLE: React.CSSProperties = {
   background: "var(--bg-card)",
   boxShadow: "var(--neu-inset)",
-  border: "1px solid rgba(92,103,149,0.1)",
+  border: "1px solid rgba(148,163,184,0.1)",
   borderRadius: 12,
   padding: "13px 16px",
   color: "var(--text-heading)",
@@ -62,15 +62,32 @@ export default function EnquiryPage() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".enquiry-hero", {
+        y: 40, opacity: 0, blur: 6, duration: 0.7,
+      });
+      await animateIn(".enquiry-form-card", {
+        y: 48, opacity: 0, blur: 4, duration: 0.7, delay: 0.1,
+      });
+      await animateIn(".enquiry-info-card", {
+        x: 32, opacity: 0,
+        stagger: 0.1, duration: 0.6, delay: 0.2,
+      });
+    };
+    run();
+  }, []);
+
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const focusStyle = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)";
-    e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(79,195,247,0.08)";
+    e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)";
+    e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(13,81,140,0.08)";
   };
   const blurStyle = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "rgba(92,103,149,0.1)";
+    e.currentTarget.style.borderColor = "rgba(148,163,184,0.1)";
     e.currentTarget.style.boxShadow = "var(--neu-inset)";
   };
 
@@ -91,7 +108,7 @@ export default function EnquiryPage() {
   return (
     <main style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       {/* Hero */}
-      <div style={{
+      <div className="enquiry-hero" style={{
         background: "var(--grad-section)",
         borderBottom: "1px solid var(--border-light)",
         padding: "60px 24px 48px",
@@ -125,7 +142,7 @@ export default function EnquiryPage() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: 48, alignItems: "start" }} className="enquiry-grid">
 
           {/* LEFT — Form */}
-          <div>
+          <div className="enquiry-form-card">
             <h2 style={{ fontSize: 20, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 28px" }}>
               What do you need help with?
             </h2>
@@ -281,7 +298,7 @@ export default function EnquiryPage() {
                 body: "All our service engineers are certified, background-verified, and carry Konark ID cards. You'll know exactly who is coming.",
               },
             ].map((card) => (
-              <div key={card.title} style={{
+              <div key={card.title} className="enquiry-info-card" style={{
                 background: "var(--bg-card)", border: "1px solid var(--border-light)",
                 borderRadius: 14, padding: "20px 22px", boxShadow: "var(--shadow-sm)",
               }}>

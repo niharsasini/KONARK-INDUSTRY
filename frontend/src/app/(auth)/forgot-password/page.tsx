@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { forgotPassword } from "@/lib/api";
 
@@ -22,6 +22,19 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".auth-card", {
+        y: 60, opacity: 0,
+        scale: 0.93, blur: 12,
+        duration: 0.8, ease: "back.out(1.2)",
+        start: "top 90%",
+      });
+    };
+    run();
+  }, []);
 
   const focus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.currentTarget.style.borderColor = "var(--navy)";
@@ -48,7 +61,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg-page)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
-      <div style={{ width: "100%", maxWidth: 420, background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: 40, boxShadow: "var(--shadow-md)" }}>
+      <div className="auth-card" style={{ width: "100%", maxWidth: 420, background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: 40, boxShadow: "var(--shadow-md)" }}>
         <h1 style={{ fontSize: 22, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 8px" }}>Forgot Password</h1>
         <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 28px", lineHeight: 1.6 }}>
           Enter the email linked to your account and we&apos;ll send you a link to reset your password.

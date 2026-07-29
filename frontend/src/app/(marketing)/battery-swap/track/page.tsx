@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 
@@ -82,6 +82,31 @@ export default function BatterySwapTrackPage() {
 
   const currentStatusIdx = swap ? STATUS_ORDER.indexOf(swap.status) : -1;
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".track-header", {
+        y: 32, opacity: 0, duration: 0.6,
+      });
+      await animateIn(".track-search", {
+        y: 24, opacity: 0, duration: 0.5, delay: 0.1,
+      });
+    };
+    run();
+  }, []);
+
+  useEffect(() => {
+    if (!swap) return;
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".track-result-card", {
+        y: 40, opacity: 0, blur: 4,
+        stagger: 0.12, duration: 0.6,
+      });
+    };
+    run();
+  }, [swap]);
+
   function formatDate(d: string | null | undefined) {
     if (!d) return null;
     try {
@@ -105,7 +130,7 @@ export default function BatterySwapTrackPage() {
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Battery Swap", href: "/battery-swap" }, { label: "Track My Swap" }]} />
 
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: 40 }}>
+        <div className="track-header" style={{ textAlign: "center", marginBottom: 40 }}>
           <span style={{
             display: "inline-block", padding: "5px 14px", borderRadius: 999,
             border: "1px solid var(--border-navy)", color: "var(--navy)",
@@ -121,7 +146,7 @@ export default function BatterySwapTrackPage() {
         </div>
 
         {/* Search */}
-        <form onSubmit={handleTrack} style={{ marginBottom: 36 }}>
+        <form onSubmit={handleTrack} className="track-search" style={{ marginBottom: 36 }}>
           <div style={{ display: "flex", gap: 10 }}>
             <input
               value={tokenInput}
@@ -159,7 +184,7 @@ export default function BatterySwapTrackPage() {
         {swap && (
           <div>
             {/* Summary card */}
-            <div style={{
+            <div className="track-result-card" style={{
               background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16,
               padding: 24, marginBottom: 24, boxShadow: "var(--shadow-sm)",
             }}>
@@ -196,7 +221,7 @@ export default function BatterySwapTrackPage() {
 
             {/* Status timeline */}
             {swap.status !== "cancelled" && (
-              <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: 24, boxShadow: "var(--shadow-sm)" }}>
+              <div className="track-result-card" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: 24, boxShadow: "var(--shadow-sm)" }}>
                 <p style={{ color: "var(--text-muted)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 20px" }}>Status Timeline</p>
                 {STATUS_FLOW.map((step, i) => {
                   const done = i < currentStatusIdx;

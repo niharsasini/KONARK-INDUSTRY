@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCartStore } from "@/store";
@@ -25,11 +26,28 @@ export default function CartPage() {
 
   const isEmpty = items.length === 0;
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".cart-header", {
+        y: 32, opacity: 0, duration: 0.6,
+      });
+      await animateIn(".cart-item", {
+        x: -32, opacity: 0,
+        stagger: 0.1, duration: 0.5,
+      });
+      await animateIn(".cart-summary", {
+        x: 40, opacity: 0, duration: 0.6,
+      });
+    };
+    run();
+  }, [items.length]);
+
   return (
     <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "40px 24px" }}>
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Cart" }]} />
-        <h1 style={{ fontSize: 28, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 32px" }}>
+        <h1 className="cart-header" style={{ fontSize: 28, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 32px" }}>
           Your Cart{" "}
           <span style={{ fontSize: 16, color: "var(--text-muted)", fontWeight: 400 }}>
             ({items.length} {items.length === 1 ? "item" : "items"})
@@ -57,7 +75,7 @@ export default function CartPage() {
             {/* Cart items */}
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {items.map((item) => (
-                <div key={item.slug} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, padding: "16px 20px", display: "flex", alignItems: "center", gap: 16, boxShadow: "var(--shadow-sm)" }}>
+                <div key={item.slug} className="cart-item" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, padding: "16px 20px", display: "flex", alignItems: "center", gap: 16, boxShadow: "var(--shadow-sm)" }}>
                   <div style={{ width: 64, height: 64, background: "var(--bg-section)", borderRadius: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", position: "relative" }}>
                     <Image src={item.image} alt={item.name} fill style={{ objectFit: "contain", padding: 4 }} />
                   </div>
@@ -99,7 +117,7 @@ export default function CartPage() {
             </div>
 
             {/* Order summary */}
-            <div style={{ background: "var(--bg-card)", border: "1px solid rgba(79,195,247,0.08)", borderRadius: 20, padding: "24px", boxShadow: "var(--neu-shadow)" }}>
+            <div className="cart-summary" style={{ background: "var(--bg-card)", border: "1px solid rgba(13,81,140,0.08)", borderRadius: 20, padding: "24px", boxShadow: "var(--neu-shadow)" }}>
               <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 20px" }}>Order Summary</h2>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
@@ -134,7 +152,7 @@ export default function CartPage() {
 
               <Link
                 href="/checkout"
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 13px", background: "var(--grad-primary)", color: "var(--text-heading)", fontWeight: 700, fontSize: 14, borderRadius: 14, textDecoration: "none", marginBottom: 10, boxShadow: "var(--shadow-navy)" }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 13px", background: "var(--grad-primary)", color: "#FFFFFF", fontWeight: 700, fontSize: 14, borderRadius: 14, textDecoration: "none", marginBottom: 10, boxShadow: "var(--shadow-navy)" }}
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >

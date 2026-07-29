@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Package, Star, ShieldCheck } from "lucide-react";
@@ -10,7 +10,7 @@ const INPUT: React.CSSProperties = {
   width: "100%",
   background: "var(--bg-card)",
   boxShadow: "var(--neu-inset)",
-  border: "1px solid rgba(92,103,149,0.1)",
+  border: "1px solid rgba(148,163,184,0.1)",
   borderRadius: 12,
   padding: "13px 16px",
   color: "var(--text-heading)",
@@ -33,15 +33,28 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".auth-card", {
+        y: 60, opacity: 0,
+        scale: 0.93, blur: 12,
+        duration: 0.8, ease: "back.out(1.2)",
+        start: "top 90%",
+      });
+    };
+    run();
+  }, []);
+
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const focus = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)";
-    e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(79,195,247,0.08)";
+    e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)";
+    e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(13,81,140,0.08)";
   };
   const blur = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.style.borderColor = "rgba(92,103,149,0.1)";
+    e.currentTarget.style.borderColor = "rgba(148,163,184,0.1)";
     e.currentTarget.style.boxShadow = "var(--neu-inset)";
   };
 
@@ -115,7 +128,7 @@ export default function LoginPage() {
 
       {/* Right panel: form */}
       <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 48px" }} className="login-right">
-        <div style={{ width: "100%", maxWidth: 400 }}>
+        <div className="auth-card" style={{ width: "100%", maxWidth: 400 }}>
           <h2 style={{ fontSize: 26, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 6px" }}>Sign In</h2>
           <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 32px" }}>
             Don't have an account?{" "}

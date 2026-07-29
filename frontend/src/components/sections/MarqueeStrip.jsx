@@ -33,7 +33,7 @@ function MarqueeRow({ items, iconColor, textColor, speed, reverse }) {
           <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
             <span style={{ color: iconColor }}>{item.icon}</span>
             <span style={{ color: textColor, fontSize: 12, fontWeight: 600, letterSpacing: "0.05em" }}>{item.text}</span>
-            <span style={{ color: "rgba(92,103,149,0.3)", marginLeft: 8 }}>·</span>
+            <span style={{ color: "rgba(148,163,184,0.3)", marginLeft: 8 }}>·</span>
           </span>
         ))}
       </div>
@@ -44,10 +44,10 @@ function MarqueeRow({ items, iconColor, textColor, speed, reverse }) {
 export default function MarqueeStrip() {
   return (
     <div style={{
-      background: "rgba(13,27,53,0.8)",
+      background: "#0B1120",
       backdropFilter: "blur(8px)",
-      borderTop: "1px solid rgba(92,103,149,0.12)",
-      borderBottom: "1px solid rgba(92,103,149,0.12)",
+      borderTop: "1px solid rgba(148,163,184,0.12)",
+      borderBottom: "1px solid rgba(148,163,184,0.12)",
       padding: "16px 0",
       overflow: "hidden",
       maxWidth: "100vw",
@@ -56,8 +56,8 @@ export default function MarqueeStrip() {
       flexDirection: "column",
       gap: 8,
     }}>
-      <MarqueeRow items={ROW1_ITEMS} iconColor="#F4C430" textColor="#7B8DB8" speed={25} reverse={false} />
-      <MarqueeRow items={ROW2_ITEMS} iconColor="#F4C430" textColor="#7B8DB8" speed={35} reverse={true} />
+      <MarqueeRow items={ROW1_ITEMS} iconColor="#D97706" textColor="rgba(241,245,249,0.6)" speed={25} reverse={false} />
+      <MarqueeRow items={ROW2_ITEMS} iconColor="#D97706" textColor="rgba(241,245,249,0.6)" speed={35} reverse={true} />
     </div>
   );
 }

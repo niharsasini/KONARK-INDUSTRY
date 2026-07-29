@@ -12,7 +12,7 @@ const INPUT: React.CSSProperties = {
   width: "100%",
   background: "var(--bg-card)",
   boxShadow: "var(--neu-inset)",
-  border: "1px solid rgba(92,103,149,0.1)",
+  border: "1px solid rgba(148,163,184,0.1)",
   borderRadius: 12,
   padding: "13px 16px",
   color: "var(--text-heading)",
@@ -51,15 +51,28 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState("");
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".auth-card", {
+        y: 60, opacity: 0,
+        scale: 0.93, blur: 12,
+        duration: 0.8, ease: "back.out(1.2)",
+        start: "top 90%",
+      });
+    };
+    run();
+  }, []);
+
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm((f) => ({ ...f, [k]: (e.target as HTMLInputElement).type === "checkbox" ? (e.target as HTMLInputElement).checked : e.target.value }));
 
   const focus = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)";
-    (e.currentTarget.style as any).boxShadow = "var(--neu-inset), 0 0 0 3px rgba(79,195,247,0.08)";
+    e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)";
+    (e.currentTarget.style as any).boxShadow = "var(--neu-inset), 0 0 0 3px rgba(13,81,140,0.08)";
   };
   const blur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "rgba(92,103,149,0.1)";
+    e.currentTarget.style.borderColor = "rgba(148,163,184,0.1)";
     (e.currentTarget.style as any).boxShadow = "var(--neu-inset)";
   };
 
@@ -153,7 +166,7 @@ export default function RegisterPage() {
 
       {/* Right: form */}
       <div style={{ flex: 1, display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "40px 48px", overflowY: "auto" }} className="reg-right">
-        <div style={{ width: "100%", maxWidth: 440 }}>
+        <div className="auth-card" style={{ width: "100%", maxWidth: 440 }}>
           <h2 style={{ fontSize: 24, fontWeight: 800, color: "var(--text-heading)", margin: "0 0 6px" }}>Create Your Account</h2>
           <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 28px" }}>
             Already have one?{" "}

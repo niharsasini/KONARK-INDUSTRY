@@ -6,35 +6,35 @@ const BANNER_HEIGHT = 38;
 
 const BANNER_STYLES: Record<string, { bg: string; accent: string; icon: string; label: string; text: string }> = {
   announcement: {
-    bg: "linear-gradient(90deg, #0B1120 0%, #0D518C 25%, #162952 50%, #0D518C 75%, #0B1120 100%)",
-    accent: "var(--sky)",
-    text: "var(--text-heading)",
+    bg: "linear-gradient(90deg, #0D518C, #0A3D6B, #0D518C)",
+    accent: "#A5D8F7",
+    text: "#ffffff",
     icon: "📢",
     label: "ANNOUNCEMENT",
   },
   new_product: {
-    bg: "linear-gradient(90deg, #0A0E1A, #162952, #1E3870, #162952, #0A0E1A)",
-    accent: "var(--gold)",
-    text: "var(--text-heading)",
+    bg: "linear-gradient(90deg, #D97706, #B45309, #D97706)",
+    accent: "#FDE68A",
+    text: "#ffffff",
     icon: "🆕",
     label: "NEW PRODUCT",
   },
   offer: {
-    bg: "linear-gradient(90deg, #1A0A00, #3D1A00, #1A0A00)",
-    accent: "var(--orange)",
-    text: "var(--text-heading)",
+    bg: "linear-gradient(90deg, #EA580C, #C2410C, #EA580C)",
+    accent: "#FED7AA",
+    text: "#ffffff",
     icon: "🔥",
     label: "SPECIAL OFFER",
   },
   event: {
-    bg: "linear-gradient(90deg, #0A0E1A, #1A1040, #0A0E1A)",
-    accent: "var(--slate)",
-    text: "var(--text-heading)",
+    bg: "linear-gradient(90deg, #7C3AED, #5B21B6, #7C3AED)",
+    accent: "#DDD6FE",
+    text: "#ffffff",
     icon: "🎉",
     label: "EVENT",
   },
   alert: {
-    bg: "linear-gradient(90deg, #96291f, #c0392b, #96291f)",
+    bg: "linear-gradient(90deg, #DC2626, #991B1B, #DC2626)",
     accent: "#fecaca",
     text: "#fff",
     icon: "⚠️",
@@ -92,7 +92,7 @@ export default function AnnouncementBanner() {
         display: "flex",
         alignItems: "center",
         overflow: "hidden",
-        borderBottom: `1px solid rgba(79,195,247,0.12)`,
+        borderBottom: `1px solid rgba(13,81,140,0.12)`,
       }}
     >
       {/* Left label */}
@@ -108,7 +108,7 @@ export default function AnnouncementBanner() {
         display: "flex",
         alignItems: "center",
         gap: 6,
-        background: "rgba(79,195,247,0.1)",
+        background: "rgba(13,81,140,0.1)",
         whiteSpace: "nowrap",
       }}>
         {icon} {style.label}

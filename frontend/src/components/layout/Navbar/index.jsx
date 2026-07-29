@@ -13,6 +13,21 @@ import SearchBar from "./SearchBar";
 import MobileMenu from "./MobileMenu";
 
 export default function Navbar() {
+  useEffect(() => {
+    const run = async () => {
+      try {
+        const g = await import("gsap");
+        g.default.from(".navbar-root", {
+          y: -80, opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          delay: 0.1,
+        });
+      } catch {}
+    };
+    run();
+  }, []);
+
   const router = useRouter();
   const pathname = usePathname();
   const cartCount = useCartStore((s) => s.itemCount());
@@ -95,20 +110,20 @@ export default function Navbar() {
 
   const navStyle = scrolled
     ? {
-        background: "rgba(13,27,53,0.92)",
-        backdropFilter: "blur(24px) saturate(180%)",
-        borderBottom: "1px solid rgba(92,103,149,0.2)",
-        boxShadow: "0 4px 24px rgba(10,14,26,0.4)",
+        background: "rgba(245,247,255,0.95)",
+        backdropFilter: "blur(24px) saturate(200%)",
+        borderBottom: "1px solid rgba(148,163,184,0.2)",
+        boxShadow: "0 4px 20px rgba(15,23,42,0.06)",
       }
     : {
-        background: "rgba(10,14,26,0.6)",
-        backdropFilter: "blur(16px) saturate(150%)",
-        borderBottom: "1px solid rgba(92,103,149,0.1)",
+        background: "rgba(245,247,255,0.7)",
+        backdropFilter: "blur(20px) saturate(180%)",
+        borderBottom: "1px solid rgba(148,163,184,0.1)",
       };
 
   return (
     <>
-      <nav style={{
+      <nav className="navbar-root" style={{
         position: "fixed", top: "var(--banner-h, 0px)", left: 0, right: 0,
         zIndex: 999, transition: "all 0.4s ease, top 0.3s ease", ...navStyle,
       }}>
@@ -141,17 +156,17 @@ export default function Navbar() {
                       padding: "8px 14px", fontSize: 14, fontWeight: activeDropdown === link.hasDropdown ? 700 : 500,
                       color: activeDropdown === link.hasDropdown ? "var(--sky)" : "var(--text-muted)",
                       borderRadius: 8, border: "none",
-                      background: activeDropdown === link.hasDropdown ? "rgba(92,103,149,0.08)" : "transparent",
+                      background: activeDropdown === link.hasDropdown ? "rgba(148,163,184,0.08)" : "transparent",
                       cursor: "pointer", letterSpacing: "0.2px",
                       transition: "all 0.2s ease",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.color = "var(--text-heading)";
-                      e.currentTarget.style.background = "rgba(92,103,149,0.08)";
+                      e.currentTarget.style.background = "rgba(148,163,184,0.08)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.color = activeDropdown === link.hasDropdown ? "var(--sky)" : "var(--text-muted)";
-                      e.currentTarget.style.background = activeDropdown === link.hasDropdown ? "rgba(92,103,149,0.08)" : "transparent";
+                      e.currentTarget.style.background = activeDropdown === link.hasDropdown ? "rgba(148,163,184,0.08)" : "transparent";
                     }}
                   >
                     {link.label}
@@ -197,7 +212,7 @@ export default function Navbar() {
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = "var(--text-heading)";
-                    e.currentTarget.style.background = "rgba(92,103,149,0.08)";
+                    e.currentTarget.style.background = "rgba(148,163,184,0.08)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.color = pathname === link.href ? "var(--sky)" : "var(--text-muted)";
@@ -256,7 +271,7 @@ export default function Navbar() {
                 style={{
                   padding: "8px 20px",
                   background: "var(--grad-primary)",
-                  color: "var(--text-heading)", fontSize: 14, fontWeight: 700,
+                  color: "#FFFFFF", fontSize: 14, fontWeight: 700,
                   borderRadius: 10, textDecoration: "none",
                   transition: "all 0.25s ease", whiteSpace: "nowrap",
                   boxShadow: "0 4px 14px rgba(13,81,140,0.35)",
@@ -296,7 +311,7 @@ export default function Navbar() {
                 <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
               </svg>
               {wishlistCount > 0 && (
-                <span style={{ position: "absolute", top: -4, right: -4, width: 18, height: 18, background: "linear-gradient(135deg, #0D518C, #4FC3F7)", color: "var(--text-heading)", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(13,81,140,0.4)" }}>
+                <span style={{ position: "absolute", top: -4, right: -4, width: 18, height: 18, background: "linear-gradient(135deg, #0D518C, #0EA5E9)", color: "#FFFFFF", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(13,81,140,0.4)" }}>
                   {wishlistCount > 9 ? "9+" : wishlistCount}
                 </span>
               )}
@@ -322,7 +337,7 @@ export default function Navbar() {
                 <path d="M16 10a4 4 0 01-8 0" />
               </svg>
               {cartCount > 0 && (
-                <span style={{ position: "absolute", top: -4, right: -4, width: 18, height: 18, background: "linear-gradient(135deg, #0D518C, #4FC3F7)", color: "var(--text-heading)", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(13,81,140,0.4)" }}>
+                <span style={{ position: "absolute", top: -4, right: -4, width: 18, height: 18, background: "linear-gradient(135deg, #0D518C, #0EA5E9)", color: "#FFFFFF", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(13,81,140,0.4)" }}>
                   {cartCount > 9 ? "9+" : cartCount}
                 </span>
               )}

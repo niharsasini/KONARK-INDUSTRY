@@ -79,12 +79,12 @@ export default function AuthPromptModal() {
             right: 28,
             zIndex: 9999,
             width: 360,
-            background: "rgba(22,41,82,0.9)",
+            background: "rgba(255,255,255,0.9)",
             backdropFilter: "blur(24px)",
             WebkitBackdropFilter: "blur(24px)",
-            border: "1px solid rgba(79,195,247,0.15)",
+            border: "1px solid rgba(13,81,140,0.15)",
             borderRadius: 24,
-            boxShadow: "0 32px 80px rgba(10,14,26,0.7)",
+            boxShadow: "0 32px 80px rgba(15,23,42,0.7)",
             padding: "28px",
           }}
         >
@@ -107,8 +107,8 @@ export default function AuthPromptModal() {
           {/* Icon */}
           <div style={{ width: 44, height: 44, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--grad-primary)", marginBottom: 16 }}>
             <svg viewBox="0 0 24 24" fill="none" style={{ width: 20, height: 20 }}>
-              <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="var(--text-heading)" strokeWidth="2" strokeLinecap="round" />
-              <circle cx="12" cy="12" r="3" fill="var(--text-heading)" />
+              <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
+              <circle cx="12" cy="12" r="3" fill="#FFFFFF" />
             </svg>
           </div>
 
@@ -134,7 +134,7 @@ export default function AuthPromptModal() {
             onClick={goRegister}
             style={{
               width: "100%", padding: "13px", background: "var(--grad-primary)",
-              color: "var(--text-heading)", fontWeight: 800, fontSize: 14,
+              color: "#FFFFFF", fontWeight: 800, fontSize: 14,
               borderRadius: 10, border: "none", cursor: "pointer",
               marginBottom: 12, transition: "opacity 0.2s",
             }}

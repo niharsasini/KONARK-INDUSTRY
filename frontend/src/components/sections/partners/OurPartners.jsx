@@ -6,11 +6,11 @@ import Link from "next/link";
 
 const PARTNERS = [
   { name: "OPTCL", full: "Odisha Power Transmission Corporation Ltd.", color: "#0D518C" },
-  { name: "NALCO", full: "National Aluminium Company Limited", color: "#F4C430" },
+  { name: "NALCO", full: "National Aluminium Company Limited", color: "#D97706" },
   { name: "NTPC", full: "National Thermal Power Corporation", color: "#FF7043" },
   { name: "SAIL", full: "Steel Authority of India — Rourkela", color: "#34C78A" },
-  { name: "GRIDCO", full: "Grid Corporation of Odisha Ltd.", color: "#4FC3F7" },
-  { name: "CESCO", full: "Central Electricity Supply Utility of Odisha", color: "#5C6795" },
+  { name: "GRIDCO", full: "Grid Corporation of Odisha Ltd.", color: "#0EA5E9" },
+  { name: "CESCO", full: "Central Electricity Supply Utility of Odisha", color: "#64748B" },
 ];
 
 function PartnerCard({ partner, index, inView }) {
@@ -24,13 +24,13 @@ function PartnerCard({ partner, index, inView }) {
       onMouseLeave={() => setHovered(false)}
       className="partner-card"
       style={{
-        background: "rgba(22,41,82,0.5)",
-        border: `1px solid ${hovered ? partner.color + "60" : "rgba(92,103,149,0.15)"}`,
+        background: "rgba(255,255,255,0.5)",
+        border: `1px solid ${hovered ? partner.color + "60" : "rgba(148,163,184,0.15)"}`,
         borderRadius: 16,
         textAlign: "center",
         display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
         transform: hovered ? "translateY(-4px) scale(1.03)" : "translateY(0) scale(1)",
-        boxShadow: hovered ? `0 16px 40px rgba(10,14,26,0.5), 0 0 20px ${partner.color}15` : "none",
+        boxShadow: hovered ? `0 16px 40px rgba(15,23,42,0.5), 0 0 20px ${partner.color}15` : "none",
         transition: "all 0.25s", cursor: "default",
         padding: "28px 20px",
       }}
@@ -55,7 +55,7 @@ export default function OurPartners() {
   const { ref: gridRef, inView: gridIn } = useInView({ threshold: 0.05, triggerOnce: true });
 
   return (
-    <section style={{ background: "rgba(10,14,26,0.6)", borderTop: "1px solid rgba(92,103,149,0.1)", padding: "100px 24px" }}>
+    <section style={{ background: "#F5F7FF", borderTop: "1px solid rgba(148,163,184,0.1)", padding: "100px 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <motion.div
           ref={headRef}
@@ -82,13 +82,13 @@ export default function OurPartners() {
           initial={{ opacity: 0, y: 20 }}
           animate={gridIn ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.5 }}
-          style={{ background: "rgba(22,41,82,0.5)", border: "1px solid rgba(92,103,149,0.15)", borderRadius: 16, padding: "28px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}
+          style={{ background: "rgba(255,255,255,0.5)", border: "1px solid rgba(148,163,184,0.15)", borderRadius: 16, padding: "28px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}
         >
           <div>
             <p style={{ fontSize: 17, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 4px" }}>Want to distribute Konark products in your area?</p>
             <p style={{ fontSize: 14, color: "var(--text-subtle)", margin: 0 }}>Join our growing network of distributors and service partners across Odisha.</p>
           </div>
-          <Link href="/partner" style={{ padding: "12px 26px", background: "var(--grad-primary)", color: "#E8F4FF", fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: "none", whiteSpace: "nowrap", transition: "opacity 0.2s", minHeight: 44, display: "inline-flex", alignItems: "center" }}
+          <Link href="/partner" style={{ padding: "12px 26px", background: "var(--grad-primary)", color: "#FFFFFF", fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: "none", whiteSpace: "nowrap", transition: "opacity 0.2s", minHeight: 44, display: "inline-flex", alignItems: "center" }}
             onMouseEnter={e => (e.currentTarget.style.opacity = "0.85")}
             onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
           >

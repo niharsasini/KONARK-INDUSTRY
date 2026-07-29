@@ -70,9 +70,9 @@ export default function FAQSection() {
             <div
               key={i}
               style={{
-                background: 'rgba(22,41,82,0.4)',
-                border: `1px solid ${openIdx === i ? 'rgba(79,195,247,0.3)' : 'rgba(92,103,149,0.15)'}`,
-                borderLeft: `3px solid ${openIdx === i ? '#4FC3F7' : 'transparent'}`,
+                background: 'rgba(255,255,255,0.4)',
+                border: `1px solid ${openIdx === i ? 'rgba(13,81,140,0.3)' : 'rgba(148,163,184,0.15)'}`,
+                borderLeft: `3px solid ${openIdx === i ? '#0EA5E9' : 'transparent'}`,
                 borderRadius: 14,
                 overflow: 'hidden',
                 transition: 'border-color 0.2s',
@@ -93,16 +93,16 @@ export default function FAQSection() {
                   gap: 12,
                 }}
               >
-                <span style={{ fontSize: 15, fontWeight: 600, color: '#E8F4FF', lineHeight: 1.4 }}>
+                <span style={{ fontSize: 15, fontWeight: 600, color: '#0F172A', lineHeight: 1.4 }}>
                   {faq.q}
                 </span>
-                <span style={{ fontSize: 20, color: openIdx === i ? '#4FC3F7' : '#5C6795', flexShrink: 0, fontWeight: 300, transition: 'color 0.2s' }}>
+                <span style={{ fontSize: 20, color: openIdx === i ? '#0EA5E9' : '#64748B', flexShrink: 0, fontWeight: 300, transition: 'color 0.2s' }}>
                   {openIdx === i ? '−' : '+'}
                 </span>
               </button>
               {openIdx === i && (
                 <div style={{ padding: '0 20px 18px' }}>
-                  <p style={{ fontSize: 14, color: '#7B8DB8', lineHeight: 1.7, margin: 0 }}>
+                  <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.7, margin: 0 }}>
                     {faq.a}
                   </p>
                 </div>

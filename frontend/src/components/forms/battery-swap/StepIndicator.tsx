@@ -10,7 +10,7 @@ export default function StepIndicator({ current }: { current: number }) {
           const active = idx === current;
           return (
             <div key={label} style={{ display: "flex", alignItems: "center" }}>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+              <div className="swap-step-card" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
                 <div style={{
                   width: 36, height: 36, borderRadius: "50%", display: "flex", alignItems: "center",
                   justifyContent: "center", fontWeight: 700, fontSize: 14,

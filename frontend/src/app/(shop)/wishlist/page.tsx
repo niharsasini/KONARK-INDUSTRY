@@ -28,6 +28,20 @@ export default function WishlistPage() {
       .finally(() => setLoading(false))
   }, [wishlistSlugs])
 
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import('@/lib/gsapUtils')
+      await animateIn('.wishlist-header', {
+        y: 32, opacity: 0, duration: 0.6,
+      })
+      await animateIn('.wishlist-item', {
+        y: 48, opacity: 0, blur: 4,
+        stagger: 0.08, duration: 0.6,
+      })
+    }
+    run()
+  }, [wishlistProducts])
+
   const handleAddAllToCart = () => {
     wishlistProducts.forEach((p: any) => {
       if (p.price && p.type !== 'service') {
@@ -43,7 +57,7 @@ export default function WishlistPage() {
       <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border-light)', padding: '64px 24px 40px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'My Wishlist' }]} />
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+          <div className="wishlist-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
             <div>
               <h1 style={{ fontSize: 'clamp(24px,4vw,40px)', fontWeight: 800, color: 'var(--text-heading)', margin: '0 0 8px' }}>
                 My Wishlist
@@ -92,6 +106,7 @@ export default function WishlistPage() {
             {wishlistProducts.map((product: any) => (
               <div
                 key={product.slug}
+                className="wishlist-item"
                 style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: 14, overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative', boxShadow: 'var(--shadow-sm)' }}
               >
                 <button

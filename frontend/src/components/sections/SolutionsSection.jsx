@@ -9,8 +9,8 @@ const CATEGORIES = [
     icon: "🛵",
     title: "Electric Vehicles",
     borderTop: "#0D518C",
-    hoverBorder: "rgba(79,195,247,0.4)",
-    color: "#4FC3F7",
+    hoverBorder: "rgba(13,81,140,0.4)",
+    color: "#0EA5E9",
     ctaLabel: "Explore EVs →",
     ctaHref: "/products?cat=ev",
     products: ["EV Scooter X1", "E-Rickshaw Standard", "Electric Motorcycle", "EV Car (Upcoming)"],
@@ -19,9 +19,9 @@ const CATEGORIES = [
   {
     icon: "🌀",
     title: "Home Appliances",
-    borderTop: "#F4C430",
-    hoverBorder: "rgba(244,196,48,0.4)",
-    color: "#F4C430",
+    borderTop: "#D97706",
+    hoverBorder: "rgba(217,119,6,0.4)",
+    color: "#D97706",
     ctaLabel: "Shop Appliances →",
     ctaHref: "/products?cat=appliance",
     products: ["BLDC Fan 5-Star", "Inverter AC 1.5T", "Android Smart TV", "Induction Cooker"],
@@ -84,7 +84,7 @@ export default function SolutionsSection() {
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
               style={{
-                background: "rgba(13,27,53,0.6)",
+                background: "rgba(255,255,255,0.6)",
                 borderRadius: 20,
                 padding: "32px 28px",
                 border: `1px solid ${hovered === i ? cat.hoverBorder : "rgba(13,81,140,0.3)"}`,
@@ -92,7 +92,7 @@ export default function SolutionsSection() {
                 transition: "all 0.3s ease",
                 transform: hovered === i ? "translateY(-6px)" : "translateY(0)",
                 boxShadow: hovered === i
-                  ? "0 16px 48px rgba(10,14,26,0.5)"
+                  ? "0 16px 48px rgba(15,23,42,0.5)"
                   : "none",
                 display: "flex",
                 flexDirection: "column",
@@ -112,7 +112,7 @@ export default function SolutionsSection() {
 
               <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
                 {cat.products.map((p) => (
-                  <li key={p} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#7B8DB8", fontWeight: 500 }}>
+                  <li key={p} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#475569", fontWeight: 500 }}>
                     <span style={{
                       width: 18, height: 18, borderRadius: "50%", flexShrink: 0,
                       background: `${cat.color}15`, border: `1px solid ${cat.color}40`,

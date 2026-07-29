@@ -51,6 +51,21 @@ export default function ProfilePage() {
       .finally(() => setLoading(false));
   }, [router]);
 
+  useEffect(() => {
+    if (loading) return;
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".profile-header", {
+        y: 40, opacity: 0, blur: 6, duration: 0.7,
+      });
+      await animateIn(".profile-section", {
+        y: 48, opacity: 0,
+        stagger: 0.12, duration: 0.65,
+      });
+    };
+    run();
+  }, [loading]);
+
   const handleSignOut = () => {
     logoutUser();
     router.push("/login");
@@ -77,8 +92,8 @@ export default function ProfilePage() {
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "My Profile" }]} />
 
         {/* Profile header */}
-        <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: "32px", display: "flex", alignItems: "center", gap: 24, marginBottom: 24, flexWrap: "wrap", boxShadow: "var(--shadow-sm)" }}>
-          <div style={{ width: 72, height: 72, borderRadius: "50%", flexShrink: 0, background: "linear-gradient(135deg, #0D518C, #5C6795)", boxShadow: "var(--neu-shadow)", border: "3px solid rgba(79,195,247,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "var(--text-heading)" }}>
+        <div className="profile-header" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: "32px", display: "flex", alignItems: "center", gap: 24, marginBottom: 24, flexWrap: "wrap", boxShadow: "var(--shadow-sm)" }}>
+          <div style={{ width: 72, height: 72, borderRadius: "50%", flexShrink: 0, background: "linear-gradient(135deg, #0D518C, #64748B)", boxShadow: "var(--neu-shadow)", border: "3px solid rgba(13,81,140,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "#FFFFFF" }}>
             {initial}
           </div>
           <div style={{ flex: 1 }}>
@@ -90,7 +105,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Stats row */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 24 }}>
+        <div className="profile-section" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 24 }}>
           {STATS.map((s) => (
             <div key={s.label} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, padding: "20px 16px", textAlign: "center", boxShadow: "var(--shadow-sm)" }}>
               <p style={{ fontSize: 28, fontWeight: 800, color: "var(--navy)", margin: "0 0 4px" }}>{s.value}</p>
@@ -100,7 +115,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Quick links */}
-        <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "8px", boxShadow: "var(--shadow-sm)" }}>
+        <div className="profile-section" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "8px", boxShadow: "var(--shadow-sm)" }}>
           {QUICK_LINKS.map((link, i) => (
             <Link key={link.label} href={link.href} style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", borderRadius: 10, textDecoration: "none", borderBottom: i < QUICK_LINKS.length - 1 ? "1px solid var(--border-light)" : "none", transition: "background 0.15s" }}
               onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg-section)")}

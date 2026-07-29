@@ -86,14 +86,14 @@ export default function NotificationBell() {
       >
         <Bell size={18} />
         {unreadCount > 0 && (
-          <span style={{ position: "absolute", top: -4, right: -4, width: 18, height: 18, background: "linear-gradient(135deg, #0D518C, #4FC3F7)", color: "var(--text-heading)", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(13,81,140,0.4)" }}>
+          <span style={{ position: "absolute", top: -4, right: -4, width: 18, height: 18, background: "linear-gradient(135deg, #0D518C, #0EA5E9)", color: "#FFFFFF", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(13,81,140,0.4)" }}>
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
       </button>
 
       {open && (
-        <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 320, maxHeight: 400, overflowY: "auto", background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, boxShadow: "0 20px 48px rgba(11,17,32,0.5)", zIndex: 300 }}>
+        <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 320, maxHeight: 400, overflowY: "auto", background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, boxShadow: "0 20px 48px rgba(15,23,42,0.5)", zIndex: 300 }}>
           <div style={{ padding: "14px 16px", borderBottom: "1px solid var(--border-light)" }}>
             <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>Notifications</p>
           </div>

@@ -76,7 +76,7 @@ img {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(10,14,26,0.97);
+  background: rgba(245,247,255,0.98);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   z-index: 998;
@@ -99,11 +99,11 @@ img {
 .mobile-nav-item {
   font-size: 18px;
   font-weight: 500;
-  color: #B8D0E8;
+  color: #1E293B;
   text-decoration: none;
   padding: 16px 24px;
   margin: 0 -24px;
-  border-bottom: 1px solid rgba(92,103,149,0.1);
+  border-bottom: 1px solid rgba(148,163,184,0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -112,23 +112,23 @@ img {
 
 .mobile-nav-item:active,
 .mobile-nav-item:hover {
-  color: #E8F4FF;
+  color: #0F172A;
   background: rgba(13,81,140,0.1);
 }
 
 .mobile-nav-sub {
   font-size: 15px;
   font-weight: 500;
-  color: #7B8DB8;
+  color: #475569;
   padding: 12px 24px 12px 40px;
-  border-bottom: 1px solid rgba(92,103,149,0.1);
+  border-bottom: 1px solid rgba(148,163,184,0.1);
   display: block;
   text-decoration: none;
   transition: color 0.15s;
 }
 
 .mobile-nav-sub:active,
-.mobile-nav-sub:hover { color: #4FC3F7; }
+.mobile-nav-sub:hover { color: #0EA5E9; }
 
 .mobile-menu-actions {
   margin-top: 32px;
@@ -151,21 +151,21 @@ img {
 }
 
 .mobile-btn-primary {
-  background: linear-gradient(135deg, #0D518C, #4FC3F7);
-  color: #E8F4FF;
+  background: linear-gradient(135deg, #0D518C, #0EA5E9);
+  color: #FFFFFF;
   border: none;
   box-shadow: var(--shadow-navy);
 }
 
 .mobile-btn-ghost {
   background: transparent;
-  color: #4FC3F7;
+  color: #0EA5E9;
   border: 1.5px solid rgba(13,81,140,0.6);
 }
 
 .mobile-btn-purple {
   background: var(--grad-gold);
-  color: var(--bg-page);
+  color: var(--text-heading);
   border: none;
 }
 
@@ -264,8 +264,8 @@ img {
 .stat-item {
   text-align: center;
   padding: 32px 24px;
-  background: #162952;
-  border: 1px solid rgba(79,195,247,0.08);
+  background: #FFFFFF;
+  border: 1px solid rgba(13,81,140,0.08);
   border-radius: 20px;
   box-shadow: var(--neu-shadow);
   transition: all 0.3s ease;
@@ -273,7 +273,7 @@ img {
 
 .stat-item:hover {
   box-shadow: var(--neu-hover);
-  border-color: rgba(79,195,247,0.2);
+  border-color: rgba(13,81,140,0.2);
 }
 
 .stat-icon {
@@ -301,7 +301,7 @@ img {
 .stat-label {
   font-size: 14px;
   font-weight: 500;
-  color: #5C6795;
+  color: #64748B;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: 6px;
@@ -373,9 +373,9 @@ img {
 /* ===== SERVICES MOBILE ===== */
 .services-section {
   padding: 80px 0;
-  background: rgba(13,27,53,0.5);
-  border-top: 1px solid rgba(92,103,149,0.1);
-  border-bottom: 1px solid rgba(92,103,149,0.1);
+  background: rgba(255,255,255,0.5);
+  border-top: 1px solid rgba(148,163,184,0.1);
+  border-bottom: 1px solid rgba(148,163,184,0.1);
   position: relative;
 }
 
@@ -398,8 +398,8 @@ img {
 }
 
 .service-glass-card {
-  background: rgba(22,41,82,0.5);
-  border: 1px solid rgba(92,103,149,0.15);
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(148,163,184,0.15);
   border-radius: 16px;
   padding: 24px;
   border-left: 3px solid #0D518C;
@@ -408,17 +408,17 @@ img {
 }
 
 .service-glass-card:hover {
-  background: rgba(22,41,82,0.8);
+  background: rgba(255,255,255,0.95);
   transform: translateX(4px);
-  box-shadow: 0 8px 32px rgba(10,14,26,0.4);
+  box-shadow: 0 8px 24px rgba(15,23,42,0.1);
 }
 
 /* ===== WHY KONARK MOBILE ===== */
 .why-section {
   padding: 80px 0;
-  background-color: #0A0E1A;
+  background-color: #0B1120;
   background-image:
-    radial-gradient(circle, rgba(244,196,48,0.06) 1px, transparent 1px),
+    radial-gradient(circle, rgba(217,119,6,0.06) 1px, transparent 1px),
     linear-gradient(135deg, #0A0E1A, #0D1B35);
   background-size: 30px 30px, cover;
   border-top: 1px solid rgba(92,103,149,0.1);

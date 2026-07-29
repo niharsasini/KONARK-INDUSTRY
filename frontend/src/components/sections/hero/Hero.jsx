@@ -86,6 +86,18 @@ export default function Hero() {
   const touchStartX = useRef(null);
 
   useEffect(() => {
+    const run = async () => {
+      try {
+        const gsapMod = await import("gsap");
+        gsapMod.default.from(".hero-section", {
+          opacity: 0, duration: 1, ease: "power2.out",
+        });
+      } catch {}
+    };
+    run();
+  }, []);
+
+  useEffect(() => {
     const timer = setInterval(() => {
       setAnimState("exit");
       setTimeout(() => {
@@ -146,13 +158,13 @@ export default function Hero() {
       {/* 1. Cinematic gradient base */}
       <div style={{
         position: "absolute", inset: 0,
-        background: "linear-gradient(160deg, #0B1120 0%, #0F1E3A 30%, #162952 60%, #0F1A2E 80%, #0B1120 100%)",
+        background: "linear-gradient(160deg, #F5F7FF 0%, #EEF2FF 30%, #FFFFFF 60%, #F0F4FF 80%, #F5F7FF 100%)",
         pointerEvents: "none",
       }} />
       {/* 2. Top center glow (main spotlight) */}
       <div style={{
         position: "absolute", width: 900, height: 600, borderRadius: "50%",
-        background: "radial-gradient(ellipse, rgba(13,81,140,0.35) 0%, rgba(79,195,247,0.08) 40%, transparent 70%)",
+        background: "radial-gradient(ellipse, rgba(13,81,140,0.35) 0%, rgba(13,81,140,0.08) 40%, transparent 70%)",
         top: -200, left: "50%", transform: "translateX(-50%)",
         animation: "orbFloat1 16s ease-in-out infinite", pointerEvents: "none",
       }} />
@@ -165,13 +177,13 @@ export default function Hero() {
       {/* 4. Bottom left warm accent */}
       <div style={{
         position: "absolute", width: 400, height: 400, borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(244,196,48,0.06) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(217,119,6,0.06) 0%, transparent 70%)",
         bottom: 0, left: 0, animation: "orbFloat1 24s ease-in-out infinite reverse", pointerEvents: "none",
       }} />
       {/* 5. Fine grid */}
       <div style={{
         position: "absolute", inset: 0,
-        backgroundImage: "linear-gradient(rgba(79,195,247,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(79,195,247,0.025) 1px, transparent 1px)",
+        backgroundImage: "linear-gradient(rgba(13,81,140,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(13,81,140,0.025) 1px, transparent 1px)",
         backgroundSize: "60px 60px", pointerEvents: "none",
       }} />
       {/* 6. Horizontal light beam */}
@@ -183,7 +195,7 @@ export default function Hero() {
       {/* 7. Scan line */}
       <div style={{
         position: "absolute", left: 0, right: 0, height: 1,
-        background: "linear-gradient(90deg, transparent 0%, rgba(79,195,247,0.2) 30%, rgba(244,196,48,0.1) 70%, transparent 100%)",
+        background: "linear-gradient(90deg, transparent 0%, rgba(13,81,140,0.2) 30%, rgba(217,119,6,0.1) 70%, transparent 100%)",
         animation: "scanLine 12s linear infinite", pointerEvents: "none",
       }} />
 
@@ -194,7 +206,7 @@ export default function Hero() {
           {/* Badge */}
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 8,
-            background: "rgba(13,81,140,0.15)", border: "1px solid rgba(79,195,247,0.2)",
+            background: "rgba(13,81,140,0.15)", border: "1px solid rgba(13,81,140,0.2)",
             borderRadius: 999, padding: "6px 18px", marginBottom: 24,
             animation: "fadeInUp 0.5s ease",
           }}>
@@ -233,7 +245,7 @@ export default function Hero() {
                 letterSpacing: "-1.5px",
                 lineHeight: 1.1,
                 minHeight: "1.1em",
-                background: "linear-gradient(135deg, #4FC3F7 0%, #A5D8F7 50%, #F4C430 100%)",
+                background: "linear-gradient(135deg, #0EA5E9 0%, #A5D8F7 50%, #D97706 100%)",
                 backgroundSize: "200% 200%",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
@@ -272,14 +284,14 @@ export default function Hero() {
               onClick={() => router.push("/products")}
               style={{
                 height: 48, background: "linear-gradient(135deg, #0D518C, #1A6AB5)",
-                color: "var(--text-heading)", padding: "0 28px", border: "1px solid rgba(79,195,247,0.2)",
+                color: "#FFFFFF", padding: "0 28px", border: "1px solid rgba(13,81,140,0.2)",
                 borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer",
                 boxShadow: "0 8px 24px rgba(13,81,140,0.35), inset 0 1px 0 rgba(255,255,255,0.1)",
                 transition: "all 0.3s ease",
                 animation: "glowPulse 3s ease-in-out infinite",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 14px 36px rgba(13,81,140,0.45)"; e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(13,81,140,0.35), inset 0 1px 0 rgba(255,255,255,0.1)"; e.currentTarget.style.borderColor = "rgba(79,195,247,0.2)"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 14px 36px rgba(13,81,140,0.45)"; e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(13,81,140,0.35), inset 0 1px 0 rgba(255,255,255,0.1)"; e.currentTarget.style.borderColor = "rgba(13,81,140,0.2)"; }}
             >
               Shop Products →
             </button>
@@ -287,20 +299,18 @@ export default function Hero() {
               className="hero-btn-ghost"
               onClick={() => router.push("/services/enquiry")}
               style={{
-                height: 48, background: "rgba(22,41,82,0.4)", color: "var(--text-body)",
+                height: 48, background: "#FFFFFF", color: "var(--navy)",
                 padding: "0 28px", borderRadius: 12, fontSize: 14, fontWeight: 500, cursor: "pointer",
-                border: "1px solid rgba(92,103,149,0.25)", backdropFilter: "blur(8px)",
-                transition: "all 0.3s ease",
+                border: "1.5px solid rgba(13,81,140,0.2)", backdropFilter: "blur(8px)",
+                transition: "all 0.3s ease", boxShadow: "var(--shadow-sm)",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(22,41,82,0.7)";
-                e.currentTarget.style.borderColor = "rgba(79,195,247,0.3)";
-                e.currentTarget.style.color = "var(--text-heading)";
+                e.currentTarget.style.background = "rgba(13,81,140,0.04)";
+                e.currentTarget.style.borderColor = "var(--navy)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(22,41,82,0.4)";
-                e.currentTarget.style.borderColor = "rgba(92,103,149,0.25)";
-                e.currentTarget.style.color = "var(--text-body)";
+                e.currentTarget.style.background = "#FFFFFF";
+                e.currentTarget.style.borderColor = "rgba(13,81,140,0.2)";
               }}
             >
               Book a Service
@@ -347,9 +357,9 @@ export default function Hero() {
                   onClick={() => setCurrent(deckIdx)}
                   style={{
                     position: "absolute", inset: 0,
-                    background: "rgba(22,41,82,0.5)",
+                    background: "rgba(255,255,255,0.7)",
                     backdropFilter: "blur(4px)",
-                    border: "1px solid rgba(79,195,247,0.12)",
+                    border: "1px solid rgba(148,163,184,0.15)",
                     borderRadius: 24,
                     transform: `rotate(${rotate}deg) translate(${tx}px, ${ty}px)`,
                     transformOrigin: "center bottom",
@@ -380,12 +390,12 @@ export default function Hero() {
               <div
                 className="hero-product-card-inner"
                 style={{
-                  background: "rgba(22,41,82,0.7)",
+                  background: "rgba(255,255,255,0.85)",
                   backdropFilter: "blur(24px)",
-                  border: "1px solid rgba(79,195,247,0.15)",
+                  border: "1px solid rgba(148,163,184,0.2)",
                   borderRadius: 24,
                   overflow: "hidden",
-                  boxShadow: "0 32px 80px rgba(10,14,26,0.6), 0 0 0 1px rgba(79,195,247,0.08), inset 0 1px 0 rgba(255,255,255,0.06)",
+                  boxShadow: "0 20px 48px rgba(15,23,42,0.12), 0 8px 16px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,0.8)",
                   cursor: card.slug ? "pointer" : "default",
                   animation: animState === "idle" ? "floatCard 7s ease-in-out infinite" : "none",
                 }}
@@ -403,7 +413,7 @@ export default function Hero() {
                   />
                   <span style={{
                     position: "absolute", top: 12, left: 12,
-                    background: "rgba(13,81,140,0.8)", color: "var(--sky)",
+                    background: "var(--navy)", color: "#FFFFFF",
                     fontSize: 10, fontWeight: 800, padding: "4px 12px",
                     borderRadius: 20, letterSpacing: "1.2px", textTransform: "uppercase",
                     display: "inline-block",
@@ -413,7 +423,7 @@ export default function Hero() {
                 </div>
 
                 {/* Info panel */}
-                <div style={{ padding: "20px 24px 24px", background: "rgba(10,14,26,0.5)" }}>
+                <div style={{ padding: "20px 24px 24px", background: "#F5F7FF" }}>
                   <p style={{ color: "var(--text-heading)", fontSize: 20, fontWeight: 800, margin: "0 0 4px", lineHeight: 1.2 }}>
                     {card.name}
                   </p>
@@ -424,7 +434,7 @@ export default function Hero() {
                     {card.specs.map((s) => (
                       <span key={s} style={{
                         fontSize: 11, color: "var(--text-muted)",
-                        background: "rgba(92,103,149,0.15)", border: "1px solid rgba(92,103,149,0.25)",
+                        background: "rgba(148,163,184,0.15)", border: "1px solid rgba(148,163,184,0.25)",
                         padding: "3px 10px", borderRadius: 20,
                       }}>
                         {s}
@@ -466,7 +476,7 @@ export default function Hero() {
                 style={{
                   width: i === current ? 20 : 6,
                   height: 6, borderRadius: i === current ? 3 : "50%",
-                  background: i === current ? "var(--sky)" : "rgba(92,103,149,0.4)",
+                  background: i === current ? "var(--sky)" : "rgba(148,163,184,0.4)",
                   cursor: "pointer",
                   transition: "all 300ms",
                 }}
@@ -483,19 +493,19 @@ export default function Hero() {
                 style={{
                   flex: 1, minWidth: 0, display: "flex", alignItems: "center", justifyContent: "center",
                   gap: 8, padding: "10px 18px",
-                  background: "rgba(22,41,82,0.6)",
+                  background: "#FFFFFF",
                   backdropFilter: "blur(12px)",
-                  border: "1px solid rgba(92,103,149,0.2)", borderRadius: 12,
+                  border: "1px solid rgba(148,163,184,0.2)", borderRadius: 12,
                   textDecoration: "none", fontSize: 12,
-                  color: "var(--text-body)", fontWeight: 600, textAlign: "center",
-                  transition: "all 0.2s ease",
+                  color: "var(--text-muted)", fontWeight: 600, textAlign: "center",
+                  transition: "all 0.2s ease", boxShadow: "var(--shadow-sm)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)";
+                  e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)";
                   e.currentTarget.style.color = "var(--sky)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(92,103,149,0.2)";
+                  e.currentTarget.style.borderColor = "rgba(148,163,184,0.2)";
                   e.currentTarget.style.color = "var(--text-body)";
                 }}
               >
@@ -512,7 +522,7 @@ export default function Hero() {
         position: "absolute", bottom: 28, left: "50%",
         transform: "translateX(-50%)",
         display: "flex", flexDirection: "column", alignItems: "center",
-        gap: 4, color: "rgba(92,103,149,0.5)", zIndex: 10,
+        gap: 4, color: "rgba(148,163,184,0.5)", zIndex: 10,
         animation: "float 1.5s ease-in-out infinite",
       }}>
         <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase" }}>Scroll</span>

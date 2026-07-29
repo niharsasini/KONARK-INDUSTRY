@@ -29,7 +29,7 @@ const INPUT = {
   width: "100%",
   background: "var(--bg-card)",
   boxShadow: "var(--neu-inset)",
-  border: "1px solid rgba(92,103,149,0.1)",
+  border: "1px solid rgba(148,163,184,0.1)",
   borderRadius: 12,
   padding: "13px 16px",
   color: "var(--text-heading)",
@@ -62,6 +62,21 @@ export default function CheckoutPage() {
       router.replace("/login");
     }
   }, [router]);
+
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".checkout-form-section", {
+        y: 40, opacity: 0, blur: 4,
+        stagger: 0.12, duration: 0.65,
+        start: "top 90%",
+      });
+      await animateIn(".checkout-summary", {
+        x: 40, opacity: 0, duration: 0.6,
+      });
+    };
+    run();
+  }, [step]);
   const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", city: "", pincode: "", notes: "", gstin: "" });
   const [payment, setPayment] = useState("cod");
   const [pincodeStatus, setPincodeStatus] = useState<"none" | "ok" | "warn">("none");
@@ -79,11 +94,11 @@ export default function CheckoutPage() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const focus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "rgba(79,195,247,0.4)";
-    e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(79,195,247,0.08)";
+    e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)";
+    e.currentTarget.style.boxShadow = "var(--neu-inset), 0 0 0 3px rgba(13,81,140,0.08)";
   };
   const blur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = "rgba(92,103,149,0.1)";
+    e.currentTarget.style.borderColor = "rgba(148,163,184,0.1)";
     e.currentTarget.style.boxShadow = "var(--neu-inset)";
   };
 
@@ -180,7 +195,7 @@ export default function CheckoutPage() {
           {/* Form */}
           <div>
             {step === "details" && (
-              <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "28px", boxShadow: "var(--shadow-sm)" }}>
+              <div className="checkout-form-section" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "28px", boxShadow: "var(--shadow-sm)" }}>
                 <h2 style={{ fontSize: 17, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 24px" }}>Delivery Details</h2>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                   <div style={{ gridColumn: "1 / -1" }}>
@@ -277,7 +292,7 @@ export default function CheckoutPage() {
             )}
 
             {step === "payment" && (
-              <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "28px", boxShadow: "var(--shadow-sm)" }}>
+              <div className="checkout-form-section" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "28px", boxShadow: "var(--shadow-sm)" }}>
                 <h2 style={{ fontSize: 17, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 24px" }}>Payment Method</h2>
                 <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
                   {[
@@ -309,7 +324,7 @@ export default function CheckoutPage() {
                     onClick={handlePlaceOrder}
                     disabled={loading || items.length === 0}
                     className="place-order-btn"
-                    style={{ flex: 2, height: 52, background: loading ? "var(--navy-light)" : "var(--grad-primary)", color: "var(--text-heading)", fontWeight: 800, fontSize: 14, borderRadius: 14, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: items.length === 0 ? 0.5 : 1, boxShadow: "var(--shadow-navy)" }}
+                    style={{ flex: 2, height: 52, background: loading ? "var(--navy-light)" : "var(--grad-primary)", color: "#FFFFFF", fontWeight: 800, fontSize: 14, borderRadius: 14, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: items.length === 0 ? 0.5 : 1, boxShadow: "var(--shadow-navy)" }}
                   >
                     {loading ? "Placing Order..." : "Place Order →"}
                   </button>
@@ -319,7 +334,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Order summary */}
-          <div style={{ background: "var(--bg-card)", border: "1px solid rgba(79,195,247,0.08)", borderRadius: 20, padding: "24px", boxShadow: "var(--neu-shadow)" }}>
+          <div className="checkout-summary" style={{ background: "var(--bg-card)", border: "1px solid rgba(13,81,140,0.08)", borderRadius: 20, padding: "24px", boxShadow: "var(--neu-shadow)" }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 16px" }}>Order Summary</h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16, maxHeight: 200, overflowY: "auto" }}>
               {items.map((item) => (
@@ -367,7 +382,7 @@ export default function CheckoutPage() {
         .place-order-btn { animation: pulseGlow 3s ease infinite; }
         @keyframes pulseGlow {
           0%, 100% { box-shadow: var(--shadow-navy); }
-          50% { box-shadow: 0 8px 40px rgba(79,195,247,0.45); }
+          50% { box-shadow: 0 8px 40px rgba(13,81,140,0.45); }
         }
       `}</style>
     </div>

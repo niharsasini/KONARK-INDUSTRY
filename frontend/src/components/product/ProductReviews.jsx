@@ -78,7 +78,7 @@ export default function ProductReviews({ slug }) {
         </div>
       ) : (
         reviews.map((r, i) => (
-          <div key={r.id || i} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 12, padding: "20px" }}>
+          <div key={r.id || i} className="review-item" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 12, padding: "20px" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
               <span style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)" }}>{r.reviewer_name || r.name || "Customer"}</span>
               <span style={{ fontSize: 12, color: "var(--text-muted)" }}>

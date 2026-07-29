@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import FAQSection from "@/components/sections/FAQSection";
@@ -28,10 +29,28 @@ const STATS = [
 ];
 
 export default function AboutPage() {
+  useEffect(() => {
+    const run = async () => {
+      const { animateIn } = await import("@/lib/gsapUtils");
+      await animateIn(".about-hero", {
+        y: 48, opacity: 0, blur: 8, duration: 0.8,
+      });
+      await animateIn(".about-stat-card", {
+        y: 40, opacity: 0, scale: 0.92,
+        stagger: 0.1, duration: 0.6, delay: 0.2,
+      });
+      await animateIn(".about-section", {
+        y: 40, opacity: 0,
+        stagger: 0.15, duration: 0.7,
+      });
+    };
+    run();
+  }, []);
+
   return (
     <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
       {/* Hero */}
-      <div style={{ background: "var(--bg-card)", borderBottom: "1px solid var(--border-light)", padding: "80px 24px 60px", textAlign: "center" }}>
+      <div className="about-hero" style={{ background: "var(--bg-card)", borderBottom: "1px solid var(--border-light)", padding: "80px 24px 60px", textAlign: "center" }}>
         <div style={{ display: "flex", gap: 6, alignItems: "center", justifyContent: "center", marginBottom: 20, fontSize: 12, color: "var(--text-muted)" }}>
           <Link href="/" style={{ color: "var(--text-muted)", textDecoration: "none" }}>Home</Link>
           <span>/</span>
@@ -47,7 +66,7 @@ export default function AboutPage() {
       </div>
 
       {/* Who we are */}
-      <section style={{ padding: "80px 24px" }}>
+      <section className="about-section" style={{ padding: "80px 24px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }} className="about-grid">
           <div>
             <h2 style={{ fontSize: "clamp(22px, 3vw, 36px)", fontWeight: 700, color: "var(--text-heading)", margin: "0 0 24px" }}>
@@ -65,7 +84,7 @@ export default function AboutPage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             {STATS.map((s) => (
-              <div key={s.label} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderTop: "2px solid var(--navy)", borderRadius: 14, padding: "24px 20px", textAlign: "center", boxShadow: "var(--shadow-sm)" }}>
+              <div key={s.label} className="about-stat-card" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderTop: "2px solid var(--navy)", borderRadius: 14, padding: "24px 20px", textAlign: "center", boxShadow: "var(--shadow-sm)" }}>
                 <p style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 800, color: "var(--text-heading)", margin: "0 0 6px" }}>
                   <AnimatedCounter target={s.value} />
                 </p>
@@ -77,7 +96,7 @@ export default function AboutPage() {
       </section>
 
       {/* Timeline */}
-      <section style={{ background: "var(--bg-section)", padding: "80px 24px" }}>
+      <section className="about-section" style={{ background: "var(--bg-section)", padding: "80px 24px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid var(--border-navy)", color: "var(--navy)", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "var(--navy-bg)", marginBottom: 16 }}>
@@ -101,7 +120,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission / Vision */}
-      <section style={{ padding: "80px 24px" }}>
+      <section className="about-section" style={{ padding: "80px 24px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }} className="mv-grid">
           {[
             { title: "Our Mission", text: "To make clean, affordable energy accessible to every Indian home and business — starting from Odisha." },
@@ -116,7 +135,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section style={{ background: "var(--bg-section)", padding: "80px 24px" }}>
+      <section className="about-section" style={{ background: "var(--bg-section)", padding: "80px 24px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "clamp(22px, 3vw, 36px)", fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>Team Values</h2>
@@ -133,7 +152,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section style={{ padding: "60px 24px", textAlign: "center" }}>
+      <section className="about-section" style={{ padding: "60px 24px", textAlign: "center" }}>
         <h2 style={{ fontSize: "clamp(20px, 3vw, 32px)", fontWeight: 700, color: "var(--text-heading)", marginBottom: 12 }}>Come work with us</h2>
         <p style={{ fontSize: 14, color: "var(--text-muted)", marginBottom: 24 }}>We're always looking for passionate people who want to build something meaningful.</p>
         <Link
