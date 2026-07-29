@@ -82,14 +82,14 @@ export default function LoginPage() {
           </div>
           <div>
             <span style={{ display: "block", fontSize: 15, fontWeight: 700, color: "#ffffff" }}>KONARK</span>
-            <span style={{ display: "block", fontSize: 9, fontWeight: 600, letterSpacing: "0.2em", color: "#d4952e", textTransform: "uppercase" }}>INDUSTRY</span>
+            <span style={{ display: "block", fontSize: 9, fontWeight: 600, letterSpacing: "0.2em", color: "var(--gold)", textTransform: "uppercase" }}>INDUSTRY</span>
           </div>
         </Link>
 
         <h1 style={{ fontSize: "clamp(32px, 3vw, 52px)", fontWeight: 900, color: "#ffffff", margin: "0 0 16px", lineHeight: 1.1 }}>
           Welcome back.
         </h1>
-        <p style={{ fontSize: 16, color: "#c4b8a5", lineHeight: 1.7, maxWidth: 440, margin: "0 0 48px" }}>
+        <p style={{ fontSize: 16, color: "var(--text-muted)", lineHeight: 1.7, maxWidth: 440, margin: "0 0 48px" }}>
           Sign in to track orders, manage your wishlist, and access member-only prices.
         </p>
 
@@ -99,16 +99,16 @@ export default function LoginPage() {
               <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 <Icon size={18} color="#ffffff" />
               </div>
-              <p style={{ fontSize: 14, color: "#c4b8a5", margin: 0 }}>{text}</p>
+              <p style={{ fontSize: 14, color: "var(--text-muted)", margin: 0 }}>{text}</p>
             </div>
           ))}
         </div>
 
         <div style={{ marginTop: 60, padding: "16px 20px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12 }}>
-          <p style={{ fontSize: 13, color: "#c4b8a5", margin: 0 }}>
+          <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>
             "Konark's EVs are built for Odisha roads. Outstanding quality and after-sales service."
           </p>
-          <p style={{ fontSize: 11, color: "#9a8e7a", margin: "8px 0 0" }}>— Ramesh Patra, Bhubaneswar</p>
+          <p style={{ fontSize: 11, color: "var(--text-subtle)", margin: "8px 0 0" }}>— Ramesh Patra, Bhubaneswar</p>
         </div>
       </div>
 

@@ -103,10 +103,10 @@ export default function VehicleDetail({ product }) {
           background: "var(--border-light)", borderRadius: 14, overflow: "hidden", marginTop: 24,
         }} className="spec-strip">
           {VEHICLE_HIGHLIGHTS.map((s) => (
-            <div key={s.label} style={{ background: "var(--bg-card)", padding: "20px 16px", textAlign: "center" }}>
+            <div key={s.label} style={{ background: "var(--bg-card)", borderRadius: 14, boxShadow: "var(--neu-shadow)", border: "1px solid rgba(79,195,247,0.06)", padding: "20px 16px", textAlign: "center" }}>
               <p style={{ fontSize: 22, margin: "0 0 4px" }}>{s.icon}</p>
-              <p style={{ fontSize: 11, color: "var(--text-subtle)", textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 4px" }}>{s.label}</p>
-              <p style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>{s.value}</p>
+              <p style={{ fontSize: 12, color: "var(--slate)", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 4px" }}>{s.label}</p>
+              <p style={{ fontSize: 20, fontWeight: 800, color: "var(--sky)", margin: 0 }}>{s.value}</p>
             </div>
           ))}
         </div>
@@ -135,13 +135,15 @@ export default function VehicleDetail({ product }) {
 
           {/* CTAs */}
           <div style={{ display: "flex", gap: 12, marginBottom: 32, flexWrap: "wrap" }}>
-            <a href={isUpcoming ? "/contact?interest=upcoming" : "#book-test-ride"} style={{
-              padding: "14px 32px", background: "var(--navy)", color: "#fff",
+            <a href={isUpcoming ? "/contact?interest=upcoming" : "#book-test-ride"} style={isUpcoming ? {
+              padding: "14px 32px", background: "transparent", border: "1px solid var(--slate)", color: "var(--text-muted)",
               fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none",
-              transition: "background 0.2s", display: "inline-block",
+              transition: "all 0.2s", display: "inline-block",
+            } : {
+              padding: "14px 32px", background: "var(--grad-primary)", color: "var(--text-heading)",
+              fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none",
+              transition: "all 0.2s", display: "inline-block", boxShadow: "var(--shadow-navy)",
             }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "var(--navy-dark)")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "var(--navy)")}
             >
               {isUpcoming ? "Register Interest" : "Book Test Ride"}
             </a>
@@ -288,9 +290,9 @@ export default function VehicleDetail({ product }) {
                     onChange={(e) => setForm((prev) => ({ ...prev, [f.k]: e.target.value }))}
                     required
                     placeholder={f.placeholder}
-                    style={{ width: "100%", background: "#fff", border: "1px solid var(--border-light)", borderRadius: 8, padding: "10px 14px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s" }}
-                    onFocus={(e) => (e.currentTarget.style.borderColor = "var(--navy)")}
-                    onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border-light)")}
+                    style={{ width: "100%", background: "rgba(10,14,26,0.6)", border: "1px solid rgba(92,103,149,0.25)", borderRadius: 10, padding: "12px 16px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s, box-shadow 0.2s" }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = "var(--sky)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(79,195,247,0.1)"; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.25)"; e.currentTarget.style.boxShadow = "none"; }}
                   />
                 </div>
               ))}
@@ -301,17 +303,17 @@ export default function VehicleDetail({ product }) {
                   value={form.date}
                   onChange={(e) => setForm((prev) => ({ ...prev, date: e.target.value }))}
                   required
-                  style={{ width: "100%", background: "#fff", border: "1px solid var(--border-light)", borderRadius: 8, padding: "10px 14px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", colorScheme: "light", transition: "border-color 0.2s" }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "var(--navy)")}
-                  onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border-light)")}
+                  style={{ width: "100%", background: "rgba(10,14,26,0.6)", border: "1px solid rgba(92,103,149,0.25)", borderRadius: 10, padding: "12px 16px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", colorScheme: "dark", transition: "border-color 0.2s, box-shadow 0.2s" }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "var(--sky)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(79,195,247,0.1)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.25)"; e.currentTarget.style.boxShadow = "none"; }}
                 />
               </div>
               <button
                 type="submit"
                 disabled={submitting}
-                style={{ marginTop: 4, padding: "14px", background: "var(--navy)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: submitting ? "not-allowed" : "pointer", transition: "background 0.2s", opacity: submitting ? 0.7 : 1 }}
-                onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.background = "var(--navy-dark)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "var(--navy)"; }}
+                style={{ marginTop: 4, padding: "14px", background: "var(--grad-primary)", color: "var(--text-heading)", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: submitting ? "not-allowed" : "pointer", transition: "opacity 0.2s", opacity: submitting ? 0.7 : 1, boxShadow: "var(--shadow-navy)" }}
+                onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.opacity = "0.9"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.opacity = submitting ? "0.7" : "1"; }}
               >
                 {submitting ? "Booking..." : "Confirm Test Ride →"}
               </button>

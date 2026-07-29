@@ -99,7 +99,7 @@ export default function CartPage() {
             </div>
 
             {/* Order summary */}
-            <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "24px", boxShadow: "var(--shadow-sm)" }}>
+            <div style={{ background: "var(--bg-card)", border: "1px solid rgba(79,195,247,0.08)", borderRadius: 20, padding: "24px", boxShadow: "var(--neu-shadow)" }}>
               <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 20px" }}>Order Summary</h2>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
@@ -113,9 +113,9 @@ export default function CartPage() {
                     <span style={{ color: row.value === "FREE" ? "var(--green)" : "var(--text-heading)", fontWeight: 500 }}>{row.value}</span>
                   </div>
                 ))}
-                <div style={{ borderTop: "1px solid var(--border-light)", paddingTop: 12, display: "flex", justifyContent: "space-between", fontSize: 16, fontWeight: 700 }}>
-                  <span style={{ color: "var(--text-heading)" }}>Total</span>
-                  <span style={{ color: "var(--navy)" }}>{sub ? `₹${total.toLocaleString("en-IN")}` : "On Request"}</span>
+                <div style={{ borderTop: "1px solid var(--border-light)", paddingTop: 12, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ color: "var(--text-heading)", fontSize: 16, fontWeight: 700 }}>Total</span>
+                  <span style={{ color: "var(--gold)", fontSize: 24, fontWeight: 900 }}>{sub ? `₹${total.toLocaleString("en-IN")}` : "On Request"}</span>
                 </div>
               </div>
 
@@ -134,7 +134,7 @@ export default function CartPage() {
 
               <Link
                 href="/checkout"
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "13px", background: "var(--grad-navy)", color: "#fff", fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: "none", marginBottom: 10, boxShadow: "var(--shadow-navy)" }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 13px", background: "var(--grad-primary)", color: "var(--text-heading)", fontWeight: 700, fontSize: 14, borderRadius: 14, textDecoration: "none", marginBottom: 10, boxShadow: "var(--shadow-navy)" }}
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >

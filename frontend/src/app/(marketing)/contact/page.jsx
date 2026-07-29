@@ -71,7 +71,7 @@ export default function ContactPage() {
               { label: "Email", value: "konarkindustrie@gmail.com", sub: "We reply within 4 working hours", icon: "✉️" },
               { label: "Address", value: "Bhimatangi Housing Colony, Bhubaneswar, Odisha 751002", sub: "", icon: "📍" },
             ].map((item) => (
-              <div key={item.label} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 12, padding: "18px 20px", display: "flex", gap: 14, alignItems: "flex-start", boxShadow: "var(--shadow-sm)" }}>
+              <div key={item.label} style={{ background: "var(--bg-card)", borderRadius: 16, padding: "18px 20px", display: "flex", gap: 14, alignItems: "flex-start", boxShadow: "var(--neu-shadow)" }}>
                 <span style={{ fontSize: 20, flexShrink: 0 }}>{item.icon}</span>
                 <div>
                   <p style={{ fontSize: 11, color: "var(--text-muted)", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.1em" }}>{item.label}</p>

@@ -79,10 +79,12 @@ export default function AuthPromptModal() {
             right: 28,
             zIndex: 9999,
             width: 360,
-            background: "var(--bg-card)",
-            border: "1px solid rgba(15,76,129,0.2)",
-            borderRadius: 16,
-            boxShadow: "0 25px 60px rgba(26,15,0,0.18)",
+            background: "rgba(22,41,82,0.9)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            border: "1px solid rgba(79,195,247,0.15)",
+            borderRadius: 24,
+            boxShadow: "0 32px 80px rgba(10,14,26,0.7)",
             padding: "28px",
           }}
         >
@@ -103,10 +105,10 @@ export default function AuthPromptModal() {
           </button>
 
           {/* Icon */}
-          <div style={{ width: 44, height: 44, borderRadius: "50%", border: "2px solid var(--navy)", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(15,76,129,0.08)", marginBottom: 16 }}>
+          <div style={{ width: 44, height: 44, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--grad-primary)", marginBottom: 16 }}>
             <svg viewBox="0 0 24 24" fill="none" style={{ width: 20, height: 20 }}>
-              <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="var(--navy)" strokeWidth="2" strokeLinecap="round" />
-              <circle cx="12" cy="12" r="3" fill="var(--navy)" />
+              <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="var(--text-heading)" strokeWidth="2" strokeLinecap="round" />
+              <circle cx="12" cy="12" r="3" fill="var(--text-heading)" />
             </svg>
           </div>
 
@@ -118,11 +120,11 @@ export default function AuthPromptModal() {
           </p>
 
           {/* Benefit pills */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 20 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 7, background: "rgba(13,81,140,0.12)", border: "1px solid rgba(13,81,140,0.2)", borderRadius: 14, padding: "12px 14px", marginBottom: 20 }}>
             {["Track your orders", "Save to wishlist", "Member-only prices"].map((b) => (
-              <div key={b} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#10b981" }}>
+              <div key={b} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "var(--green)" }}>
                 <span style={{ fontWeight: 800 }}>✓</span>
-                <span style={{ color: "var(--text-muted)" }}>{b}</span>
+                <span style={{ color: "var(--text-body)" }}>{b}</span>
               </div>
             ))}
           </div>
@@ -131,13 +133,13 @@ export default function AuthPromptModal() {
           <button
             onClick={goRegister}
             style={{
-              width: "100%", padding: "13px", background: "var(--navy)",
-              color: "#fff", fontWeight: 800, fontSize: 14,
+              width: "100%", padding: "13px", background: "var(--grad-primary)",
+              color: "var(--text-heading)", fontWeight: 800, fontSize: 14,
               borderRadius: 10, border: "none", cursor: "pointer",
-              marginBottom: 12, transition: "background 0.2s",
+              marginBottom: 12, transition: "opacity 0.2s",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#0ea5e9")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "var(--navy)")}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
             Create Free Account →
           </button>

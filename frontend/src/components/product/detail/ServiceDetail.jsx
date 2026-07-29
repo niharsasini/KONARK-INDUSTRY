@@ -39,7 +39,7 @@ export default function ServiceDetail({ product }) {
       <div style={{ maxWidth: 1280, margin: "32px auto 0", padding: "0 24px", display: "grid", gridTemplateColumns: "1fr 380px", gap: 48 }} className="service-grid">
         {/* Left: service info */}
         <div>
-          <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 4, background: "rgba(193,127,36,0.1)", color: "var(--gold)", border: "1px solid rgba(193,127,36,0.25)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
+          <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 4, background: "rgba(244,196,48,0.12)", color: "var(--gold)", border: "1px solid rgba(244,196,48,0.25)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
             Service
           </span>
           <h1 style={{ fontSize: "clamp(24px, 3vw, 40px)", fontWeight: 900, color: "var(--text-heading)", margin: "0 0 12px", lineHeight: 1.2 }}>{product.name}</h1>
@@ -76,7 +76,7 @@ export default function ServiceDetail({ product }) {
                 { step: "3", title: "Service & Report", desc: "Work completed with full transparency. You receive a service report." },
               ].map((s) => (
                 <div key={s.step} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
-                  <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(193,127,36,0.15)", border: "1px solid rgba(193,127,36,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(244,196,48,0.15)", border: "1px solid rgba(244,196,48,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <span style={{ fontSize: 13, fontWeight: 800, color: "var(--gold)" }}>{s.step}</span>
                   </div>
                   <div>
@@ -99,14 +99,14 @@ export default function ServiceDetail({ product }) {
           </div>
 
           {/* Pricing note */}
-          <div style={{ padding: "16px 20px", background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 12 }}>
+          <div style={{ padding: "16px 20px", background: "rgba(52,199,138,0.08)", border: "1px solid rgba(52,199,138,0.2)", borderRadius: 12 }}>
             <p style={{ fontSize: 14, fontWeight: 700, color: "var(--green)", margin: "0 0 4px" }}>💰 Transparent Pricing</p>
             <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>Free inspection visit. Final quote given on-site before any work begins. No hidden charges.</p>
           </div>
         </div>
 
         {/* Right: booking form */}
-        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(193,127,36,0.2)", borderRadius: 20, padding: "28px", position: "sticky", top: 80 }}>
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(244,196,48,0.2)", borderRadius: 20, padding: "28px", position: "sticky", top: 80 }}>
           {product.externalLink ? (
             <>
               <div style={{ marginBottom: 20 }}>
@@ -118,7 +118,7 @@ export default function ServiceDetail({ product }) {
                 href={product.externalLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "linear-gradient(135deg, var(--gold), #9a6419)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "var(--grad-gold)", color: "var(--bg-page)", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
               >
                 Visit Partner Site →
               </a>
@@ -135,7 +135,7 @@ export default function ServiceDetail({ product }) {
               </div>
               <Link
                 href={product.internalLink}
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "linear-gradient(135deg, var(--gold), #9a6419)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: "var(--grad-gold)", color: "var(--bg-page)", fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none" }}
               >
                 Book a Swap →
               </Link>
@@ -171,9 +171,9 @@ export default function ServiceDetail({ product }) {
                     onChange={(e) => setForm((prev) => ({ ...prev, [f.k]: e.target.value }))}
                     required
                     placeholder={f.placeholder}
-                    style={{ width: "100%", background: "#fff", border: "1px solid var(--border-light)", borderRadius: 8, padding: "10px 14px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s" }}
-                    onFocus={(e) => (e.currentTarget.style.borderColor = "var(--gold)")}
-                    onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border-light)")}
+                    style={{ width: "100%", background: "rgba(10,14,26,0.6)", border: "1px solid rgba(92,103,149,0.25)", borderRadius: 10, padding: "12px 16px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s, box-shadow 0.2s" }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(244,196,48,0.1)"; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.25)"; e.currentTarget.style.boxShadow = "none"; }}
                   />
                 </div>
               ))}
@@ -184,17 +184,17 @@ export default function ServiceDetail({ product }) {
                   onChange={(e) => setForm((prev) => ({ ...prev, problem: e.target.value }))}
                   rows={3}
                   placeholder="e.g. PCB not working, need soldering for 5 units..."
-                  style={{ width: "100%", background: "#fff", border: "1px solid var(--border-light)", borderRadius: 8, padding: "10px 14px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", resize: "vertical", fontFamily: "inherit", transition: "border-color 0.2s" }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "var(--gold)")}
-                  onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border-light)")}
+                  style={{ width: "100%", background: "rgba(10,14,26,0.6)", border: "1px solid rgba(92,103,149,0.25)", borderRadius: 10, padding: "12px 16px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", resize: "vertical", fontFamily: "inherit", transition: "border-color 0.2s, box-shadow 0.2s" }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(244,196,48,0.1)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(92,103,149,0.25)"; e.currentTarget.style.boxShadow = "none"; }}
                 />
               </div>
               <button
                 type="submit"
                 disabled={submitting}
-                style={{ marginTop: 4, padding: "14px", background: "linear-gradient(135deg, var(--gold), #9a6419)", color: "#fff", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: submitting ? "not-allowed" : "pointer", transition: "background 0.2s", opacity: submitting ? 0.7 : 1 }}
+                style={{ marginTop: 4, padding: "14px", background: "var(--grad-gold)", color: "var(--bg-page)", fontWeight: 800, fontSize: 15, borderRadius: 10, border: "none", cursor: submitting ? "not-allowed" : "pointer", transition: "background 0.2s", opacity: submitting ? 0.7 : 1 }}
                 onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.background = "var(--gold-dark)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, var(--gold), #9a6419)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "var(--grad-gold)"; }}
               >
                 {submitting ? "Booking..." : "Book This Service →"}
               </button>

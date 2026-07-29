@@ -118,14 +118,14 @@ export default function RegisterPage() {
           </div>
           <div>
             <span style={{ display: "block", fontSize: 14, fontWeight: 700, color: "#ffffff" }}>KONARK</span>
-            <span style={{ display: "block", fontSize: 9, fontWeight: 600, letterSpacing: "0.2em", color: "#d4952e", textTransform: "uppercase" }}>INDUSTRY</span>
+            <span style={{ display: "block", fontSize: 9, fontWeight: 600, letterSpacing: "0.2em", color: "var(--gold)", textTransform: "uppercase" }}>INDUSTRY</span>
           </div>
         </Link>
 
         <h1 style={{ fontSize: "clamp(24px, 2.5vw, 40px)", fontWeight: 900, color: "#ffffff", margin: "0 0 10px", lineHeight: 1.15 }}>
           Join Konark Industry
         </h1>
-        <p style={{ fontSize: 14, color: "#c4b8a5", margin: "0 0 40px", lineHeight: 1.7 }}>
+        <p style={{ fontSize: 14, color: "var(--text-muted)", margin: "0 0 40px", lineHeight: 1.7 }}>
           India's most trusted homegrown energy brand.
         </p>
 
@@ -138,15 +138,15 @@ export default function RegisterPage() {
           ].map(({ icon, text }) => (
             <div key={text} style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <span style={{ fontSize: 20, flexShrink: 0 }}>{icon}</span>
-              <p style={{ fontSize: 13, color: "#c4b8a5", margin: 0 }}>{text}</p>
+              <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>{text}</p>
             </div>
           ))}
         </div>
 
         <div style={{ marginTop: 48, padding: "12px 16px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10 }}>
-          <p style={{ fontSize: 12, color: "#9a8e7a", margin: "0 0 4px" }}>Trusted by</p>
+          <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: "0 0 4px" }}>Trusted by</p>
           <p style={{ fontSize: 18, fontWeight: 800, color: "#ffffff", margin: 0 }}>25,000+</p>
-          <p style={{ fontSize: 11, color: "#9a8e7a", margin: 0 }}>customers across India</p>
+          <p style={{ fontSize: 11, color: "var(--text-subtle)", margin: 0 }}>customers across India</p>
         </div>
       </div>
 

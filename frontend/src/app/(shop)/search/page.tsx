@@ -55,12 +55,12 @@ function ProductCard({ product }: { product: any }) {
           <span style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(15,76,129,0.12)', border: '1px solid rgba(15,76,129,0.3)', color: 'var(--navy)', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>⚡ EV</span>
         )}
         {!isVehicle && !isService && (
-          <span style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)', color: '#10b981', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>● In Stock</span>
+          <span style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(52,199,138,0.12)', border: '1px solid rgba(52,199,138,0.3)', color: 'var(--green)', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>● In Stock</span>
         )}
       </div>
       <div style={{ padding: 14, flex: 1, display: 'flex', flexDirection: 'column', gap: 7 }}>
         <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-heading)', margin: 0, lineHeight: 1.4 }}>{product.name}</p>
-        <p style={{ fontSize: 11, color: '#64748b', margin: 0 }}>{product.category}</p>
+        <p style={{ fontSize: 11, color: 'var(--text-muted)', margin: 0 }}>{product.category}</p>
         <p style={{ fontSize: 15, fontWeight: 700, color: product.price ? 'var(--navy)' : 'var(--text-muted)', margin: 0, marginTop: 'auto' }}>
           {product.price ? `₹${product.price.toLocaleString('en-IN')}` : 'Price on Request'}
         </p>
@@ -102,8 +102,8 @@ function SearchResults() {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 24px' }}>
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Search Results' }]} />
         <div style={{ marginBottom: '32px' }}>
-          <p style={{ color: '#64748b', fontSize: '14px' }}>
-            <Link href="/" style={{ color: '#64748b', textDecoration: 'none' }}>Home</Link>
+          <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
+            <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
             {' '}/{' '}
             <span style={{ color: 'var(--text-muted)' }}>Search</span>
           </p>
@@ -117,7 +117,7 @@ function SearchResults() {
               </>
             ) : 'Search Products'}
           </h1>
-          <p style={{ color: '#64748b', marginTop: '8px', fontSize: 14 }}>
+          <p style={{ color: 'var(--text-muted)', marginTop: '8px', fontSize: 14 }}>
             {results.length} result{results.length !== 1 ? 's' : ''} found
           </p>
         </div>
@@ -134,7 +134,7 @@ function SearchResults() {
             <h2 style={{ color: 'var(--text-heading)', fontSize: '22px', fontWeight: 700, marginBottom: '8px' }}>
               No results found
             </h2>
-            <p style={{ color: '#64748b', marginBottom: '24px' }}>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
               Try searching for "EV Scooter", "Battery", "Fan" or "AC"
             </p>
             <Link href="/products" style={{ background: 'var(--navy)', color: '#fff', padding: '12px 28px', borderRadius: '10px', fontWeight: 700, textDecoration: 'none', fontSize: '15px' }}>
@@ -145,7 +145,7 @@ function SearchResults() {
 
         {results.length === 0 && (
           <div style={{ marginTop: '40px', textAlign: 'center' }}>
-            <p style={{ color: '#64748b', marginBottom: '12px' }}>Popular searches:</p>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '12px' }}>Popular searches:</p>
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
               {['EV Scooter', 'E-Rickshaw', 'LFP Battery', 'BLDC Fan', 'Air Conditioner', 'Solar'].map((s) => (
                 <Link

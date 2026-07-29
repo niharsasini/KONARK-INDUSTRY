@@ -115,7 +115,7 @@ export default function ProductDetail({ product }) {
           <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7, margin: 0 }}>{product.shortDescription || product.description}</p>
 
           {/* Delivery estimate */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 14px", background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.15)", borderRadius: 8 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 14px", background: "rgba(52,199,138,0.08)", border: "1px solid rgba(52,199,138,0.2)", borderRadius: 10 }}>
             <span style={{ fontSize: 14 }}>🚚</span>
             <p style={{ fontSize: 13, color: "var(--green)", margin: 0 }}>Delivery by <strong>{getDeliveryDate()}</strong></p>
           </div>
@@ -133,10 +133,20 @@ export default function ProductDetail({ product }) {
           {/* Quantity */}
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 13, color: "var(--text-muted)", fontWeight: 500 }}>Qty:</span>
-            <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--border-light)", borderRadius: 8, overflow: "hidden" }}>
-              <button onClick={() => setQty((q) => Math.max(1, q - 1))} style={{ width: 36, height: 36, background: "transparent", border: "none", color: "var(--text-heading)", fontSize: 18, cursor: "pointer" }}>−</button>
+            <div style={{ display: "flex", alignItems: "center", background: "rgba(22,41,82,0.6)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 10, overflow: "hidden" }}>
+              <button
+                onClick={() => setQty((q) => Math.max(1, q - 1))}
+                style={{ width: 36, height: 36, background: "rgba(13,81,140,0.2)", border: "1px solid rgba(13,81,140,0.3)", color: "var(--sky)", fontSize: 18, cursor: "pointer", transition: "background 0.2s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(13,81,140,0.4)")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(13,81,140,0.2)")}
+              >−</button>
               <span style={{ width: 40, textAlign: "center", fontSize: 14, fontWeight: 600, color: "var(--text-heading)" }}>{qty}</span>
-              <button onClick={() => setQty((q) => Math.min(10, q + 1))} style={{ width: 36, height: 36, background: "transparent", border: "none", color: "var(--text-heading)", fontSize: 18, cursor: "pointer" }}>+</button>
+              <button
+                onClick={() => setQty((q) => Math.min(10, q + 1))}
+                style={{ width: 36, height: 36, background: "rgba(13,81,140,0.2)", border: "1px solid rgba(13,81,140,0.3)", color: "var(--sky)", fontSize: 18, cursor: "pointer", transition: "background 0.2s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(13,81,140,0.4)")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(13,81,140,0.2)")}
+              >+</button>
             </div>
           </div>
 
@@ -145,9 +155,9 @@ export default function ProductDetail({ product }) {
             <div style={{ display: "flex", gap: 8 }}>
               <button
                 onClick={handleAddToCart}
-                style={{ flex: 1, padding: "14px", background: "var(--navy)", color: "#fff", fontWeight: 700, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer", transition: "background 0.2s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "var(--navy-dark)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "var(--navy)")}
+                style={{ flex: 1, padding: "14px", background: "var(--grad-primary)", color: "var(--text-heading)", fontWeight: 700, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer", transition: "opacity 0.2s", boxShadow: "var(--shadow-navy)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >
                 Add to Cart 🛒
               </button>
@@ -160,9 +170,9 @@ export default function ProductDetail({ product }) {
             </div>
             <button
               onClick={() => setEnquiryOpen(true)}
-              style={{ padding: "14px", background: "transparent", color: "var(--text-heading)", fontWeight: 600, fontSize: 15, borderRadius: 10, border: "1px solid var(--border-light)", cursor: "pointer", transition: "all 0.2s" }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--navy)"; e.currentTarget.style.color = "var(--navy)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-light)"; e.currentTarget.style.color = "var(--text-heading)"; }}
+              style={{ padding: "14px", background: "var(--grad-gold)", color: "var(--bg-page)", fontWeight: 700, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer", transition: "opacity 0.2s", boxShadow: "var(--shadow-gold)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
             >
               Buy Now / Enquire
             </button>
@@ -315,7 +325,7 @@ export default function ProductDetail({ product }) {
                 const total = product.price * (1 + opt.interest);
                 const monthly = total / opt.months;
                 return (
-                  <div key={opt.months} style={{ background: opt.popular ? "rgba(15,76,129,0.06)" : "#fff", border: `1px solid ${opt.popular ? "var(--navy)" : "var(--border-light)"}`, borderRadius: 10, padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div key={opt.months} style={{ background: opt.popular ? "rgba(13,81,140,0.2)" : "var(--bg-surface)", border: `1px solid ${opt.popular ? "var(--sky)" : "var(--border-light)"}`, borderRadius: 10, padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <div>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <span style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)" }}>{opt.label}</span>

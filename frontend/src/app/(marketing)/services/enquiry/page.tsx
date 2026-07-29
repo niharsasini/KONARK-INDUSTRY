@@ -204,7 +204,7 @@ export default function EnquiryPage() {
                 <Field label="Preferred Date">
                   <input
                     type="date" value={form.date} onChange={set("date")}
-                    style={{ ...INPUT_STYLE, colorScheme: "light" }}
+                    style={{ ...INPUT_STYLE, colorScheme: "dark" }}
                     onFocus={focusStyle} onBlur={blurStyle}
                   />
                 </Field>

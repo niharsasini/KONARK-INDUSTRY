@@ -307,7 +307,8 @@ export default function CheckoutPage() {
                   <button
                     onClick={handlePlaceOrder}
                     disabled={loading || items.length === 0}
-                    style={{ flex: 2, padding: "13px", background: loading ? "var(--navy-light)" : "var(--grad-navy)", color: "#fff", fontWeight: 800, fontSize: 14, borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: items.length === 0 ? 0.5 : 1, boxShadow: "var(--shadow-navy)" }}
+                    className="place-order-btn"
+                    style={{ flex: 2, height: 52, background: loading ? "var(--navy-light)" : "var(--grad-primary)", color: "var(--text-heading)", fontWeight: 800, fontSize: 14, borderRadius: 14, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: items.length === 0 ? 0.5 : 1, boxShadow: "var(--shadow-navy)" }}
                   >
                     {loading ? "Placing Order..." : "Place Order →"}
                   </button>
@@ -317,7 +318,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Order summary */}
-          <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: "24px", boxShadow: "var(--shadow-sm)" }}>
+          <div style={{ background: "var(--bg-card)", border: "1px solid rgba(79,195,247,0.08)", borderRadius: 20, padding: "24px", boxShadow: "var(--neu-shadow)" }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 16px" }}>Order Summary</h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16, maxHeight: 200, overflowY: "auto" }}>
               {items.map((item) => (
@@ -345,9 +346,9 @@ export default function CheckoutPage() {
                 <span style={{ color: r.green ? "var(--green)" : "var(--text-heading)", fontWeight: 500 }}>{r.value}</span>
               </div>
             ))}
-            <div style={{ borderTop: "1px solid var(--border-light)", paddingTop: 12, display: "flex", justifyContent: "space-between", fontSize: 16, fontWeight: 800 }}>
-              <span style={{ color: "var(--text-heading)" }}>Total</span>
-              <span style={{ color: "var(--navy)" }}>{sub ? `₹${total.toLocaleString("en-IN")}` : "On Request"}</span>
+            <div style={{ borderTop: "1px solid var(--border-light)", paddingTop: 12, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ color: "var(--text-heading)", fontSize: 16, fontWeight: 800 }}>Total</span>
+              <span style={{ color: "var(--gold)", fontSize: 24, fontWeight: 900 }}>{sub ? `₹${total.toLocaleString("en-IN")}` : "On Request"}</span>
             </div>
             {sub > 0 && sub < 5000 && (
               <div style={{ marginTop: 12, padding: "10px 12px", background: "var(--green-bg)", border: "1px solid rgba(26,122,74,0.2)", borderRadius: 8, fontSize: 12, color: "var(--green)" }}>
@@ -361,6 +362,11 @@ export default function CheckoutPage() {
       <style>{`
         @media (max-width: 768px) {
           .checkout-grid { grid-template-columns: 1fr !important; }
+        }
+        .place-order-btn { animation: pulseGlow 3s ease infinite; }
+        @keyframes pulseGlow {
+          0%, 100% { box-shadow: var(--shadow-navy); }
+          50% { box-shadow: 0 8px 40px rgba(79,195,247,0.45); }
         }
       `}</style>
     </div>

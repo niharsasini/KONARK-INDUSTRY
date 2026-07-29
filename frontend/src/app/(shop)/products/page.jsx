@@ -77,15 +77,20 @@ export default function ProductsPage() {
   }, [allProducts]);
 
   const Sidebar = () => (
-    <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 16, padding: 20, display: "flex", flexDirection: "column", gap: 20, boxShadow: "var(--shadow-sm)" }}>
+    <div style={{ background: "rgba(22,41,82,0.5)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 20, padding: 24, display: "flex", flexDirection: "column", gap: 20 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>Filters</h3>
-        <button onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setSortBy("newest"); setTypeFilter("all"); setPriceRange([0, 200000]); }} style={{ fontSize: 12, color: "var(--navy)", background: "transparent", border: "none", cursor: "pointer", fontWeight: 600 }}>Reset</button>
+        <button
+          onClick={() => { setSelectedCategories(["All"]); setMinRating(0); setSortBy("newest"); setTypeFilter("all"); setPriceRange([0, 200000]); }}
+          style={{ fontSize: 12, color: "var(--slate)", background: "transparent", border: "none", cursor: "pointer", fontWeight: 600, transition: "color 0.15s" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--orange)")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--slate)")}
+        >Reset</button>
       </div>
 
       {/* Type filter */}
       <div>
-        <p style={{ fontSize: 12, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Type</p>
+        <p style={{ fontSize: 11, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Type</p>
         {TYPE_FILTERS.map((t) => (
           <button
             key={t.value}
@@ -93,11 +98,13 @@ export default function ProductsPage() {
             style={{
               display: "flex", alignItems: "center", width: "100%",
               gap: 8, padding: "7px 10px", marginBottom: 4, cursor: "pointer",
-              border: `1px solid ${typeFilter === t.value ? "var(--navy)" : "transparent"}`,
-              borderRadius: 8, background: typeFilter === t.value ? "rgba(15,76,129,0.08)" : "transparent",
-              color: typeFilter === t.value ? "var(--navy)" : "var(--text-muted)",
+              border: `1px solid ${typeFilter === t.value ? "rgba(79,195,247,0.3)" : "transparent"}`,
+              borderRadius: 10, background: typeFilter === t.value ? "rgba(13,81,140,0.2)" : "transparent",
+              color: typeFilter === t.value ? "var(--sky)" : "var(--text-muted)",
               fontSize: 13, fontWeight: typeFilter === t.value ? 600 : 400, transition: "all 0.15s",
             }}
+            onMouseEnter={(e) => { if (typeFilter !== t.value) e.currentTarget.style.color = "var(--text-heading)"; }}
+            onMouseLeave={(e) => { if (typeFilter !== t.value) e.currentTarget.style.color = "var(--text-muted)"; }}
           >
             {t.label}
           </button>
@@ -106,15 +113,15 @@ export default function ProductsPage() {
 
       {/* Categories */}
       <div>
-        <p style={{ fontSize: 12, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Category</p>
+        <p style={{ fontSize: 11, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Category</p>
         {CATEGORIES.map((cat) => (
-          <label key={cat} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "7px 0", cursor: "pointer", borderBottom: "1px solid var(--border-light)" }}>
+          <label key={cat} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "7px 0", cursor: "pointer", borderBottom: "1px solid rgba(92,103,149,0.2)" }}>
             <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <input
                 type="checkbox"
                 checked={cat === "All" ? selectedCategories.includes("All") : selectedCategories.includes(cat)}
                 onChange={() => toggleCategory(cat)}
-                style={{ accentColor: "var(--navy)", width: 14, height: 14, cursor: "pointer" }}
+                style={{ accentColor: "var(--sky)", width: 14, height: 14, cursor: "pointer" }}
               />
               <span style={{ fontSize: 13, color: selectedCategories.includes(cat) || (cat === "All" && selectedCategories.includes("All")) ? "var(--text-heading)" : "var(--text-muted)" }}>{cat}</span>
             </span>
@@ -166,7 +173,7 @@ export default function ProductsPage() {
           step={1000}
           value={priceRange[1]}
           onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-          style={{ width: "100%", accentColor: "var(--navy)" }}
+          style={{ width: "100%", accentColor: "var(--sky)" }}
         />
       </div>
 
@@ -175,7 +182,7 @@ export default function ProductsPage() {
         <p style={{ fontSize: 12, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Minimum Rating</p>
         <button
           onClick={() => setMinRating(minRating === 4 ? 0 : 4)}
-          style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", border: `1px solid ${minRating === 4 ? "var(--navy)" : "var(--border-default)"}`, borderRadius: 6, background: minRating === 4 ? "rgba(15,76,129,0.08)" : "transparent", color: minRating === 4 ? "var(--navy)" : "var(--text-muted)", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
+          style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", border: `1px solid ${minRating === 4 ? "rgba(79,195,247,0.3)" : "rgba(92,103,149,0.25)"}`, borderRadius: 10, background: minRating === 4 ? "rgba(13,81,140,0.2)" : "transparent", color: minRating === 4 ? "var(--sky)" : "var(--text-muted)", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
         >
           4★ & above
         </button>
@@ -186,8 +193,8 @@ export default function ProductsPage() {
   return (
     <div style={{ background: "var(--bg-page)", minHeight: "100vh" }}>
       {/* Hero */}
-      <div style={{ background: "var(--bg-section)", borderBottom: "1px solid var(--border-light)", padding: "80px 24px 48px" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+      <div style={{ background: "linear-gradient(180deg, var(--bg-surface), transparent)", padding: "40px 0 32px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
           <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 12, fontSize: 12, color: "var(--text-muted)" }}>
             <Link href="/" style={{ color: "var(--text-muted)", textDecoration: "none" }}>Home</Link>
             <span>/</span>
@@ -247,11 +254,11 @@ export default function ProductsPage() {
           <div>
             {/* Sort bar */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 10 }}>
-              <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>Showing <strong style={{ color: "var(--text-heading)" }}>{filtered.length}</strong> results</p>
+              <p style={{ fontSize: 14, color: "var(--slate)", margin: 0 }}>Showing <strong style={{ color: "var(--text-heading)" }}>{filtered.length}</strong> results</p>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                style={{ background: "var(--bg-card)", border: "1px solid var(--border-default)", color: "var(--text-heading)", fontSize: 13, padding: "7px 12px", borderRadius: 8, outline: "none", cursor: "pointer" }}
+                style={{ background: "rgba(22,41,82,0.6)", border: "1px solid rgba(92,103,149,0.25)", color: "var(--text-heading)", fontSize: 13, padding: "8px 14px", borderRadius: 10, outline: "none", cursor: "pointer" }}
               >
                 {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
