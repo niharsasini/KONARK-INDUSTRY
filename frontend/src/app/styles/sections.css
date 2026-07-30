@@ -82,6 +82,10 @@
   width: 100%;
 }
 
+.hero-product-card-inner:hover .hero-product-card-img {
+  transform: scale(1.06);
+}
+
 @media (max-width: 1024px) {
   .hero-container {
     grid-template-columns: 1fr 1fr;

@@ -29,14 +29,20 @@ const CAR_IMAGES = [
 ];
 
 // Up to 3 short tags describing the card — distinct from the category
-// badge/label (which already show the category on its own).
-function buildTags(productType, category) {
+// badge/label (which already show the category on its own). "Made in
+// India" is always reserved as the last slot rather than competing with
+// the other conditional tags for the cap, since it's a trust signal we
+// always want visible.
+function buildTags(productType, category, isNew) {
+  const cat = category || "";
   const tags = [];
-  if (productType === "vehicle") tags.push("Electric");
-  if (category?.includes("Battery")) tags.push("LFP");
-  if (category?.includes("Appliance")) tags.push("Energy Efficient");
-  tags.push("Made in India");
-  return tags.slice(0, 3);
+  if (productType === "vehicle" || cat.includes("Electric")) tags.push("⚡ Electric");
+  if (cat.includes("Battery") || cat.includes("LFP")) tags.push("🔋 LFP");
+  if (cat.includes("Appliance") || cat.includes("Home")) tags.push("🏠 Home");
+  if (cat.includes("Solar") || cat.includes("Energy")) tags.push("☀️ Solar");
+  if (cat.includes("Industrial")) tags.push("🏭 Industrial");
+  if (isNew) tags.push("✨ New");
+  return [...tags.slice(0, 2), "🇮🇳 Made in India"];
 }
 
 // Left-side CTA link text varies by product type; cards with no slug
@@ -62,7 +68,7 @@ const CAR_CARDS = CAR_IMAGES.map((src) => ({
   cartPayload: null,
   badge: "UPCOMING",
   badgeBg: "rgba(124,58,237,0.9)",
-  tags: ["Electric", "New Model 2025", "Made in India"],
+  tags: ["⚡ Electric", "New Model 2025", "🇮🇳 Made in India"],
 }));
 
 // Admin hasn't curated any "featured" products yet — show a sensible
@@ -92,7 +98,7 @@ function buildStaticDeck() {
       : p.isNew
       ? "rgba(5,150,105,0.9)"
       : "linear-gradient(135deg, #0D518C, #0EA5E9)",
-    tags: buildTags(p.type, p.category),
+    tags: buildTags(p.type, p.category, p.isNew),
   }));
 }
 
@@ -114,17 +120,25 @@ function buildBackendDeck(items) {
       : null,
     badge: p.is_new ? "NEW" : "FEATURED",
     badgeBg: p.is_new ? "rgba(5,150,105,0.9)" : "linear-gradient(135deg, #0D518C, #0EA5E9)",
-    tags: buildTags(p.type, p.category),
+    tags: buildTags(p.type, p.category, p.is_new),
   }));
 }
 
 const ROTATING_WORDS = ["Konark.", "Innovation.", "Sustainability."];
 
 const CARD_ANIM = {
-  idle: { opacity: 1, transform: "translateX(0) rotate(0deg) scale(1)", transition: "all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)" },
-  exit: { opacity: 0, transform: "translateX(-60px) rotate(-3deg) scale(0.95)", transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)" },
-  enter: { opacity: 0, transform: "translateX(80px) rotate(3deg) scale(0.97)", transition: "none" },
+  idle: { opacity: 1, transform: "translateX(0) rotate(0deg) scale(1)", transition: "opacity 0.45s ease, transform 0.45s cubic-bezier(0.34,1.2,0.64,1)" },
+  exit: { opacity: 0, transform: "translateX(-50px) rotate(-3deg) scale(0.95)", transition: "opacity 0.35s ease, transform 0.35s ease" },
+  enter: { opacity: 0, transform: "translateX(50px) rotate(3deg) scale(0.95)", transition: "none" },
 };
+
+// Commits the "enter" (off-screen, transition:none) styles to the DOM
+// on one frame before switching to "idle" on the next, so the browser
+// actually animates the transition instead of skipping straight to the
+// end state — a fixed setTimeout(...,50) can't guarantee that.
+function nextFrame(cb) {
+  requestAnimationFrame(() => requestAnimationFrame(cb));
+}
 
 export default function Hero() {
   const router = useRouter();
@@ -173,7 +187,7 @@ export default function Hero() {
       setTimeout(() => {
         setCurrent((prev) => (prev + 1) % DECK.length);
         setAnimState("enter");
-        setTimeout(() => setAnimState("idle"), 50);
+        nextFrame(() => setAnimState("idle"));
       }, 400);
     }, 4500);
     return () => clearInterval(timer);
@@ -195,7 +209,7 @@ export default function Hero() {
     setTimeout(() => {
       nextFn();
       setAnimState("enter");
-      setTimeout(() => setAnimState("idle"), 50);
+      nextFrame(() => setAnimState("idle"));
     }, 400);
   };
   const advance = () => throwCard(() => setCurrent((prev) => (prev + 1) % DECK.length));
@@ -294,7 +308,7 @@ export default function Hero() {
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             background: "rgba(13,81,140,0.15)", border: "1px solid rgba(13,81,140,0.2)",
-            borderRadius: 999, padding: "6px 18px", marginBottom: 24,
+            borderRadius: 999, padding: "6px 18px", marginBottom: 16,
             animation: "fadeInUp 0.5s ease",
           }}>
             <span style={{
@@ -327,17 +341,17 @@ export default function Hero() {
               className="hero-headline"
               style={{
                 display: "block",
-                fontSize: "clamp(40px, 5.5vw, 68px)",
-                fontWeight: 800,
+                fontWeight: 900,
+                fontSize: "clamp(38px, 5vw, 68px)",
                 letterSpacing: "-1.5px",
-                lineHeight: 1.1,
-                minHeight: "1.1em",
-                background: "linear-gradient(135deg, #0EA5E9 0%, #A5D8F7 50%, #D97706 100%)",
+                lineHeight: 1.08,
+                minHeight: "1.15em",
+                background: "linear-gradient(135deg, #0D518C 0%, #0EA5E9 45%, #D97706 100%)",
                 backgroundSize: "200% 200%",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
-                animation: "gradientText 5s ease infinite",
+                animation: "gradientText 4s ease infinite",
                 opacity: wordVisible ? 1 : 0,
                 transform: wordVisible ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 0.3s ease, transform 0.3s ease",
@@ -411,11 +425,11 @@ export default function Hero() {
         {/* RIGHT — glass card deck */}
         <div
           className="hero-right-col"
-          style={{ perspective: "1200px" }}
+          style={{ perspective: "1200px", paddingRight: 20, overflow: "visible" }}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
-          <div style={{ position: "relative", width: "100%", maxWidth: 340, margin: "0 auto", minHeight: 380 }}>
+          <div style={{ position: "relative", width: "100%", maxWidth: 400, margin: "0 auto", minHeight: 380 }}>
             {/* Stack back cards */}
             {[
               { deckOffset: 3, rotate: -6, tx: -18, ty: 12, opacity: 0.3, zIndex: 1 },
@@ -467,22 +481,37 @@ export default function Hero() {
                   borderRadius: 28,
                   overflow: "hidden",
                   boxShadow:
-                    "12px 12px 32px rgba(13,81,140,0.12), -8px -8px 24px rgba(255,255,255,0.95), 0 0 0 1px rgba(13,81,140,0.06)",
+                    "14px 14px 36px rgba(13,81,140,0.12), -10px -10px 28px rgba(255,255,255,0.95), 0 0 0 1px rgba(13,81,140,0.05), inset 0 1px 0 rgba(255,255,255,0.9)",
                   cursor: card.slug ? "pointer" : "default",
                   animation: animState === "idle" ? "floatCard 7s ease-in-out infinite" : "none",
+                  transition: "box-shadow 0.3s ease, transform 0.3s ease",
                 }}
                 onClick={() => { if (card.slug) router.push(`/products/${card.slug}`); }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.animationPlayState = "paused";
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow =
+                    "18px 18px 44px rgba(13,81,140,0.16), -12px -12px 32px rgba(255,255,255,1), 0 0 0 1px rgba(13,81,140,0.06), inset 0 1px 0 rgba(255,255,255,0.9)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.animationPlayState = "running";
+                  e.currentTarget.style.transform = "";
+                  e.currentTarget.style.boxShadow =
+                    "14px 14px 36px rgba(13,81,140,0.12), -10px -10px 28px rgba(255,255,255,0.95), 0 0 0 1px rgba(13,81,140,0.05), inset 0 1px 0 rgba(255,255,255,0.9)";
+                }}
               >
                 {/* Image area */}
                 <div className="hero-product-card-imgwrap" style={{
-                  height: 220, position: "relative", overflow: "hidden",
-                  background: "linear-gradient(135deg, #EEF2FF 0%, #F0F5FF 50%, #EEF4FF 100%)",
+                  height: 240, position: "relative", overflow: "hidden",
+                  background: "linear-gradient(145deg, #EEF4FF, #F0F6FF)",
                   display: "flex", alignItems: "center", justifyContent: "center",
+                  padding: 20,
                 }}>
                   <img
+                    className="hero-product-card-img"
                     src={card.src}
                     alt={card.name}
-                    style={{ maxWidth: "85%", maxHeight: "85%", objectFit: "contain", filter: "drop-shadow(0 8px 20px rgba(13,81,140,0.15))" }}
+                    style={{ maxWidth: "85%", maxHeight: "90%", objectFit: "contain", filter: "drop-shadow(0 12px 24px rgba(13,81,140,0.2))", transition: "transform 0.5s ease" }}
                   />
 
                   {/* Category + status badges */}
@@ -533,27 +562,31 @@ export default function Hero() {
                 {/* Info panel */}
                 <div style={{ padding: "20px 22px 22px", background: "#FFFFFF", borderTop: "1px solid rgba(13,81,140,0.04)" }}>
                   {card.category && (
-                    <p style={{ fontSize: 10, fontWeight: 700, color: "var(--navy)", letterSpacing: "1.5px", textTransform: "uppercase", margin: "0 0 6px" }}>
+                    <p style={{ fontSize: 10, fontWeight: 700, color: "var(--navy)", letterSpacing: "1.5px", textTransform: "uppercase", margin: "0 0 5px", lineHeight: 1 }}>
                       {card.category}
                     </p>
                   )}
-                  <p style={{ color: "var(--text-heading)", fontSize: 20, fontWeight: 800, letterSpacing: "-0.3px", margin: "0 0 8px", lineHeight: 1.2 }}>
+                  <p style={{
+                    color: "var(--text-heading)", fontSize: 19, fontWeight: 800, letterSpacing: "-0.3px",
+                    margin: "0 0 10px", lineHeight: 1.2,
+                    display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
+                  }}>
                     {card.name}
                   </p>
 
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     {card.price ? (
-                      <span style={{ color: "var(--gold)", fontSize: 22, fontWeight: 900, letterSpacing: "-0.5px" }}>
+                      <span style={{ color: "var(--gold)", fontSize: 23, fontWeight: 900, letterSpacing: "-0.5px" }}>
                         ₹{card.price.toLocaleString("en-IN")}
                       </span>
                     ) : card.isUpcoming ? (
-                      <span style={{ color: "#7C3AED", fontSize: 15, fontWeight: 700 }}>Coming Soon</span>
+                      <span style={{ color: "#7C3AED", fontSize: 16, fontWeight: 700 }}>Coming Soon</span>
                     ) : (
                       <span style={{ color: "var(--text-subtle)", fontSize: 13, fontWeight: 700 }}>Price on Request</span>
                     )}
                     {!card.isUpcoming && card.rating && (
                       <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 13, color: "var(--text-muted)" }}>
-                        <span style={{ color: "var(--gold)" }}>★</span>{card.rating}
+                        <span style={{ color: "var(--gold)" }}>★</span><span style={{ fontWeight: 600 }}>{card.rating}</span>
                       </span>
                     )}
                   </div>
@@ -610,6 +643,26 @@ export default function Hero() {
                         +
                       </button>
                     )}
+
+                    {card.productType === "vehicle" && card.slug && (
+                      <Link
+                        href={`/products/${card.slug}`}
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label="Book test ride"
+                        style={{
+                          width: 34, height: 34, borderRadius: 10,
+                          background: "rgba(13,81,140,0.08)", border: "1px solid rgba(13,81,140,0.2)", color: "var(--navy)",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          textDecoration: "none", transition: "all 0.2s ease",
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(13,81,140,0.14)"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(13,81,140,0.08)"; }}
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 16, height: 16 }}>
+                          <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
@@ -642,28 +695,28 @@ export default function Hero() {
                 href={c.href}
                 style={{
                   flex: 1, minWidth: 0, display: "flex", alignItems: "center", justifyContent: "center",
-                  gap: 8, padding: "10px 18px",
+                  gap: 10, padding: "12px 20px",
                   background: "#FFFFFF",
-                  border: "1px solid rgba(13,81,140,0.1)", borderRadius: 14,
-                  textDecoration: "none", fontSize: 13,
+                  border: "1px solid rgba(13,81,140,0.1)", borderRadius: 16,
+                  textDecoration: "none", fontSize: 14,
                   color: "var(--text-body)", fontWeight: 600, textAlign: "center",
                   transition: "all 0.25s cubic-bezier(0.34,1.56,0.64,1)",
-                  boxShadow: "4px 4px 12px rgba(13,81,140,0.08), -3px -3px 10px rgba(255,255,255,0.9)",
+                  boxShadow: "5px 5px 14px rgba(13,81,140,0.1), -4px -4px 10px rgba(255,255,255,0.95)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-3px) scale(1.02)";
-                  e.currentTarget.style.boxShadow = "6px 6px 16px rgba(13,81,140,0.12), -4px -4px 12px rgba(255,255,255,0.95)";
+                  e.currentTarget.style.boxShadow = "7px 7px 18px rgba(13,81,140,0.14), -5px -5px 14px rgba(255,255,255,1)";
                   e.currentTarget.style.borderColor = "rgba(13,81,140,0.2)";
                   e.currentTarget.style.color = "var(--navy)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "translateY(0) scale(1)";
-                  e.currentTarget.style.boxShadow = "4px 4px 12px rgba(13,81,140,0.08), -3px -3px 10px rgba(255,255,255,0.9)";
+                  e.currentTarget.style.boxShadow = "5px 5px 14px rgba(13,81,140,0.1), -4px -4px 10px rgba(255,255,255,0.95)";
                   e.currentTarget.style.borderColor = "rgba(13,81,140,0.1)";
                   e.currentTarget.style.color = "var(--text-body)";
                 }}
               >
-                <span style={{ fontSize: 18 }}>{c.icon}</span>
+                <span style={{ fontSize: 20 }}>{c.icon}</span>
                 {c.label} →
               </Link>
             ))}
