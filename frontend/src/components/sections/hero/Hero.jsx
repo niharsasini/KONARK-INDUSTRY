@@ -28,8 +28,29 @@ const CAR_IMAGES = [
   "/konark/car-8.png",
 ];
 
+// Up to 3 short tags describing the card — distinct from the category
+// badge/label (which already show the category on its own).
+function buildTags(productType, category) {
+  const tags = [];
+  if (productType === "vehicle") tags.push("Electric");
+  if (category?.includes("Battery")) tags.push("LFP");
+  if (category?.includes("Appliance")) tags.push("Energy Efficient");
+  tags.push("Made in India");
+  return tags.slice(0, 3);
+}
+
+// Left-side CTA link text varies by product type; cards with no slug
+// (upcoming teasers) always ask to register interest.
+function ctaLabel(card) {
+  if (!card.slug) return "Register Interest →";
+  if (card.productType === "vehicle") return "Book Test Ride →";
+  if (card.productType === "service") return "Book Service →";
+  return "View Product →"; // the round quick-add button handles "add to cart"
+}
+
 const CAR_CARDS = CAR_IMAGES.map((src) => ({
   type: "car",
+  productType: "car",
   src,
   name: "EV Car — Coming Soon",
   price: null,
@@ -41,7 +62,7 @@ const CAR_CARDS = CAR_IMAGES.map((src) => ({
   cartPayload: null,
   badge: "UPCOMING",
   badgeBg: "rgba(124,58,237,0.9)",
-  specs: ["Electric", "New Model 2025"],
+  tags: ["Electric", "New Model 2025", "Made in India"],
 }));
 
 // Admin hasn't curated any "featured" products yet — show a sensible
@@ -55,7 +76,8 @@ function buildStaticDeck() {
   );
   return [...vehicleProducts, ...industrialProducts].map((p) => ({
     type: "product",
-    src: p.image,
+    productType: p.type,
+    src: p.image || "/placeholder.svg",
     name: p.name,
     price: p.isUpcoming ? null : p.price,
     slug: p.slug,
@@ -70,7 +92,7 @@ function buildStaticDeck() {
       : p.isNew
       ? "rgba(5,150,105,0.9)"
       : "linear-gradient(135deg, #0D518C, #0EA5E9)",
-    specs: [p.category.replace("Electric Vehicles", "Electric"), `⭐ ${p.rating}`],
+    tags: buildTags(p.type, p.category),
   }));
 }
 
@@ -78,7 +100,8 @@ function buildStaticDeck() {
 function buildBackendDeck(items) {
   return items.slice(0, 5).map((p) => ({
     type: "product",
-    src: p.images?.[0] || "",
+    productType: p.type,
+    src: p.images?.[0] || "/placeholder.svg",
     name: p.name,
     price: p.price > 0 ? p.price : null,
     slug: p.slug,
@@ -91,7 +114,7 @@ function buildBackendDeck(items) {
       : null,
     badge: p.is_new ? "NEW" : "FEATURED",
     badgeBg: p.is_new ? "rgba(5,150,105,0.9)" : "linear-gradient(135deg, #0D518C, #0EA5E9)",
-    specs: [p.category, `⭐ ${p.rating || "4.5"}`],
+    tags: buildTags(p.type, p.category),
   }));
 }
 
@@ -536,7 +559,7 @@ export default function Hero() {
                   </div>
 
                   <div style={{ display: "flex", gap: 6, marginTop: 12, flexWrap: "wrap" }}>
-                    {card.specs.map((s) => (
+                    {card.tags.map((s) => (
                       <span key={s} style={{
                         fontSize: 11, color: "var(--text-muted)", fontWeight: 500,
                         background: "#F5F7FF", border: "1px solid rgba(13,81,140,0.1)",
@@ -557,7 +580,7 @@ export default function Hero() {
                         onMouseEnter={(e) => { e.currentTarget.style.color = "var(--navy-dark)"; e.currentTarget.style.gap = "8px"; }}
                         onMouseLeave={(e) => { e.currentTarget.style.color = "var(--navy)"; e.currentTarget.style.gap = "4px"; }}
                       >
-                        View Product →
+                        {ctaLabel(card)}
                       </Link>
                     ) : (
                       <Link
@@ -567,7 +590,7 @@ export default function Hero() {
                         onMouseEnter={(e) => { e.currentTarget.style.color = "var(--navy-dark)"; e.currentTarget.style.gap = "8px"; }}
                         onMouseLeave={(e) => { e.currentTarget.style.color = "var(--navy)"; e.currentTarget.style.gap = "4px"; }}
                       >
-                        Register Interest →
+                        {ctaLabel(card)}
                       </Link>
                     )}
 
