@@ -110,15 +110,16 @@ export default function Navbar() {
 
   const navStyle = scrolled
     ? {
-        background: "rgba(245,247,255,0.95)",
+        background: "rgba(255,255,255,0.92)",
         backdropFilter: "blur(24px) saturate(200%)",
-        borderBottom: "1px solid rgba(148,163,184,0.2)",
-        boxShadow: "0 4px 20px rgba(15,23,42,0.06)",
+        borderBottom: "1px solid rgba(13,81,140,0.1)",
+        boxShadow: "0 4px 24px rgba(13,81,140,0.1), 0 1px 0 rgba(255,255,255,0.6)",
       }
     : {
-        background: "rgba(245,247,255,0.7)",
+        background: "rgba(255,255,255,0.6)",
         backdropFilter: "blur(20px) saturate(180%)",
-        borderBottom: "1px solid rgba(148,163,184,0.1)",
+        borderBottom: "1px solid rgba(13,81,140,0.06)",
+        boxShadow: "none",
       };
 
   return (
@@ -268,6 +269,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/products"
+                className="btn-ripple btn-shimmer btn-press"
                 style={{
                   padding: "8px 20px",
                   background: "var(--grad-primary)",

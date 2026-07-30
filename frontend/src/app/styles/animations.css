@@ -130,6 +130,60 @@
 .animate-marquee { animation: marquee 30s linear infinite; }
 .animate-scaleIn { animation: scaleIn 0.35s ease-out; }
 
+/* Ripple effect on button click */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+.btn-ripple::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  background: rgba(255,255,255,0.35);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.btn-ripple:active::after {
+  width: 300px;
+  height: 300px;
+  opacity: 0;
+  transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease;
+}
+
+/* Scale feedback on click */
+.btn-press {
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+.btn-press:active {
+  transform: scale(0.96) !important;
+}
+
+/* Shimmer sweep on hover */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+.btn-shimmer:hover::before {
+  left: 100%;
+}
+
 .glass {
   background: rgba(15, 23, 42, 0.8);
   backdrop-filter: blur(12px);

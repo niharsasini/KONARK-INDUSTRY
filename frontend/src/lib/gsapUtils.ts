@@ -31,11 +31,14 @@ export async function animateIn(
       trigger = selector,
     } = options
 
-    const fromVars: any = { opacity, delay, duration, ease }
+    // blur is intentionally not applied here: filter:blur() during a
+    // scrollTrigger-driven animation forces a new GPU layer every frame
+    // and was the cause of scroll stutter across the site.
+    void blur
+    const fromVars: any = { opacity, delay, duration, ease, clearProps: 'transform,filter,opacity' }
     if (y !== 0) fromVars.y = y
     if (x !== 0) fromVars.x = x
     if (scale !== 1) fromVars.scale = scale
-    if (blur > 0) fromVars.filter = `blur(${blur}px)`
     if (stagger > 0) fromVars.stagger = stagger
 
     const triggerEl = document.querySelector(trigger)
@@ -45,6 +48,7 @@ export async function animateIn(
       trigger: triggerEl,
       start,
       toggleActions: 'play none none none',
+      once: true,
     }
 
     const els = document.querySelectorAll(selector)

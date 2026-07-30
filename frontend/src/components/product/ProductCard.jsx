@@ -237,7 +237,7 @@ const ProductCard = ({ product }) => {
 
         {isUpcoming ? (
           <button
-            className="product-card-btn"
+            className="product-card-btn btn-press"
             onClick={(e) => { e.stopPropagation(); router.push("/contact?interest=" + product.slug); }}
             style={{ width: "100%", height: 44, padding: "0 11px", background: "transparent", color: "#475569", border: "1.5px solid rgba(148,163,184,0.5)", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(148,163,184,0.12)"; e.currentTarget.style.color = "#0F172A"; }}
@@ -251,7 +251,7 @@ const ProductCard = ({ product }) => {
           </button>
         ) : product.type === "vehicle" ? (
           <button
-            className="product-card-btn"
+            className="product-card-btn btn-ripple btn-shimmer btn-press"
             onClick={(e) => { e.stopPropagation(); goToDetails(); }}
             style={{ width: "100%", height: 44, padding: "0 11px", background: "linear-gradient(135deg, #0D518C, #0EA5E9)", color: "#FFFFFF", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 14px rgba(13,81,140,0.3)", transition: "all 0.25s ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 22px rgba(13,81,140,0.4)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
@@ -261,7 +261,7 @@ const ProductCard = ({ product }) => {
           </button>
         ) : product.type === "service" ? (
           <button
-            className="product-card-btn"
+            className="product-card-btn btn-ripple btn-shimmer btn-press"
             onClick={(e) => { e.stopPropagation(); goToDetails(); }}
             style={{ width: "100%", height: 44, padding: "0 11px", background: "linear-gradient(135deg, #D97706, #FF8F00)", color: "#F5F7FF", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.25s ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 22px rgba(217,119,6,0.3)"; }}
@@ -271,7 +271,7 @@ const ProductCard = ({ product }) => {
           </button>
         ) : (
           <button
-            className="product-card-btn"
+            className="product-card-btn btn-press"
             onClick={handleAddToCart}
             style={{
               width: "100%", height: 44, padding: "0 11px", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer",

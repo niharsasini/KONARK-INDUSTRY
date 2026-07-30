@@ -280,7 +280,7 @@ export default function Hero() {
             style={{ display: "flex", gap: 14, flexWrap: "wrap", animation: "fadeInUp 0.6s ease 0.3s both" }}
           >
             <button
-              className="hero-btn-primary"
+              className="hero-btn-primary btn-ripple btn-shimmer btn-press"
               onClick={() => router.push("/products")}
               style={{
                 height: 48, background: "linear-gradient(135deg, #0D518C, #1A6AB5)",
@@ -296,7 +296,7 @@ export default function Hero() {
               Shop Products →
             </button>
             <button
-              className="hero-btn-ghost"
+              className="hero-btn-ghost btn-press"
               onClick={() => router.push("/services/enquiry")}
               style={{
                 height: 48, background: "#FFFFFF", color: "var(--navy)",
