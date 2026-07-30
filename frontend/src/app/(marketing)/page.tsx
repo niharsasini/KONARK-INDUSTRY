@@ -11,6 +11,8 @@ import Testimonials from "@/components/sections/testimonials/Testimonials";
 import OurPartners from "@/components/sections/partners/OurPartners";
 import NewsletterSection from "@/components/sections/NewsletterSection";
 import CTABanner from "@/components/sections/CTABanner";
+import { SectionCover } from "@/components/ui/SectionCover";
+import { SectionDots } from "@/components/ui/SectionDots";
 
 export const metadata: Metadata = {
   title: "Konark Industry — Power Your World | EVs, Batteries & Services, Odisha",
@@ -21,18 +23,53 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <main style={{ background: "var(--bg-page)" }}>
+      <SectionDots />
+
       <Hero />
-      <MarqueeStrip />
-      <StatsSection />
-      <FeaturedProducts />
-      <ServicesPreview />
-      <WhyKonark />
-      <CertificationsSection />
-      <SolutionsSection />
-      <Testimonials />
-      <OurPartners />
-      <NewsletterSection />
-      <CTABanner />
+
+      <SectionCover>
+        <MarqueeStrip />
+      </SectionCover>
+
+      <SectionCover id="stats" background="#F5F7FF" roundedTop>
+        <StatsSection />
+      </SectionCover>
+
+      <SectionCover id="products" background="#EEF2FF" roundedTop>
+        <FeaturedProducts />
+      </SectionCover>
+
+      <SectionCover id="services" background="#F0F5FF" roundedTop>
+        <ServicesPreview />
+      </SectionCover>
+
+      <SectionCover id="why" background="#0B1729" roundedTop>
+        <WhyKonark />
+      </SectionCover>
+
+      <SectionCover>
+        <CertificationsSection />
+      </SectionCover>
+
+      <SectionCover background="#F5F7FF" roundedTop>
+        <SolutionsSection />
+      </SectionCover>
+
+      <SectionCover id="testimonials" background="#EEF2FF" roundedTop>
+        <Testimonials />
+      </SectionCover>
+
+      <SectionCover>
+        <OurPartners />
+      </SectionCover>
+
+      <SectionCover background="#FFFFFF" roundedTop>
+        <NewsletterSection />
+      </SectionCover>
+
+      <SectionCover background="#0B1729" roundedTop>
+        <CTABanner />
+      </SectionCover>
     </main>
   );
 }

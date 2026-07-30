@@ -225,6 +225,51 @@ h4 { font-weight: 600; }
 p { line-height: 1.6; }
 small { font-size: 12px; }
 
+/* ━━━ CINEMATIC SECTION TRANSITIONS ━━━ */
+
+.section-hidden {
+  opacity: 0;
+  transform: translateY(60px);
+  transition:
+    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.section-visible {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto;
+}
+
+/* Sits above the pinned hero so it visually slides over it while scrolling */
+.section-cover {
+  position: relative;
+  z-index: 2;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-hidden {
+    opacity: 0;
+    transform: none;
+  }
+  .section-visible {
+    opacity: 1;
+  }
+}
+
+.section-dots-nav {
+  display: flex;
+}
+@media (max-width: 768px) {
+  .section-dots-nav {
+    display: none !important;
+  }
+}
+
 .section-title {
   font-size: clamp(26px, 3.5vw, 44px);
   font-weight: 800;
