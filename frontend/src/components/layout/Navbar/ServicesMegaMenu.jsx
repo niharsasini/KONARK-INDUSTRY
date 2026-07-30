@@ -21,12 +21,15 @@ function SvcItem({ icon, name, desc, href, external }) {
       }}
     >
       <div style={{
-        width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+        width: 38, height: 38, borderRadius: 10, flexShrink: 0,
         background: hovered
           ? "linear-gradient(135deg, var(--gold), var(--gold-dark))"
-          : "linear-gradient(135deg, var(--bg-surface), var(--bg-card))",
+          : "linear-gradient(145deg, #F0F5FF, #E8F2FF)",
+        border: hovered ? "1px solid transparent" : "1px solid rgba(13,81,140,0.08)",
+        boxShadow: hovered ? "0 4px 12px rgba(217,119,6,0.25)" : "2px 2px 6px rgba(13,81,140,0.06)",
         display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: 18, transition: "all 0.15s ease",
+        fontSize: 18, transition: "all 0.18s ease",
+        transform: hovered ? "scale(1.08)" : "scale(1)",
       }}>
         <span style={{ filter: hovered ? "brightness(10)" : "none", transition: "filter 0.15s ease" }}>{icon}</span>
       </div>
@@ -60,16 +63,18 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
       onMouseLeave={onMouseLeave}
       style={{
         position: "absolute",
-        top: "calc(100% + 4px)",
+        top: "calc(100% + 8px)",
         left: "50%",
-        width: 520,
+        width: 560,
         background: "rgba(255,255,255,0.97)",
         backdropFilter: "blur(24px)",
-        border: "1px solid rgba(148,163,184,0.2)",
+        border: "1px solid rgba(13,81,140,0.1)",
         borderRadius: 20,
-        boxShadow: "0 24px 60px rgba(15,23,42,0.7), 0 0 0 1px rgba(13,81,140,0.05)",
+        boxShadow:
+          "0 24px 64px rgba(13,81,140,0.12), 0 8px 24px rgba(13,81,140,0.06), 0 0 0 1px rgba(255,255,255,0.8), inset 0 1px 0 rgba(255,255,255,0.9)",
         padding: 8,
-        zIndex: 1000,
+        zIndex: 999,
+        overflow: "hidden",
         ...(isOpen ? visible : hidden),
       }}
     >
@@ -78,12 +83,11 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
 
       {/* Header */}
       <div style={{
-        background: "rgba(217,119,6,0.12)",
-        border: "1px solid rgba(217,119,6,0.2)",
-        borderRadius: 14, padding: "16px 20px", marginBottom: 8,
+        background: "linear-gradient(135deg, #FFF8EE, #FFF3E0)",
+        borderRadius: 14, padding: "16px 20px", marginBottom: 6,
       }}>
-        <div style={{ fontSize: 18, fontWeight: 800, color: "var(--text-heading)", marginBottom: 2 }}>Our Services</div>
-        <div style={{ fontSize: 12, color: "var(--slate)" }}>Doorstep service across 18+ cities in Odisha</div>
+        <div style={{ fontSize: 17, fontWeight: 800, color: "var(--text-heading)", marginBottom: 2 }}>Our Services</div>
+        <div style={{ fontSize: 12, color: "var(--text-subtle)" }}>Doorstep service across Odisha</div>
       </div>
 
       {/* 2-column grid */}
@@ -152,34 +156,25 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
 
       {/* Footer */}
       <div style={{
-        borderTop: "1px solid rgba(148,163,184,0.12)",
-        padding: "12px 20px 8px",
+        borderTop: "1px solid rgba(13,81,140,0.06)",
+        padding: "12px 16px 14px",
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
         <Link
           href="/services"
-          style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none", fontWeight: 500, transition: "color 0.15s" }}
+          style={{ fontSize: 12, color: "var(--text-subtle)", textDecoration: "none", fontWeight: 500, transition: "color 0.15s" }}
           onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-subtle)")}
         >
           View all services →
         </Link>
         <Link
           href="/services/enquiry"
+          className="clay-btn clay-btn-primary"
           style={{
-            background: "var(--grad-primary)",
-            color: "#FFFFFF", padding: "8px 20px", borderRadius: 8,
-            textDecoration: "none", fontWeight: 700, fontSize: 13,
-            boxShadow: "0 4px 12px rgba(13,81,140,0.25)",
-            transition: "all 0.2s ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-1px)";
-            e.currentTarget.style.boxShadow = "0 6px 20px rgba(13,81,140,0.35)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 4px 12px rgba(13,81,140,0.25)";
+            padding: "8px 20px", fontSize: 13,
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            textDecoration: "none", color: "#FFFFFF",
           }}
         >
           Book a Service →

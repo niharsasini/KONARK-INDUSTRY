@@ -1,9 +1,13 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import toast from "react-hot-toast";
 import { products, CATEGORIES } from "@/components/product/ProductData";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { useFeaturedProducts } from "@/hooks/useFeaturedProducts";
+import { useCartStore, useWishlistStore } from "@/store";
+import { useAuthGate } from "@/hooks/useAuthGate";
 
 const TRUST_PILLS = ["ISI Certified", "2-Year Warranty", "Doorstep Service"];
 
@@ -24,47 +28,74 @@ const CAR_IMAGES = [
   "/konark/car-8.png",
 ];
 
-const vehicleProducts = products
-  .filter((p) => p.type === "vehicle" && p.category !== CATEGORIES.INDUSTRIAL)
-  .slice(0, 4);
-const industrialProducts = products.filter(
-  (p) => p.type === "vehicle" && p.category === CATEGORIES.INDUSTRIAL
-);
+const CAR_CARDS = CAR_IMAGES.map((src) => ({
+  type: "car",
+  src,
+  name: "EV Car — Coming Soon",
+  price: null,
+  slug: null,
+  category: "Electric",
+  rating: null,
+  isUpcoming: true,
+  canAddToCart: false,
+  cartPayload: null,
+  badge: "UPCOMING",
+  badgeBg: "rgba(124,58,237,0.9)",
+  specs: ["Electric", "New Model 2025"],
+}));
 
-const ROTATING_WORDS = ["Konark.", "Innovation.", "Sustainability."];
-
-const DECK = [
-  ...vehicleProducts.map((p) => ({
-    type: "product",
-    src: p.image,
-    name: p.name,
-    price: p.price,
-    slug: p.slug,
-    badge: "FEATURED",
-    badgeColor: "var(--gold)",
-    specs: [p.category.replace("Electric Vehicles", "Electric"), `⭐ ${p.rating}`],
-  })),
-  ...industrialProducts.map((p) => ({
+// Admin hasn't curated any "featured" products yet — show a sensible
+// static selection so the deck is never empty on a fresh install.
+function buildStaticDeck() {
+  const vehicleProducts = products
+    .filter((p) => p.type === "vehicle" && p.category !== CATEGORIES.INDUSTRIAL)
+    .slice(0, 4);
+  const industrialProducts = products.filter(
+    (p) => p.type === "vehicle" && p.category === CATEGORIES.INDUSTRIAL
+  );
+  return [...vehicleProducts, ...industrialProducts].map((p) => ({
     type: "product",
     src: p.image,
     name: p.name,
     price: p.isUpcoming ? null : p.price,
     slug: p.slug,
+    category: p.category,
+    rating: p.rating,
+    isUpcoming: !!p.isUpcoming,
+    canAddToCart: false, // vehicles go through the test-ride flow, not cart
+    cartPayload: null,
     badge: p.isUpcoming ? "UPCOMING" : p.isNew ? "NEW" : "FEATURED",
-    badgeColor: p.isUpcoming ? "var(--sky)" : "var(--gold)",
-    specs: [p.category, `⭐ ${p.rating}`],
-  })),
-  ...CAR_IMAGES.map((src) => ({
-    type: "car",
-    src,
-    name: "EV Car — Coming Soon",
-    price: null,
-    slug: null,
-    badge: "UPCOMING",
-    badgeColor: "var(--sky)",
-    specs: ["Electric", "New Model 2025"],
-  })),
-];
+    badgeBg: p.isUpcoming
+      ? "rgba(124,58,237,0.9)"
+      : p.isNew
+      ? "rgba(5,150,105,0.9)"
+      : "linear-gradient(135deg, #0D518C, #0EA5E9)",
+    specs: [p.category.replace("Electric Vehicles", "Electric"), `⭐ ${p.rating}`],
+  }));
+}
+
+// Admin-curated products from GET /products?featured=true
+function buildBackendDeck(items) {
+  return items.slice(0, 5).map((p) => ({
+    type: "product",
+    src: p.images?.[0] || "",
+    name: p.name,
+    price: p.price > 0 ? p.price : null,
+    slug: p.slug,
+    category: p.category,
+    rating: p.rating,
+    isUpcoming: false,
+    canAddToCart: p.type === "product" && p.in_stock,
+    cartPayload: p.type === "product" && p.in_stock
+      ? { id: p.id || p.slug, slug: p.slug, name: p.name, price: p.price, image: p.images?.[0] || "", category: p.category, type: p.type }
+      : null,
+    badge: p.is_new ? "NEW" : "FEATURED",
+    badgeBg: p.is_new ? "rgba(5,150,105,0.9)" : "linear-gradient(135deg, #0D518C, #0EA5E9)",
+    specs: [p.category, `⭐ ${p.rating || "4.5"}`],
+  }));
+}
+
+const ROTATING_WORDS = ["Konark.", "Innovation.", "Sustainability."];
 
 const CARD_ANIM = {
   idle: { opacity: 1, transform: "translateX(0) rotate(0deg) scale(1)", transition: "all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)" },
@@ -75,10 +106,22 @@ const CARD_ANIM = {
 export default function Hero() {
   const router = useRouter();
   const settings = useSiteSettings();
+  const featuredProducts = useFeaturedProducts();
+  const { addItem } = useCartStore();
+  const { toggle: toggleWishlist, isInWishlist } = useWishlistStore();
+  const { requireAuth } = useAuthGate();
   const heroTagline = settings?.hero_tagline || "Powering Odisha since 2014";
   const heroSubheading = settings?.hero_subheading ||
     "We make EVs, batteries and appliances in Bhubaneswar.\nOne company. Every power need.";
   const rotatingWords = (settings?.hero_rotating_words?.length ? settings.hero_rotating_words : ROTATING_WORDS);
+
+  const DECK = useMemo(() => {
+    const productCards = featuredProducts && featuredProducts.length > 0
+      ? buildBackendDeck(featuredProducts)
+      : buildStaticDeck();
+    return [...productCards, ...CAR_CARDS];
+  }, [featuredProducts]);
+
   const [current, setCurrent] = useState(0);
   const [animState, setAnimState] = useState("idle");
   const [wordIndex, setWordIndex] = useState(0);
@@ -98,6 +141,10 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
+    if (current >= DECK.length) setCurrent(0);
+  }, [DECK.length, current]);
+
+  useEffect(() => {
     const timer = setInterval(() => {
       setAnimState("exit");
       setTimeout(() => {
@@ -107,7 +154,7 @@ export default function Hero() {
       }, 400);
     }, 4500);
     return () => clearInterval(timer);
-  }, []);
+  }, [DECK.length]);
 
   useEffect(() => {
     const wordTimer = setInterval(() => {
@@ -140,6 +187,23 @@ export default function Hero() {
   };
 
   const card = DECK[current];
+  if (!card) return null;
+
+  const handleQuickAdd = (e) => {
+    e.stopPropagation();
+    if (!card.cartPayload) return;
+    requireAuth(() => {
+      addItem(card.cartPayload);
+      toast.success(`${card.name} added to cart!`);
+    }, `/products/${card.slug}`);
+  };
+
+  const handleWishlist = (e) => {
+    e.stopPropagation();
+    if (!card.slug) return;
+    toggleWishlist(card.slug);
+    toast(isInWishlist(card.slug) ? "Removed from wishlist" : `${card.name} saved ❤️`);
+  };
 
   return (
     <section
@@ -280,38 +344,18 @@ export default function Hero() {
             style={{ display: "flex", gap: 14, flexWrap: "wrap", animation: "fadeInUp 0.6s ease 0.3s both" }}
           >
             <button
-              className="hero-btn-primary btn-ripple btn-shimmer btn-press"
+              className="clay-btn clay-btn-primary"
               onClick={() => router.push("/products")}
               style={{
-                height: 48, background: "linear-gradient(135deg, #0D518C, #1A6AB5)",
-                color: "#FFFFFF", padding: "0 28px", border: "1px solid rgba(13,81,140,0.2)",
-                borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer",
-                boxShadow: "0 8px 24px rgba(13,81,140,0.35), inset 0 1px 0 rgba(255,255,255,0.1)",
-                transition: "all 0.3s ease",
-                animation: "glowPulse 3s ease-in-out infinite",
+                height: 50, padding: "0 28px", fontSize: 15, letterSpacing: "0.1px", color: "#FFFFFF",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 14px 36px rgba(13,81,140,0.45)"; e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(13,81,140,0.35), inset 0 1px 0 rgba(255,255,255,0.1)"; e.currentTarget.style.borderColor = "rgba(13,81,140,0.2)"; }}
             >
               Shop Products →
             </button>
             <button
-              className="hero-btn-ghost btn-press"
+              className="ghost-btn-navy"
               onClick={() => router.push("/services/enquiry")}
-              style={{
-                height: 48, background: "#FFFFFF", color: "var(--navy)",
-                padding: "0 28px", borderRadius: 12, fontSize: 14, fontWeight: 500, cursor: "pointer",
-                border: "1.5px solid rgba(13,81,140,0.2)", backdropFilter: "blur(8px)",
-                transition: "all 0.3s ease", boxShadow: "var(--shadow-sm)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(13,81,140,0.04)";
-                e.currentTarget.style.borderColor = "var(--navy)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#FFFFFF";
-                e.currentTarget.style.borderColor = "rgba(13,81,140,0.2)";
-              }}
+              style={{ height: 50, padding: "0 28px", fontSize: 15 }}
             >
               Book a Service
             </button>
@@ -320,13 +364,19 @@ export default function Hero() {
           {/* Trust pills */}
           <div
             className="hero-trust-row"
-            style={{ marginTop: 24, display: "flex", gap: 20, flexWrap: "wrap", animation: "fadeInUp 0.6s ease 0.4s both" }}
+            style={{ marginTop: 28, display: "flex", gap: 12, flexWrap: "wrap", animation: "fadeInUp 0.6s ease 0.4s both" }}
           >
             {TRUST_PILLS.map((pill) => (
               <span
                 className="hero-trust-pill"
                 key={pill}
-                style={{ color: "var(--text-subtle)", fontSize: 12, display: "flex", alignItems: "center", gap: 6 }}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 7,
+                  background: "#FFFFFF", border: "1px solid rgba(13,81,140,0.08)",
+                  borderRadius: 999, padding: "6px 16px",
+                  boxShadow: "3px 3px 8px rgba(13,81,140,0.07), -2px -2px 6px rgba(255,255,255,0.9)",
+                  color: "var(--text-muted)", fontSize: 12, fontWeight: 500,
+                }}
               >
                 <span style={{ color: "var(--green)", fontWeight: 700 }}>✓</span>
                 {pill}
@@ -385,17 +435,16 @@ export default function Hero() {
               );
             })}
 
-            {/* Front card — glassmorphism, physical card throw animation */}
+            {/* Front card — premium neumorphic showcase card, physical throw animation */}
             <div style={{ position: "relative", zIndex: 4, ...CARD_ANIM[animState] }}>
               <div
                 className="hero-product-card-inner"
                 style={{
-                  background: "rgba(255,255,255,0.85)",
-                  backdropFilter: "blur(24px)",
-                  border: "1px solid rgba(148,163,184,0.2)",
-                  borderRadius: 24,
+                  background: "#FFFFFF",
+                  borderRadius: 28,
                   overflow: "hidden",
-                  boxShadow: "0 20px 48px rgba(15,23,42,0.12), 0 8px 16px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,0.8)",
+                  boxShadow:
+                    "12px 12px 32px rgba(13,81,140,0.12), -8px -8px 24px rgba(255,255,255,0.95), 0 0 0 1px rgba(13,81,140,0.06)",
                   cursor: card.slug ? "pointer" : "default",
                   animation: animState === "idle" ? "floatCard 7s ease-in-out infinite" : "none",
                 }}
@@ -404,64 +453,141 @@ export default function Hero() {
                 {/* Image area */}
                 <div className="hero-product-card-imgwrap" style={{
                   height: 220, position: "relative", overflow: "hidden",
-                  background: "linear-gradient(135deg, var(--bg-surface), var(--bg-card))",
+                  background: "linear-gradient(135deg, #EEF2FF 0%, #F0F5FF 50%, #EEF4FF 100%)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
                 }}>
                   <img
                     src={card.src}
                     alt={card.name}
-                    style={{ width: "100%", height: "100%", objectFit: "contain", padding: 16, boxSizing: "border-box", filter: "drop-shadow(0 4px 24px rgba(0,0,0,0.35))" }}
+                    style={{ maxWidth: "85%", maxHeight: "85%", objectFit: "contain", filter: "drop-shadow(0 8px 20px rgba(13,81,140,0.15))" }}
                   />
-                  <span style={{
-                    position: "absolute", top: 12, left: 12,
-                    background: "var(--navy)", color: "#FFFFFF",
-                    fontSize: 10, fontWeight: 800, padding: "4px 12px",
-                    borderRadius: 20, letterSpacing: "1.2px", textTransform: "uppercase",
-                    display: "inline-block",
-                  }}>
-                    {card.badge}
-                  </span>
+
+                  {/* Category + status badges */}
+                  <div style={{ position: "absolute", top: 14, left: 14, display: "flex", gap: 8 }}>
+                    {card.category && (
+                      <span style={{
+                        background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)",
+                        border: "1px solid rgba(13,81,140,0.12)", color: "var(--navy)",
+                        fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 20,
+                        letterSpacing: "0.8px", textTransform: "uppercase",
+                        boxShadow: "0 2px 8px rgba(13,81,140,0.08)",
+                      }}>
+                        {card.category}
+                      </span>
+                    )}
+                    <span style={{
+                      background: card.badgeBg, color: "#FFFFFF",
+                      fontSize: 10, fontWeight: 800, padding: "4px 12px",
+                      borderRadius: 20, letterSpacing: "1.2px", textTransform: "uppercase",
+                    }}>
+                      {card.badge}
+                    </span>
+                  </div>
+
+                  {/* Wishlist button */}
+                  {card.slug && (
+                    <button
+                      onClick={handleWishlist}
+                      aria-label="Toggle wishlist"
+                      style={{
+                        position: "absolute", top: 14, right: 14,
+                        width: 36, height: 36, borderRadius: "50%",
+                        background: "rgba(255,255,255,0.85)", backdropFilter: "blur(10px)",
+                        border: "1px solid rgba(13,81,140,0.08)",
+                        boxShadow: "2px 2px 8px rgba(13,81,140,0.08)",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: 16, cursor: "pointer", transition: "all 0.2s ease",
+                        color: isInWishlist(card.slug) ? "#DC2626" : "#94A3B8",
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                    >
+                      ❤
+                    </button>
+                  )}
                 </div>
 
                 {/* Info panel */}
-                <div style={{ padding: "20px 24px 24px", background: "#F5F7FF" }}>
-                  <p style={{ color: "var(--text-heading)", fontSize: 20, fontWeight: 800, margin: "0 0 4px", lineHeight: 1.2 }}>
+                <div style={{ padding: "20px 22px 22px", background: "#FFFFFF", borderTop: "1px solid rgba(13,81,140,0.04)" }}>
+                  {card.category && (
+                    <p style={{ fontSize: 10, fontWeight: 700, color: "var(--navy)", letterSpacing: "1.5px", textTransform: "uppercase", margin: "0 0 6px" }}>
+                      {card.category}
+                    </p>
+                  )}
+                  <p style={{ color: "var(--text-heading)", fontSize: 20, fontWeight: 800, letterSpacing: "-0.3px", margin: "0 0 8px", lineHeight: 1.2 }}>
                     {card.name}
                   </p>
-                  <p style={{ color: "var(--gold)", fontSize: 18, fontWeight: 700, margin: "0 0 14px" }}>
-                    {card.price ? `₹${card.price.toLocaleString("en-IN")}` : "Coming Soon"}
-                  </p>
-                  <div style={{ display: "flex", gap: 8, marginBottom: 0, flexWrap: "wrap" }}>
+
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    {card.price ? (
+                      <span style={{ color: "var(--gold)", fontSize: 22, fontWeight: 900, letterSpacing: "-0.5px" }}>
+                        ₹{card.price.toLocaleString("en-IN")}
+                      </span>
+                    ) : card.isUpcoming ? (
+                      <span style={{ color: "#7C3AED", fontSize: 15, fontWeight: 700 }}>Coming Soon</span>
+                    ) : (
+                      <span style={{ color: "var(--text-subtle)", fontSize: 13, fontWeight: 700 }}>Price on Request</span>
+                    )}
+                    {!card.isUpcoming && card.rating && (
+                      <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 13, color: "var(--text-muted)" }}>
+                        <span style={{ color: "var(--gold)" }}>★</span>{card.rating}
+                      </span>
+                    )}
+                  </div>
+
+                  <div style={{ display: "flex", gap: 6, marginTop: 12, flexWrap: "wrap" }}>
                     {card.specs.map((s) => (
                       <span key={s} style={{
-                        fontSize: 11, color: "var(--text-muted)",
-                        background: "rgba(148,163,184,0.15)", border: "1px solid rgba(148,163,184,0.25)",
-                        padding: "3px 10px", borderRadius: 20,
+                        fontSize: 11, color: "var(--text-muted)", fontWeight: 500,
+                        background: "#F5F7FF", border: "1px solid rgba(13,81,140,0.1)",
+                        padding: "4px 12px", borderRadius: 999,
+                        boxShadow: "2px 2px 5px rgba(13,81,140,0.06), -1px -1px 4px rgba(255,255,255,0.9)",
                       }}>
                         {s}
                       </span>
                     ))}
                   </div>
-                  {card.slug ? (
-                    <Link
-                      href={`/products/${card.slug}`}
-                      onClick={(e) => e.stopPropagation()}
-                      style={{ fontSize: 14, color: "var(--sky)", textDecoration: "none", fontWeight: 600, marginTop: 14, display: "inline-flex", alignItems: "center", gap: 4 }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-heading)")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--sky)")}
-                    >
-                      View Product →
-                    </Link>
-                  ) : (
-                    <Link
-                      href="/contact?interest=ev-car"
-                      onClick={(e) => e.stopPropagation()}
-                      style={{ fontSize: 14, color: "var(--sky)", textDecoration: "none", fontWeight: 600, marginTop: 14, display: "inline-flex", alignItems: "center", gap: 4 }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-heading)")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--sky)")}
-                    >
-                      Register Interest →
-                    </Link>
-                  )}
+
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 14 }}>
+                    {card.slug ? (
+                      <Link
+                        href={`/products/${card.slug}`}
+                        onClick={(e) => e.stopPropagation()}
+                        style={{ fontSize: 13, color: "var(--navy)", textDecoration: "none", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 4, transition: "gap 0.2s ease" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.color = "var(--navy-dark)"; e.currentTarget.style.gap = "8px"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.color = "var(--navy)"; e.currentTarget.style.gap = "4px"; }}
+                      >
+                        View Product →
+                      </Link>
+                    ) : (
+                      <Link
+                        href="/contact?interest=ev-car"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{ fontSize: 13, color: "var(--navy)", textDecoration: "none", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 4, transition: "gap 0.2s ease" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.color = "var(--navy-dark)"; e.currentTarget.style.gap = "8px"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.color = "var(--navy)"; e.currentTarget.style.gap = "4px"; }}
+                      >
+                        Register Interest →
+                      </Link>
+                    )}
+
+                    {card.canAddToCart && (
+                      <button
+                        onClick={handleQuickAdd}
+                        aria-label="Quick add to cart"
+                        style={{
+                          width: 36, height: 36, borderRadius: 10, border: "none",
+                          background: "linear-gradient(135deg, #0D518C, #0EA5E9)", color: "#FFFFFF",
+                          fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center",
+                          boxShadow: "0 4px 12px rgba(13,81,140,0.25)", cursor: "pointer", transition: "all 0.2s ease",
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.1)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(13,81,140,0.3)"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(13,81,140,0.25)"; }}
+                      >
+                        +
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -474,11 +600,12 @@ export default function Hero() {
                 key={i}
                 onClick={() => setCurrent(i)}
                 style={{
-                  width: i === current ? 20 : 6,
+                  width: i === current ? 24 : 6,
                   height: 6, borderRadius: i === current ? 3 : "50%",
-                  background: i === current ? "var(--sky)" : "rgba(148,163,184,0.4)",
+                  background: i === current ? "linear-gradient(90deg, #0D518C, #0EA5E9)" : "rgba(13,81,140,0.18)",
+                  boxShadow: i === current ? "0 2px 6px rgba(13,81,140,0.3)" : "none",
                   cursor: "pointer",
-                  transition: "all 300ms",
+                  transition: "all 0.3s ease",
                 }}
               />
             ))}
@@ -494,22 +621,26 @@ export default function Hero() {
                   flex: 1, minWidth: 0, display: "flex", alignItems: "center", justifyContent: "center",
                   gap: 8, padding: "10px 18px",
                   background: "#FFFFFF",
-                  backdropFilter: "blur(12px)",
-                  border: "1px solid rgba(148,163,184,0.2)", borderRadius: 12,
-                  textDecoration: "none", fontSize: 12,
-                  color: "var(--text-muted)", fontWeight: 600, textAlign: "center",
-                  transition: "all 0.2s ease", boxShadow: "var(--shadow-sm)",
+                  border: "1px solid rgba(13,81,140,0.1)", borderRadius: 14,
+                  textDecoration: "none", fontSize: 13,
+                  color: "var(--text-body)", fontWeight: 600, textAlign: "center",
+                  transition: "all 0.25s cubic-bezier(0.34,1.56,0.64,1)",
+                  boxShadow: "4px 4px 12px rgba(13,81,140,0.08), -3px -3px 10px rgba(255,255,255,0.9)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(13,81,140,0.4)";
-                  e.currentTarget.style.color = "var(--sky)";
+                  e.currentTarget.style.transform = "translateY(-3px) scale(1.02)";
+                  e.currentTarget.style.boxShadow = "6px 6px 16px rgba(13,81,140,0.12), -4px -4px 12px rgba(255,255,255,0.95)";
+                  e.currentTarget.style.borderColor = "rgba(13,81,140,0.2)";
+                  e.currentTarget.style.color = "var(--navy)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(148,163,184,0.2)";
+                  e.currentTarget.style.transform = "translateY(0) scale(1)";
+                  e.currentTarget.style.boxShadow = "4px 4px 12px rgba(13,81,140,0.08), -3px -3px 10px rgba(255,255,255,0.9)";
+                  e.currentTarget.style.borderColor = "rgba(13,81,140,0.1)";
                   e.currentTarget.style.color = "var(--text-body)";
                 }}
               >
-                <span style={{ fontSize: 16, color: "var(--gold)" }}>{c.icon}</span>
+                <span style={{ fontSize: 18 }}>{c.icon}</span>
                 {c.label} →
               </Link>
             ))}

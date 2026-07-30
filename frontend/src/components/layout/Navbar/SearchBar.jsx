@@ -50,15 +50,7 @@ export default function SearchBar({ searchOpen, setSearchOpen, searchQuery, setS
         <button
           onClick={() => setSearchOpen(true)}
           aria-label="Search"
-          style={{
-            width: 40, height: 40, color: "var(--slate)",
-            background: "var(--bg-card)", border: "none", borderRadius: 12, boxShadow: "var(--neu-shadow)",
-            cursor: "pointer", transition: "all 0.2s ease", display: "flex", alignItems: "center", justifyContent: "center",
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.color = "var(--sky)"; e.currentTarget.style.boxShadow = "var(--neu-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = "var(--slate)"; e.currentTarget.style.boxShadow = "var(--neu-shadow)"; e.currentTarget.style.transform = "translateY(0)"; }}
-          onMouseDown={(e) => { e.currentTarget.style.boxShadow = "var(--neu-pressed)"; e.currentTarget.style.transform = "scale(0.97)"; }}
-          onMouseUp={(e) => { e.currentTarget.style.boxShadow = "var(--neu-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+          className="navbar-icon-btn"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18 }}>
             <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />

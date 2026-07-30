@@ -46,7 +46,7 @@ export default function Navbar() {
     : [];
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -110,14 +110,17 @@ export default function Navbar() {
 
   const navStyle = scrolled
     ? {
-        background: "rgba(255,255,255,0.92)",
-        backdropFilter: "blur(24px) saturate(200%)",
+        background: "rgba(255,255,255,0.94)",
+        backdropFilter: "blur(28px) saturate(200%)",
+        WebkitBackdropFilter: "blur(28px) saturate(200%)",
         borderBottom: "1px solid rgba(13,81,140,0.1)",
-        boxShadow: "0 4px 24px rgba(13,81,140,0.1), 0 1px 0 rgba(255,255,255,0.6)",
+        boxShadow:
+          "0 4px 24px rgba(13,81,140,0.07), 0 1px 0 rgba(255,255,255,0.8), inset 0 -1px 0 rgba(13,81,140,0.06)",
       }
     : {
-        background: "rgba(255,255,255,0.6)",
+        background: "rgba(255,255,255,0.55)",
         backdropFilter: "blur(20px) saturate(180%)",
+        WebkitBackdropFilter: "blur(20px) saturate(180%)",
         borderBottom: "1px solid rgba(13,81,140,0.06)",
         boxShadow: "none",
       };
@@ -126,13 +129,9 @@ export default function Navbar() {
     <>
       <nav className="navbar-root" style={{
         position: "fixed", top: "var(--banner-h, 0px)", left: 0, right: 0,
-        zIndex: 999, transition: "all 0.4s ease, top 0.3s ease", ...navStyle,
+        zIndex: 1000, transition: "all 0.4s cubic-bezier(0.4,0,0.2,1), top 0.3s ease", ...navStyle,
       }}>
-        <div style={{
-          maxWidth: 1280, margin: "0 auto", padding: "0 24px",
-          height: 68, display: "flex", alignItems: "center",
-          justifyContent: "space-between", gap: 24,
-        }}>
+        <div className="navbar-inner">
           <div
             style={{ transition: "transform 0.2s ease", display: "flex" }}
             onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
@@ -152,36 +151,10 @@ export default function Navbar() {
                   onMouseLeave={handleNavLeave}
                 >
                   <button
-                    style={{
-                      display: "flex", alignItems: "center", gap: 4,
-                      padding: "8px 14px", fontSize: 14, fontWeight: activeDropdown === link.hasDropdown ? 700 : 500,
-                      color: activeDropdown === link.hasDropdown ? "var(--sky)" : "var(--text-muted)",
-                      borderRadius: 8, border: "none",
-                      background: activeDropdown === link.hasDropdown ? "rgba(148,163,184,0.08)" : "transparent",
-                      cursor: "pointer", letterSpacing: "0.2px",
-                      transition: "all 0.2s ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = "var(--text-heading)";
-                      e.currentTarget.style.background = "rgba(148,163,184,0.08)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = activeDropdown === link.hasDropdown ? "var(--sky)" : "var(--text-muted)";
-                      e.currentTarget.style.background = activeDropdown === link.hasDropdown ? "rgba(148,163,184,0.08)" : "transparent";
-                    }}
+                    className={`navbar-link${activeDropdown === link.hasDropdown ? " active" : ""}`}
                   >
                     {link.label}
-                    <svg
-                      viewBox="0 0 20 20" fill="currentColor"
-                      style={{
-                        width: 14, height: 14, color: "var(--slate)", opacity: 0.85,
-                        transform: activeDropdown === link.hasDropdown ? "rotate(180deg)" : "rotate(0deg)",
-                        transition: "transform 0.25s ease",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
-                    </svg>
+                    <span className={`navbar-link-chevron${activeDropdown === link.hasDropdown ? " open" : ""}`}>▾</span>
                   </button>
 
                   {link.hasDropdown === "products" && (
@@ -203,38 +176,17 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  style={{
-                    position: "relative", display: "inline-flex", alignItems: "center",
-                    padding: "8px 14px", fontSize: 14, letterSpacing: "0.2px",
-                    fontWeight: pathname === link.href ? 700 : 500,
-                    color: pathname === link.href ? "var(--sky)" : "var(--text-muted)",
-                    borderRadius: 8, textDecoration: "none",
-                    transition: "all 0.2s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "var(--text-heading)";
-                    e.currentTarget.style.background = "rgba(148,163,184,0.08)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = pathname === link.href ? "var(--sky)" : "var(--text-muted)";
-                    e.currentTarget.style.background = "transparent";
-                  }}
+                  className={`navbar-link${pathname === link.href ? " active" : ""}`}
                 >
                   {link.label}
-                  {pathname === link.href && (
-                    <span style={{
-                      position: "absolute", bottom: -2, left: "50%",
-                      transform: "translateX(-50%)", width: 4, height: 4,
-                      borderRadius: "50%", background: "var(--sky)",
-                    }} />
-                  )}
+                  {pathname === link.href && <span className="navbar-link-dot" />}
                 </Link>
               )
             )}
           </div>
 
           {/* Right actions */}
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
             <SearchBar
               searchOpen={searchOpen}
               setSearchOpen={setSearchOpen}
@@ -247,46 +199,22 @@ export default function Navbar() {
             <div className="nav-right-desktop">
               <Link
                 href="/services/enquiry"
+                className="ghost-btn-navy"
                 style={{
-                  padding: "8px 18px", borderRadius: 10, textDecoration: "none",
-                  border: "1.5px solid rgba(13,81,140,0.6)", color: "var(--sky)",
-                  fontSize: 14, fontWeight: 600,
-                  transition: "all 0.25s ease", whiteSpace: "nowrap",
-                  display: "inline-block",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "rgba(13,81,140,0.2)";
-                  e.currentTarget.style.borderColor = "var(--sky)";
-                  e.currentTarget.style.transform = "translateY(-1px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.borderColor = "rgba(13,81,140,0.6)";
-                  e.currentTarget.style.transform = "translateY(0)";
+                  height: 40, padding: "0 18px", fontSize: 13, letterSpacing: "0.1px",
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  textDecoration: "none", whiteSpace: "nowrap",
                 }}
               >
                 Book Service
               </Link>
               <Link
                 href="/products"
-                className="btn-ripple btn-shimmer btn-press"
+                className="clay-btn clay-btn-primary"
                 style={{
-                  padding: "8px 20px",
-                  background: "var(--grad-primary)",
-                  color: "#FFFFFF", fontSize: 14, fontWeight: 700,
-                  borderRadius: 10, textDecoration: "none",
-                  transition: "all 0.25s ease", whiteSpace: "nowrap",
-                  boxShadow: "0 4px 14px rgba(13,81,140,0.35)",
-                  display: "inline-block",
-                  animation: "glowPulse 3s ease-in-out infinite",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-1px)";
-                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(13,81,140,0.45)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 4px 14px rgba(13,81,140,0.35)";
+                  height: 40, padding: "0 20px", fontSize: 13, letterSpacing: "0.2px",
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  textDecoration: "none", whiteSpace: "nowrap", color: "#FFFFFF",
                 }}
               >
                 Shop Now
@@ -295,51 +223,25 @@ export default function Navbar() {
 
             {user && <NotificationBell />}
 
-            <Link
-              href="/wishlist"
-              aria-label="Wishlist"
-              style={{
-                position: "relative", width: 40, height: 40, color: "var(--slate)",
-                background: "var(--bg-card)", borderRadius: 12, boxShadow: "var(--neu-shadow)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                transition: "all 0.2s ease", textDecoration: "none", cursor: "pointer",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = "var(--sky)"; e.currentTarget.style.boxShadow = "var(--neu-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = "var(--slate)"; e.currentTarget.style.boxShadow = "var(--neu-shadow)"; e.currentTarget.style.transform = "translateY(0)"; }}
-              onMouseDown={(e) => { e.currentTarget.style.boxShadow = "var(--neu-pressed)"; e.currentTarget.style.transform = "scale(0.97)"; }}
-              onMouseUp={(e) => { e.currentTarget.style.boxShadow = "var(--neu-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18 }}>
+            <Link href="/wishlist" aria-label="Wishlist" className="navbar-icon-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke={wishlistCount > 0 ? "#DC2626" : "currentColor"} strokeWidth={2} style={{ width: 18, height: 18 }}>
                 <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
               </svg>
               {wishlistCount > 0 && (
-                <span style={{ position: "absolute", top: -4, right: -4, width: 18, height: 18, background: "linear-gradient(135deg, #0D518C, #0EA5E9)", color: "#FFFFFF", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(13,81,140,0.4)" }}>
+                <span className="navbar-icon-badge badge-red">
                   {wishlistCount > 9 ? "9+" : wishlistCount}
                 </span>
               )}
             </Link>
 
-            <Link
-              href="/cart"
-              aria-label="Cart"
-              style={{
-                position: "relative", width: 40, height: 40, color: "var(--slate)",
-                background: "var(--bg-card)", borderRadius: 12, boxShadow: "var(--neu-shadow)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                transition: "all 0.2s ease", textDecoration: "none", cursor: "pointer",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = "var(--sky)"; e.currentTarget.style.boxShadow = "var(--neu-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = "var(--slate)"; e.currentTarget.style.boxShadow = "var(--neu-shadow)"; e.currentTarget.style.transform = "translateY(0)"; }}
-              onMouseDown={(e) => { e.currentTarget.style.boxShadow = "var(--neu-pressed)"; e.currentTarget.style.transform = "scale(0.97)"; }}
-              onMouseUp={(e) => { e.currentTarget.style.boxShadow = "var(--neu-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-            >
+            <Link href="/cart" aria-label="Cart" className="navbar-icon-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18 }}>
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                 <line x1="3" y1="6" x2="21" y2="6" />
                 <path d="M16 10a4 4 0 01-8 0" />
               </svg>
               {cartCount > 0 && (
-                <span style={{ position: "absolute", top: -4, right: -4, width: 18, height: 18, background: "linear-gradient(135deg, #0D518C, #0EA5E9)", color: "#FFFFFF", fontSize: 10, fontWeight: 800, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(13,81,140,0.4)" }}>
+                <span className="navbar-icon-badge badge-navy">
                   {cartCount > 9 ? "9+" : cartCount}
                 </span>
               )}
