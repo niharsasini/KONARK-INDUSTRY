@@ -188,8 +188,10 @@ export default function Hero() {
     touchStartX.current = null;
   };
 
-  const card = DECK[current];
-  if (!card) return null;
+  // DECK always has CAR_CARDS at minimum, but never let a missing card
+  // blank the whole hero (headline/buttons/trust pills) — fall back to
+  // the first deck entry instead of an early `return null`.
+  const card = DECK[current] || DECK[0];
 
   const handleQuickAdd = (e) => {
     e.stopPropagation();

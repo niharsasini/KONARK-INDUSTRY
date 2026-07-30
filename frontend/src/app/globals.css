@@ -226,23 +226,11 @@ p { line-height: 1.6; }
 small { font-size: 12px; }
 
 /* ━━━ CINEMATIC SECTION TRANSITIONS ━━━ */
+/* Reveal opacity/transform are applied inline by SectionCover.tsx,
+   only after mount — never in a class present at first render — so a
+   JS failure or a missed IntersectionObserver callback can never leave
+   a section permanently invisible. */
 
-.section-hidden {
-  opacity: 0;
-  transform: translateY(60px);
-  transition:
-    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform, opacity;
-}
-
-.section-visible {
-  opacity: 1;
-  transform: translateY(0);
-  will-change: auto;
-}
-
-/* Sits above the pinned hero so it visually slides over it while scrolling */
 .section-cover {
   position: relative;
   z-index: 2;
@@ -252,12 +240,9 @@ small { font-size: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .section-hidden {
-    opacity: 0;
-    transform: none;
-  }
-  .section-visible {
-    opacity: 1;
+  .section-cover {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
