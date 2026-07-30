@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import { products, CATEGORIES } from "@/components/product/ProductData";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { useFeaturedProducts } from "@/hooks/useFeaturedProducts";
-import { usePinnedHero } from "@/hooks/usePinnedHero";
 import { useCartStore, useWishlistStore } from "@/store";
 import { useAuthGate } from "@/hooks/useAuthGate";
 
@@ -111,7 +110,6 @@ export default function Hero() {
   const { addItem } = useCartStore();
   const { toggle: toggleWishlist, isInWishlist } = useWishlistStore();
   const { requireAuth } = useAuthGate();
-  const { heroRef } = usePinnedHero();
   const heroTagline = settings?.hero_tagline || "Powering Odisha since 2014";
   const heroSubheading = settings?.hero_subheading ||
     "We make EVs, batteries and appliances in Bhubaneswar.\nOne company. Every power need.";
@@ -188,10 +186,8 @@ export default function Hero() {
     touchStartX.current = null;
   };
 
-  // DECK always has CAR_CARDS at minimum, but never let a missing card
-  // blank the whole hero (headline/buttons/trust pills) — fall back to
-  // the first deck entry instead of an early `return null`.
-  const card = DECK[current] || DECK[0];
+  const card = DECK[current];
+  if (!card) return null;
 
   const handleQuickAdd = (e) => {
     e.stopPropagation();
@@ -211,8 +207,6 @@ export default function Hero() {
 
   return (
     <section
-      ref={heroRef}
-      id="hero"
       className="hero-section"
       style={{
         minHeight: "calc(100vh - var(--banner-h, 0px))",

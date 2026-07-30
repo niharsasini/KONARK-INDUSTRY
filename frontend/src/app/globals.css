@@ -225,36 +225,6 @@ h4 { font-weight: 600; }
 p { line-height: 1.6; }
 small { font-size: 12px; }
 
-/* ━━━ CINEMATIC SECTION TRANSITIONS ━━━ */
-/* Reveal opacity/transform are applied inline by SectionCover.tsx,
-   only after mount — never in a class present at first render — so a
-   JS failure or a missed IntersectionObserver callback can never leave
-   a section permanently invisible. */
-
-.section-cover {
-  position: relative;
-  z-index: 2;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .section-cover {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
-
-.section-dots-nav {
-  display: flex;
-}
-@media (max-width: 768px) {
-  .section-dots-nav {
-    display: none !important;
-  }
-}
-
 .section-title {
   font-size: clamp(26px, 3.5vw, 44px);
   font-weight: 800;
