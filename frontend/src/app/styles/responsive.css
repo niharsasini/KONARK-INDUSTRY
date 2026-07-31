@@ -7,7 +7,7 @@
   .products-header { padding: 0 24px; }
   .products-track { padding: 20px 24px; }
   .services-section-grid { grid-template-columns: 45% 55% !important; padding: 0 24px !important; gap: 32px !important; }
-  .why-grid { padding: 0 24px; }
+  .why-features-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .certs-inner { padding: 0 24px; }
   .testimonials-inner { padding: 0 24px; }
   .footer-main { padding: 48px 24px; grid-template-columns: 1fr 1fr; }
@@ -118,14 +118,11 @@
   .flip-card { height: 170px !important; }
 
   /* WHY KONARK */
-  .why-section { padding: 60px 0 !important; }
-  .why-grid {
-    grid-template-columns: 1fr !important;
-    padding: 0 16px !important;
-    gap: 16px !important;
-  }
-  .why-card { padding: 28px 24px !important; border-radius: 16px !important; }
-  .why-card-number { font-size: 60px !important; }
+  .why-section { padding: 60px 20px !important; }
+  .why-features-grid { grid-template-columns: 1fr !important; gap: 16px !important; margin-bottom: 32px !important; }
+  .why-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 20px !important; }
+  .why-stat-number { font-size: 32px !important; }
+  .why-stat-divider { display: none !important; }
 
   /* CERTIFICATIONS */
   .certs-section { padding: 60px 0 !important; }
@@ -257,7 +254,6 @@
   .stats-section { padding: 40px 0 !important; }
   .products-section { padding: 48px 0 !important; }
   .services-section { padding: 48px 0 !important; }
-  .why-section { padding: 48px 0 !important; }
   .certs-section { padding: 48px 0 !important; }
   .testimonials-section { padding: 48px 0 !important; }
   .cta-section { padding: 48px 20px !important; }

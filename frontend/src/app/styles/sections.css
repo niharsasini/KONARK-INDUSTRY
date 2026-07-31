@@ -337,18 +337,6 @@
   .service-card { padding: 20px !important; }
 }
 
-/* ─── Why Konark ────────────────────────────────────── */
-
-.why-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-@media (max-width: 768px) {
-  .why-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
-}
-
 /* ─── Solutions ─────────────────────────────────────── */
 
 .solutions-tabs {
