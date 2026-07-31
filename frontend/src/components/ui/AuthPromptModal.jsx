@@ -1,18 +1,30 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
 const PROMPT_KEY = "konark_auth_prompt_last_shown";
 const PROMPT_INTERVAL = 2.5 * 60 * 1000;
 
+// Users should be able to browse freely here — the auth prompt would just
+// interrupt window-shopping. It still fires on demand (add to cart, checkout)
+// via the separate konark:require-auth event listener below, everywhere.
+const EXCLUDED_PATHS = ["/products", "/about", "/contact", "/services"];
+
 export default function AuthPromptModal() {
   const [show, setShow] = useState(false);
   const [pendingRedirect, setPendingRedirect] = useState(null);
   const router = useRouter();
+  const pathname = usePathname();
+  const isExcluded = EXCLUDED_PATHS.some((p) => pathname?.startsWith(p));
 
   useEffect(() => {
+    if (isExcluded) {
+      setShow(false);
+      return;
+    }
+
     const isLoggedIn = localStorage.getItem("konark_user");
     if (isLoggedIn) return;
 
@@ -29,7 +41,7 @@ export default function AuthPromptModal() {
       const t = setTimeout(() => setShow(true), 2000);
       return () => clearTimeout(t);
     }
-  }, []);
+  }, [isExcluded]);
 
   useEffect(() => {
     const handleRequireAuth = (e) => {

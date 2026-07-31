@@ -14,6 +14,7 @@ const ProductCard = ({ product }) => {
   const { toggle, isInWishlist } = useWishlistStore();
   const { requireAuth } = useAuthGate();
   const [added, setAdded] = useState(false);
+  const [adding, setAdding] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
   const intervalRef = useRef(null);
@@ -55,18 +56,22 @@ const ProductCard = ({ product }) => {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     requireAuth(() => {
-      addItem({
-        id: product.id || product.slug,
-        slug: product.slug,
-        name: product.name,
-        price: product.price || 0,
-        image: product.images?.[0] || product.image || "",
-        category: product.category || "",
-        type: product.type || "product",
-      });
-      toast.success(`${product.name} added to cart!`);
-      setAdded(true);
-      setTimeout(() => setAdded(false), 1500);
+      setAdding(true);
+      setTimeout(() => {
+        addItem({
+          id: product.id || product.slug,
+          slug: product.slug,
+          name: product.name,
+          price: product.price || 0,
+          image: product.images?.[0] || product.image || "",
+          category: product.category || "",
+          type: product.type || "product",
+        });
+        toast.success(`${product.name} added to cart!`);
+        setAdding(false);
+        setAdded(true);
+        setTimeout(() => setAdded(false), 1500);
+      }, 350);
     }, `/products/${product.slug}`);
   };
 
@@ -273,17 +278,30 @@ const ProductCard = ({ product }) => {
           <button
             className="product-card-btn btn-press"
             onClick={handleAddToCart}
+            disabled={adding}
             style={{
-              width: "100%", height: 44, padding: "0 11px", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer",
+              width: "100%", height: 44, padding: "0 11px", borderRadius: 10, fontSize: 14, fontWeight: 700,
+              cursor: adding ? "not-allowed" : "pointer",
               transition: "all 0.2s",
-              background: added ? "#34C78A" : "transparent",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              background: added ? "#34C78A" : adding ? "rgba(13,81,140,0.08)" : "transparent",
               color: added ? "#F5F7FF" : "#0EA5E9",
-              border: added ? "none" : "1.5px solid rgba(13,81,140,0.38)",
+              border: added || adding ? "none" : "1.5px solid rgba(13,81,140,0.38)",
+              opacity: adding ? 0.85 : 1,
             }}
-            onMouseEnter={(e) => { if (!added) { e.currentTarget.style.background = "rgba(13,81,140,0.2)"; e.currentTarget.style.borderColor = "#0EA5E9"; } }}
-            onMouseLeave={(e) => { if (!added) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(13,81,140,0.38)"; } }}
+            onMouseEnter={(e) => { if (!added && !adding) { e.currentTarget.style.background = "rgba(13,81,140,0.2)"; e.currentTarget.style.borderColor = "#0EA5E9"; } }}
+            onMouseLeave={(e) => { if (!added && !adding) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(13,81,140,0.38)"; } }}
           >
-            {added ? "Added! ✓" : "Add to Cart"}
+            {adding ? (
+              <>
+                <span className="btn-spinner" />
+                Adding...
+              </>
+            ) : added ? (
+              "Added! ✓"
+            ) : (
+              "Add to Cart"
+            )}
           </button>
         )}
 
