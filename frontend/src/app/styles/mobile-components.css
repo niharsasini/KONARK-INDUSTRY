@@ -779,12 +779,14 @@ img {
 /* ===== CTA BANNER MOBILE ===== */
 .cta-section {
   padding: 88px 0;
-  background: linear-gradient(135deg, #0B1729 0%, #0F1E35 35%, #132040 65%, #0B1729 100%);
+  background: linear-gradient(135deg, #0F1E35 0%, #0C1A30 40%, #0A1626 70%, #0C1A30 100%);
   position: relative;
   overflow: hidden;
   min-height: 480px;
   display: flex;
   align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .cta-split-grid {

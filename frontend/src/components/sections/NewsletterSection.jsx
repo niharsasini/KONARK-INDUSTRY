@@ -85,7 +85,7 @@ export default function NewsletterSection() {
   ].filter((s) => s.href)
 
   return (
-    <section style={{ background: 'linear-gradient(135deg, #0F1E35 0%, #132040 40%, #0B1729 100%)', padding: '88px 0', position: 'relative', overflow: 'hidden' }}>
+    <section style={{ background: 'linear-gradient(135deg, #1A2E56 0%, #16264A 45%, #132040 100%)', padding: '88px 0', position: 'relative', overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
       <div
         style={{
           position: 'absolute',
