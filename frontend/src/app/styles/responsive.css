@@ -8,6 +8,7 @@
   .products-track { padding: 20px 24px; }
   .services-section-grid { grid-template-columns: 45% 55% !important; padding: 0 24px !important; gap: 32px !important; }
   .why-features-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .solutions-cards-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .certs-inner { padding: 0 24px; }
   .testimonials-inner { padding: 0 24px; }
   .footer-main { padding: 48px 24px; grid-template-columns: 1fr 1fr; }
@@ -123,6 +124,9 @@
   .why-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 20px !important; }
   .why-stat-number { font-size: 32px !important; }
   .why-stat-divider { display: none !important; }
+
+  /* SOLUTIONS (What We Make) */
+  .solutions-cards-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
 
   /* CERTIFICATIONS */
   .certs-section { padding: 60px 0 !important; }
