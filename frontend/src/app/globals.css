@@ -270,3 +270,47 @@ small { font-size: 12px; }
 .flip-card-back {
   transform: rotateY(180deg);
 }
+
+/* ── TESTIMONIALS AUTO-SCROLL MARQUEE ── */
+.testimonials-marquee {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 48px;
+}
+
+.testimonials-marquee::before,
+.testimonials-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.testimonials-marquee::before {
+  left: 0;
+  background: linear-gradient(to right, #EEF2FF, transparent);
+}
+
+.testimonials-marquee::after {
+  right: 0;
+  background: linear-gradient(to left, #EEF2FF, transparent);
+}
+
+.testimonials-track {
+  display: flex;
+  gap: 20px;
+  width: fit-content;
+  animation: scrollLeft 30s linear infinite;
+}
+
+.testimonials-marquee:hover .testimonials-track {
+  animation-play-state: paused;
+}
+
+@keyframes scrollLeft {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
