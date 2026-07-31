@@ -6,7 +6,7 @@
   .stats-inner { padding: 0 24px; }
   .products-header { padding: 0 24px; }
   .products-track { padding: 20px 24px; }
-  .services-inner { padding: 0 24px; gap: 40px; }
+  .services-section-grid { grid-template-columns: 45% 55% !important; padding: 0 24px !important; gap: 32px !important; }
   .why-grid { padding: 0 24px; }
   .certs-inner { padding: 0 24px; }
   .testimonials-inner { padding: 0 24px; }
@@ -106,14 +106,16 @@
 
   /* SERVICES */
   .services-section { padding: 60px 0 !important; }
-  .services-inner {
+  .services-section-grid {
     grid-template-columns: 1fr !important;
     padding: 0 16px !important;
     gap: 32px !important;
   }
-  .services-left { position: static !important; }
-  .services-grid-right { grid-template-columns: 1fr !important; gap: 12px !important; }
-  .service-glass-card { padding: 16px !important; }
+  .services-cards-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .flip-card { height: 170px !important; }
 
   /* WHY KONARK */
   .why-section { padding: 60px 0 !important; }
