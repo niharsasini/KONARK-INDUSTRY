@@ -1,127 +1,79 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 
-export default function CertCard({ cert, index, onClick }) {
+export default function CertCard({ cert, index, inView, onClick }) {
+  const [hovered, setHovered] = useState(false)
+
   return (
     <motion.div
-      className="cert-card"
       onClick={onClick}
-      initial={{ opacity: 0, x: 40 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ delay: index * 0.1, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
       style={{
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-light)',
-        borderRadius: '16px',
-        padding: '20px 24px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '16px',
+        background: '#FFFFFF',
+        borderRadius: 20,
+        padding: '28px 20px',
+        textAlign: 'center',
         cursor: 'pointer',
-        marginBottom: '14px',
-        transition: 'all 300ms',
-        textDecoration: 'none',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-      whileHover={{
-        x: 6,
-        borderColor: cert.color + '55',
+        transform: hovered ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
+        boxShadow: hovered
+          ? '12px 12px 28px rgba(13,81,140,0.13), -10px -10px 24px rgba(255,255,255,1)'
+          : '8px 8px 20px rgba(13,81,140,0.09), -6px -6px 16px rgba(255,255,255,0.95), 0 0 0 1px rgba(13,81,140,0.04)',
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
       }}
     >
-      {/* Top color bar */}
-      <div style={{
-        position: 'absolute',
-        top: 0, left: 0, right: 0,
-        height: '3px',
-        background: cert.color,
-        borderRadius: '16px 16px 0 0',
-      }} />
-
-      {/* Icon */}
-      <div style={{
-        width: '56px',
-        height: '56px',
-        borderRadius: '14px',
-        background: cert.color + '22',
-        border: `1px solid ${cert.color}44`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '11px',
-        fontWeight: 800,
-        color: cert.color,
-        flexShrink: 0,
-        textAlign: 'center',
-        lineHeight: 1.2,
-        letterSpacing: '0.02em',
-      }}>
+      <div
+        style={{
+          width: 64,
+          height: 64,
+          borderRadius: '50%',
+          margin: '0 auto 14px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 15,
+          fontWeight: 800,
+          color: cert.color,
+          letterSpacing: '0.02em',
+          background: '#F5F7FF',
+          boxShadow: 'inset 4px 4px 10px rgba(13,81,140,0.08), inset -3px -3px 8px rgba(255,255,255,0.9)',
+        }}
+      >
         {cert.iconText}
       </div>
 
-      {/* Info */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{
-          display: 'inline-block',
-          background: cert.color + '18',
-          color: cert.color,
-          fontSize: '9px',
+      <p style={{ fontSize: 15, fontWeight: 800, color: '#0C1A2E', margin: '0 0 4px' }}>{cert.title}</p>
+      <p style={{ fontSize: 12, color: '#8BA8C4', fontWeight: 500, lineHeight: 1.4, margin: 0 }}>{cert.subtitle}</p>
+
+      <div
+        style={{
+          color: '#059669',
+          fontSize: 12,
           fontWeight: 700,
-          letterSpacing: '0.08em',
-          padding: '2px 8px',
-          borderRadius: '100px',
-          marginBottom: '6px',
-          textTransform: 'uppercase',
-        }}>
-          {cert.badge}
-        </div>
-        <div style={{
-          fontSize: '15px',
-          fontWeight: 700,
-          color: 'var(--text-heading)',
-          marginBottom: '2px',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-        }}>
-          {cert.title}
-        </div>
-        <div style={{
-          fontSize: '12px',
-          color: 'var(--text-subtle)',
-          marginBottom: '2px',
-        }}>
-          {cert.issuer}
-        </div>
-        <div style={{
-          fontSize: '11px',
-          color: '#475569',
-          fontFamily: 'monospace',
-        }}>
-          {cert.number} · {cert.valid}
-        </div>
+          display: 'flex',
+          alignItems: 'center',
+          gap: 4,
+          justifyContent: 'center',
+          marginTop: 12,
+        }}
+      >
+        {cert.tag}
       </div>
 
-      {/* View button */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '4px',
-        flexShrink: 0,
-      }}>
-        <div style={{
-          background: cert.color + '18',
-          border: `1px solid ${cert.color}44`,
+      <div
+        style={{
+          fontSize: 11,
+          fontWeight: 600,
           color: cert.color,
-          fontSize: '11px',
-          fontWeight: 700,
-          padding: '6px 12px',
-          borderRadius: '8px',
-          whiteSpace: 'nowrap',
-        }}>
-          View →
-        </div>
+          marginTop: 8,
+          opacity: hovered ? 1 : 0,
+          transition: 'opacity 0.2s ease',
+        }}
+      >
+        View certificate →
       </div>
     </motion.div>
   )

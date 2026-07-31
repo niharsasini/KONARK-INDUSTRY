@@ -28,9 +28,9 @@ export default function HomePage() {
       <ServicesPreview />
       <WhyKonark />
       <CertificationsSection />
+      <OurPartners />
       <SolutionsSection />
       <Testimonials />
-      <OurPartners />
       <NewsletterSection />
       <CTABanner />
     </main>

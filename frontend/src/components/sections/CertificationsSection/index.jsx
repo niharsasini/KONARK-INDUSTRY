@@ -1,108 +1,59 @@
 'use client'
 import { useState } from 'react'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
 import { certs } from './data'
 import CertCard from './CertCard'
 import PDFModal from './PDFModal'
-import { useScrollReveal } from '@/hooks/useScrollReveal'
 
 export default function CertificationsSection() {
   const [activeCert, setActiveCert] = useState(null)
-  const { ref, isVisible } = useScrollReveal()
+  const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true })
+  const { ref: gridRef, inView: gridIn } = useInView({ threshold: 0.05, triggerOnce: true })
 
   return (
     <>
-      <section className="certs-section" style={{
-        padding: '80px 0',
-        background: '#F5F7FF',
-        borderTop: '1px solid rgba(148,163,184,0.1)',
-        position: 'relative',
-      }}>
-        <div ref={ref} style={{
-          maxWidth: '1100px',
-          margin: '0 auto',
-          padding: '0 48px',
-          opacity: isVisible ? 1 : 0,
-          transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
-          transition: 'all 0.6s cubic-bezier(0.4,0,0.2,1)',
-        }} className="certs-inner">
-
-          {/* LEFT COLUMN */}
-          <div className="certs-left">
-            <span className="section-tag">
+      <section className="certs-section">
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px' }}>
+          <motion.div
+            ref={headRef}
+            initial={{ opacity: 0, y: 30 }}
+            animate={headIn ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            style={{ textAlign: 'center', marginBottom: 20 }}
+          >
+            <span
+              className="section-tag"
+              style={{ background: 'rgba(13,81,140,0.08)', border: '1px solid rgba(13,81,140,0.2)', color: '#0D518C', marginBottom: 16, display: 'inline-flex' }}
+            >
               GOVT. RECOGNISED
             </span>
-
-            <h2 style={{
-              fontSize: 'clamp(28px,4vw,42px)',
-              fontWeight: 900,
-              color: 'var(--text-heading)',
-              lineHeight: 1.2,
-              marginBottom: '16px',
-            }}>
-              Certified{' '}
-              <span className="gradient-text">by India.</span>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 900, letterSpacing: '-1px', margin: '16px 0 16px', textAlign: 'center' }}>
+              <span style={{ color: '#0C1A2E' }}>Certified. Verified. </span>
+              <span
+                style={{
+                  background: 'linear-gradient(135deg, #0D518C, #0EA5E9)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                by India.
+              </span>
             </h2>
-
-            <p style={{
-              color: 'var(--text-muted)',
-              fontSize: '16px',
-              lineHeight: 1.8,
-              marginBottom: '32px',
-              maxWidth: '360px',
-            }}>
-              Every certificate below is issued by the Government
-              of India or Government of Odisha and is publicly
-              verifiable on official government portals.
+            <p style={{ fontSize: 15, color: '#4A6785', maxWidth: 460, margin: '0 auto', lineHeight: 1.7, textAlign: 'center' }}>
+              Every certificate below is issued by the Government of India or Government of Odisha and is publicly verifiable. Click any card to view the official document.
             </p>
+          </motion.div>
 
-            <div style={{
-              background: 'rgba(16,185,129,0.08)',
-              border: '1px solid rgba(16,185,129,0.2)',
-              borderRadius: '12px',
-              padding: '16px 20px',
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '12px',
-              maxWidth: '360px',
-            }}>
-              <span style={{
-                fontSize: '20px',
-                lineHeight: 1,
-                marginTop: '2px',
-              }}>✅</span>
-              <div>
-                <p style={{
-                  color: '#10b981',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  margin: '0 0 4px',
-                }}>
-                  All certificates are active
-                </p>
-                <p style={{
-                  color: 'var(--text-subtle)',
-                  fontSize: '12px',
-                  margin: 0,
-                  lineHeight: 1.6,
-                }}>
-                  Click any certificate to view the
-                  official document directly.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT COLUMN — Certificate Cards */}
-          <div className="certs-right">
+          <div ref={gridRef} className="cert-badges-grid" style={{ marginTop: 40 }}>
             {certs.map((cert, i) => (
-              <CertCard key={cert.id} cert={cert} index={i} onClick={() => setActiveCert(cert)} />
+              <CertCard key={cert.id} cert={cert} index={i} inView={gridIn} onClick={() => setActiveCert(cert)} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* CERTIFICATE MODAL */}
       <AnimatePresence>
         {activeCert && (
           <PDFModal cert={activeCert} onClose={() => setActiveCert(null)} />
