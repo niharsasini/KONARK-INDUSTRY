@@ -1,26 +1,56 @@
 "use client";
-import { useEffect } from "react";
 import Link from "next/link";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
-const PRODUCT_LINKS = [
-  { label: "EV Scooters", href: "/products/electric-scooter" },
-  { label: "Electric Motorcycles", href: "/products/electric-motor-cycle" },
-  { label: "LFP Batteries", href: "/products/lfp-battery" },
-  { label: "BLDC Fans", href: "/products/bldc-fan" },
-  { label: "Solar Inverters", href: "/products" },
-  { label: "Industrial Motors", href: "/products/bldc-motor" },
+const QUICK_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "Products", href: "/products" },
+  { label: "Services", href: "/services" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+  { label: "Test Ride", href: "/test-ride" },
+  { label: "Battery Swap", href: "/battery-swap" },
+  { label: "Partner Program", href: "/partner" },
 ];
 
-const COMPANY_LINKS = [
-  { label: "About Us", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Battery Swap", href: "/battery-swap" },
-  { label: "Partner With Us", href: "/partner" },
-  { label: "FAQ", href: "/about#faq" },
-  { label: "Careers", href: "/contact" },
-  { label: "Press", href: "/contact" },
+const PRODUCT_LINKS = [
+  { label: "EV Scooter", href: "/products/electric-scooter" },
+  { label: "Electric Motorcycle", href: "/products/electric-motor-cycle" },
+  { label: "E-Rickshaw", href: "/products/e-rickshaw" },
+  { label: "BLDC Fan", href: "/products/bldc-fan" },
+  { label: "LFP Battery", href: "/products/lfp-battery" },
+  { label: "Air Conditioner", href: "/products/air-conditioner" },
+  { label: "Solar Inverter", href: "/products/solar-inverter" },
+  { label: "Android TV", href: "/products/android-tv" },
 ];
+
+// No dedicated pages exist yet for these — route to /contact like the rest of the
+// not-yet-built support pages, and to real equivalents where one already exists.
+const SUPPORT_LINKS = [
+  { label: "FAQs", href: "/about#faq" },
+  { label: "Order Tracking", href: "/orders" },
+  { label: "Service Booking", href: "/services/enquiry" },
+  { label: "Warranty Claims", href: "/contact" },
+  { label: "Return Policy", href: "/contact" },
+  { label: "Shipping Info", href: "/contact" },
+  { label: "Privacy Policy", href: "/contact" },
+  { label: "Terms", href: "/contact" },
+];
+
+const PAYMENT_BADGES = ["UPI", "Bank Transfer", "Cash on Delivery"];
+
+function FooterLink({ href, children }) {
+  return (
+    <Link
+      href={href}
+      style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", textDecoration: "none", display: "block", marginBottom: 10, transition: "all 0.2s ease" }}
+      onMouseEnter={(e) => { e.currentTarget.style.color = "#4FC3F7"; e.currentTarget.style.paddingLeft = "6px"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.45)"; e.currentTarget.style.paddingLeft = "0"; }}
+    >
+      {children}
+    </Link>
+  );
+}
 
 function SocialIcon({ href, label, children }) {
   return (
@@ -29,9 +59,13 @@ function SocialIcon({ href, label, children }) {
       aria-label={label}
       target="_blank"
       rel="noopener noreferrer"
-      style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center", color: "#94A3B8", transition: "all 0.2s", textDecoration: "none" }}
-      onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(13,81,140,0.3)"; e.currentTarget.style.borderColor = "rgba(14,165,233,0.4)"; e.currentTarget.style.color = "#0EA5E9"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.color = "#94A3B8"; }}
+      style={{
+        width: 38, height: 38, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center",
+        background: "#132040", boxShadow: "4px 4px 10px #0A1628, -3px -3px 8px #1C3058",
+        border: "1px solid rgba(255,255,255,0.05)", color: "rgba(232,244,255,0.6)", transition: "all 0.25s ease", textDecoration: "none",
+      }}
+      onMouseEnter={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, #0D518C, #0EA5E9)"; e.currentTarget.style.color = "white"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = "#132040"; e.currentTarget.style.color = "rgba(232,244,255,0.6)"; e.currentTarget.style.transform = "translateY(0)"; }}
     >
       {children}
     </a>
@@ -63,19 +97,11 @@ const SOCIAL_ICONS = {
 };
 
 export default function Footer() {
-  useEffect(() => {
-    const run = async () => {
-      const { animateIn } = await import("@/lib/gsapUtils");
-      await animateIn(".footer-content", {
-        y: 40, opacity: 0, blur: 4,
-        duration: 0.8, start: "top 90%",
-      });
-    };
-    run();
-  }, []);
-
   const settings = useSiteSettings();
-  const tagline = settings?.footer_tagline || "Engineered in Odisha.\nTrusted across India.";
+  const phone = settings?.company_phone || "+91 94376 11129";
+  const email = settings?.company_email || "konarkindustrie@gmail.com";
+  const address = settings?.company_address || "Bhimatangi Housing Colony,\nBhubaneswar, Odisha 751002";
+
   const social = [
     { key: "instagram", href: settings?.instagram_url || "https://instagram.com/konarkindustry", label: "Instagram" },
     { key: "linkedin", href: settings?.linkedin_url || "https://linkedin.com/company/konarkindustry", label: "LinkedIn" },
@@ -84,131 +110,82 @@ export default function Footer() {
   ].filter((s) => s.href);
 
   return (
-    <footer className="footer-content" style={{ background: "#0B1120", borderTop: "1px solid rgba(148,163,184,0.15)" }}>
-      {/* CTA Band */}
-      <div className="footer-top footer-top-cta">
-        <div className="footer-top-inner">
-          <h2 style={{ fontSize: 28, fontWeight: 700, color: "#F1F5F9", margin: "0 0 8px" }}>
-            Ready to power your future?
-          </h2>
-          <p style={{ color: "#94A3B8", fontSize: 15, margin: "0 0 24px" }}>
-            Join 25,000+ homes, businesses, and industries already running on Konark.
-          </p>
-          <div className="footer-top-buttons" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <Link
-              href="/products"
-              style={{ padding: "12px 28px", background: "var(--grad-primary)", color: "#FFFFFF", fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: "none", transition: "all 0.2s", display: "inline-block", boxShadow: "0 4px 12px rgba(13,81,140,0.3)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 6px 20px rgba(13,81,140,0.4)")}
-              onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 12px rgba(13,81,140,0.3)")}
-            >
-              Explore Products
-            </Link>
-            <Link
-              href="/contact"
-              style={{ padding: "12px 28px", background: "transparent", color: "#F1F5F9", fontWeight: 600, fontSize: 14, borderRadius: 8, textDecoration: "none", border: "1px solid rgba(255,255,255,0.15)", transition: "all 0.2s", display: "inline-block" }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#D97706"; e.currentTarget.style.color = "#D97706"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.color = "#F1F5F9"; }}
-            >
-              Contact Us
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Main footer */}
-      <div className="footer-main footer-grid">
+    <footer style={{ background: "#0B1729", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+      <div className="footer-main">
         {/* Brand */}
         <div>
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, textDecoration: "none" }}>
-            <div style={{ width: 36, height: 36, borderRadius: "50%", border: "2px solid var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(217,119,6,0.1)" }}>
-              <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}>
-                <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" />
-                <circle cx="12" cy="12" r="3" fill="var(--gold)" />
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, textDecoration: "none" }}>
+            <div style={{ width: 44, height: 44, borderRadius: 12, flexShrink: 0, background: "linear-gradient(135deg, #0D518C, #0EA5E9)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px rgba(13,81,140,0.3), inset 0 1px 0 rgba(255,255,255,0.2)" }}>
+              <svg viewBox="0 0 24 24" fill="none" style={{ width: 22, height: 22 }}>
+                <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="12" cy="12" r="3" fill="#FFFFFF" />
               </svg>
             </div>
             <div>
-              <span style={{ display: "block", fontSize: 15, fontWeight: 700, color: "#FFFFFF" }}>KONARK</span>
-              <span style={{ display: "block", fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", color: "#0EA5E9", textTransform: "uppercase" }}>INDUSTRY</span>
+              <span style={{ display: "block", fontSize: 16, fontWeight: 900, color: "#FFFFFF" }}>KONARK</span>
+              <span style={{ display: "block", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", color: "#4FC3F7", textTransform: "uppercase" }}>INDUSTRY</span>
             </div>
           </Link>
-          <p style={{ fontSize: 13, color: "#94A3B8", lineHeight: 1.7, marginBottom: 20, whiteSpace: "pre-line" }}>
-            {tagline}
+
+          <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 14, marginTop: 14, marginBottom: 20 }}>
+            Powering Odisha since 2014.
           </p>
-          <div style={{ display: "flex", gap: 8 }}>
-            {social.map((s) => (
-              <SocialIcon key={s.key} href={s.href} label={s.label}>
-                {SOCIAL_ICONS[s.key]}
-              </SocialIcon>
-            ))}
+
+          <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 13, lineHeight: 1.7, marginBottom: 24, maxWidth: 320 }}>
+            Electric vehicles, home appliances and clean energy solutions — manufactured in Bhubaneswar, Odisha.
+          </p>
+
+          {social.length > 0 && (
+            <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
+              {social.map((s) => (
+                <SocialIcon key={s.key} href={s.href} label={s.label}>
+                  {SOCIAL_ICONS[s.key]}
+                </SocialIcon>
+              ))}
+            </div>
+          )}
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, margin: 0, whiteSpace: "pre-line" }}>📍 {address}</p>
+            <a href={`tel:${phone.replace(/\s+/g, "")}`} style={{ color: "#4FC3F7", fontSize: 13, fontWeight: 600, textDecoration: "none" }}>📞 {phone}</a>
+            <a href={`mailto:${email}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, textDecoration: "none" }}>✉️ {email}</a>
           </div>
+        </div>
+
+        {/* Quick Links */}
+        <div>
+          <h4 style={{ fontSize: 13, fontWeight: 700, color: "#E8F4FF", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 20 }}>Quick Links</h4>
+          {QUICK_LINKS.map((l) => <FooterLink key={l.label} href={l.href}>{l.label}</FooterLink>)}
         </div>
 
         {/* Products */}
         <div>
-          <h4 style={{ fontSize: 13, fontWeight: 700, color: "#F1F5F9", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Products</h4>
-          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
-            {PRODUCT_LINKS.map((l) => (
-              <li key={l.label}>
-                <Link href={l.href} style={{ fontSize: 13, color: "#94A3B8", textDecoration: "none", transition: "color 0.2s" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#F1F5F9")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#94A3B8")}
-                >
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <h4 style={{ fontSize: 13, fontWeight: 700, color: "#E8F4FF", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 20 }}>Our Products</h4>
+          {PRODUCT_LINKS.map((l) => <FooterLink key={l.label} href={l.href}>{l.label}</FooterLink>)}
         </div>
 
-        {/* Company */}
+        {/* Support */}
         <div>
-          <h4 style={{ fontSize: 13, fontWeight: 700, color: "#F1F5F9", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Company</h4>
-          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
-            {COMPANY_LINKS.map((l) => (
-              <li key={l.label}>
-                <Link href={l.href} style={{ fontSize: 13, color: "#94A3B8", textDecoration: "none", transition: "color 0.2s" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#F1F5F9")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#94A3B8")}
-                >
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Contact */}
-        <div>
-          <h4 style={{ fontSize: 13, fontWeight: 700, color: "#F1F5F9", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Contact</h4>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {[
-              { label: "Address", value: "Bhimatangi Housing Colony,\nBhubaneswar, Odisha 751002" },
-              { label: "Phone", value: "+91 94376 11129" },
-              { label: "Email", value: "konarkindustrie@gmail.com" },
-              { label: "Hours", value: "Mon–Sat, 9AM–6PM IST" },
-            ].map((item) => (
-              <div key={item.label}>
-                <p style={{ fontSize: 11, color: "#64748B", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.1em" }}>{item.label}</p>
-                <p style={{ fontSize: 13, color: "#B8D0E8", margin: 0, whiteSpace: "pre-line" }}>{item.value}</p>
-              </div>
-            ))}
-          </div>
+          <h4 style={{ fontSize: 13, fontWeight: 700, color: "#E8F4FF", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 20 }}>Support</h4>
+          {SUPPORT_LINKS.map((l) => <FooterLink key={l.label} href={l.href}>{l.label}</FooterLink>)}
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div className="footer-bottom-bar footer-bottom">
-        <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: 0 }}>
-          © 2024 Konark Industry Pvt. Ltd. ·{" "}
-          <Link href="/contact" style={{ color: "var(--text-subtle)", textDecoration: "none" }}>Privacy Policy</Link>
-          {" "}·{" "}
-          <Link href="/contact" style={{ color: "var(--text-subtle)", textDecoration: "none" }}>Terms</Link>
-          {" "}·{" "}
-          <Link href="/contact" style={{ color: "var(--text-subtle)", textDecoration: "none" }}>Sitemap</Link>
+      <div style={{ height: 1, background: "rgba(255,255,255,0.06)", margin: "0 28px" }} />
+
+      <div className="footer-bottom-bar">
+        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", margin: 0 }}>
+          © {new Date().getFullYear()} Konark Industry. All rights reserved.
         </p>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 12px", border: "1px solid rgba(148,163,184,0.15)", borderRadius: 6 }}>
-          <span style={{ fontSize: 16 }}>🇮🇳</span>
-          <span style={{ fontSize: 12, color: "#94A3B8", fontWeight: 600 }}>Make in India</span>
+        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", margin: 0 }}>
+          Made with ❤️ in Bhubaneswar, Odisha 🇮🇳
+        </p>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {PAYMENT_BADGES.map((p) => (
+            <span key={p} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "3px 8px", fontSize: 11, color: "rgba(255,255,255,0.4)" }}>
+              {p}
+            </span>
+          ))}
         </div>
       </div>
     </footer>

@@ -110,19 +110,19 @@ export default function Navbar() {
 
   const navStyle = scrolled
     ? {
-        background: "rgba(255,255,255,0.94)",
+        background: "rgba(255,255,255,0.96)",
         backdropFilter: "blur(28px) saturate(200%)",
         WebkitBackdropFilter: "blur(28px) saturate(200%)",
-        borderBottom: "1px solid rgba(13,81,140,0.1)",
+        borderBottom: "1px solid rgba(13,81,140,0.12)",
         boxShadow:
-          "0 4px 24px rgba(13,81,140,0.07), 0 1px 0 rgba(255,255,255,0.8), inset 0 -1px 0 rgba(13,81,140,0.06)",
+          "0 4px 24px rgba(13,81,140,0.08), 0 1px 0 rgba(13,81,140,0.06), inset 0 -1px 0 rgba(13,81,140,0.04)",
       }
     : {
-        background: "rgba(255,255,255,0.55)",
-        backdropFilter: "blur(20px) saturate(180%)",
-        WebkitBackdropFilter: "blur(20px) saturate(180%)",
-        borderBottom: "1px solid rgba(13,81,140,0.06)",
-        boxShadow: "none",
+        background: "rgba(255,255,255,0.72)",
+        backdropFilter: "blur(24px) saturate(180%)",
+        WebkitBackdropFilter: "blur(24px) saturate(180%)",
+        borderBottom: "1px solid rgba(13,81,140,0.08)",
+        boxShadow: "0 1px 0 rgba(255,255,255,0.5)",
       };
 
   return (

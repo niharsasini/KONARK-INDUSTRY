@@ -409,50 +409,6 @@
   .cta-banner-buttons a { text-align: center !important; justify-content: center !important; }
 }
 
-/* ─── Footer ─────────────────────────────────────────── */
-
-.footer-top-cta { padding: 48px 24px; }
-
-.footer-top-buttons {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 40px;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 64px 24px 40px;
-}
-
-.footer-bottom { }
-
-@media (max-width: 1024px) {
-  .footer-grid { grid-template-columns: repeat(2, 1fr); padding: 40px 24px; gap: 32px; }
-}
-
-@media (max-width: 768px) {
-  .footer-top-cta { padding: 40px 16px !important; text-align: center; }
-  .footer-top-cta h2 { font-size: 22px !important; }
-  .footer-top-buttons {
-    flex-direction: column !important;
-    gap: 10px !important;
-    align-items: stretch;
-  }
-  .footer-top-buttons a { text-align: center !important; justify-content: center !important; }
-  .footer-grid { grid-template-columns: 1fr !important; padding: 32px 16px !important; gap: 28px !important; }
-  .footer-bottom {
-    flex-direction: column !important;
-    gap: 12px !important;
-    text-align: center !important;
-    padding: 16px !important;
-  }
-}
-
 /* ─── Products page ─────────────────────────────────── */
 
 @media (max-width: 768px) {

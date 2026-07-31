@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSiteSettings } from '@/hooks/useSiteSettings'
 
 const FALLBACK_FAQS = [
   {
@@ -37,8 +38,64 @@ const FALLBACK_FAQS = [
   },
 ]
 
+function AccordionItem({ faq, isOpen, onToggle }) {
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <div
+      onClick={onToggle}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: '#FFFFFF',
+        borderRadius: 16,
+        border: `1px solid ${isOpen ? 'rgba(13,81,140,0.15)' : 'rgba(13,81,140,0.04)'}`,
+        marginBottom: 10,
+        overflow: 'hidden',
+        cursor: 'pointer',
+        transform: !isOpen && hovered ? 'translateX(4px)' : 'translateX(0)',
+        boxShadow:
+          isOpen || hovered
+            ? '8px 8px 20px rgba(13,81,140,0.1), -6px -6px 16px rgba(255,255,255,1)'
+            : '6px 6px 16px rgba(13,81,140,0.08), -5px -5px 14px rgba(255,255,255,0.95)',
+        transition: 'all 0.3s ease',
+      }}
+    >
+      <div style={{ padding: '18px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
+        <span style={{ fontSize: 15, fontWeight: 700, color: isOpen ? '#0D518C' : '#0C1A2E', transition: 'color 0.2s', lineHeight: 1.4 }}>
+          {faq.q}
+        </span>
+        <span
+          style={{
+            width: 28,
+            height: 28,
+            borderRadius: '50%',
+            flexShrink: 0,
+            background: isOpen ? 'linear-gradient(135deg, #0D518C, #0EA5E9)' : 'rgba(13,81,140,0.08)',
+            color: isOpen ? 'white' : '#0D518C',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 12,
+            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'all 0.3s ease',
+          }}
+        >
+          ▾
+        </span>
+      </div>
+      <div style={{ maxHeight: isOpen ? 400 : 0, overflow: 'hidden', transition: 'max-height 0.35s ease' }}>
+        <div style={{ padding: '14px 22px 18px', borderTop: '1px solid rgba(13,81,140,0.05)', marginTop: -4 }}>
+          <p style={{ fontSize: 14, color: '#4A6785', lineHeight: 1.7, margin: 0 }}>{faq.a}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function FAQSection() {
-  const [openIdx, setOpenIdx] = useState(null)
+  const settings = useSiteSettings()
+  const [openIdx, setOpenIdx] = useState(0)
   const [faqs, setFaqs] = useState(FALLBACK_FAQS)
 
   useEffect(() => {
@@ -53,61 +110,104 @@ export default function FAQSection() {
       .catch(() => {})
   }, [])
 
+  const phone = settings?.company_phone || '+91 94376 11129'
+  const waNumber = settings?.whatsapp_number || '919437611129'
+  const waMessage = settings?.whatsapp_message_template || 'Hi Konark Industry, I have a query'
+  const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`
+
   return (
-    <section style={{ background: 'transparent', padding: '80px 24px' }}>
-      <div style={{ maxWidth: 800, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <span className="section-tag">
+    <section id="faq" style={{ background: '#F5F7FF', padding: '88px 0' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', display: 'grid', gridTemplateColumns: '380px 1fr', gap: 60, alignItems: 'flex-start' }} className="faq-grid">
+        {/* LEFT */}
+        <div>
+          <span className="section-tag" style={{ background: 'rgba(13,81,140,0.08)', border: '1px solid rgba(13,81,140,0.2)', color: '#0D518C' }}>
             FAQ
           </span>
-          <h2 style={{ fontSize: 'clamp(24px,3.5vw,40px)', fontWeight: 800, color: 'var(--text-heading)', margin: 0 }}>
-            Frequently Asked Questions
-          </h2>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {faqs.map((faq, i) => (
-            <div
-              key={i}
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 900, letterSpacing: '-1px', margin: '16px 0 12px', lineHeight: 1.15 }}>
+            <span style={{ color: '#0C1A2E' }}>Got Questions? </span>
+            <span
               style={{
-                background: 'rgba(255,255,255,0.4)',
-                border: `1px solid ${openIdx === i ? 'rgba(13,81,140,0.3)' : 'rgba(148,163,184,0.15)'}`,
-                borderLeft: `3px solid ${openIdx === i ? '#0EA5E9' : 'transparent'}`,
-                borderRadius: 14,
-                overflow: 'hidden',
-                transition: 'border-color 0.2s',
+                background: 'linear-gradient(135deg, #0D518C, #0EA5E9)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
               }}
             >
-              <button
-                onClick={() => setOpenIdx(openIdx === i ? null : i)}
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '16px 20px',
-                  background: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  gap: 12,
-                }}
-              >
-                <span style={{ fontSize: 15, fontWeight: 600, color: '#0F172A', lineHeight: 1.4 }}>
-                  {faq.q}
-                </span>
-                <span style={{ fontSize: 20, color: openIdx === i ? '#0EA5E9' : '#64748B', flexShrink: 0, fontWeight: 300, transition: 'color 0.2s' }}>
-                  {openIdx === i ? '−' : '+'}
-                </span>
-              </button>
-              {openIdx === i && (
-                <div style={{ padding: '0 20px 18px' }}>
-                  <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.7, margin: 0 }}>
-                    {faq.a}
-                  </p>
-                </div>
-              )}
-            </div>
+              We Have Answers.
+            </span>
+          </h2>
+          <p style={{ fontSize: 15, color: '#4A6785', lineHeight: 1.7, margin: 0 }}>
+            Everything you need to know before you buy, book, or swap.
+          </p>
+
+          <div
+            style={{
+              background: '#FFFFFF',
+              borderRadius: 20,
+              boxShadow: '8px 8px 20px rgba(13,81,140,0.09), -6px -6px 16px rgba(255,255,255,0.95)',
+              padding: '24px 26px',
+              marginTop: 32,
+            }}
+          >
+            <p style={{ fontSize: 16, fontWeight: 700, color: '#0C1A2E', margin: '0 0 8px' }}>Still have questions?</p>
+            <p style={{ fontSize: 14, color: '#4A6785', margin: '0 0 20px' }}>Our team is ready to help.</p>
+
+            <a
+              href={waUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: 'linear-gradient(135deg, #25D366, #128C7E)',
+                color: 'white',
+                borderRadius: 12,
+                padding: '12px 20px',
+                width: '100%',
+                boxSizing: 'border-box',
+                fontSize: 14,
+                fontWeight: 700,
+                border: 'none',
+                cursor: 'pointer',
+                boxShadow: '0 6px 16px rgba(37,211,102,0.25)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+                textDecoration: 'none',
+              }}
+            >
+              💬 Chat on WhatsApp
+            </a>
+
+            <a
+              href={`tel:${phone.replace(/\s+/g, '')}`}
+              style={{
+                background: 'white',
+                border: '1.5px solid rgba(13,81,140,0.2)',
+                color: '#0D518C',
+                borderRadius: 12,
+                padding: '12px 20px',
+                width: '100%',
+                boxSizing: 'border-box',
+                marginTop: 10,
+                fontSize: 14,
+                fontWeight: 600,
+                boxShadow: '3px 3px 8px rgba(13,81,140,0.07), -2px -2px 6px rgba(255,255,255,0.9)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+                textDecoration: 'none',
+              }}
+            >
+              📞 {phone}
+            </a>
+          </div>
+        </div>
+
+        {/* RIGHT */}
+        <div>
+          {faqs.map((faq, i) => (
+            <AccordionItem key={faq.q} faq={faq} isOpen={openIdx === i} onToggle={() => setOpenIdx(openIdx === i ? null : i)} />
           ))}
         </div>
       </div>

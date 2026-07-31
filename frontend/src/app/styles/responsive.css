@@ -155,15 +155,15 @@
   /* PARTNERS */
   .partners-trust-bar { grid-template-columns: 1fr 1fr !important; display: grid !important; }
 
+  /* FAQ */
+  .faq-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+
   /* CTA BANNER */
   .cta-section { min-height: 0 !important; }
   .cta-split-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
   .cta-floating-chip { display: none !important; }
 
   /* FOOTER */
-  .footer-top { padding: 40px 16px !important; }
-  .footer-top-buttons { flex-direction: column !important; gap: 10px !important; }
-  .footer-top-buttons a { width: 100% !important; text-align: center !important; }
   .footer-main {
     grid-template-columns: 1fr 1fr !important;
     padding: 40px 16px !important;
