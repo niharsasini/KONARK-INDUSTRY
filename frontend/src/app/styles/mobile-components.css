@@ -778,49 +778,20 @@ img {
 
 /* ===== CTA BANNER MOBILE ===== */
 .cta-section {
-  padding: 100px 24px;
-  background: linear-gradient(135deg, var(--navy), var(--navy-dark));
-  text-align: center;
+  padding: 88px 0;
+  background: linear-gradient(135deg, #0B1729 0%, #0F1E35 35%, #132040 65%, #0B1729 100%);
   position: relative;
   overflow: hidden;
-}
-
-.cta-h2 {
-  font-weight: 900;
-  line-height: 1.15;
-  margin: 0;
-  color: #fff;
-}
-
-.cta-sub {
-  font-size: 17px;
-  color: rgba(255,255,255,0.8);
-  max-width: 580px;
-  margin: 0 auto 40px;
-  line-height: 1.8;
-}
-
-.cta-buttons {
+  min-height: 480px;
   display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 32px;
+  align-items: center;
 }
 
-.cta-phone {
-  font-size: clamp(22px, 3vw, 30px);
-  font-weight: 900;
-  color: #f1f5f9;
-  text-decoration: none;
-  display: block;
-  transition: color 0.2s;
-}
-
-.cta-hours {
-  font-size: 12px;
-  color: rgba(255,255,255,0.7);
-  margin: 6px 0 0;
+.cta-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
 }
 
 /* ===== FOOTER MOBILE ===== */

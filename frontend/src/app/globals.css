@@ -366,3 +366,49 @@ small { font-size: 12px; }
   0%   { transform: translateX(-50%); }
   100% { transform: translateX(0); }
 }
+
+/* ── CTA BANNER DECORATIONS ── */
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(30px, 40px); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-30px, -30px); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.5; transform: scale(0.8); }
+}
+
+@keyframes floatChip1 {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-12px) rotate(-1deg); }
+}
+
+@keyframes floatChip2 {
+  0%, 100% { transform: translateY(0) rotate(1deg); }
+  50%      { transform: translateY(-8px) rotate(2deg); }
+}
+
+.cta-btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-btn-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.cta-btn-shimmer:hover::before {
+  left: 100%;
+}
