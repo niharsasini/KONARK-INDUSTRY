@@ -14,7 +14,15 @@ export default function CertificationsSection() {
   const publicStats = usePublicStats()
   const visibleCerts = useMemo(() => {
     const hidden = new Set((publicStats?.hidden_certifications || []).map(String))
-    return certs.filter((c) => !hidden.has(String(c.id)))
+    const pdfOverrides = publicStats?.certification_pdf_urls || {}
+    return certs
+      .filter((c) => !hidden.has(String(c.id)))
+      .map((c) => {
+        const override = pdfOverrides[String(c.id)]
+        if (!override) return c
+        const embedUrl = override.includes('/view') ? override.replace(/\/view.*$/, '/preview') : override
+        return { ...c, driveLink: override, embedUrl }
+      })
   }, [publicStats])
 
   if (visibleCerts.length === 0) return null

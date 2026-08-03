@@ -49,6 +49,7 @@ async def get_public_stats():
         "avg_rating_display": avg_rating_display,
         "years_experience": f"{years}+",
 
-        # Certifications (admin-controlled visibility)
+        # Certifications (admin-controlled visibility + PDF link overrides)
         "hidden_certifications": settings.hidden_certifications,
+        "certification_pdf_urls": settings.certification_pdf_urls,
     }

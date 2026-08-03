@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Check, Star } from "lucide-react";
-import { getSettings, updateSettings } from "@/lib/adminApi";
+import { getSettings, updateSettings, getPublicStats, getAdminProducts, toggleFeatured } from "@/lib/adminApi";
 
 type Settings = {
   company_phone: string;
@@ -11,18 +11,25 @@ type Settings = {
   hero_subheading: string | null;
   hero_rotating_words: string;
   footer_tagline: string | null;
+  footer_description: string | null;
   announcement_banner_enabled: boolean;
   announcement_banner_text: string;
   announcement_banner_link: string;
   announcement_banner_emoji: string;
   announcement_banner_type: string;
   whatsapp_message_template: string;
+  whatsapp_number: string;
+  facebook_url: string;
+  instagram_url: string;
+  linkedin_url: string;
+  youtube_url: string;
   stats_customers: string;
   stats_cities: string;
   stats_rating: string;
   stats_satisfaction: string;
   founding_year: number;
   hidden_certifications: string[];
+  certification_pdf_urls: Record<string, string>;
 };
 
 const CERTIFICATIONS = [
@@ -32,6 +39,9 @@ const CERTIFICATIONS = [
   { id: "4", title: "Importer-Exporter Code" },
   { id: "5", title: "Trade Mark Registration" },
 ];
+
+type LiveProduct = { slug: string; name: string; images: string[]; is_featured: boolean };
+type PublicStats = { avg_rating_display: string; total_products: number };
 
 const BANNER_TYPES = [
   { value: "announcement", label: "Announcement" },
@@ -58,6 +68,9 @@ export default function ContentPage() {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [liveStats, setLiveStats] = useState<PublicStats | null>(null);
+  const [products, setProducts] = useState<LiveProduct[]>([]);
+  const [productsLoading, setProductsLoading] = useState(true);
 
   const fetchSettings = () => {
     setLoading(true);
@@ -67,6 +80,7 @@ export default function ContentPage() {
         const s = data as Record<string, unknown>;
         const rawWords = s.hero_rotating_words;
         const wordsStr = Array.isArray(rawWords) ? (rawWords as string[]).join(", ") : ((rawWords as string) || "Konark., Innovation., Sustainability., Odisha.");
+        const pdfUrls = s.certification_pdf_urls;
         setForm({
           company_phone: (s.company_phone as string) || "",
           hero_tagline: (s.hero_tagline as string) || "",
@@ -74,18 +88,25 @@ export default function ContentPage() {
           hero_subheading: (s.hero_subheading as string) || "",
           hero_rotating_words: wordsStr,
           footer_tagline: (s.footer_tagline as string) || "",
+          footer_description: (s.footer_description as string) || "",
           announcement_banner_enabled: Boolean(s.announcement_banner_enabled),
           announcement_banner_text: (s.announcement_banner_text as string) || "",
           announcement_banner_link: (s.announcement_banner_link as string) || "",
           announcement_banner_emoji: (s.announcement_banner_emoji as string) || "🎉",
           announcement_banner_type: (s.announcement_banner_type as string) || "announcement",
           whatsapp_message_template: (s.whatsapp_message_template as string) || "",
+          whatsapp_number: (s.whatsapp_number as string) || "",
+          facebook_url: (s.facebook_url as string) || "",
+          instagram_url: (s.instagram_url as string) || "",
+          linkedin_url: (s.linkedin_url as string) || "",
+          youtube_url: (s.youtube_url as string) || "",
           stats_customers: (s.stats_customers as string) || "25,000+",
           stats_cities: (s.stats_cities as string) || "18+",
           stats_rating: (s.stats_rating as string) || "4.8★",
           stats_satisfaction: (s.stats_satisfaction as string) || "99%",
           founding_year: (s.founding_year as number) || 2014,
           hidden_certifications: Array.isArray(s.hidden_certifications) ? (s.hidden_certifications as string[]) : [],
+          certification_pdf_urls: pdfUrls && typeof pdfUrls === "object" ? (pdfUrls as Record<string, string>) : {},
         });
       })
       .catch((err) => setError(err.message || "Failed to load settings"))
@@ -94,6 +115,13 @@ export default function ContentPage() {
 
   useEffect(() => {
     fetchSettings();
+    getPublicStats()
+      .then((data) => setLiveStats(data as PublicStats))
+      .catch(() => {});
+    getAdminProducts({ limit: "50" })
+      .then((res) => setProducts((res as { items: LiveProduct[] }).items || []))
+      .catch(() => {})
+      .finally(() => setProductsLoading(false));
   }, []);
 
   const set = (key: keyof Settings) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -112,6 +140,18 @@ export default function ContentPage() {
         : [...f.hidden_certifications, id];
       return { ...f, hidden_certifications: hidden };
     });
+
+  const setCertPdfUrl = (id: string, url: string) =>
+    setForm((f) => (f ? { ...f, certification_pdf_urls: { ...f.certification_pdf_urls, [id]: url } } : f));
+
+  const handleToggleFeatured = async (slug: string) => {
+    setProducts((ps) => ps.map((p) => (p.slug === slug ? { ...p, is_featured: !p.is_featured } : p)));
+    try {
+      await toggleFeatured(slug);
+    } catch {
+      setProducts((ps) => ps.map((p) => (p.slug === slug ? { ...p, is_featured: !p.is_featured } : p)));
+    }
+  };
 
   const handleSave = async () => {
     if (!form) return;
@@ -263,9 +303,17 @@ export default function ContentPage() {
             </div>
           </div>
           <div style={{ padding: "10px 14px", background: "rgba(13,81,140,0.06)", border: "1px solid rgba(13,81,140,0.15)", borderRadius: 8, marginBottom: 14 }}>
-            <p style={{ fontSize: 12, color: "var(--text-muted)", margin: 0, lineHeight: 1.6 }}>
-              ⚡ &quot;Years of experience&quot; is calculated automatically from the founding year above. Average rating and product count are calculated automatically from your approved reviews and active products.
+            <p style={{ fontSize: 12, color: "var(--text-muted)", margin: "0 0 8px", lineHeight: 1.6 }}>
+              ⚡ Average rating and product count are calculated automatically from your approved reviews and active products. &quot;Years of experience&quot; is calculated from the founding year above.
             </p>
+            <div style={{ display: "flex", gap: 20 }}>
+              <span style={{ fontSize: 12, color: "var(--text-heading)", fontWeight: 700 }}>
+                Rating: {liveStats ? liveStats.avg_rating_display : "…"}
+              </span>
+              <span style={{ fontSize: 12, color: "var(--text-heading)", fontWeight: 700 }}>
+                Products: {liveStats ? liveStats.total_products : "…"}
+              </span>
+            </div>
           </div>
           <label style={LABEL}>Average Rating (fallback, used only until you have approved reviews)</label>
           <input value={form.stats_rating} onChange={set("stats_rating")} placeholder="4.8★" style={INPUT} />
@@ -276,18 +324,26 @@ export default function ContentPage() {
           <p style={{ fontSize: 12, color: "var(--text-muted)", margin: "0 0 16px", lineHeight: 1.6 }}>
             Choose which government certification badges appear in the homepage Certifications section.
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {CERTIFICATIONS.map((cert) => {
               const visible = !form.hidden_certifications.includes(cert.id);
               return (
-                <div key={cert.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0" }}>
-                  <span style={{ fontSize: 13, color: "var(--text-heading)" }}>{cert.title}</span>
-                  <button
-                    onClick={() => toggleCertification(cert.id)}
-                    style={{ width: 42, height: 22, borderRadius: 11, border: "none", cursor: "pointer", background: visible ? "var(--navy)" : "rgba(92,103,149,0.2)", position: "relative", transition: "background 0.2s" }}
-                  >
-                    <span style={{ position: "absolute", top: 3, left: visible ? 22 : 3, width: 16, height: 16, borderRadius: "50%", background: "#fff", transition: "left 0.2s" }} />
-                  </button>
+                <div key={cert.id} style={{ padding: "10px 0", borderBottom: "1px solid rgba(92,103,149,0.1)" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                    <span style={{ fontSize: 13, color: "var(--text-heading)", fontWeight: 600 }}>{cert.title}</span>
+                    <button
+                      onClick={() => toggleCertification(cert.id)}
+                      style={{ width: 42, height: 22, borderRadius: 11, border: "none", cursor: "pointer", background: visible ? "var(--navy)" : "rgba(92,103,149,0.2)", position: "relative", transition: "background 0.2s" }}
+                    >
+                      <span style={{ position: "absolute", top: 3, left: visible ? 22 : 3, width: 16, height: 16, borderRadius: "50%", background: "#fff", transition: "left 0.2s" }} />
+                    </button>
+                  </div>
+                  <input
+                    value={form.certification_pdf_urls[cert.id] || ""}
+                    onChange={(e) => setCertPdfUrl(cert.id, e.target.value)}
+                    placeholder="Google Drive / PDF URL override (optional)"
+                    style={INPUT}
+                  />
                 </div>
               );
             })}
@@ -296,25 +352,81 @@ export default function ContentPage() {
 
         <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
           <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 12px" }}>Featured Products (Hero Carousel)</h3>
-          <p style={{ fontSize: 12, color: "var(--text-muted)", margin: "0 0 14px", lineHeight: 1.6 }}>
-            The products shown in the homepage hero card deck are controlled from the Products page — mark up to 5 products as featured there.
+          <p style={{ fontSize: 12, color: "var(--text-muted)", margin: "0 0 16px", lineHeight: 1.6 }}>
+            Featured products appear in the homepage hero card deck. Max 8 featured products recommended.
           </p>
+          {productsLoading ? (
+            <p style={{ fontSize: 12, color: "var(--text-muted)" }}>Loading products…</p>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, maxHeight: 360, overflowY: "auto", marginBottom: 16 }}>
+              {products.map((p) => (
+                <div key={p.slug} style={{ display: "flex", alignItems: "center", gap: 12, padding: "8px 6px", borderBottom: "1px solid rgba(92,103,149,0.08)" }}>
+                  <img
+                    src={p.images?.[0] || "/placeholder.svg"}
+                    alt=""
+                    style={{ width: 36, height: 36, borderRadius: 6, objectFit: "cover", background: "var(--bg-surface)", flexShrink: 0 }}
+                    onError={(e) => { (e.target as HTMLImageElement).style.visibility = "hidden"; }}
+                  />
+                  <span style={{ fontSize: 13, color: "var(--text-heading)", flex: 1 }}>{p.name}</span>
+                  <button
+                    onClick={() => handleToggleFeatured(p.slug)}
+                    title={p.is_featured ? "Unfeature" : "Mark as featured"}
+                    style={{ background: "transparent", border: "none", cursor: "pointer", display: "flex", padding: 4 }}
+                  >
+                    <Star size={16} color={p.is_featured ? "var(--gold)" : "var(--text-muted)"} fill={p.is_featured ? "var(--gold)" : "none"} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
           <Link
             href="/products"
             style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "9px 18px", borderRadius: 8, border: "1px solid rgba(92,103,149,0.3)", color: "var(--text-heading)", fontSize: 13, fontWeight: 700, textDecoration: "none" }}
           >
-            <Star size={14} /> Go to Products
+            <Star size={14} /> Manage Products
           </Link>
         </div>
 
         <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
           <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 18px" }}>Footer</h3>
-          <label style={LABEL}>Footer Tagline</label>
-          <input value={form.footer_tagline || ""} onChange={set("footer_tagline")} placeholder="Odisha's leading EV & energy brand" style={INPUT} />
+          <div style={{ marginBottom: 14 }}>
+            <label style={LABEL}>Footer Tagline</label>
+            <input value={form.footer_tagline || ""} onChange={set("footer_tagline")} placeholder="Odisha's leading EV & energy brand" style={INPUT} />
+          </div>
+          <div>
+            <label style={LABEL}>Footer Description</label>
+            <textarea rows={2} value={form.footer_description || ""} onChange={set("footer_description")} placeholder="Electric vehicles, home appliances and clean energy solutions — manufactured in Bhubaneswar, Odisha." style={{ ...INPUT, resize: "vertical", fontFamily: "inherit" }} />
+          </div>
+        </div>
+
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 18px" }}>Social Links</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+            <div>
+              <label style={LABEL}>Facebook URL</label>
+              <input value={form.facebook_url} onChange={set("facebook_url")} placeholder="https://facebook.com/konarkindustry" style={INPUT} />
+            </div>
+            <div>
+              <label style={LABEL}>Instagram URL</label>
+              <input value={form.instagram_url} onChange={set("instagram_url")} placeholder="https://instagram.com/konarkindustry" style={INPUT} />
+            </div>
+            <div>
+              <label style={LABEL}>LinkedIn URL</label>
+              <input value={form.linkedin_url} onChange={set("linkedin_url")} placeholder="https://linkedin.com/company/konarkindustry" style={INPUT} />
+            </div>
+            <div>
+              <label style={LABEL}>YouTube URL</label>
+              <input value={form.youtube_url} onChange={set("youtube_url")} placeholder="https://youtube.com/@konarkindustry" style={INPUT} />
+            </div>
+          </div>
         </div>
 
         <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
           <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 18px" }}>Contact &amp; WhatsApp</h3>
+          <div style={{ marginBottom: 14 }}>
+            <label style={LABEL}>WhatsApp Number</label>
+            <input value={form.whatsapp_number} onChange={set("whatsapp_number")} placeholder="919437611129" style={INPUT} />
+          </div>
           <div style={{ marginBottom: 14 }}>
             <label style={LABEL}>Company Phone Number</label>
             <input value={form.company_phone} onChange={set("company_phone")} placeholder="+919437611129" style={INPUT} />

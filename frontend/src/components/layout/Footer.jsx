@@ -128,11 +128,11 @@ export default function Footer() {
           </Link>
 
           <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 14, marginTop: 14, marginBottom: 20 }}>
-            Powering Odisha since 2014.
+            {settings?.footer_tagline || "Powering Odisha since 2014."}
           </p>
 
           <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 13, lineHeight: 1.7, marginBottom: 24, maxWidth: 320 }}>
-            Electric vehicles, home appliances and clean energy solutions — manufactured in Bhubaneswar, Odisha.
+            {settings?.footer_description || "Electric vehicles, home appliances and clean energy solutions — manufactured in Bhubaneswar, Odisha."}
           </p>
 
           {social.length > 0 && (

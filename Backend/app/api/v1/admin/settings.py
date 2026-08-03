@@ -37,6 +37,7 @@ class SiteSettingsUpdate(BaseModel):
     show_marquee: Optional[bool] = None
     hero_tagline: Optional[str] = None
     footer_tagline: Optional[str] = None
+    footer_description: Optional[str] = None
     hero_heading: Optional[str] = None
     hero_subheading: Optional[str] = None
     hero_rotating_words: Optional[List[str]] = None
@@ -46,6 +47,7 @@ class SiteSettingsUpdate(BaseModel):
     stats_satisfaction: Optional[str] = None
     founding_year: Optional[int] = None
     hidden_certifications: Optional[List[str]] = None
+    certification_pdf_urls: Optional[dict] = None
     announcement_banner_enabled: Optional[bool] = None
     announcement_banner_text: Optional[str] = None
     announcement_banner_link: Optional[str] = None

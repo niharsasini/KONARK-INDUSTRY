@@ -15,6 +15,7 @@ export interface PublicSiteSettings {
   service_areas: string[];
   hero_tagline: string | null;
   footer_tagline: string | null;
+  footer_description: string | null;
   announcement_banner_enabled: boolean;
   announcement_banner_text: string;
   announcement_banner_link: string | null;

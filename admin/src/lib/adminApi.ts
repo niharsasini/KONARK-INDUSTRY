@@ -342,6 +342,11 @@ export async function updateSettings(data: Record<string, unknown>) {
   });
 }
 
+/** Public auto-calculated homepage stats (avg rating, product count, years) — read-only in admin. */
+export async function getPublicStats() {
+  return adminRequest("/api/v1/stats/public");
+}
+
 export async function changePassword(
   currentPassword: string,
   newPassword: string

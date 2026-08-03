@@ -3,28 +3,66 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  LayoutDashboard, Package, ShoppingBag, Mail, Wrench,
+  LayoutDashboard, Package, ShoppingBag, Mail, Wrench, Plus,
   Users, FileEdit, Settings, LogOut, Menu, X,
   Bell, ExternalLink, ChevronRight, Battery, Star, BarChart3, MessageSquareQuote, HelpCircle,
+  type LucideIcon,
 } from "lucide-react";
 import { getStats, getNotifications, markNotificationRead } from "@/lib/adminApi";
 
-const NAV = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Products", href: "/products", icon: Package },
-  { label: "Orders", href: "/orders", icon: ShoppingBag, statKey: "pending_orders" as const },
-  { label: "Enquiries", href: "/enquiries", icon: Mail, statKey: "unread_enquiries" as const },
-  { label: "Services", href: "/services", icon: Wrench, statKey: "service_bookings_today" as const },
-  { label: "Battery Swap", href: "/battery-swap", icon: Battery },
-  { label: "Customers", href: "/customers", icon: Users },
-  { label: "Reviews", href: "/reviews", icon: Star },
-  { label: "Testimonials", href: "/testimonials", icon: MessageSquareQuote },
-  { label: "FAQ", href: "/faq", icon: HelpCircle },
-  { label: "Notifications", href: "/notifications", icon: Bell, statKey: "unread_notifications" as const },
-  { label: "Reports", href: "/reports", icon: BarChart3 },
-  { label: "Content", href: "/content", icon: FileEdit },
-  { label: "Settings", href: "/settings", icon: Settings },
+type StatKey = "pending_orders" | "unread_enquiries" | "service_bookings_today" | "unread_notifications";
+type NavItem = { label: string; href: string; icon: LucideIcon; statKey?: StatKey };
+type NavGroup = { section: string; items: NavItem[] };
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    section: "Overview",
+    items: [
+      { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    ],
+  },
+  {
+    section: "Commerce",
+    items: [
+      { label: "Orders", href: "/orders", icon: ShoppingBag, statKey: "pending_orders" as const },
+      { label: "Customers", href: "/customers", icon: Users },
+      { label: "Reviews", href: "/reviews", icon: Star },
+    ],
+  },
+  {
+    section: "Catalog",
+    items: [
+      { label: "Products", href: "/products", icon: Package },
+      { label: "Add Product", href: "/products/new", icon: Plus },
+      { label: "Testimonials", href: "/testimonials", icon: MessageSquareQuote },
+      { label: "FAQ", href: "/faq", icon: HelpCircle },
+    ],
+  },
+  {
+    section: "Services",
+    items: [
+      { label: "Service Bookings", href: "/services", icon: Wrench, statKey: "service_bookings_today" as const },
+      { label: "Battery Swap", href: "/battery-swap", icon: Battery },
+      { label: "Enquiries", href: "/enquiries", icon: Mail, statKey: "unread_enquiries" as const },
+    ],
+  },
+  {
+    section: "Analytics",
+    items: [
+      { label: "Reports", href: "/reports", icon: BarChart3 },
+      { label: "Notifications", href: "/notifications", icon: Bell, statKey: "unread_notifications" as const },
+    ],
+  },
+  {
+    section: "Configuration",
+    items: [
+      { label: "Site Content", href: "/content", icon: FileEdit },
+      { label: "Settings", href: "/settings", icon: Settings },
+    ],
+  },
 ];
+
+const NAV = NAV_GROUPS.flatMap((g) => g.items);
 
 const PAGE_TITLES: Record<string, string> = {
   "/dashboard": "Dashboard",
@@ -147,7 +185,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return <>{children}</>;
   }
 
-  const isActive = (href: string) => pathname === href || (href !== "/dashboard" && pathname.startsWith(href + "/"));
+  // "/products/new" has its own nav item, so it shouldn't also light up "Products".
+  const isActive = (href: string) => {
+    if (href === "/products") {
+      return pathname === "/products" || (pathname.startsWith("/products/") && !pathname.startsWith("/products/new"));
+    }
+    return pathname === href || (href !== "/dashboard" && pathname.startsWith(href + "/"));
+  };
 
   const pageTitle = PAGE_TITLES[pathname] || "Admin";
 
@@ -229,38 +273,47 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Nav */}
         <nav style={{ flex: 1, padding: "10px 6px", display: "flex", flexDirection: "column", gap: 2, overflowY: "auto" }}>
-          {NAV.map(({ label, href, icon: Icon, statKey }) => {
-            const active = isActive(href);
-            const badge = statKey && stats ? stats[statKey] : undefined;
-            return (
-              <Link key={href} href={href} title={collapsed ? label : undefined}
-                style={{
-                  display: "flex", alignItems: "center", gap: 10,
-                  padding: collapsed ? "10px 0" : "9px 12px",
-                  borderRadius: 8, textDecoration: "none",
-                  justifyContent: collapsed ? "center" : "flex-start",
-                  borderRight: active ? "3px solid var(--sky)" : "3px solid transparent",
-                  background: active ? "rgba(13,81,140,0.2)" : "transparent",
-                  color: active ? "var(--sky)" : "var(--text-muted)",
-                  transition: "all 0.15s", fontSize: 13,
-                  fontWeight: active ? 600 : 400, position: "relative",
-                }}
-                onMouseEnter={(e) => { if (!active) { e.currentTarget.style.background = "rgba(22,41,82,0.3)"; e.currentTarget.style.color = "var(--text-heading)"; } }}
-                onMouseLeave={(e) => { if (!active) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--text-muted)"; } }}
-              >
-                <Icon size={15} style={{ flexShrink: 0 }} />
-                {!collapsed && <span style={{ flex: 1 }}>{label}</span>}
-                {!collapsed && badge ? (
-                  <span style={{ fontSize: 10, fontWeight: 700, minWidth: 18, height: 18, borderRadius: 9, background: active ? "var(--sky)" : "rgba(92,103,149,0.2)", color: active ? "var(--bg-page)" : "var(--text-muted)", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 5px" }}>
-                    {badge}
-                  </span>
-                ) : null}
-                {collapsed && badge ? (
-                  <span style={{ position: "absolute", top: 6, right: 6, width: 8, height: 8, borderRadius: "50%", background: "var(--sky)" }} />
-                ) : null}
-              </Link>
-            );
-          })}
+          {NAV_GROUPS.map((group) => (
+            <div key={group.section}>
+              {!collapsed && (
+                <p style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.25)", letterSpacing: "2px", textTransform: "uppercase", padding: "16px 14px 6px", margin: 0 }}>
+                  {group.section}
+                </p>
+              )}
+              {group.items.map(({ label, href, icon: Icon, statKey }) => {
+                const active = isActive(href);
+                const badge = statKey && stats ? stats[statKey] : undefined;
+                return (
+                  <Link key={href} href={href} title={collapsed ? label : undefined}
+                    style={{
+                      display: "flex", alignItems: "center", gap: 10,
+                      padding: collapsed ? "10px 0" : "9px 12px",
+                      borderRadius: 8, textDecoration: "none",
+                      justifyContent: collapsed ? "center" : "flex-start",
+                      borderLeft: active ? "3px solid var(--sky)" : "3px solid transparent",
+                      background: active ? "rgba(13,81,140,0.2)" : "transparent",
+                      color: active ? "var(--sky)" : "var(--text-muted)",
+                      transition: "all 0.15s", fontSize: 13,
+                      fontWeight: active ? 600 : 400, position: "relative",
+                    }}
+                    onMouseEnter={(e) => { if (!active) { e.currentTarget.style.background = "rgba(22,41,82,0.3)"; e.currentTarget.style.color = "var(--text-heading)"; } }}
+                    onMouseLeave={(e) => { if (!active) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--text-muted)"; } }}
+                  >
+                    <Icon size={15} style={{ flexShrink: 0 }} />
+                    {!collapsed && <span style={{ flex: 1 }}>{label}</span>}
+                    {!collapsed && badge ? (
+                      <span style={{ fontSize: 10, fontWeight: 700, minWidth: 18, height: 18, borderRadius: 9, background: active ? "var(--sky)" : "rgba(92,103,149,0.2)", color: active ? "var(--bg-page)" : "var(--text-muted)", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 5px" }}>
+                        {badge}
+                      </span>
+                    ) : null}
+                    {collapsed && badge ? (
+                      <span style={{ position: "absolute", top: 6, right: 6, width: 8, height: 8, borderRadius: "50%", background: "var(--sky)" }} />
+                    ) : null}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </nav>
 
         {/* Bottom */}

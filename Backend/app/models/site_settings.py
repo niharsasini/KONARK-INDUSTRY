@@ -62,6 +62,8 @@ class SiteSettings(Document):
     hero_tagline: Optional[str] = None
     # Footer tagline shown under the logo in the site footer
     footer_tagline: Optional[str] = None
+    # Longer descriptive paragraph shown under the footer tagline
+    footer_description: Optional[str] = None
 
     # --- Hero Content ---
     hero_heading: Optional[str] = None
@@ -81,6 +83,8 @@ class SiteSettings(Document):
     # --- Certifications ---
     # ids (from frontend CertificationsSection data.ts) the admin has chosen to hide
     hidden_certifications: list = Field(default_factory=list)
+    # id -> admin-supplied PDF/Drive URL override, replacing the built-in driveLink/embedUrl
+    certification_pdf_urls: dict = Field(default_factory=dict)
 
     # --- Announcement Banner ---
     # Whether the top-of-site announcement banner is visible

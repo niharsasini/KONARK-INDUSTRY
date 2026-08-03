@@ -36,3 +36,64 @@ html, body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Reusable card surface */
+.admin-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid rgba(92,103,149,0.2);
+  padding: 24px;
+}
+
+/* Primary action button */
+.admin-btn-primary {
+  background: linear-gradient(135deg, var(--navy), var(--sky));
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.admin-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(13,81,140,0.3);
+}
+
+/* Status badges */
+.badge-success {
+  background: rgba(52,199,138,0.15);
+  color: var(--green);
+  border: 1px solid rgba(52,199,138,0.3);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge-warning {
+  background: rgba(244,196,48,0.15);
+  color: var(--gold);
+  border: 1px solid rgba(244,196,48,0.3);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge-danger {
+  background: rgba(255,92,92,0.15);
+  color: var(--red);
+  border: 1px solid rgba(255,92,92,0.3);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Non-destructive focus ring — adds a highlight without overriding the
+   per-component background/border colors already set inline throughout
+   the admin app. */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(14,165,233,0.15);
+}
