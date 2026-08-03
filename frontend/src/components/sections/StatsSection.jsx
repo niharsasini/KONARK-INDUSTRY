@@ -1,14 +1,32 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { usePublicStats } from "@/hooks/usePublicStats";
+import { parseStatValue } from "@/lib/parseStatValue";
 
-const STATS = [
-  { icon: "⚡", color: "#0D518C", num: 10, suffix: "+", label: "Years of Excellence", desc: "Founded 2014 in Bhubaneswar" },
-  { icon: "👥", color: "#0EA5E9", num: 25000, suffix: "+", label: "Happy Customers", desc: "Homes, farms & factories" },
-  { icon: "📦", color: "#D97706", num: 50, suffix: "+", label: "Products & Services", desc: "EVs, batteries, appliances" },
-  { icon: "⭐", color: "#34C78A", num: 99, suffix: "%", label: "Satisfaction Rate", desc: "Rated by verified buyers" },
-];
+const STATS_FALLBACK = {
+  years_experience: "10+",
+  customers: "25,000+",
+  total_products: 50,
+  satisfaction: "99%",
+  founding_year: 2014,
+};
+
+function buildStats(stats) {
+  const s = stats || STATS_FALLBACK;
+  const years = parseStatValue(s.years_experience || STATS_FALLBACK.years_experience);
+  const customers = parseStatValue(s.customers || STATS_FALLBACK.customers);
+  const satisfaction = parseStatValue(s.satisfaction || STATS_FALLBACK.satisfaction);
+  const products = s.total_products ?? STATS_FALLBACK.total_products;
+
+  return [
+    { icon: "⚡", color: "#0D518C", num: years.num, suffix: years.suffix, label: "Years of Excellence", desc: `Founded ${s.founding_year || STATS_FALLBACK.founding_year} in Bhubaneswar` },
+    { icon: "👥", color: "#0EA5E9", num: customers.num, suffix: customers.suffix, label: "Happy Customers", desc: "Homes, farms & factories" },
+    { icon: "📦", color: "#D97706", num: products, suffix: "+", label: "Products & Services", desc: "EVs, batteries, appliances" },
+    { icon: "⭐", color: "#34C78A", num: satisfaction.num, suffix: satisfaction.suffix, label: "Satisfaction Rate", desc: "Rated by verified buyers" },
+  ];
+}
 
 function AnimatedNumber({ target, suffix, active }) {
   const [count, setCount] = useState(0);
@@ -37,6 +55,8 @@ function AnimatedNumber({ target, suffix, active }) {
 
 export default function StatsSection() {
   const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true });
+  const publicStats = usePublicStats();
+  const STATS = useMemo(() => buildStats(publicStats), [publicStats]);
 
   useEffect(() => {
     const run = async () => {

@@ -7,7 +7,7 @@ To add a new module: import its router here and call include_router.
 from fastapi import APIRouter
 from app.api.v1 import auth, products, enquiries, orders, services, admin, reviews, users
 from app.api.v1 import battery_swap as battery_swap_module
-from app.api.v1 import public_settings, testimonials, faqs
+from app.api.v1 import public_settings, public_stats, testimonials, faqs
 
 # Master v1 router — mounted at /api/v1 in main.py
 api_router = APIRouter(prefix="/api/v1")
@@ -41,6 +41,9 @@ api_router.include_router(users.router)
 
 # Public site settings: /api/v1/settings
 api_router.include_router(public_settings.router)
+
+# Public auto-calculated stats: /api/v1/stats/public
+api_router.include_router(public_stats.router)
 
 # Testimonials: /api/v1/testimonials/...
 api_router.include_router(testimonials.router)

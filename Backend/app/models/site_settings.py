@@ -75,6 +75,12 @@ class SiteSettings(Document):
     stats_cities: str = "18+"
     stats_rating: str = "4.8★"
     stats_satisfaction: str = "99%"
+    # Year the company was founded — "years of experience" is calculated from this
+    founding_year: int = 2014
+
+    # --- Certifications ---
+    # ids (from frontend CertificationsSection data.ts) the admin has chosen to hide
+    hidden_certifications: list = Field(default_factory=list)
 
     # --- Announcement Banner ---
     # Whether the top-of-site announcement banner is visible

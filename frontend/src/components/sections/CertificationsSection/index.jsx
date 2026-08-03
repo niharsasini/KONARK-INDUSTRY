@@ -1,15 +1,23 @@
 'use client'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { certs } from './data'
 import CertCard from './CertCard'
 import PDFModal from './PDFModal'
+import { usePublicStats } from '@/hooks/usePublicStats'
 
 export default function CertificationsSection() {
   const [activeCert, setActiveCert] = useState(null)
   const { ref: headRef, inView: headIn } = useInView({ threshold: 0.1, triggerOnce: true })
   const { ref: gridRef, inView: gridIn } = useInView({ threshold: 0.05, triggerOnce: true })
+  const publicStats = usePublicStats()
+  const visibleCerts = useMemo(() => {
+    const hidden = new Set((publicStats?.hidden_certifications || []).map(String))
+    return certs.filter((c) => !hidden.has(String(c.id)))
+  }, [publicStats])
+
+  if (visibleCerts.length === 0) return null
 
   return (
     <>
@@ -47,7 +55,7 @@ export default function CertificationsSection() {
           </motion.div>
 
           <div ref={gridRef} className="cert-badges-grid" style={{ marginTop: 40 }}>
-            {certs.map((cert, i) => (
+            {visibleCerts.map((cert, i) => (
               <CertCard key={cert.id} cert={cert} index={i} inView={gridIn} onClick={() => setActiveCert(cert)} />
             ))}
           </div>

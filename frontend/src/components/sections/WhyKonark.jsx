@@ -2,6 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { usePublicStats } from "@/hooks/usePublicStats";
+import { parseStatValue } from "@/lib/parseStatValue";
 
 const FEATURES = [
   {
@@ -30,19 +32,12 @@ const FEATURES = [
   },
 ];
 
-const STATS_FALLBACK = [
-  { key: "stats_customers", label: "Happy Customers", fallback: "25,000+", gradient: "linear-gradient(135deg, #4FC3F7, #0EA5E9)" },
-  { key: "stats_cities", label: "Cities Covered", fallback: "18+", gradient: "linear-gradient(135deg, #F4C430, #FF8F00)" },
-  { key: "stats_rating", label: "Average Rating", fallback: "4.8★", gradient: "linear-gradient(135deg, #34C78A, #059669)" },
-  { key: null, label: "Years in Odisha", fallback: "10+", gradient: "linear-gradient(135deg, #FF7043, #DC2626)" },
+const STATS_META = [
+  { label: "Happy Customers", fallback: "25,000+", gradient: "linear-gradient(135deg, #4FC3F7, #0EA5E9)" },
+  { label: "Cities Covered", fallback: "18+", gradient: "linear-gradient(135deg, #F4C430, #FF8F00)" },
+  { label: "Average Rating", fallback: "4.8★", gradient: "linear-gradient(135deg, #34C78A, #059669)" },
+  { label: "Years in Odisha", fallback: "10+", gradient: "linear-gradient(135deg, #FF7043, #DC2626)" },
 ];
-
-function parseStatValue(raw) {
-  const str = String(raw).replace(/,/g, "");
-  const match = str.match(/^(\d+(?:\.\d+)?)(.*)$/);
-  if (!match) return { num: 0, suffix: str, decimal: false };
-  return { num: parseFloat(match[1]), suffix: match[2], decimal: match[1].includes(".") };
-}
 
 function StatNumber({ value, gradient, active }) {
   const ref = useRef(null);
@@ -152,8 +147,15 @@ function FeatureCard({ feature, index, isVisible }) {
 
 export default function WhyKonark() {
   const settings = useSiteSettings();
-  const STATS = STATS_FALLBACK.map((s) => ({
-    value: s.key ? settings?.[s.key] || s.fallback : s.fallback,
+  const publicStats = usePublicStats();
+  const statValues = [
+    settings?.stats_customers,
+    settings?.stats_cities,
+    publicStats?.avg_rating_display,
+    publicStats?.years_experience,
+  ];
+  const STATS = STATS_META.map((s, i) => ({
+    value: statValues[i] || s.fallback,
     label: s.label,
     gradient: s.gradient,
   }));

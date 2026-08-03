@@ -151,6 +151,9 @@ export default function Hero() {
   const heroSubheading = settings?.hero_subheading ||
     "We make EVs, batteries and appliances in Bhubaneswar.\nOne company. Every power need.";
   const rotatingWords = (settings?.hero_rotating_words?.length ? settings.hero_rotating_words : ROTATING_WORDS);
+  const heroHeadingLines = settings?.hero_heading?.trim()
+    ? settings.hero_heading.split("\n").map((l) => l.trim()).filter(Boolean)
+    : ["Power Your", "World With"];
 
   const DECK = useMemo(() => {
     const productCards = featuredProducts && featuredProducts.length > 0
@@ -324,9 +327,9 @@ export default function Hero() {
 
           {/* Headline */}
           <div>
-            {["Power Your", "World With"].map((line, i) => (
+            {heroHeadingLines.map((line, i) => (
               <h1
-                key={line}
+                key={`${line}-${i}`}
                 className="hero-headline"
                 style={{
                   fontSize: "clamp(40px, 5.5vw, 68px)", fontWeight: 800,

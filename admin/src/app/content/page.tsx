@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Check } from "lucide-react";
+import Link from "next/link";
+import { Check, Star } from "lucide-react";
 import { getSettings, updateSettings } from "@/lib/adminApi";
 
 type Settings = {
@@ -20,7 +21,17 @@ type Settings = {
   stats_cities: string;
   stats_rating: string;
   stats_satisfaction: string;
+  founding_year: number;
+  hidden_certifications: string[];
 };
+
+const CERTIFICATIONS = [
+  { id: "1", title: "Startup India" },
+  { id: "2", title: "Startup Odisha" },
+  { id: "3", title: "Udyam MSME Registration" },
+  { id: "4", title: "Importer-Exporter Code" },
+  { id: "5", title: "Trade Mark Registration" },
+];
 
 const BANNER_TYPES = [
   { value: "announcement", label: "Announcement" },
@@ -73,6 +84,8 @@ export default function ContentPage() {
           stats_cities: (s.stats_cities as string) || "18+",
           stats_rating: (s.stats_rating as string) || "4.8★",
           stats_satisfaction: (s.stats_satisfaction as string) || "99%",
+          founding_year: (s.founding_year as number) || 2014,
+          hidden_certifications: Array.isArray(s.hidden_certifications) ? (s.hidden_certifications as string[]) : [],
         });
       })
       .catch((err) => setError(err.message || "Failed to load settings"))
@@ -85,6 +98,20 @@ export default function ContentPage() {
 
   const set = (key: keyof Settings) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => (f ? { ...f, [key]: e.target.value } : f));
+
+  const setFoundingYear = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const year = parseInt(e.target.value, 10);
+    setForm((f) => (f ? { ...f, founding_year: Number.isNaN(year) ? f.founding_year : year } : f));
+  };
+
+  const toggleCertification = (id: string) =>
+    setForm((f) => {
+      if (!f) return f;
+      const hidden = f.hidden_certifications.includes(id)
+        ? f.hidden_certifications.filter((c) => c !== id)
+        : [...f.hidden_certifications, id];
+      return { ...f, hidden_certifications: hidden };
+    });
 
   const handleSave = async () => {
     if (!form) return;
@@ -201,7 +228,8 @@ export default function ContentPage() {
           </div>
           <div style={{ marginBottom: 14 }}>
             <label style={LABEL}>Heading (optional override)</label>
-            <input value={form.hero_heading || ""} onChange={set("hero_heading")} placeholder="Electric Vehicles & Energy Solutions" style={INPUT} />
+            <textarea rows={2} value={form.hero_heading || ""} onChange={set("hero_heading")} placeholder={"Power Your\nWorld With"} style={{ ...INPUT, resize: "vertical", fontFamily: "inherit" }} />
+            <p style={{ fontSize: 11, color: "var(--text-subtle)", marginTop: 6 }}>Shown as two lines above the rotating word. Put a line break where you want the heading to wrap.</p>
           </div>
           <div style={{ marginBottom: 14 }}>
             <label style={LABEL}>Subheading / Description</label>
@@ -216,7 +244,7 @@ export default function ContentPage() {
 
         <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
           <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 18px" }}>Homepage Stats</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
             <div>
               <label style={LABEL}>Customers</label>
               <input value={form.stats_customers} onChange={set("stats_customers")} placeholder="25,000+" style={INPUT} />
@@ -226,14 +254,57 @@ export default function ContentPage() {
               <input value={form.stats_cities} onChange={set("stats_cities")} placeholder="18+" style={INPUT} />
             </div>
             <div>
-              <label style={LABEL}>Average Rating</label>
-              <input value={form.stats_rating} onChange={set("stats_rating")} placeholder="4.8★" style={INPUT} />
-            </div>
-            <div>
               <label style={LABEL}>Satisfaction Rate</label>
               <input value={form.stats_satisfaction} onChange={set("stats_satisfaction")} placeholder="99%" style={INPUT} />
             </div>
+            <div>
+              <label style={LABEL}>Founding Year</label>
+              <input type="number" value={form.founding_year} onChange={setFoundingYear} placeholder="2014" style={INPUT} />
+            </div>
           </div>
+          <div style={{ padding: "10px 14px", background: "rgba(13,81,140,0.06)", border: "1px solid rgba(13,81,140,0.15)", borderRadius: 8, marginBottom: 14 }}>
+            <p style={{ fontSize: 12, color: "var(--text-muted)", margin: 0, lineHeight: 1.6 }}>
+              ⚡ &quot;Years of experience&quot; is calculated automatically from the founding year above. Average rating and product count are calculated automatically from your approved reviews and active products.
+            </p>
+          </div>
+          <label style={LABEL}>Average Rating (fallback, used only until you have approved reviews)</label>
+          <input value={form.stats_rating} onChange={set("stats_rating")} placeholder="4.8★" style={INPUT} />
+        </div>
+
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 18px" }}>Certifications</h3>
+          <p style={{ fontSize: 12, color: "var(--text-muted)", margin: "0 0 16px", lineHeight: 1.6 }}>
+            Choose which government certification badges appear in the homepage Certifications section.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {CERTIFICATIONS.map((cert) => {
+              const visible = !form.hidden_certifications.includes(cert.id);
+              return (
+                <div key={cert.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0" }}>
+                  <span style={{ fontSize: 13, color: "var(--text-heading)" }}>{cert.title}</span>
+                  <button
+                    onClick={() => toggleCertification(cert.id)}
+                    style={{ width: 42, height: 22, borderRadius: 11, border: "none", cursor: "pointer", background: visible ? "var(--navy)" : "rgba(92,103,149,0.2)", position: "relative", transition: "background 0.2s" }}
+                  >
+                    <span style={{ position: "absolute", top: 3, left: visible ? 22 : 3, width: 16, height: 16, borderRadius: "50%", background: "#fff", transition: "left 0.2s" }} />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 12px" }}>Featured Products (Hero Carousel)</h3>
+          <p style={{ fontSize: 12, color: "var(--text-muted)", margin: "0 0 14px", lineHeight: 1.6 }}>
+            The products shown in the homepage hero card deck are controlled from the Products page — mark up to 5 products as featured there.
+          </p>
+          <Link
+            href="/products"
+            style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "9px 18px", borderRadius: 8, border: "1px solid rgba(92,103,149,0.3)", color: "var(--text-heading)", fontSize: 13, fontWeight: 700, textDecoration: "none" }}
+          >
+            <Star size={14} /> Go to Products
+          </Link>
         </div>
 
         <div style={{ background: "var(--bg-card)", border: "1px solid rgba(92,103,149,0.2)", borderRadius: 14, padding: 24 }}>
