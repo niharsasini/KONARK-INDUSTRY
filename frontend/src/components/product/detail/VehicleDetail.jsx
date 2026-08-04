@@ -5,20 +5,59 @@ import toast from "react-hot-toast";
 import { submitTestRide, submitEnquiry } from "@/lib/api";
 import { StarRating, RelatedProducts } from "./shared";
 
-/* ─── VEHICLE detail (Tesla / Tata Motors style — cinematic, full-width) ──────────── */
+/* ─── VEHICLE detail (Amazon / Flipkart / Tesla style — standard split layout) ──────────── */
 
 const TIME_SLOTS = ["Morning (9AM–12PM)", "Afternoon (12PM–4PM)", "Evening (4PM–7PM)"];
 
-const FEATURES = [
-  "Made in India — manufactured at our Bhubaneswar facility",
-  "Removable LFP battery for convenient home charging",
-  "2-year warranty on motor and battery",
-  "Doorstep service network across Odisha",
-  "Portable charger included (home + fast-charge adapter)",
-  "Registration assistance & RC support",
-  "Free first service within 3 months",
-  "Digital display & remote anti-theft",
+/* Spec keys vary wildly across products (MotorType vs Motor, ChargingTime vs "Charging Time"...).
+   Normalize to alnum-lowercase so any casing/spacing/punctuation variant still matches. */
+function normalizeKey(k) {
+  return String(k).toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+function getSpecValue(specs, ...aliases) {
+  if (!specs) return null;
+  const entries = Object.entries(specs).map(([k, v]) => [normalizeKey(k), v]);
+  for (const alias of aliases) {
+    const target = normalizeKey(alias);
+    const found = entries.find(([nk]) => nk === target);
+    if (found && found[1] !== null && found[1] !== undefined && found[1] !== "") return found[1];
+  }
+  return null;
+}
+
+const SPEC_CANDIDATES = [
+  { label: "Range", aliases: ["Range", "Battery Range", "Max Range", "Mileage"] },
+  { label: "Motor", aliases: ["Motor", "Motor Power", "Power", "MotorType"] },
+  { label: "Battery", aliases: ["Battery", "Battery Capacity"] },
+  { label: "Top Speed", aliases: ["Top Speed", "Speed", "Max Speed", "MaxSpeed"] },
+  { label: "Charging", aliases: ["Charging Time", "Charge Time", "Charging", "ChargingTime"] },
+  { label: "Payload", aliases: ["Payload", "Load Capacity", "Carrying Capacity", "LoadCapacity"] },
 ];
+
+/* Highlights shown as right-panel trust badges and as the "Key Features" list.
+   Admin-entered product.features wins when present; otherwise derive from specs/flags. */
+function generateHighlights(product) {
+  const specs = product.specifications || {};
+  const highlights = [];
+
+  const warranty = getSpecValue(specs, "Warranty");
+  if (warranty) highlights.push(`${warranty} warranty`);
+
+  const range = getSpecValue(specs, ...SPEC_CANDIDATES[0].aliases);
+  if (range) highlights.push(`${range} range`);
+
+  const charging = getSpecValue(specs, ...SPEC_CANDIDATES[4].aliases);
+  if (charging) highlights.push(`Fast charge: ${charging}`);
+
+  if (product.inStock !== false) highlights.push("In stock — ready to deliver");
+  if (product.isNew) highlights.push("Latest model");
+
+  highlights.push("ISI certified quality");
+  highlights.push("Made in Bhubaneswar");
+
+  return highlights;
+}
 
 export default function VehicleDetail({ product }) {
   const images = product.images?.length > 0 ? product.images : [product.image];
@@ -73,12 +112,14 @@ export default function VehicleDetail({ product }) {
   const isUpcoming = product.isUpcoming === true || product.specifications?.Status === "Upcoming";
   const inStock = product.inStock !== false;
 
-  const KEY_SPECS = [
-    { label: "Range", value: product.specifications?.Range || "—" },
-    { label: "Top Speed", value: product.specifications?.["Top Speed"] || product.specifications?.TopSpeed || "—" },
-    { label: "Charging", value: product.specifications?.["Charging Time"] || product.specifications?.Charging || "—" },
-    { label: "Motor", value: product.specifications?.Motor || product.specifications?.MotorType || "—" },
-  ];
+  const keySpecs = SPEC_CANDIDATES
+    .map((c) => ({ label: c.label, value: getSpecValue(product.specifications, ...c.aliases) }))
+    .filter((s) => s.value)
+    .slice(0, 4);
+
+  const adminFeatures = (product.features || []).filter(Boolean);
+  const highlights = adminFeatures.length ? adminFeatures : generateHighlights(product);
+  const trustBadges = highlights.slice(0, 4);
 
   const handleRideSubmit = async (e) => {
     e.preventDefault();
@@ -138,45 +179,6 @@ export default function VehicleDetail({ product }) {
 
   return (
     <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: 64 }}>
-      {/* ━━━ HERO IMAGE ━━━ */}
-      <div style={{
-        position: "relative", width: "100%", height: "65vh", minHeight: 480,
-        overflow: "hidden", background: "linear-gradient(135deg, #EEF2FF, #F0F5FF)",
-      }}>
-        {product.isNew && (
-          <span style={{ position: "absolute", top: 24, left: 24, zIndex: 2, background: "var(--navy)", color: "#fff", fontSize: 11, fontWeight: 800, padding: "4px 12px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>NEW</span>
-        )}
-        <span style={{ position: "absolute", top: 24, right: 24, zIndex: 2, background: "rgba(15,76,129,0.85)", border: "1px solid rgba(255,255,255,0.2)", color: "#fff", fontSize: 11, fontWeight: 800, padding: "4px 12px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>⚡ EV Vehicle</span>
-        <img
-          key={images[activeImage]}
-          src={images[activeImage]}
-          alt={product.name}
-          className="vehicle-hero-img"
-          style={{ width: "100%", height: "100%", objectFit: images[activeImage]?.startsWith("http") ? "cover" : "contain" }}
-        />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(transparent 40%, rgba(245,247,255,0.95) 100%)", pointerEvents: "none" }} />
-      </div>
-
-      {/* Thumbnail strip */}
-      {images.length > 1 && (
-        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "16px 24px 0", display: "flex", gap: 10, overflowX: "auto" }}>
-          {images.map((img, i) => (
-            <button
-              key={img + i}
-              onClick={() => setActiveImage(i)}
-              style={{
-                flexShrink: 0, width: 80, height: 60, borderRadius: 12, overflow: "hidden", padding: 0,
-                border: `2px solid ${activeImage === i ? "#0D518C" : "transparent"}`,
-                boxShadow: activeImage === i ? "0 0 0 3px rgba(13,81,140,0.15)" : "3px 3px 8px rgba(13,81,140,0.08)",
-                cursor: "pointer", transition: "all 0.2s ease", background: "#fff",
-              }}
-            >
-              <img src={img} alt={`${product.name} view ${i + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            </button>
-          ))}
-        </div>
-      )}
-
       {/* Breadcrumb */}
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "20px 24px 0", display: "flex", gap: 6, fontSize: 12, color: "#8BA8C4", alignItems: "center" }}>
         <Link href="/" style={{ color: "#8BA8C4", textDecoration: "none" }}>Home</Link>
@@ -188,56 +190,82 @@ export default function VehicleDetail({ product }) {
         <span style={{ color: "var(--navy)" }}>{product.name}</span>
       </div>
 
-      {/* ━━━ PRODUCT INFO ━━━ */}
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "28px 28px 48px", display: "grid", gridTemplateColumns: "1fr 400px", gap: 60, alignItems: "flex-start" }} className="vehicle-grid">
-        {/* LEFT */}
-        <div className="vehicle-info-panel">
-          <span style={{ display: "inline-block", background: "rgba(13,81,140,0.08)", border: "1px solid rgba(13,81,140,0.15)", color: "#0D518C", fontSize: 11, fontWeight: 700, padding: "4px 14px", borderRadius: 20, letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: 14 }}>
-            {product.category}
-          </span>
-
-          <h1 className="vehicle-name" style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, color: "#0C1A2E", letterSpacing: "-1px", lineHeight: 1.1, margin: "0 0 12px" }}>
-            {product.name}
-          </h1>
-
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
-            <StarRating rating={product.rating} size={16} />
-            <span style={{ width: 1, height: 14, background: "rgba(13,81,140,0.15)" }} />
-            {isUpcoming ? (
-              <span style={{ fontSize: 11, fontWeight: 700, color: "var(--purple)", background: "var(--purple-bg)", padding: "3px 10px", borderRadius: 20, textTransform: "uppercase", letterSpacing: "0.06em" }}>Coming Soon</span>
-            ) : (
-              <span style={{ fontSize: 11, fontWeight: 700, color: "var(--green)", background: "var(--green-bg)", padding: "3px 10px", borderRadius: 20, textTransform: "uppercase", letterSpacing: "0.06em" }}>{inStock ? "In Stock" : "Out of Stock"}</span>
+      {/* ━━━ STANDARD 2-COLUMN LAYOUT FROM TOP ━━━ */}
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "20px 24px 48px", display: "grid", gridTemplateColumns: "1fr 420px", gap: 48, alignItems: "flex-start" }} className="vehicle-grid">
+        {/* LEFT — image, specs, description, features */}
+        <div className="vehicle-left">
+          <div className="vehicle-image-box" style={{
+            position: "relative", background: "linear-gradient(145deg, #EEF4FF, #F0F6FF)",
+            borderRadius: 24, boxShadow: "10px 10px 28px rgba(13,81,140,0.09), -8px -8px 22px rgba(255,255,255,0.95)",
+            padding: 20, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
+          }}>
+            {product.isNew && (
+              <span style={{ position: "absolute", top: 16, left: 16, zIndex: 2, background: "var(--navy)", color: "#fff", fontSize: 10, fontWeight: 800, padding: "3px 10px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>NEW</span>
             )}
+            <span style={{ position: "absolute", top: 16, right: 16, zIndex: 2, background: "rgba(15,76,129,0.85)", color: "#fff", fontSize: 10, fontWeight: 800, padding: "3px 10px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>⚡ EV Vehicle</span>
+            <img
+              key={images[activeImage]}
+              src={images[activeImage]}
+              alt={product.name}
+              className="vehicle-hero-img"
+              style={{ maxWidth: "90%", maxHeight: "90%", objectFit: "contain", filter: "drop-shadow(0 16px 32px rgba(13,81,140,0.2))", transition: "transform 0.5s ease" }}
+            />
           </div>
 
-          <p style={{ fontSize: 15, color: "#4A6785", lineHeight: 1.7, marginBottom: 28, maxWidth: 560 }}>{product.description}</p>
+          {/* Thumbnail strip */}
+          {images.length > 1 && (
+            <div style={{ display: "flex", gap: 10, marginTop: 14, overflowX: "auto" }}>
+              {images.map((img, i) => (
+                <button
+                  key={img + i}
+                  onClick={() => setActiveImage(i)}
+                  style={{
+                    flexShrink: 0, width: 72, height: 60, borderRadius: 12, overflow: "hidden", padding: 0,
+                    background: "#EEF4FF",
+                    border: `2px solid ${activeImage === i ? "#0D518C" : "transparent"}`,
+                    boxShadow: activeImage === i ? "0 0 0 3px rgba(13,81,140,0.12)" : "3px 3px 8px rgba(13,81,140,0.08), -2px -2px 6px rgba(255,255,255,0.9)",
+                    cursor: "pointer", transition: "all 0.2s ease",
+                  }}
+                >
+                  <img src={img} alt={`${product.name} view ${i + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                </button>
+              ))}
+            </div>
+          )}
 
-          {/* KEY SPECS ROW */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 32 }} className="spec-strip">
-            {KEY_SPECS.map((s) => (
-              <div key={s.label} className="spec-card" style={{ background: "#FFFFFF", borderRadius: 16, boxShadow: "6px 6px 16px rgba(13,81,140,0.08), -5px -5px 14px rgba(255,255,255,0.95)", padding: "16px 12px", textAlign: "center" }}>
-                <p style={{ fontSize: 22, fontWeight: 900, color: "#0D518C", letterSpacing: "-0.5px", margin: 0 }}>{s.value}</p>
-                <p style={{ fontSize: 11, color: "#8BA8C4", fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase", margin: "4px 0 0" }}>{s.label}</p>
-              </div>
-            ))}
-          </div>
+          {/* Key specs row — only real values, hidden entirely if none found */}
+          {keySpecs.length > 0 && (
+            <div style={{ display: "grid", gridTemplateColumns: `repeat(${keySpecs.length}, 1fr)`, gap: 14, marginTop: 28 }} className="spec-strip">
+              {keySpecs.map((s) => (
+                <div key={s.label} className="spec-card" style={{ background: "#FFFFFF", borderRadius: 16, boxShadow: "6px 6px 16px rgba(13,81,140,0.08), -5px -5px 14px rgba(255,255,255,0.95)", padding: "16px 12px", textAlign: "center" }}>
+                  <p style={{ fontSize: 20, fontWeight: 900, color: "#0D518C", letterSpacing: "-0.5px", margin: 0 }}>{s.value}</p>
+                  <p style={{ fontSize: 11, color: "#8BA8C4", fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase", margin: "4px 0 0" }}>{s.label}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Full description */}
+          <p style={{ fontSize: 15, color: "#4A6785", lineHeight: 1.8, margin: "28px 0 0" }}>{product.description}</p>
 
           {/* Key Features */}
-          <div style={{ marginBottom: 32 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: "var(--text-heading)", marginBottom: 16 }}>Key Features</h3>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
-              {FEATURES.map((f) => (
-                <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "#1E3A5F" }}>
-                  <span style={{ color: "#0D518C", fontWeight: 800, flexShrink: 0 }}>✓</span>
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {highlights.length > 0 && (
+            <div style={{ marginTop: 32 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: "var(--text-heading)", marginBottom: 16 }}>Key Features</h3>
+              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+                {highlights.map((f) => (
+                  <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "#1E3A5F", textTransform: "capitalize" }}>
+                    <span style={{ color: "#0D518C", fontWeight: 800, flexShrink: 0 }}>✓</span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Upcoming banner */}
           {isUpcoming && (
-            <div style={{ background: "rgba(193,127,36,0.1)", border: "1px solid rgba(193,127,36,0.3)", borderRadius: 12, padding: "16px 20px", display: "flex", gap: 12, marginBottom: 28, alignItems: "flex-start" }}>
+            <div style={{ background: "rgba(193,127,36,0.1)", border: "1px solid rgba(193,127,36,0.3)", borderRadius: 12, padding: "16px 20px", display: "flex", gap: 12, marginTop: 28, alignItems: "flex-start" }}>
               <span style={{ fontSize: 22 }}>⚡</span>
               <div style={{ flex: 1 }}>
                 <p style={{ fontSize: 14, fontWeight: 700, color: "var(--gold)", margin: "0 0 4px" }}>New Model Coming Soon</p>
@@ -258,26 +286,46 @@ export default function VehicleDetail({ product }) {
 
           {/* Full specs collapsible */}
           {specs.length > 0 && (
-            <FullSpecsAccordion specs={specs} isUpcoming={isUpcoming} />
+            <div style={{ marginTop: 28 }}>
+              <FullSpecsAccordion specs={specs} isUpcoming={isUpcoming} />
+            </div>
           )}
         </div>
 
-        {/* RIGHT — sticky action panel */}
+        {/* RIGHT — sticky action panel: identity, price, CTAs, highlights */}
         <div style={{ position: "sticky", top: "calc(68px + var(--banner-h,0px) + 20px)" }}>
           <div className="vehicle-action-card" style={{ background: "#FFFFFF", borderRadius: 24, boxShadow: "12px 12px 32px rgba(13,81,140,0.1), -10px -10px 28px rgba(255,255,255,0.95)", padding: "32px 28px" }}>
+            <span style={{ display: "inline-block", background: "rgba(13,81,140,0.08)", border: "1px solid rgba(13,81,140,0.15)", color: "#0D518C", fontSize: 11, fontWeight: 700, padding: "4px 14px", borderRadius: 20, letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: 14 }}>
+              {product.category}
+            </span>
+
+            <h1 className="vehicle-name" style={{ fontSize: "clamp(22px, 2.4vw, 30px)", fontWeight: 900, color: "#0C1A2E", letterSpacing: "-0.5px", lineHeight: 1.15, margin: "0 0 12px" }}>
+              {product.name}
+            </h1>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
+              <StarRating rating={product.rating} size={15} />
+              <span style={{ width: 1, height: 14, background: "rgba(13,81,140,0.15)" }} />
+              {isUpcoming ? (
+                <span style={{ fontSize: 11, fontWeight: 700, color: "var(--purple)", background: "var(--purple-bg)", padding: "3px 10px", borderRadius: 20, textTransform: "uppercase", letterSpacing: "0.06em" }}>Coming Soon</span>
+              ) : (
+                <span style={{ fontSize: 11, fontWeight: 700, color: "var(--green)", background: "var(--green-bg)", padding: "3px 10px", borderRadius: 20, textTransform: "uppercase", letterSpacing: "0.06em" }}>{inStock ? "In Stock" : "Out of Stock"}</span>
+              )}
+            </div>
+
             {product.price > 0 ? (
               <div style={{ marginBottom: 16 }}>
                 <p style={{ fontSize: 12, color: "#8BA8C4", margin: "0 0 2px" }}>Starting from</p>
-                <p style={{ fontSize: 36, fontWeight: 900, color: "var(--gold)", letterSpacing: "-1px", margin: 0 }}>
+                <p style={{ fontSize: 32, fontWeight: 900, color: "var(--gold)", letterSpacing: "-1px", margin: 0 }}>
                   ₹{product.price.toLocaleString("en-IN")} <span style={{ fontSize: 13, color: "#8BA8C4", fontWeight: 600 }}>+ GST</span>
                 </p>
                 <p style={{ fontSize: 14, color: "#4A6785", margin: "6px 0 0" }}>
-                  or ₹{Math.round(product.price / 24).toLocaleString("en-IN")}/month{" "}
+                  or ₹{Math.round(product.price / 12).toLocaleString("en-IN")}/month{" "}
                   <span style={{ fontSize: 11, fontWeight: 700, color: "var(--green)", background: "var(--green-bg)", padding: "2px 8px", borderRadius: 20 }}>0% EMI</span>
                 </p>
               </div>
             ) : (
-              <p style={{ fontSize: 20, fontWeight: 700, color: "var(--text-subtle)", fontStyle: "italic", marginBottom: 16 }}>Price on Request</p>
+              <p style={{ fontSize: 18, fontWeight: 700, color: "var(--text-subtle)", fontStyle: "italic", marginBottom: 16 }}>Price on Request</p>
             )}
 
             <div style={{ height: 1, background: "rgba(13,81,140,0.06)", margin: "20px 0" }} />
@@ -309,22 +357,19 @@ export default function VehicleDetail({ product }) {
             )}
 
             <p style={{ fontSize: 12, color: "#8BA8C4", textAlign: "center", margin: "14px 0 0" }}>
-              Or call: <a href="tel:+919437611129" style={{ color: "var(--navy)", fontWeight: 600, textDecoration: "none" }}>+91 94376 11129</a>
+              📞 or call: <a href="tel:+919437611129" style={{ color: "var(--navy)", fontWeight: 600, textDecoration: "none" }}>+91 94376 11129</a>
             </p>
 
-            {/* Trust badges */}
-            <div style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 8 }}>
-              {[
-                "Free delivery above ₹10,000",
-                "2-year warranty included",
-                "EMI available from ₹799/month",
-                "Doorstep service available",
-              ].map((t) => (
-                <p key={t} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#4A6785", margin: 0 }}>
-                  <span style={{ color: "var(--green)" }}>✓</span> {t}
-                </p>
-              ))}
-            </div>
+            {/* Dynamic highlights (admin features, else generated from specs) */}
+            {trustBadges.length > 0 && (
+              <div style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 8 }}>
+                {trustBadges.map((t) => (
+                  <p key={t} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 12, color: "#4A6785", margin: 0, textTransform: "capitalize" }}>
+                    <span style={{ color: "var(--green)" }}>✓</span> {t}
+                  </p>
+                ))}
+              </div>
+            )}
 
             {/* Share row */}
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 24, paddingTop: 20, borderTop: "1px solid rgba(13,81,140,0.06)" }}>
@@ -458,17 +503,18 @@ export default function VehicleDetail({ product }) {
       <style>{`
         @keyframes vehicleKenBurns {
           from { transform: scale(1); }
-          to { transform: scale(1.05); }
+          to { transform: scale(1.03); }
         }
-        .vehicle-hero-img {
-          animation: vehicleKenBurns 8s ease forwards;
+        .vehicle-image-box { height: 420px; }
+        .vehicle-image-box:hover .vehicle-hero-img { transform: scale(1.04); }
+        @media (max-width: 1024px) {
+          .vehicle-image-box { height: 320px; }
         }
         @media (max-width: 900px) {
           .vehicle-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
-          .spec-strip { grid-template-columns: repeat(2, 1fr) !important; }
         }
-        @media (max-width: 480px) {
-          .spec-strip { grid-template-columns: repeat(2, 1fr) !important; }
+        @media (max-width: 640px) {
+          .vehicle-image-box { height: 240px; }
         }
       `}</style>
     </div>
@@ -490,7 +536,7 @@ function FullSpecsAccordion({ specs, isUpcoming }) {
         style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "transparent", border: "none", cursor: "pointer", padding: 0, marginBottom: open ? 14 : 0 }}
       >
         <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>
-          {isUpcoming ? "🚀 Upcoming New Model — Specifications" : "View Full Specifications"}
+          {isUpcoming ? "🚀 Upcoming New Model — Specifications" : "View All Specifications"}
         </h3>
         <svg viewBox="0 0 20 20" fill="currentColor" style={{ width: 18, height: 18, color: "var(--navy)", transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
           <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />

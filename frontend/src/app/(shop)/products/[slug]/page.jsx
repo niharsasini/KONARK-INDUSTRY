@@ -34,6 +34,7 @@ export default function ProductPage() {
             isNew: data.is_new ?? prev?.isNew ?? false,
             inStock: data.in_stock ?? prev?.inStock ?? true,
             specifications: data.specs || prev?.specifications || {},
+            features: data.features?.length ? data.features : prev?.features || [],
           }));
         }
       })

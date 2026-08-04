@@ -74,6 +74,9 @@ class Product(Document):
     # Category-specific technical specifications as key-value pairs
     specs: Dict[str, Any] = {}
 
+    # Admin-curated bullet points shown as "Key Features" and trust badges on the detail page
+    features: List[str] = []
+
     # False means show "Out of Stock" on product page
     in_stock: bool = True
 

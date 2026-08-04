@@ -39,6 +39,7 @@ class ProductCreateRequest(BaseModel):
     images: List[str] = []
     rating: float = Field(default=0, ge=0, le=5)
     specs: Dict[str, Any] = {}
+    features: List[str] = []
     in_stock: bool = True
     is_new: bool = False
     is_featured: bool = False
@@ -55,6 +56,7 @@ class ProductUpdateRequest(BaseModel):
     images: Optional[List[str]] = None
     rating: Optional[float] = Field(None, ge=0, le=5)
     specs: Optional[Dict[str, Any]] = None
+    features: Optional[List[str]] = None
     in_stock: Optional[bool] = None
     is_new: Optional[bool] = None
     is_featured: Optional[bool] = None
@@ -75,6 +77,7 @@ class ProductResponse(BaseModel):
     rating: float
     review_count: int
     specs: Dict[str, Any]
+    features: List[str]
     in_stock: bool
     is_new: bool
     is_featured: bool
@@ -96,6 +99,7 @@ def _to_response(p: Product) -> ProductResponse:
         rating=p.rating,
         review_count=p.review_count,
         specs=p.specs,
+        features=p.features,
         in_stock=p.in_stock,
         is_new=p.is_new,
         is_featured=p.is_featured,

@@ -39,6 +39,7 @@ export default function NewProductPage() {
   const [slugEdited, setSlugEdited] = useState(false);
   const [images, setImages] = useState<string[]>([""]);
   const [specs, setSpecs] = useState<SpecRow[]>([{ key: "", val: "" }]);
+  const [features, setFeatures] = useState<string[]>([""]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -65,6 +66,11 @@ export default function NewProductPage() {
   const updateImage = (i: number, value: string) =>
     setImages((imgs) => imgs.map((img, j) => (j === i ? value : img)));
 
+  const addFeature = () => setFeatures((f) => [...f, ""]);
+  const updateFeature = (i: number, val: string) =>
+    setFeatures((f) => f.map((feat, j) => (j === i ? val : feat)));
+  const removeFeature = (i: number) => setFeatures((f) => f.filter((_, j) => j !== i));
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -85,6 +91,7 @@ export default function NewProductPage() {
         description: form.description,
         images: images.map((i) => i.trim()).filter(Boolean),
         specs: specsObj,
+        features: features.map((f) => f.trim()).filter(Boolean),
         in_stock: form.inStock,
         is_new: form.isNew,
         is_featured: form.isFeatured,
@@ -223,6 +230,37 @@ export default function NewProductPage() {
             </div>
             <button type="button" onClick={addSpecRow} style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 8, border: "1px solid rgba(92,103,149,0.2)", background: "transparent", color: "var(--navy)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
               <Plus size={13} /> Add Spec
+            </button>
+          </div>
+
+          <div style={{ gridColumn: "1 / -1" }}>
+            <label style={labelStyle}>Key Features</label>
+            <p style={{ color: "var(--text-muted)", fontSize: 12, margin: "-4px 0 10px" }}>
+              Shown as bullet points and trust badges on the product detail page
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 10 }}>
+              {features.map((feat, i) => (
+                <div key={i} style={{ display: "flex", gap: 8 }}>
+                  <input
+                    value={feat}
+                    onChange={(e) => updateFeature(i, e.target.value)}
+                    placeholder={`Feature ${i + 1} e.g. "250W BLDC Motor"`}
+                    style={inputStyle}
+                  />
+                  {features.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeFeature(i)}
+                      style={{ background: "rgba(255,71,87,0.1)", border: "1px solid rgba(255,71,87,0.3)", color: "#FF4757", borderRadius: 8, padding: "0 12px", cursor: "pointer" }}
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+            <button type="button" onClick={addFeature} style={{ background: "rgba(13,81,140,0.1)", border: "1px solid rgba(13,81,140,0.2)", color: "#0EA5E9", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13, fontWeight: 600 }}>
+              + Add Feature
             </button>
           </div>
 
