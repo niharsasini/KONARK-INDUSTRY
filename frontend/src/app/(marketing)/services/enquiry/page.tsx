@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { submitEnquiry } from "@/lib/api";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 
@@ -14,9 +15,25 @@ const SERVICE_OPTIONS = [
   "Electrical Fault Finding",
   "Solar Panel Installation",
   "Battery System Setup",
+  "Cold Storage Setup",
+  "PCB Repair & Testing",
   "Annual Maintenance (AMC)",
   "Other — Please describe",
 ];
+
+const SERVICE_SLUG_MAP: Record<string, string> = {
+  "ac-repair": "AC Repair & Service",
+  "electrical": "Home Electrical Wiring",
+  "ev-charging": "EV Charger Installation",
+  "solar": "Solar Panel Installation",
+  "wind": "Other — Please describe",
+  "cold-storage": "Cold Storage Setup",
+  "pcb-repair": "PCB Repair & Testing",
+};
+
+const TIME_SLOTS = ["Morning (8AM–12PM)", "Afternoon (12PM–4PM)", "Evening (4PM–8PM)"];
+
+const STEPS = ["Service", "Details", "Confirm"];
 
 const INPUT_STYLE: React.CSSProperties = {
   background: "var(--bg-card)",
@@ -53,14 +70,55 @@ function Field({ label, required, children }: { label: string; required?: boolea
   );
 }
 
-export default function EnquiryPage() {
+function StepIndicator({ current }: { current: number }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28 }}>
+      {STEPS.map((label, i) => (
+        <div key={label} style={{ display: "flex", alignItems: "center", gap: 8, flex: i < STEPS.length - 1 ? 1 : "none" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div
+              style={{
+                width: 26, height: 26, borderRadius: "50%", flexShrink: 0,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 12, fontWeight: 800,
+                background: i <= current ? "var(--grad-navy)" : "var(--bg-page)",
+                color: i <= current ? "#fff" : "var(--text-subtle)",
+                boxShadow: i <= current ? "var(--shadow-navy)" : "var(--neu-inset)",
+                transition: "all 0.3s ease",
+              }}
+            >
+              {i + 1}
+            </div>
+            <span style={{ fontSize: 12, fontWeight: 700, color: i <= current ? "var(--text-heading)" : "var(--text-subtle)", whiteSpace: "nowrap" }}>
+              {label}
+            </span>
+          </div>
+          {i < STEPS.length - 1 && (
+            <div style={{ flex: 1, height: 2, background: i < current ? "var(--navy)" : "var(--border-light)", transition: "background 0.3s ease" }} />
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function EnquiryForm() {
+  const searchParams = useSearchParams();
+  const prefillService = searchParams.get("service");
+
   const [form, setForm] = useState({
     name: "", phone: "", email: "", service: "",
-    city: "", date: "", problem: "", urgency: "moderate",
+    city: "", date: "", timeSlot: "", problem: "", urgency: "moderate",
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (prefillService && SERVICE_SLUG_MAP[prefillService]) {
+      setForm((f) => ({ ...f, service: SERVICE_SLUG_MAP[prefillService] }));
+    }
+  }, [prefillService]);
 
   useEffect(() => {
     const run = async () => {
@@ -91,12 +149,27 @@ export default function EnquiryPage() {
     e.currentTarget.style.boxShadow = "var(--neu-inset)";
   };
 
+  // Step indicator reflects progress: 0 once a service is chosen, 1 once the
+  // core contact/problem fields are filled, 2 right before submit.
+  const currentStep = !form.service ? 0 : !(form.name && form.phone && form.city && form.problem) ? 1 : 2;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     try {
-      await submitEnquiry({ ...form, enquiry_type: "service" });
+      const message = form.timeSlot ? `Preferred time slot: ${form.timeSlot}\n\n${form.problem}` : form.problem;
+      await submitEnquiry({
+        name: form.name,
+        phone: form.phone,
+        email: form.email || undefined,
+        enquiry_type: "service",
+        service_type: form.service,
+        city: form.city,
+        preferred_date: form.date || undefined,
+        message,
+        urgency: form.urgency,
+      });
       setSuccess(true);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Network error. Please call us directly.");
@@ -114,20 +187,7 @@ export default function EnquiryPage() {
         padding: "60px 24px 48px",
       }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          {/* Breadcrumb */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20, fontSize: 13, color: "var(--text-subtle)" }}>
-            <Link href="/" style={{ color: "var(--text-subtle)", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-subtle)")}
-            >Home</Link>
-            <span>›</span>
-            <Link href="/services" style={{ color: "var(--text-subtle)", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-subtle)")}
-            >Services</Link>
-            <span>›</span>
-            <span style={{ color: "var(--text-muted)" }}>Book a Service</span>
-          </div>
+          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Services", href: "/services" }, { label: "Book a Service" }]} />
           <h1 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 900, color: "var(--text-heading)", margin: "0 0 14px", lineHeight: 1.15 }}>
             Book a Service
           </h1>
@@ -143,6 +203,8 @@ export default function EnquiryPage() {
 
           {/* LEFT — Form */}
           <div className="enquiry-form-card">
+            {!success && <StepIndicator current={currentStep} />}
+
             <h2 style={{ fontSize: 20, fontWeight: 700, color: "var(--text-heading)", margin: "0 0 28px" }}>
               What do you need help with?
             </h2>
@@ -161,7 +223,7 @@ export default function EnquiryPage() {
                   <strong style={{ color: "var(--navy)" }}>{form.phone}</strong> within 2 hours to confirm your service slot.
                 </p>
                 <button
-                  onClick={() => { setSuccess(false); setForm({ name: "", phone: "", email: "", service: "", city: "", date: "", problem: "", urgency: "moderate" }); }}
+                  onClick={() => { setSuccess(false); setForm({ name: "", phone: "", email: "", service: "", city: "", date: "", timeSlot: "", problem: "", urgency: "moderate" }); }}
                   style={{
                     background: "var(--grad-navy)", color: "#ffffff", padding: "12px 28px",
                     borderRadius: 10, fontWeight: 700, fontSize: 14, border: "none",
@@ -227,6 +289,29 @@ export default function EnquiryPage() {
                   />
                 </Field>
 
+                <Field label="Preferred Time Slot">
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }} className="enquiry-slot-grid">
+                    {TIME_SLOTS.map((slot) => (
+                      <button
+                        type="button"
+                        key={slot}
+                        onClick={() => setForm((f) => ({ ...f, timeSlot: slot }))}
+                        style={{
+                          padding: "10px 8px", borderRadius: 10, fontSize: 12, fontWeight: 600,
+                          cursor: "pointer", textAlign: "center", fontFamily: "inherit",
+                          border: form.timeSlot === slot ? "1px solid var(--navy)" : "1px solid rgba(148,163,184,0.1)",
+                          background: form.timeSlot === slot ? "var(--navy-bg)" : "var(--bg-card)",
+                          color: form.timeSlot === slot ? "var(--navy)" : "var(--text-muted)",
+                          boxShadow: form.timeSlot === slot ? "none" : "var(--neu-inset)",
+                          transition: "all 0.2s ease",
+                        }}
+                      >
+                        {slot}
+                      </button>
+                    ))}
+                  </div>
+                </Field>
+
                 <Field label="Describe the Problem" required>
                   <textarea
                     value={form.problem} onChange={set("problem")} required
@@ -266,11 +351,11 @@ export default function EnquiryPage() {
                 <button
                   type="submit"
                   disabled={loading}
+                  className="clay-btn clay-btn-primary"
                   style={{
-                    width: "100%", padding: 16, background: loading ? "var(--navy-light)" : "var(--grad-navy)",
-                    color: "#ffffff", fontWeight: 800, fontSize: 16,
-                    borderRadius: 10, border: "none", cursor: loading ? "not-allowed" : "pointer",
-                    transition: "background 0.2s", boxShadow: "var(--shadow-navy)",
+                    width: "100%", height: 52, fontSize: 16,
+                    opacity: loading ? 0.7 : 1,
+                    cursor: loading ? "not-allowed" : "pointer",
                   }}
                 >
                   {loading ? "Sending..." : "Send Enquiry →"}
@@ -330,8 +415,17 @@ export default function EnquiryPage() {
       <style>{`
         @media (max-width: 768px) {
           .enquiry-grid { grid-template-columns: 1fr !important; }
+          .enquiry-slot-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </main>
+  );
+}
+
+export default function EnquiryPage() {
+  return (
+    <Suspense fallback={<div style={{ background: "var(--bg-page)", minHeight: "100vh" }} />}>
+      <EnquiryForm />
+    </Suspense>
   );
 }
