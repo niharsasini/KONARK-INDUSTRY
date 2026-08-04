@@ -6,8 +6,14 @@ import { RelatedProducts } from "./shared";
 
 /* ─── SERVICE detail (Urban Company style) ─────────── */
 
+const TIME_SLOTS = [
+  { value: "morning", label: "Morning (9AM–12PM)" },
+  { value: "afternoon", label: "Afternoon (12PM–4PM)" },
+  { value: "evening", label: "Evening (4PM–7PM)" },
+];
+
 export default function ServiceDetail({ product }) {
-  const [form, setForm] = useState({ name: "", phone: "", city: "", problem: "" });
+  const [form, setForm] = useState({ name: "", phone: "", email: "", city: "", date: "", slot: TIME_SLOTS[0].value, problem: "" });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -18,6 +24,9 @@ export default function ServiceDetail({ product }) {
       await animateIn(".service-content", {
         y: 40, opacity: 0, blur: 4,
         duration: 0.7, start: "top 90%",
+      });
+      await animateIn(".related-card", {
+        y: 24, opacity: 0, stagger: 0.06, duration: 0.5, start: "top 90%",
       });
     };
     run();
@@ -31,8 +40,11 @@ export default function ServiceDetail({ product }) {
       await submitServiceBooking({
         name: form.name,
         phone: form.phone,
+        email: form.email || undefined,
         service_type: product.name,
         city: form.city,
+        preferred_date: form.date || undefined,
+        time_slot: form.slot,
         problem_description: form.problem,
       });
       setSuccess(true);
@@ -182,9 +194,10 @@ export default function ServiceDetail({ product }) {
                 </p>
               )}
               {[
-                { k: "name", label: "Your Name", placeholder: "Rajesh Kumar", type: "text" },
-                { k: "phone", label: "Phone Number", placeholder: "+91 98765 43210", type: "tel" },
-                { k: "city", label: "City", placeholder: "Bhubaneswar", type: "text" },
+                { k: "name", label: "Your Name", placeholder: "Rajesh Kumar", type: "text", required: true },
+                { k: "phone", label: "Phone Number", placeholder: "+91 98765 43210", type: "tel", required: true },
+                { k: "email", label: "Email", placeholder: "you@example.com", type: "email", required: false },
+                { k: "city", label: "City / Area", placeholder: "Bhubaneswar", type: "text", required: true },
               ].map((f) => (
                 <div key={f.k}>
                   <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>{f.label}</label>
@@ -192,7 +205,7 @@ export default function ServiceDetail({ product }) {
                     type={f.type}
                     value={form[f.k]}
                     onChange={(e) => setForm((prev) => ({ ...prev, [f.k]: e.target.value }))}
-                    required
+                    required={f.required}
                     placeholder={f.placeholder}
                     style={{ width: "100%", background: "#F5F7FF", border: "1px solid rgba(148,163,184,0.25)", borderRadius: 10, padding: "12px 16px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s, box-shadow 0.2s" }}
                     onFocus={(e) => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(217,119,6,0.1)"; }}
@@ -200,6 +213,31 @@ export default function ServiceDetail({ product }) {
                   />
                 </div>
               ))}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div>
+                  <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>Preferred Date</label>
+                  <input
+                    type="date"
+                    value={form.date}
+                    onChange={(e) => setForm((prev) => ({ ...prev, date: e.target.value }))}
+                    style={{ width: "100%", background: "#F5F7FF", border: "1px solid rgba(148,163,184,0.25)", borderRadius: 10, padding: "12px 16px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s, box-shadow 0.2s" }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(217,119,6,0.1)"; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(148,163,184,0.25)"; e.currentTarget.style.boxShadow = "none"; }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>Time Slot</label>
+                  <select
+                    value={form.slot}
+                    onChange={(e) => setForm((prev) => ({ ...prev, slot: e.target.value }))}
+                    style={{ width: "100%", background: "#F5F7FF", border: "1px solid rgba(148,163,184,0.25)", borderRadius: 10, padding: "12px 16px", color: "var(--text-heading)", fontSize: 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s, box-shadow 0.2s" }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(217,119,6,0.1)"; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(148,163,184,0.25)"; e.currentTarget.style.boxShadow = "none"; }}
+                  >
+                    {TIME_SLOTS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+                  </select>
+                </div>
+              </div>
               <div>
                 <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>Describe the problem</label>
                 <textarea

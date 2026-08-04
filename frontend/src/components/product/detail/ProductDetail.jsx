@@ -6,6 +6,7 @@ import EnquiryModal from "@/components/forms/EnquiryModal";
 import { useCartStore, useWishlistStore } from "@/store";
 import toast from "react-hot-toast";
 import { useRecentlyViewed } from "@/hooks/useRecentlyViewed";
+import { useAuthGate } from "@/hooks/useAuthGate";
 import { BADGE_COLORS, StarRating, RelatedProducts } from "./shared";
 import ProductImageGallery from "../ProductImageGallery";
 import ProductReviews from "../ProductReviews";
@@ -33,6 +34,7 @@ export default function ProductDetail({ product }) {
   const { addItem } = useCartStore();
   const { toggle, isInWishlist } = useWishlistStore();
   const { addProduct: addRecentlyViewed, getProducts: getRecentlyViewed } = useRecentlyViewed();
+  const { requireAuth } = useAuthGate();
   const badgeColor = BADGE_COLORS[product.category] || "var(--text-muted)";
   const formattedPrice = product.price ? `₹${product.price.toLocaleString("en-IN")}` : null;
   const specs = product.specifications ? Object.entries(product.specifications) : [];
@@ -59,23 +61,28 @@ export default function ProductDetail({ product }) {
         y: 32, opacity: 0,
         stagger: 0.08, duration: 0.5,
       });
+      await animateIn(".related-card", {
+        y: 24, opacity: 0, stagger: 0.06, duration: 0.5, start: "top 90%",
+      });
     };
     run();
   }, [product.slug]);
 
   const handleAddToCart = () => {
-    for (let i = 0; i < qty; i++) {
-      addItem({
-        id: product.id || product.slug,
-        slug: product.slug,
-        name: product.name,
-        price: product.price || 0,
-        image: product.images?.[0] || product.image || "",
-        category: product.category || "",
-        type: product.type || "product",
-      });
-    }
-    toast.success(`${product.name} added to cart!`);
+    requireAuth(() => {
+      for (let i = 0; i < qty; i++) {
+        addItem({
+          id: product.id || product.slug,
+          slug: product.slug,
+          name: product.name,
+          price: product.price || 0,
+          image: product.images?.[0] || product.image || "",
+          category: product.category || "",
+          type: product.type || "product",
+        });
+      }
+      toast.success(`${product.name} added to cart!`);
+    }, `/products/${product.slug}`);
   };
 
   const handleShare = async () => {
@@ -136,9 +143,10 @@ export default function ProductDetail({ product }) {
           <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7, margin: 0 }}>{product.shortDescription || product.description}</p>
 
           {/* Delivery estimate */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 14px", background: "rgba(52,199,138,0.08)", border: "1px solid rgba(52,199,138,0.2)", borderRadius: 10 }}>
-            <span style={{ fontSize: 14 }}>🚚</span>
-            <p style={{ fontSize: 13, color: "var(--green)", margin: 0 }}>Delivery by <strong>{getDeliveryDate()}</strong></p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4, padding: "10px 14px", background: "rgba(52,199,138,0.08)", border: "1px solid rgba(52,199,138,0.2)", borderRadius: 10 }}>
+            <p style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--green)", margin: 0 }}>🚚 Free delivery above ₹5,000</p>
+            <p style={{ fontSize: 13, color: "var(--green)", margin: 0 }}>📅 Estimated delivery: {getDeliveryDate()} (3-5 business days)</p>
+            <p style={{ fontSize: 13, color: "var(--green)", margin: 0 }}>🔄 Easy 7-day returns</p>
           </div>
 
           {/* Offers */}
@@ -151,22 +159,18 @@ export default function ProductDetail({ product }) {
             ].map((o) => <p key={o} style={{ fontSize: 12, color: "var(--text-muted)", margin: "4px 0 0" }}>{o}</p>)}
           </div>
 
-          {/* Quantity */}
+          {/* Quantity — neumorphic inset */}
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 13, color: "var(--text-muted)", fontWeight: 500 }}>Qty:</span>
-            <div style={{ display: "flex", alignItems: "center", background: "rgba(255,255,255,0.6)", border: "1px solid rgba(148,163,184,0.2)", borderRadius: 10, overflow: "hidden" }}>
+            <div style={{ display: "flex", alignItems: "center", background: "#F5F7FF", borderRadius: 12, boxShadow: "var(--neu-inset)" }}>
               <button
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
-                style={{ width: 36, height: 36, background: "rgba(13,81,140,0.2)", border: "1px solid rgba(13,81,140,0.3)", color: "var(--sky)", fontSize: 18, cursor: "pointer", transition: "background 0.2s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.4)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(13,81,140,0.2)")}
+                style={{ width: 36, height: 36, borderRadius: "50%", margin: 4, background: "#FFFFFF", border: "none", boxShadow: "var(--neu-shadow)", color: "var(--navy)", fontSize: 18, cursor: "pointer", transition: "all 0.2s" }}
               >−</button>
-              <span style={{ width: 40, textAlign: "center", fontSize: 14, fontWeight: 600, color: "var(--text-heading)" }}>{qty}</span>
+              <span style={{ minWidth: 40, textAlign: "center", fontSize: 18, fontWeight: 700, color: "#0C1A2E" }}>{qty}</span>
               <button
                 onClick={() => setQty((q) => Math.min(10, q + 1))}
-                style={{ width: 36, height: 36, background: "rgba(13,81,140,0.2)", border: "1px solid rgba(13,81,140,0.3)", color: "var(--sky)", fontSize: 18, cursor: "pointer", transition: "background 0.2s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.4)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(13,81,140,0.2)")}
+                style={{ width: 36, height: 36, borderRadius: "50%", margin: 4, background: "#FFFFFF", border: "none", boxShadow: "var(--neu-shadow)", color: "var(--navy)", fontSize: 18, cursor: "pointer", transition: "all 0.2s" }}
               >+</button>
             </div>
           </div>
@@ -176,26 +180,24 @@ export default function ProductDetail({ product }) {
             <div style={{ display: "flex", gap: 8 }}>
               <button
                 onClick={handleAddToCart}
-                style={{ flex: 1, padding: "14px", background: "var(--grad-primary)", color: "#FFFFFF", fontWeight: 700, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer", transition: "opacity 0.2s", boxShadow: "var(--shadow-navy)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+                className="clay-btn clay-btn-primary"
+                style={{ flex: 1, height: 52, fontSize: 15 }}
               >
-                Add to Cart 🛒
+                Add to Cart →
               </button>
               <button
                 onClick={() => { toggle(product.slug); toast(isInWishlist(product.slug) ? "Removed from wishlist" : "Saved to wishlist ❤️"); }}
-                style={{ width: 48, height: 48, borderRadius: 10, border: "1px solid var(--border-light)", background: isInWishlist(product.slug) ? "rgba(239,68,68,0.1)" : "transparent", cursor: "pointer", fontSize: 20, display: "flex", alignItems: "center", justifyContent: "center" }}
+                style={{ width: 52, height: 52, borderRadius: 10, border: "1px solid var(--border-light)", background: isInWishlist(product.slug) ? "rgba(239,68,68,0.1)" : "transparent", cursor: "pointer", fontSize: 20, display: "flex", alignItems: "center", justifyContent: "center" }}
               >
                 {isInWishlist(product.slug) ? "❤️" : "🤍"}
               </button>
             </div>
             <button
-              onClick={() => setEnquiryOpen(true)}
-              style={{ padding: "14px", background: "var(--grad-gold)", color: "var(--text-heading)", fontWeight: 700, fontSize: 15, borderRadius: 10, border: "none", cursor: "pointer", transition: "opacity 0.2s", boxShadow: "var(--shadow-gold)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+              onClick={() => requireAuth(() => setEnquiryOpen(true), `/products/${product.slug}`)}
+              className="gold-btn"
+              style={{ height: 48, fontSize: 15 }}
             >
-              Buy Now / Enquire
+              Buy Now →
             </button>
           </div>
 

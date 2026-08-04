@@ -32,10 +32,10 @@ export function RelatedProducts({ current }) {
   if (!related.length) return null;
   return (
     <div style={{ maxWidth: 1280, margin: "48px auto 0", padding: "0 24px 60px" }}>
-      <h3 style={{ fontSize: 20, fontWeight: 700, color: "var(--text-heading)", marginBottom: 20 }}>Related Products</h3>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 16 }}>
+      <h3 style={{ fontSize: 20, fontWeight: 700, color: "var(--text-heading)", marginBottom: 20 }}>You Might Also Like</h3>
+      <div className="related-products-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 16 }}>
         {related.map((p) => (
-          <Link key={p.id} href={`/products/${p.slug}`} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 12, overflow: "hidden", textDecoration: "none", transition: "border-color 0.2s" }}
+          <Link key={p.id} href={`/products/${p.slug}`} className="related-card" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 12, overflow: "hidden", textDecoration: "none", transition: "border-color 0.2s" }}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--border-dark)")}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--border-light)")}
           >
@@ -49,6 +49,20 @@ export function RelatedProducts({ current }) {
           </Link>
         ))}
       </div>
+      <style>{`
+        @media (max-width: 640px) {
+          .related-products-grid {
+            display: flex !important;
+            overflow-x: auto;
+            gap: 14px;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+          }
+          .related-products-grid .related-card {
+            flex: 0 0 160px;
+          }
+        }
+      `}</style>
     </div>
   );
 }
