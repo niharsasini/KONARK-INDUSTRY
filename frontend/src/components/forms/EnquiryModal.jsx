@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { submitEnquiry } from "@/lib/api";
 
 const inputStyle = {
   width: "100%",
@@ -18,20 +19,28 @@ export default function EnquiryModal({ open, onClose, product }) {
   const [form, setForm] = useState({ name: "", phone: "", email: "", message: "", quantity: "1" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   if (!open) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     try {
-      await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, product: product?.name }),
+      await submitEnquiry({
+        name: form.name,
+        phone: form.phone,
+        email: form.email || undefined,
+        enquiry_type: "product",
+        product_id: product?.slug,
+        product_name: product?.name,
+        message: `Quantity: ${form.quantity}\n\n${form.message}`,
       });
       setSuccess(true);
-    } catch {}
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send enquiry. Please call us directly.");
+    }
     setLoading(false);
   };
 
@@ -66,6 +75,11 @@ export default function EnquiryModal({ open, onClose, product }) {
           </div>
         ) : (
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {error && (
+              <p style={{ fontSize: 12, color: "var(--red)", background: "var(--red-bg)", border: "1px solid rgba(192,57,43,0.2)", borderRadius: 8, padding: "8px 12px", margin: 0 }}>
+                {error}
+              </p>
+            )}
             <input
               required
               name="name"

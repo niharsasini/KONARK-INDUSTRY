@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { submitServiceBooking } from "@/lib/api";
 import { RelatedProducts } from "./shared";
 
 /* ─── SERVICE detail (Urban Company style) ─────────── */
@@ -9,6 +10,7 @@ export default function ServiceDetail({ product }) {
   const [form, setForm] = useState({ name: "", phone: "", city: "", problem: "" });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const run = async () => {
@@ -24,13 +26,18 @@ export default function ServiceDetail({ product }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    setError("");
     try {
-      await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, type: "service", service: product.name }),
+      await submitServiceBooking({
+        name: form.name,
+        phone: form.phone,
+        service_type: product.name,
+        city: form.city,
+        problem_description: form.problem,
       });
       setSuccess(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not submit booking. Please call us directly.");
     } finally {
       setSubmitting(false);
     }
@@ -169,6 +176,11 @@ export default function ServiceDetail({ product }) {
             </div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {error && (
+                <p style={{ fontSize: 12, color: "var(--red)", background: "var(--red-bg)", border: "1px solid rgba(192,57,43,0.2)", borderRadius: 8, padding: "8px 12px", margin: 0 }}>
+                  {error}
+                </p>
+              )}
               {[
                 { k: "name", label: "Your Name", placeholder: "Rajesh Kumar", type: "text" },
                 { k: "phone", label: "Phone Number", placeholder: "+91 98765 43210", type: "tel" },

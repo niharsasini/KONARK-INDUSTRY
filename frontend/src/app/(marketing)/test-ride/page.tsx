@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { submitTestRide } from "@/lib/api";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 
@@ -37,11 +38,17 @@ const LABEL_STYLE = {
   marginBottom: 6,
 };
 
-export default function TestRidePage() {
+function TestRideForm() {
+  const searchParams = useSearchParams();
+  const prefillVehicle = searchParams.get("vehicle");
+  const vehicleOptions = prefillVehicle && !VEHICLES.includes(prefillVehicle)
+    ? [prefillVehicle, ...VEHICLES]
+    : VEHICLES;
+
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    vehicle: VEHICLES[0],
+    vehicle: prefillVehicle || VEHICLES[0],
     date: "",
     slot: TIME_SLOTS[0],
   });
@@ -80,7 +87,13 @@ export default function TestRidePage() {
     setSubmitting(true);
     setError("");
     try {
-      await submitTestRide(form);
+      await submitTestRide({
+        name: form.name,
+        phone: form.phone,
+        product_name: form.vehicle,
+        preferred_date: form.date || undefined,
+        message: `Preferred time slot: ${form.slot}`,
+      });
       setSuccess(true);
     } catch (err) {
       setError(
@@ -175,7 +188,7 @@ export default function TestRidePage() {
               <div>
                 <label style={LABEL_STYLE}>Which Vehicle</label>
                 <select value={form.vehicle} onChange={set("vehicle")} style={INPUT_STYLE} onFocus={focus} onBlur={blur}>
-                  {VEHICLES.map((v) => <option key={v} value={v}>{v}</option>)}
+                  {vehicleOptions.map((v) => <option key={v} value={v}>{v}</option>)}
                 </select>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
@@ -258,5 +271,13 @@ export default function TestRidePage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function TestRidePage() {
+  return (
+    <Suspense fallback={<div style={{ background: "var(--bg-page)", minHeight: "100vh" }} />}>
+      <TestRideForm />
+    </Suspense>
   );
 }

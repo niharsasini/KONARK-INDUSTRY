@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import { submitTestRide } from "@/lib/api";
 import { StarRating, RelatedProducts } from "./shared";
 
 /* ─── VEHICLE detail (Tesla / Ola style) ──────────── */
@@ -11,6 +12,7 @@ export default function VehicleDetail({ product }) {
   const [form, setForm] = useState({ name: "", phone: "", city: "", date: "" });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const run = async () => {
@@ -65,13 +67,19 @@ export default function VehicleDetail({ product }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    setError("");
     try {
-      await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, type: "test_ride", vehicle: product.name }),
+      await submitTestRide({
+        name: form.name,
+        phone: form.phone,
+        city: form.city,
+        preferred_date: form.date || undefined,
+        product_id: product.id || product.slug,
+        product_name: product.name,
       });
       setSuccess(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not confirm booking. Please call us directly.");
     } finally {
       setSubmitting(false);
     }
@@ -159,7 +167,7 @@ export default function VehicleDetail({ product }) {
 
           {/* CTAs */}
           <div style={{ display: "flex", gap: 12, marginBottom: 32, flexWrap: "wrap" }}>
-            <a href={isUpcoming ? "/contact?interest=upcoming" : "#book-test-ride"} style={isUpcoming ? {
+            <a href={isUpcoming ? `/contact?interest=${product.slug}` : "#book-test-ride"} style={isUpcoming ? {
               padding: "14px 32px", background: "transparent", border: "1px solid var(--slate)", color: "var(--text-muted)",
               fontWeight: 800, fontSize: 15, borderRadius: 10, textDecoration: "none",
               transition: "all 0.2s", display: "inline-block",
@@ -250,7 +258,7 @@ export default function VehicleDetail({ product }) {
                   This is an upcoming Konark product. Register your interest to be notified when it launches.
                 </p>
                 <Link
-                  href="/contact?interest=upcoming"
+                  href={`/contact?interest=${product.slug}`}
                   style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", background: "rgba(193,127,36,0.2)", border: "1px solid rgba(193,127,36,0.4)", color: "var(--gold)", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 700, transition: "background 0.2s" }}
                   onMouseEnter={e => (e.currentTarget.style.background = "rgba(193,127,36,0.3)")}
                   onMouseLeave={e => (e.currentTarget.style.background = "rgba(193,127,36,0.2)")}
@@ -301,6 +309,11 @@ export default function VehicleDetail({ product }) {
             </div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {error && (
+                <p style={{ fontSize: 12, color: "var(--red)", background: "var(--red-bg)", border: "1px solid rgba(192,57,43,0.2)", borderRadius: 8, padding: "8px 12px", margin: 0 }}>
+                  {error}
+                </p>
+              )}
               {[
                 { k: "name", label: "Full Name", placeholder: "Rajesh Kumar", type: "text" },
                 { k: "phone", label: "Phone Number", placeholder: "+91 98765 43210", type: "tel" },

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { submitContactForm } from "@/lib/api";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
@@ -61,7 +62,9 @@ function blurStyle(e) {
   e.currentTarget.style.boxShadow = "inset 3px 3px 8px rgba(13,81,140,0.06), inset -2px -2px 6px rgba(255,255,255,0.9)";
 }
 
-export default function ContactPage() {
+function ContactPageContent() {
+  const searchParams = useSearchParams();
+  const interest = searchParams.get("interest");
   const settings = useSiteSettings();
   const phone = settings?.company_phone || "+91 94376 11129";
   const phoneHref = `tel:${phone.replace(/\s+/g, "")}`;
@@ -74,7 +77,13 @@ export default function ContactPage() {
   const [today, setToday] = useState(null);
   useEffect(() => { setToday(new Date().getDay()); }, []);
 
-  const [form, setForm] = useState({ name: "", phone: "", email: "", subject: SUBJECT_OPTIONS[0], message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    subject: interest ? "Product Question" : SUBJECT_OPTIONS[0],
+    message: interest ? `I'm interested in the upcoming product: ${interest}. Please notify me when it launches.` : "",
+  });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -104,6 +113,7 @@ export default function ContactPage() {
         name: form.name,
         phone: form.phone,
         email: form.email || undefined,
+        product_name: interest || undefined,
         message: `Subject: ${form.subject}\n\n${form.message}`,
       });
       toast.success("Message sent! We'll get back to you within 2 hours.");
@@ -428,5 +438,13 @@ export default function ContactPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh" }} />}>
+      <ContactPageContent />
+    </Suspense>
   );
 }

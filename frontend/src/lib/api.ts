@@ -187,12 +187,20 @@ export async function submitTestRide(data: Record<string, unknown>) {
   return submitEnquiry({ ...data, enquiry_type: "test_ride" });
 }
 
-export async function submitServiceBooking(data: Record<string, unknown>) {
-  return submitEnquiry({ ...data, enquiry_type: "service" });
-}
-
 export async function submitContactForm(data: Record<string, unknown>) {
   return submitEnquiry({ ...data, enquiry_type: "contact" });
+}
+
+// ─── SERVICE BOOKINGS ──────────────────────────────────────────────────────────
+// Dedicated collection (with booking number + technician assignment workflow),
+// separate from the generic enquiries collection. The admin "Services" panel
+// reads from this endpoint, not from /enquiries.
+
+export async function submitServiceBooking(data: Record<string, unknown>) {
+  return request("/api/v1/services/bookings", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
 }
 
 // ─── ORDERS ──────────────────────────────────────────────────────────────────
