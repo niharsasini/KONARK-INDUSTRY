@@ -17,6 +17,7 @@ class EnquiryType(str, Enum):
     SERVICE = "service"         # Needs AC repair, wiring, etc.
     CONTACT = "contact"         # General contact form submission
     PARTNER = "partner"         # Distributor / partner application
+    REGISTER_INTEREST = "register_interest"  # Interest in an upcoming/unreleased product
 
 
 class EnquiryStatus(str, Enum):

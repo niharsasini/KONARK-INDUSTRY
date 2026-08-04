@@ -9,7 +9,7 @@ import { Pagination } from "@/components/Pagination";
 const LIMIT = 20;
 
 const ALL_STATUSES = ["New", "Contacted", "In Progress", "Resolved", "Closed"];
-const TABS = ["All", "Test Ride", "Product Enquiry", "Service Booking", "Contact"];
+const TABS = ["All", "Test Ride", "Product", "Service", "Contact", "Register Interest", "Partner"];
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
   New: { bg: "rgba(13,81,140,0.1)", color: "var(--navy)" },

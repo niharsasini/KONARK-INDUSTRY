@@ -4,7 +4,7 @@ import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import { submitContactForm } from "@/lib/api";
+import { submitContactForm, submitRegisterInterest } from "@/lib/api";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const INPUT_STYLE = {
@@ -109,7 +109,8 @@ function ContactPageContent() {
     e.preventDefault();
     setLoading(true);
     try {
-      await submitContactForm({
+      const submit = interest ? submitRegisterInterest : submitContactForm;
+      await submit({
         name: form.name,
         phone: form.phone,
         email: form.email || undefined,

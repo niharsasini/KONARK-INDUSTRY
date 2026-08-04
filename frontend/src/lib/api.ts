@@ -191,6 +191,10 @@ export async function submitContactForm(data: Record<string, unknown>) {
   return submitEnquiry({ ...data, enquiry_type: "contact" });
 }
 
+export async function submitRegisterInterest(data: Record<string, unknown>) {
+  return submitEnquiry({ ...data, enquiry_type: "register_interest" });
+}
+
 // ─── SERVICE BOOKINGS ──────────────────────────────────────────────────────────
 // Dedicated collection (with booking number + technician assignment workflow),
 // separate from the generic enquiries collection. The admin "Services" panel
