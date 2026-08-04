@@ -4,173 +4,350 @@ import { useEffect } from "react";
 import Link from "next/link";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import FAQSection from "@/components/sections/FAQSection";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const TIMELINE = [
-  { year: "2014", text: "Founded in Bhubaneswar with 12 employees and a single product line" },
-  { year: "2016", text: "Launched LFP battery systems — first Odisha-based manufacturer" },
-  { year: "2018", text: "Crossed 5,000 customers and expanded to pan-India delivery" },
-  { year: "2020", text: "Entered EV space with Konark X1 scooter" },
-  { year: "2022", text: "Opened second factory, launched BLDC appliance line" },
-  { year: "2024", text: "25,000+ customers, 28+ products, 8+ states" },
+  { year: "2014", title: "Founded", desc: "Started in Bhubaneswar with 12 employees and a single product line." },
+  { year: "2016", title: "LFP Battery Systems", desc: "Became one of Odisha's first LFP battery manufacturers." },
+  { year: "2018", title: "5,000 Customers", desc: "Crossed 5,000 customers and expanded to pan-India delivery." },
+  { year: "2020", title: "Entered the EV Space", desc: "Launched the Konark X1 electric scooter." },
+  { year: "2022", title: "Second Factory", desc: "Opened our second manufacturing facility and launched the BLDC appliance line." },
+  { year: "2024", title: "25,000+ Customers", desc: "Reached 25,000+ customers across 18+ cities in Odisha and beyond." },
+  { year: "2025", title: "EV Cars Coming", desc: "Unveiled the Konark EV Car X1 — our upcoming 5-seater electric sedan." },
+];
+
+const CATEGORIES = [
+  {
+    title: "EV Vehicles",
+    icon: "🏍️",
+    gradient: "linear-gradient(135deg, #0D518C, #0EA5E9)",
+    items: [
+      { name: "Electric Scooter", price: "₹27,000" },
+      { name: "Electric Bike", price: "₹32,000" },
+      { name: "Electric Motor Cycle", price: "₹45,000" },
+      { name: "Utility Vehicle", price: "₹55,000" },
+      { name: "E-Rickshaw", price: "₹85,000" },
+    ],
+    cta: "Shop EV Vehicles →",
+  },
+  {
+    title: "Home Appliances",
+    icon: "🏠",
+    gradient: "linear-gradient(135deg, #D97706, #F59E0B)",
+    items: [
+      { name: "Induction Cooker", price: "₹1,650" },
+      { name: "BLDC Fan", price: "₹2,200" },
+      { name: "Water Purifier", price: "₹4,800" },
+      { name: "BLDC Motor", price: "₹6,500" },
+      { name: "Air Conditioner", price: "₹26,000" },
+    ],
+    cta: "Shop Appliances →",
+  },
+  {
+    title: "Energy & Power",
+    icon: "⚡",
+    gradient: "linear-gradient(135deg, #059669, #10B981)",
+    items: [
+      { name: "Solar Inverter", price: "₹8,500" },
+      { name: "LFP Battery", price: "₹14,000" },
+      { name: "Hybrid Cold Storage", price: "₹250/sq.ft" },
+      { name: "Solar Power Plant Install", price: "Free Quote" },
+      { name: "EV Charging Station Install", price: "Free Quote" },
+    ],
+    cta: "Explore Energy →",
+  },
 ];
 
 const VALUES = [
-  { title: "Honesty", desc: "We say what we mean and stand behind every product we sell." },
-  { title: "Quality", desc: "47 quality checks on every product before it leaves our factory." },
-  { title: "Innovation", desc: "Constantly improving to stay ahead of India's energy needs." },
-  { title: "Sustainability", desc: "Building a cleaner future, one product at a time." },
-];
-
-const STATS = [
-  { value: "10+", label: "Years of Experience" },
-  { value: "25000+", label: "Customers Served" },
-  { value: "28+", label: "Products & Solutions" },
-  { value: "99%", label: "Client Satisfaction" },
+  { icon: "🌱", title: "Sustainability", desc: "Every product designed for a greener Odisha.", accent: "#34C78A" },
+  { icon: "🤝", title: "Trust", desc: "Honest pricing, quality products, no compromises.", accent: "#4FC3F7" },
+  { icon: "⚡", title: "Innovation", desc: "Always pushing boundaries in EV and clean energy.", accent: "#F4C430" },
+  { icon: "❤️", title: "Community", desc: "Built for Odisha, by people who live here.", accent: "#FF7043" },
 ];
 
 export default function AboutPage() {
+  const settings = useSiteSettings();
+  const customers = settings?.stats_customers || "25,000+";
+  const cities = settings?.stats_cities || "18+";
+  const rating = settings?.stats_rating || "4.8★";
+
+  const STATS = [
+    { icon: "📅", value: "2014", label: "Founded" },
+    { icon: "👥", value: customers, label: "Customers" },
+    { icon: "🏙️", value: cities, label: "Cities" },
+    { icon: "⭐", value: rating, label: "Rating" },
+  ];
+
   useEffect(() => {
     const run = async () => {
       const { animateIn } = await import("@/lib/gsapUtils");
-      await animateIn(".about-hero", {
-        y: 48, opacity: 0, blur: 8, duration: 0.8,
-      });
-      await animateIn(".about-stat-card", {
-        y: 40, opacity: 0, scale: 0.92,
-        stagger: 0.1, duration: 0.6, delay: 0.2,
-      });
-      await animateIn(".about-section", {
-        y: 40, opacity: 0,
-        stagger: 0.15, duration: 0.7,
-      });
+      await animateIn(".abt-hero-tag", { y: 20, opacity: 0, duration: 0.6 });
+      await animateIn(".abt-hero-title", { y: 32, opacity: 0, duration: 0.7, delay: 0.1 });
+      await animateIn(".abt-hero-sub", { y: 24, opacity: 0, duration: 0.6, delay: 0.2 });
+      await animateIn(".abt-stat-pill", { y: 16, scale: 0.9, opacity: 0, stagger: 0.1, duration: 0.5, delay: 0.3 });
+      await animateIn(".abt-story-text", { y: 32, opacity: 0, duration: 0.7, start: "top 82%" });
+      await animateIn(".abt-timeline-item", { x: 24, opacity: 0, stagger: 0.15, duration: 0.5, start: "top 85%" });
+      await animateIn(".abt-cat-card", { y: 48, opacity: 0, scale: 0.96, stagger: 0.1, duration: 0.6, start: "top 85%" });
+      await animateIn(".abt-value-card", { y: 32, opacity: 0, stagger: 0.08, duration: 0.55, start: "top 85%" });
+      await animateIn(".abt-cta-content", { y: 32, opacity: 0, duration: 0.7, start: "top 88%" });
     };
     run();
   }, []);
 
   return (
-    <div style={{ background: "var(--bg-page)", minHeight: "100vh", paddingTop: "calc(64px + var(--banner-h, 0px))" }}>
-      {/* Hero */}
-      <div className="about-hero" style={{ background: "var(--bg-card)", borderBottom: "1px solid var(--border-light)", padding: "80px 24px 60px", textAlign: "center" }}>
-        <div style={{ display: "flex", gap: 6, alignItems: "center", justifyContent: "center", marginBottom: 20, fontSize: 12, color: "var(--text-muted)" }}>
-          <Link href="/" style={{ color: "var(--text-muted)", textDecoration: "none" }}>Home</Link>
-          <span>/</span>
-          <span style={{ color: "var(--navy)" }}>About</span>
+    <div style={{ minHeight: "100vh" }}>
+      {/* SECTION 1 — HERO (LIGHT) */}
+      <div
+        style={{
+          background: "linear-gradient(160deg, #EEF2FF 0%, #F0F5FF 30%, #F5F7FF 60%, #EEF4FF 100%)",
+          paddingTop: "calc(68px + var(--banner-h,0px) + 60px)",
+          paddingBottom: 80,
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(13,81,140,0.07) 0%, transparent 65%)", top: -100, right: -100, pointerEvents: "none" }} />
+        <div style={{ position: "absolute", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(14,165,233,0.05) 0%, transparent 65%)", bottom: -80, left: -80, pointerEvents: "none" }} />
+        <div
+          style={{
+            position: "absolute", inset: 0,
+            backgroundImage: "radial-gradient(rgba(13,81,140,0.04) 1px, transparent 1px)",
+            backgroundSize: "32px 32px", pointerEvents: "none",
+          }}
+        />
+
+        <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1, textAlign: "center" }}>
+          <span
+            className="abt-hero-tag"
+            style={{
+              display: "inline-block", background: "rgba(13,81,140,0.08)", border: "1px solid rgba(13,81,140,0.2)",
+              color: "#0D518C", fontSize: 10, fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase",
+              padding: "5px 16px", borderRadius: 999, marginBottom: 20,
+            }}
+          >
+            About Us
+          </span>
+
+          <h1 className="abt-hero-title" style={{ fontSize: "clamp(40px,6vw,72px)", fontWeight: 900, letterSpacing: "-2px", lineHeight: 1.05, margin: "0 0 20px", textAlign: "center" }}>
+            <span style={{ color: "#0C1A2E" }}>Powering Odisha</span>
+            <br />
+            <span style={{ background: "linear-gradient(135deg, #0D518C, #0EA5E9)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              Since 2014.
+            </span>
+          </h1>
+
+          <p className="abt-hero-sub" style={{ color: "#4A6785", fontSize: 17, lineHeight: 1.7, maxWidth: 560, margin: "0 auto 40px", textAlign: "center" }}>
+            From a small workshop in Bhubaneswar to Odisha's most trusted EV and electronics brand. Here's our story.
+          </p>
+
+          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+            {STATS.map((s) => (
+              <div
+                key={s.label}
+                className="abt-stat-pill"
+                style={{
+                  background: "#FFFFFF", borderRadius: 999,
+                  boxShadow: "5px 5px 12px rgba(13,81,140,0.09), -4px -4px 10px rgba(255,255,255,0.95)",
+                  border: "1px solid rgba(13,81,140,0.06)", padding: "12px 24px",
+                  display: "flex", alignItems: "center", gap: 10,
+                }}
+              >
+                <span style={{ fontSize: 20 }}>{s.icon}</span>
+                <div style={{ textAlign: "left" }}>
+                  <p style={{ fontSize: 18, fontWeight: 800, color: "#0C1A2E", margin: 0, lineHeight: 1.2 }}>
+                    <AnimatedCounter target={s.value} />
+                  </p>
+                  <p style={{ fontSize: 12, color: "#8BA8C4", fontWeight: 500, margin: 0 }}>{s.label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid var(--border-navy)", color: "var(--navy)", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "var(--navy-bg)", marginBottom: 20 }}>
-          About Our Company
-        </span>
-        <h1 style={{ fontSize: "clamp(28px, 5vw, 56px)", fontWeight: 800, color: "var(--text-heading)", margin: "0 0 16px", lineHeight: 1.15 }}>Our Story</h1>
-        <p style={{ fontSize: 16, color: "var(--text-muted)", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
-          We design, manufacture, and deliver future-ready energy and technology solutions that empower homes, businesses, and industries.
-        </p>
       </div>
 
-      {/* Who we are */}
-      <section className="about-section" style={{ padding: "80px 24px" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }} className="about-grid">
-          <div>
-            <h2 style={{ fontSize: "clamp(22px, 3vw, 36px)", fontWeight: 700, color: "var(--text-heading)", margin: "0 0 24px" }}>
-              Born in Bhubaneswar.<br />Built for Bharat.
+      {/* SECTION 2 — OUR STORY */}
+      <section style={{ background: "#F5F7FF", padding: "88px 24px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }} className="abt-story-grid">
+          <div className="abt-story-text">
+            <span className="section-tag" style={{ marginBottom: 16, display: "inline-flex" }}>Our Story</span>
+            <h2 style={{ fontSize: "clamp(28px,4vw,44px)", fontWeight: 900, letterSpacing: "-1px", margin: "16px 0 24px" }}>
+              <span style={{ color: "#0C1A2E" }}>Built in Bhubaneswar.</span>
+              <br />
+              <span style={{ background: "linear-gradient(135deg, #0D518C, #0EA5E9)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                Made for Odisha.
+              </span>
             </h2>
-            <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 16 }}>
-              Konark Industry started in 2014 with one simple belief: Indian families and businesses deserve world-class electronics at honest prices. Our founders — engineers who grew up in Odisha — were tired of watching quality products sit out of reach behind import markups.
+
+            <p style={{ color: "#4A6785", fontSize: 15, lineHeight: 1.8, marginBottom: 16 }}>
+              Konark Industry was founded in 2014 in a small workshop in Bhubaneswar with a simple mission: bring affordable, reliable electric vehicles and electronics to the people of Odisha. We started with just 12 people and a single product line.
             </p>
-            <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 16 }}>
-              We started with industrial motors. Then came batteries. Then fans, air conditioners, and electric vehicles. Today, from our 40,000 sq ft factory in Bhubaneswar, we make over 50 products that power homes, farms, factories, and the roads of eastern India.
+            <p style={{ color: "#4A6785", fontSize: 15, lineHeight: 1.8, marginBottom: 16 }}>
+              Today we manufacture electric scooters, e-rickshaws, BLDC fans, LFP batteries and more — all under one roof in Bhubaneswar. Every product is quality-tested and ISI certified before it leaves our facility.
             </p>
-            <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.8 }}>
-              Every wire, every cell, every motor that carries the Konark name has been tested to outlast the alternatives. That's not a marketing claim — it's the standard we hold ourselves to every single day.
+            <p style={{ color: "#4A6785", fontSize: 15, lineHeight: 1.8 }}>
+              We also offer doorstep service across {cities} cities. Whether you need your AC fixed or a solar plant installed, our certified technicians come to you — usually the same day.
             </p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-            {STATS.map((s) => (
-              <div key={s.label} className="about-stat-card" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderTop: "2px solid var(--navy)", borderRadius: 14, padding: "24px 20px", textAlign: "center", boxShadow: "var(--shadow-sm)" }}>
-                <p style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 800, color: "var(--text-heading)", margin: "0 0 6px" }}>
-                  <AnimatedCounter target={s.value} />
-                </p>
-                <p style={{ fontSize: 12, color: "var(--text-muted)", margin: 0 }}>{s.label}</p>
+
+          <div style={{ position: "relative", paddingLeft: 32 }}>
+            <div style={{ position: "absolute", left: 10, top: 0, bottom: 0, width: 2, background: "linear-gradient(180deg, #0D518C, #0EA5E9, rgba(14,165,233,0.1))" }} />
+            {TIMELINE.map((item) => (
+              <div key={item.year} className="abt-timeline-item" style={{ position: "relative", paddingBottom: 32, paddingLeft: 20 }}>
+                <div style={{ position: "absolute", left: -27, top: 4, width: 14, height: 14, borderRadius: "50%", background: "linear-gradient(135deg, #0D518C, #0EA5E9)", boxShadow: "0 0 0 3px rgba(13,81,140,0.15)" }} />
+                <span style={{ background: "rgba(13,81,140,0.08)", border: "1px solid rgba(13,81,140,0.2)", color: "#0D518C", fontSize: 12, fontWeight: 700, padding: "3px 10px", borderRadius: 20, display: "inline-block", marginBottom: 6 }}>
+                  {item.year}
+                </span>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0C1A2E", margin: "0 0 4px" }}>{item.title}</h3>
+                <p style={{ fontSize: 13, color: "#4A6785", lineHeight: 1.5, margin: 0 }}>{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Timeline */}
-      <section className="about-section" style={{ background: "var(--bg-section)", padding: "80px 24px" }}>
+      {/* SECTION 3 — WHAT WE DO */}
+      <section style={{ background: "#EEF2FF", padding: "88px 24px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, border: "1px solid var(--border-navy)", color: "var(--navy)", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", background: "var(--navy-bg)", marginBottom: 16 }}>
-              Our journey
-            </span>
-            <h2 style={{ fontSize: "clamp(22px, 3vw, 36px)", fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>A Decade of Progress</h2>
+            <span className="section-tag" style={{ marginBottom: 16 }}>What We Do</span>
+            <h2 style={{ fontSize: "clamp(28px,4vw,44px)", fontWeight: 900, letterSpacing: "-1px", margin: "16px 0 0" }}>
+              <span style={{ color: "#0C1A2E" }}>One Company. </span>
+              <span style={{ background: "linear-gradient(135deg, #0D518C, #0EA5E9)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                Every Power Need.
+              </span>
+            </h2>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 0, position: "relative", maxWidth: 680, margin: "0 auto" }}>
-            <div style={{ position: "absolute", left: 47, top: 0, bottom: 0, width: 2, background: "var(--border-default)" }} />
-            {TIMELINE.map((item, i) => (
-              <div key={item.year} style={{ display: "flex", gap: 20, alignItems: "flex-start", paddingBottom: 28, position: "relative" }}>
-                <div style={{ flexShrink: 0, width: 96, display: "flex", justifyContent: "flex-end", paddingTop: 2 }}>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: "var(--navy)" }}>{item.year}</span>
+
+          <div className="abt-cat-grid">
+            {CATEGORIES.map((cat) => (
+              <div
+                key={cat.title}
+                className="abt-cat-card"
+                style={{
+                  background: "#FFFFFF", borderRadius: 24,
+                  boxShadow: "8px 8px 22px rgba(13,81,140,0.09), -6px -6px 18px rgba(255,255,255,0.95)",
+                  overflow: "hidden", transition: "all 0.35s ease",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-8px)"; e.currentTarget.style.boxShadow = "12px 12px 32px rgba(13,81,140,0.13), -8px -8px 24px rgba(255,255,255,1)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "8px 8px 22px rgba(13,81,140,0.09), -6px -6px 18px rgba(255,255,255,0.95)"; }}
+              >
+                <div style={{ height: 120, background: cat.gradient, position: "relative", overflow: "hidden", display: "flex", alignItems: "flex-end", padding: "0 24px 16px" }}>
+                  <span style={{ position: "absolute", fontSize: 80, right: -10, top: -10, opacity: 0.18, transform: "rotate(-12deg)" }}>{cat.icon}</span>
+                  <h3 style={{ position: "relative", color: "#FFFFFF", fontSize: 20, fontWeight: 800, margin: 0 }}>{cat.title}</h3>
                 </div>
-                <div style={{ width: 12, height: 12, borderRadius: "50%", background: "var(--navy)", border: "2px solid var(--bg-section)", flexShrink: 0, marginTop: 4, zIndex: 1 }} />
-                <p style={{ fontSize: 14, color: "var(--text-muted)", margin: 0, lineHeight: 1.6 }}>{item.text}</p>
+
+                <div style={{ padding: "22px 24px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+                    {cat.items.map((item) => (
+                      <div key={item.name} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 13 }}>
+                        <span style={{ display: "flex", alignItems: "center", gap: 8, color: "#0C1A2E" }}>
+                          <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#8BA8C4", flexShrink: 0 }} />
+                          {item.name}
+                        </span>
+                        <span style={{ color: "#4A6785", fontWeight: 600, flexShrink: 0 }}>{item.price}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <Link href="/products" style={{ fontSize: 13, fontWeight: 700, color: "#0D518C", textDecoration: "none" }}>
+                    {cat.cta}
+                  </Link>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Mission / Vision */}
-      <section className="about-section" style={{ padding: "80px 24px" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }} className="mv-grid">
-          {[
-            { title: "Our Mission", text: "To make clean, affordable energy accessible to every Indian home and business — starting from Odisha." },
-            { title: "Our Vision", text: "To be India's most trusted homegrown energy brand by 2030." },
-          ].map((item) => (
-            <div key={item.title} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--shadow-sm)" }}>
-              <h3 style={{ fontSize: 22, fontWeight: 700, color: "var(--text-heading)", marginBottom: 12 }}>{item.title}</h3>
-              <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.7, margin: 0 }}>{item.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="about-section" style={{ background: "var(--bg-section)", padding: "80px 24px" }}>
+      {/* SECTION 4 — OUR VALUES */}
+      <section style={{ background: "#F5F7FF", padding: "88px 24px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(22px, 3vw, 36px)", fontWeight: 700, color: "var(--text-heading)", margin: 0 }}>Team Values</h2>
+            <span className="section-tag" style={{ marginBottom: 16 }}>Our Values</span>
+            <h2 style={{ fontSize: "clamp(28px,4vw,40px)", fontWeight: 900, color: "#0C1A2E", margin: "16px 0 0", letterSpacing: "-1px" }}>
+              What drives us every day.
+            </h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20 }}>
+
+          <div className="abt-value-grid">
             {VALUES.map((v) => (
-              <div key={v.title} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 14, padding: "24px 20px", boxShadow: "var(--shadow-sm)" }}>
-                <h3 style={{ fontSize: 17, fontWeight: 700, color: "var(--navy)", marginBottom: 8 }}>{v.title}</h3>
-                <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0, lineHeight: 1.7 }}>{v.desc}</p>
+              <div
+                key={v.title}
+                className="abt-value-card"
+                style={{
+                  background: "#FFFFFF", borderRadius: 20, boxShadow: "var(--neu-shadow)",
+                  padding: "28px 24px", position: "relative", overflow: "hidden",
+                }}
+              >
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, ${v.accent}, transparent)` }} />
+                <div
+                  style={{
+                    width: 56, height: 56, background: "#F5F7FF",
+                    boxShadow: "inset 4px 4px 10px rgba(13,81,140,0.08), inset -3px -3px 8px rgba(255,255,255,0.9)",
+                    borderRadius: 16, fontSize: 26, margin: "0 auto 16px",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}
+                >
+                  {v.icon}
+                </div>
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0C1A2E", margin: "0 0 8px", textAlign: "center" }}>{v.title}</h3>
+                <p style={{ fontSize: 13, color: "#4A6785", lineHeight: 1.6, margin: 0, textAlign: "center" }}>{v.desc}</p>
               </div>
             ))}
           </div>
         </div>
-      </section>
-
-      {/* CTA */}
-      <section className="about-section" style={{ padding: "60px 24px", textAlign: "center" }}>
-        <h2 style={{ fontSize: "clamp(20px, 3vw, 32px)", fontWeight: 700, color: "var(--text-heading)", marginBottom: 12 }}>Come work with us</h2>
-        <p style={{ fontSize: 14, color: "var(--text-muted)", marginBottom: 24 }}>We're always looking for passionate people who want to build something meaningful.</p>
-        <Link
-          href="/contact"
-          style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 28px", border: "1px solid var(--border-default)", borderRadius: 8, color: "var(--text-heading)", fontSize: 14, fontWeight: 600, textDecoration: "none", transition: "all 0.2s" }}
-          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--navy)"; e.currentTarget.style.color = "var(--navy)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-default)"; e.currentTarget.style.color = "var(--text-heading)"; }}
-        >
-          Get in Touch
-        </Link>
       </section>
 
       <FAQSection />
 
+      {/* SECTION 6 — CTA */}
+      <section style={{ background: "linear-gradient(135deg, #0D518C, #0EA5E9)", padding: "64px 24px", textAlign: "center" }}>
+        <div className="abt-cta-content" style={{ maxWidth: 640, margin: "0 auto" }}>
+          <h2 style={{ color: "#FFFFFF", fontSize: "clamp(28px,4vw,36px)", fontWeight: 900, margin: "0 0 12px", letterSpacing: "-0.5px" }}>
+            Ready to experience Konark?
+          </h2>
+          <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 16, margin: "0 0 32px", lineHeight: 1.6 }}>
+            Shop our full range of EVs and electronics, or book a doorstep service today.
+          </p>
+          <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
+            <Link
+              href="/products"
+              className="clay-btn"
+              style={{ background: "#FFFFFF", color: "#0D518C", padding: "16px 32px", fontSize: 15, fontWeight: 800, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}
+            >
+              Shop Products →
+            </Link>
+            <Link
+              href="/services/enquiry"
+              style={{
+                padding: "16px 32px", borderRadius: 12, border: "1.5px solid rgba(255,255,255,0.5)",
+                color: "#FFFFFF", fontSize: 15, fontWeight: 700, textDecoration: "none", background: "transparent",
+              }}
+            >
+              Book Service
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <style>{`
-        @media (max-width: 768px) {
-          .about-grid { grid-template-columns: 1fr !important; }
-          .mv-grid { grid-template-columns: 1fr !important; }
+        .abt-cat-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+        .abt-value-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 20px;
+        }
+        @media (max-width: 1024px) {
+          .abt-story-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .abt-cat-grid { grid-template-columns: repeat(2, 1fr); }
+          .abt-value-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+          .abt-cat-grid { grid-template-columns: 1fr; }
+          .abt-value-grid { grid-template-columns: 1fr; }
         }
       `}</style>
     </div>
