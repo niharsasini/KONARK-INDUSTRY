@@ -113,11 +113,9 @@
     gap: 32px !important;
   }
   .services-cards-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: 1fr !important;
     gap: 10px !important;
   }
-  .flip-card { height: 200px !important; }
-  .flip-card-front, .flip-card-back { padding: 16px !important; }
 
   /* WHY KONARK */
   .why-section { padding: 60px 20px !important; }

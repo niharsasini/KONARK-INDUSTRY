@@ -271,11 +271,6 @@ small { font-size: 12px; }
   transform: rotateY(180deg);
 }
 
-@media (hover: none) {
-  .flip-card-hint-hover { display: none !important; }
-  .flip-card-hint-tap { display: inline !important; }
-}
-
 /* ── TESTIMONIALS AUTO-SCROLL MARQUEE ── */
 .testimonials-marquee {
   position: relative;

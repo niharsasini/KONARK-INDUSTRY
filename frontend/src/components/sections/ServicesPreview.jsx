@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
@@ -83,26 +83,122 @@ const SERVICES = [
   },
 ];
 
-function FlipCard({ service, index, inView }) {
+function ServiceCTA({ service, style }) {
   const router = useRouter();
-  const [flipped, setFlipped] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const isOpen = hovered || flipped;
+  return service.external ? (
+    <a
+      href={service.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      style={style}
+    >
+      {service.cta} →
+    </a>
+  ) : (
+    <button
+      onClick={(e) => { e.stopPropagation(); router.push(service.href); }}
+      style={{ ...style, border: `1px solid rgba(255,255,255,0.3)`, fontFamily: "inherit", cursor: "pointer" }}
+    >
+      {service.cta} →
+    </button>
+  );
+}
 
+function FlipCard({ service, index, inView }) {
+  const [flipped, setFlipped] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // MOBILE: tap-to-expand accordion — sidesteps the 3D-flip's touch/hover
+  // state conflicts and cross-browser backface-visibility hit-testing quirks.
+  if (isMobile) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 32 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
+        style={{
+          background: "#FFFFFF",
+          borderRadius: 20,
+          overflow: "hidden",
+          boxShadow: "8px 8px 20px rgba(13,81,140,0.09), -6px -6px 16px rgba(255,255,255,0.95)",
+          border: "1px solid rgba(13,81,140,0.04)",
+          borderTop: `4px solid ${service.accent}`,
+        }}
+      >
+        <div
+          onClick={() => setFlipped((f) => !f)}
+          style={{ padding: "16px 18px", display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }}
+        >
+          <div
+            style={{
+              width: 48, height: 48, background: `${service.accent}18`, borderRadius: 14,
+              display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0,
+              boxShadow: `3px 3px 8px ${service.accent}20, -2px -2px 6px rgba(255,255,255,0.9)`,
+            }}
+          >
+            {service.icon}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {service.partner && (
+              <span style={{ fontSize: 10, color: "#8BA8C4", fontWeight: 600, display: "block", marginBottom: 2 }}>
+                ↗ {service.partner}
+              </span>
+            )}
+            <div style={{ fontSize: 15, fontWeight: 700, color: "#0C1A2E", lineHeight: 1.3 }}>{service.title}</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: service.accent, marginTop: 2 }}>From {service.startingFrom}</div>
+          </div>
+          <div style={{ fontSize: 16, color: service.accent, transform: flipped ? "rotate(180deg)" : "none", transition: "transform 0.3s ease", flexShrink: 0 }}>
+            ↓
+          </div>
+        </div>
+
+        <div style={{ maxHeight: flipped ? 300 : 0, overflow: "hidden", transition: "max-height 0.35s ease" }}>
+          <div style={{ padding: "0 18px 18px", borderTop: "1px solid rgba(13,81,140,0.06)" }}>
+            <p style={{ fontSize: 13, color: "#4A6785", lineHeight: 1.65, margin: "14px 0 16px" }}>
+              {service.desc}
+            </p>
+            <ServiceCTA
+              service={service}
+              style={{
+                background: `linear-gradient(135deg, ${service.accentDark}, ${service.accent})`,
+                color: "white",
+                padding: "10px 20px",
+                borderRadius: 12,
+                fontSize: 13,
+                fontWeight: 700,
+                textDecoration: "none",
+                display: "inline-block",
+              }}
+            />
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // DESKTOP: 3D flip, hover to preview / click to pin open.
   return (
     <motion.div
       className="flip-card"
       initial={{ opacity: 0, y: 48 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.08, ease: "easeOut" }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={() => setFlipped(f => !f)}
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
+      onClick={() => setFlipped((f) => !f)}
     >
       <div
         className="flip-card-inner"
         style={{
-          transform: isOpen ? "rotateY(180deg)" : "rotateY(0deg)",
+          transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
           transition: "transform 0.55s cubic-bezier(0.4,0,0.2,1)",
         }}
       >
@@ -116,6 +212,7 @@ function FlipCard({ service, index, inView }) {
             padding: 22,
             display: "flex",
             flexDirection: "column",
+            pointerEvents: flipped ? "none" : "auto",
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
@@ -134,11 +231,8 @@ function FlipCard({ service, index, inView }) {
             >
               {service.icon}
             </div>
-            <span className="flip-card-hint-hover" style={{ fontSize: 10, color: "#8BA8C4", fontWeight: 500, letterSpacing: "0.3px" }}>
+            <span style={{ fontSize: 10, color: "#8BA8C4", fontWeight: 500, letterSpacing: "0.3px" }}>
               hover →
-            </span>
-            <span className="flip-card-hint-tap" style={{ display: "none", fontSize: 10, color: "#8BA8C4", fontWeight: 500, letterSpacing: "0.3px" }}>
-              tap →
             </span>
           </div>
 
@@ -166,6 +260,7 @@ function FlipCard({ service, index, inView }) {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
+            pointerEvents: flipped ? "auto" : "none",
           }}
         >
           <div>
@@ -190,24 +285,7 @@ function FlipCard({ service, index, inView }) {
               </p>
             </div>
 
-            {service.external ? (
-              <a
-                href={service.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={e => e.stopPropagation()}
-                style={backCtaStyle}
-              >
-                {service.cta} →
-              </a>
-            ) : (
-              <button
-                onClick={e => { e.stopPropagation(); router.push(service.href); }}
-                style={{ ...backCtaStyle, border: `1px solid rgba(255,255,255,0.3)`, fontFamily: "inherit", cursor: "pointer" }}
-              >
-                {service.cta} →
-              </button>
-            )}
+            <ServiceCTA service={service} style={backCtaStyle} />
           </div>
         </div>
       </div>
