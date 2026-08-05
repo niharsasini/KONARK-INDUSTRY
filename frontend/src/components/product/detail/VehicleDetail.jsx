@@ -293,7 +293,7 @@ export default function VehicleDetail({ product }) {
         </div>
 
         {/* RIGHT — sticky action panel: identity, price, CTAs, highlights */}
-        <div style={{ position: "sticky", top: "calc(68px + var(--banner-h,0px) + 20px)" }}>
+        <div className="vehicle-action-panel" style={{ position: "sticky", top: "calc(68px + var(--banner-h,0px) + 20px)" }}>
           <div className="vehicle-action-card" style={{ background: "#FFFFFF", borderRadius: 24, boxShadow: "12px 12px 32px rgba(13,81,140,0.1), -10px -10px 28px rgba(255,255,255,0.95)", padding: "32px 28px" }}>
             <span style={{ display: "inline-block", background: "rgba(13,81,140,0.08)", border: "1px solid rgba(13,81,140,0.15)", color: "#0D518C", fontSize: 11, fontWeight: 700, padding: "4px 14px", borderRadius: 20, letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: 14 }}>
               {product.category}
@@ -512,9 +512,14 @@ export default function VehicleDetail({ product }) {
         }
         @media (max-width: 900px) {
           .vehicle-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .vehicle-action-panel { position: static !important; top: auto !important; }
         }
         @media (max-width: 640px) {
           .vehicle-image-box { height: 240px; }
+          .spec-strip { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 400px) {
+          .spec-strip { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>

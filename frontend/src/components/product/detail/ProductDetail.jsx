@@ -293,7 +293,7 @@ export default function ProductDetail({ product }) {
         </div>
         {activeTab === "description" && <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.8, maxWidth: 720 }}>{product.description}</p>}
         {activeTab === "specifications" && specs.length > 0 && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 40px", maxWidth: 720 }}>
+          <div className="pd-specs-tab-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 40px", maxWidth: 720 }}>
             {specs.map(([k, v], i) => (
               <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "10px 0", borderBottom: "1px solid var(--border-light)" }}>
                 <span style={{ fontSize: 13, color: "var(--text-muted)" }}>{k}</span>
@@ -370,6 +370,9 @@ export default function ProductDetail({ product }) {
       <style>{`
         @media (max-width: 768px) {
           .detail-grid { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 480px) {
+          .pd-specs-tab-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>

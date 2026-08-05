@@ -136,7 +136,7 @@ export default function ServiceDetail({ product }) {
         </div>
 
         {/* Right: booking form */}
-        <div style={{ background: "var(--bg-card)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 20, padding: "28px", position: "sticky", top: 80 }}>
+        <div className="service-action-panel" style={{ background: "var(--bg-card)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 20, padding: "28px", position: "sticky", top: 80 }}>
           {product.externalLink ? (
             <>
               <div style={{ marginBottom: 20 }}>
@@ -273,6 +273,7 @@ export default function ServiceDetail({ product }) {
       <style>{`
         @media (max-width: 900px) {
           .service-grid { grid-template-columns: 1fr !important; }
+          .service-action-panel { position: static !important; top: auto !important; }
         }
       `}</style>
     </div>
