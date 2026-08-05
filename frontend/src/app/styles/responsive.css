@@ -68,6 +68,7 @@
   }
   .hero-trust-row { gap: 6px !important; }
   .hero-trust-pill { font-size: 11px !important; }
+  .hero-scroll { display: none !important; }
 
   /* STATS */
   .stats-section { padding: 48px 0 !important; }
@@ -115,7 +116,8 @@
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 10px !important;
   }
-  .flip-card { height: 170px !important; }
+  .flip-card { height: 200px !important; }
+  .flip-card-front, .flip-card-back { padding: 16px !important; }
 
   /* WHY KONARK */
   .why-section { padding: 60px 20px !important; }
@@ -160,8 +162,11 @@
 
   /* CTA BANNER */
   .cta-section { min-height: 0 !important; }
+  .cta-inner { padding: 0 16px !important; }
   .cta-split-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
   .cta-floating-chip { display: none !important; }
+  .cta-action-card { padding: 28px 22px !important; }
+  .cta-phone-link { font-size: 26px !important; }
 
   /* FOOTER */
   .footer-main {

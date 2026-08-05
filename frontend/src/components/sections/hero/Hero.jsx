@@ -728,7 +728,7 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <div style={{
+      <div className="hero-scroll" style={{
         position: "absolute", bottom: 28, left: "50%",
         transform: "translateX(-50%)",
         display: "flex", flexDirection: "column", alignItems: "center",

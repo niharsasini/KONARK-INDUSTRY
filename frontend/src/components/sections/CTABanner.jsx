@@ -99,7 +99,7 @@ export default function CTABanner() {
         </div>
       ))}
 
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 28px", position: "relative", zIndex: 1, width: "100%" }}>
+      <div className="cta-inner" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 28px", position: "relative", zIndex: 1, width: "100%" }}>
         <div className="cta-split-grid">
           {/* LEFT — headline */}
           <motion.div
@@ -179,6 +179,7 @@ export default function CTABanner() {
             initial={{ opacity: 0, x: 40 }}
             animate={rightIn ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.15 }}
+            className="cta-action-card"
             style={{
               background: "#132040",
               borderRadius: 28,
@@ -192,6 +193,7 @@ export default function CTABanner() {
             </p>
             <a
               href={phoneHref}
+              className="cta-phone-link"
               style={{ fontSize: 36, fontWeight: 900, color: "#E8F4FF", letterSpacing: "-1px", lineHeight: 1, textDecoration: "none", transition: "color 0.2s ease", display: "block" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#4FC3F7")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "#E8F4FF")}

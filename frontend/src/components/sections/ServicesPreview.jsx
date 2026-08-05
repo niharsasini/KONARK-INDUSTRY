@@ -134,8 +134,11 @@ function FlipCard({ service, index, inView }) {
             >
               {service.icon}
             </div>
-            <span style={{ fontSize: 10, color: "#8BA8C4", fontWeight: 500, letterSpacing: "0.3px" }}>
+            <span className="flip-card-hint-hover" style={{ fontSize: 10, color: "#8BA8C4", fontWeight: 500, letterSpacing: "0.3px" }}>
               hover →
+            </span>
+            <span className="flip-card-hint-tap" style={{ display: "none", fontSize: 10, color: "#8BA8C4", fontWeight: 500, letterSpacing: "0.3px" }}>
+              tap →
             </span>
           </div>
 
