@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { BACKEND, CATEGORY_LABELS, thumbFor, youtubeId } from "@/components/gallery/media";
+import { BACKEND } from "@/components/gallery/media";
+import GalleryGrid, { GALLERY_GRID_CSS } from "@/components/gallery/GalleryGrid";
+import Lightbox from "@/components/gallery/Lightbox";
 
 const CATEGORIES = [
   { key: "all", label: "All", emoji: "🎯" },
@@ -12,20 +14,7 @@ const CATEGORIES = [
   { key: "customers", label: "Customers", emoji: "❤️" },
 ];
 
-const CSS = `
-.gal-cols { column-count: 3; column-gap: 16px; }
-@media (max-width: 991px) { .gal-cols { column-count: 2; } }
-@media (max-width: 599px) { .gal-cols { column-count: 1; } }
-.gal-item { break-inside: avoid; margin-bottom: 16px; border-radius: 20px; overflow: hidden; background: #fff;
-  box-shadow: 8px 8px 20px rgba(13,81,140,0.09), -6px -6px 16px rgba(255,255,255,0.95);
-  cursor: pointer; transition: all 0.35s ease; border: 0; padding: 0; width: 100%; display: block; text-align: left; font: inherit; }
-.gal-item:hover { transform: translateY(-6px); box-shadow: 12px 16px 32px rgba(13,81,140,0.16), -6px -6px 16px rgba(255,255,255,0.95); }
-.gal-item:focus-visible { outline: 3px solid #0EA5E9; outline-offset: 2px; }
-.gal-media { position: relative; overflow: hidden; }
-.gal-media img { width: 100%; display: block; object-fit: cover; transition: transform 0.5s ease; }
-.gal-item:hover .gal-media img { transform: scale(1.04); }
-.gal-play { transition: all 0.2s ease; }
-.gal-item:hover .gal-play { transform: translate(-50%, -50%) scale(1.1); }
+const CSS = GALLERY_GRID_CSS + `
 .gal-tab { transition: all 0.2s ease; }
 .gal-tab:not(.active):hover { border-color: rgba(13,81,140,0.25) !important; color: #0D518C !important; }
 .gal-arrow { transition: all 0.2s ease; }
@@ -37,84 +26,6 @@ const CSS = `
 `;
 
 const SKEL_HEIGHTS = [220, 300, 260, 340, 240, 280, 320, 230, 290, 250, 310, 270];
-
-function Lightbox({ items, index, onClose, onNav }) {
-  const item = items[index];
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "Escape") onClose();
-      else if (e.key === "ArrowLeft") onNav(-1);
-      else if (e.key === "ArrowRight") onNav(1);
-    };
-    window.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [onClose, onNav]);
-
-  const yt = item.media_type === "video" ? youtubeId(item.url) : null;
-  const circle = {
-    position: "absolute", width: 44, height: 44, background: "rgba(255,255,255,0.9)",
-    backdropFilter: "blur(8px)", borderRadius: "50%", display: "flex", alignItems: "center",
-    justifyContent: "center", cursor: "pointer", fontSize: 18, border: "none", color: "#0C1A2E",
-    boxShadow: "0 4px 16px rgba(0,0,0,0.15)", zIndex: 2,
-  };
-
-  return (
-    <div
-      role="dialog" aria-modal="true" aria-label={item.title}
-      onClick={onClose}
-      style={{ position: "fixed", inset: 0, background: "rgba(12,26,46,0.92)", backdropFilter: "blur(8px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 12 }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{ position: "relative", width: "min(900px, 95vw)", maxHeight: "90vh", borderRadius: 24, overflow: "hidden", background: "#fff", boxShadow: "0 40px 80px rgba(0,0,0,0.4)", display: "flex", flexDirection: "column" }}
-      >
-        <button onClick={onClose} aria-label="Close" style={{ ...circle, top: 16, right: 16, width: 40, height: 40, fontSize: 20 }}>✕</button>
-
-        <div style={{ background: "#0C1A2E", display: "flex", justifyContent: "center", alignItems: "center", minHeight: 0 }}>
-          {item.media_type === "video" ? (
-            yt ? (
-              <iframe
-                key={item.id}
-                src={`https://www.youtube.com/embed/${yt}?autoplay=1&rel=0`}
-                title={item.title}
-                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-                allowFullScreen
-                style={{ width: "100%", height: "min(480px, 56vw)", border: 0, display: "block" }}
-              />
-            ) : (
-              <video key={item.id} src={item.url} poster={item.thumbnail_url || undefined} controls autoPlay playsInline style={{ width: "100%", height: "min(480px, 56vw)", background: "#000", display: "block" }} />
-            )
-          ) : (
-            <img src={item.url} alt={item.title} style={{ width: "100%", height: "auto", maxHeight: "70vh", objectFit: "contain", display: "block" }} />
-          )}
-        </div>
-
-        <div style={{ padding: "20px 24px", background: "#fff", display: "flex", justifyContent: "space-between", gap: 16, alignItems: "flex-start", flexWrap: "wrap" }}>
-          <div style={{ minWidth: 0, flex: 1 }}>
-            <div style={{ fontSize: 18, fontWeight: 700, color: "#0C1A2E" }}>{item.title}</div>
-            {item.description && <div style={{ fontSize: 14, color: "#4A6785", marginTop: 6, lineHeight: 1.6 }}>{item.description}</div>}
-          </div>
-          <span style={{ background: "rgba(13,81,140,0.08)", color: "#0D518C", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 20, textTransform: "uppercase" }}>
-            {CATEGORY_LABELS[item.category] || item.category}
-          </span>
-        </div>
-
-        {items.length > 1 && (
-          <>
-            <button className="gal-arrow" onClick={() => onNav(-1)} aria-label="Previous" style={{ ...circle, top: "42%", left: 16, transform: "translateY(-50%)" }}>←</button>
-            <button className="gal-arrow" onClick={() => onNav(1)} aria-label="Next" style={{ ...circle, top: "42%", right: 16, transform: "translateY(-50%)" }}>→</button>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
 
 export default function GalleryPage() {
   const [items, setItems] = useState([]);
@@ -192,31 +103,7 @@ export default function GalleryPage() {
             <div style={{ fontSize: 14, color: "#4A6785" }}>{failed ? "Please try again in a moment." : "Check back soon"}</div>
           </div>
         ) : (
-          <div className="gal-cols">
-            {items.map((item, i) => {
-              const thumb = thumbFor(item);
-              const isVideo = item.media_type === "video";
-              return (
-                <button key={item.id} className="gal-item" onClick={() => setOpenIndex(i)} aria-label={`Open ${item.title}`}>
-                  <div className="gal-media" style={{ minHeight: isVideo && !thumb ? 200 : undefined, background: "#0C1A2E" }}>
-                    {thumb && <img src={thumb} alt={item.title} loading="lazy" />}
-                    {isVideo && (
-                      <>
-                        <span className="gal-play" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 56, height: 56, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(8px)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, color: "#0D518C", boxShadow: "0 4px 20px rgba(13,81,140,0.2)" }}>▶</span>
-                        <span style={{ position: "absolute", top: 12, right: 12, background: "rgba(0,0,0,0.6)", color: "#fff", fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 20 }}>▶ VIDEO</span>
-                      </>
-                    )}
-                  </div>
-                  <div style={{ padding: "12px 16px", background: "#fff", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
-                    <span style={{ color: "#0C1A2E", fontSize: 14, fontWeight: 600 }}>{item.title}</span>
-                    <span style={{ background: "rgba(13,81,140,0.08)", color: "#0D518C", fontSize: 10, fontWeight: 700, padding: "2px 10px", borderRadius: 20, whiteSpace: "nowrap" }}>
-                      {CATEGORY_LABELS[item.category] || item.category}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+          <GalleryGrid items={items} onOpen={setOpenIndex} />
         )}
       </section>
 
