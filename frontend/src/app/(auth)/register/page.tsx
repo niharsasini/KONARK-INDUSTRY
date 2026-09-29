@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { registerUser } from "@/lib/api";
@@ -124,16 +125,7 @@ export default function RegisterPage() {
         <div style={{ position: "absolute", bottom: "10%", right: "-10%", width: 300, height: 300, background: "radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", marginBottom: 48 }}>
-          <div style={{ width: 36, height: 36, borderRadius: "50%", border: "2px solid #ffffff", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,0.1)" }}>
-            <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}>
-              <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-              <circle cx="12" cy="12" r="3" fill="#ffffff" />
-            </svg>
-          </div>
-          <div>
-            <span style={{ display: "block", fontSize: 14, fontWeight: 700, color: "#ffffff" }}>KONARK</span>
-            <span style={{ display: "block", fontSize: 9, fontWeight: 600, letterSpacing: "0.2em", color: "var(--gold)", textTransform: "uppercase" }}>INDUSTRY</span>
-          </div>
+          <Image src="/konark/KONARK-1.png" alt="Konark Industry" width={52} height={52} style={{ width: 52, height: 52, objectFit: "contain" }} />
         </Link>
 
         <h1 style={{ fontSize: "clamp(24px, 2.5vw, 40px)", fontWeight: 900, color: "#ffffff", margin: "0 0 10px", lineHeight: 1.15 }}>

@@ -19,14 +19,14 @@ export const metadata: Metadata = {
     locale: "en_IN",
     type: "website",
     images: [
-      { url: "/konark/og-image.png", width: 1200, height: 630, alt: "Konark Industry – Odisha's EV & Energy Brand" },
+      { url: "/konark/og-logo.png", width: 1200, height: 630, alt: "Konark Industry – Odisha's EV & Energy Brand" },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Konark Industry",
     description: "Odisha's leading manufacturer of EVs, batteries, home appliances, and industrial solutions.",
-    images: ["/konark/og-image.png"],
+    images: ["/konark/og-logo.png"],
   },
   keywords: [
     "electric vehicle",

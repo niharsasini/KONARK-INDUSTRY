@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const QUICK_LINKS = [
@@ -116,16 +117,7 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, textDecoration: "none" }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, flexShrink: 0, background: "linear-gradient(135deg, #0D518C, #0EA5E9)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px rgba(13,81,140,0.3), inset 0 1px 0 rgba(255,255,255,0.2)" }}>
-              <svg viewBox="0 0 24 24" fill="none" style={{ width: 22, height: 22 }}>
-                <path d="M12 2v6M6.22 6.22l4.24 4.24M2 12h6M6.22 17.78l4.24-4.24M12 22v-6M17.78 17.78l-4.24-4.24M22 12h-6M17.78 6.22l-4.24 4.24" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
-                <circle cx="12" cy="12" r="3" fill="#FFFFFF" />
-              </svg>
-            </div>
-            <div>
-              <span style={{ display: "block", fontSize: 16, fontWeight: 900, color: "#FFFFFF" }}>KONARK</span>
-              <span style={{ display: "block", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", color: "#4FC3F7", textTransform: "uppercase" }}>INDUSTRY</span>
-            </div>
+            <Image src="/konark/KONARK-1.png" alt="Konark Industry" width={64} height={64} style={{ width: 64, height: 64, objectFit: "contain" }} />
           </Link>
 
           <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 14, marginTop: 14, marginBottom: 20 }}>
