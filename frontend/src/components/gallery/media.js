@@ -22,3 +22,11 @@ export function thumbFor(item) {
   const id = youtubeId(item.url);
   return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : "";
 }
+
+export function formatAlbumDate(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime())
+    ? ""
+    : d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+}
