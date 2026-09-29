@@ -10,7 +10,7 @@ import SolutionsSection from "@/components/sections/SolutionsSection";
 import Testimonials from "@/components/sections/testimonials/Testimonials";
 import GalleryPreview from "@/components/sections/GalleryPreview";
 import OurPartners from "@/components/sections/partners/OurPartners";
-import NewsletterSection from "@/components/sections/NewsletterSection";
+import FAQSection from "@/components/sections/FAQSection";
 import CTABanner from "@/components/sections/CTABanner";
 
 export const metadata: Metadata = {
@@ -27,14 +27,14 @@ export default function HomePage() {
       <StatsSection />
       <FeaturedProducts />
       <ServicesPreview />
+      <GalleryPreview />
       <WhyKonark />
-      <CertificationsSection />
-      <OurPartners />
       <SolutionsSection />
       <Testimonials />
-      <GalleryPreview />
-      <NewsletterSection />
+      <CertificationsSection />
+      <OurPartners />
       <CTABanner />
+      <FAQSection />
     </main>
   );
 }
