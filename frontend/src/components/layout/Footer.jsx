@@ -10,6 +10,7 @@ const QUICK_LINKS = [
   { label: "Contact", href: "/contact" },
   { label: "Test Ride", href: "/test-ride" },
   { label: "Battery Swap", href: "/battery-swap" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Partner Program", href: "/partner" },
 ];
 

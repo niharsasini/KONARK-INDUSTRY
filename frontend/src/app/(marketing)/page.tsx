@@ -8,6 +8,7 @@ import WhyKonark from "@/components/sections/WhyKonark";
 import CertificationsSection from "@/components/sections/CertificationsSection";
 import SolutionsSection from "@/components/sections/SolutionsSection";
 import Testimonials from "@/components/sections/testimonials/Testimonials";
+import GalleryPreview from "@/components/sections/GalleryPreview";
 import OurPartners from "@/components/sections/partners/OurPartners";
 import NewsletterSection from "@/components/sections/NewsletterSection";
 import CTABanner from "@/components/sections/CTABanner";
@@ -31,6 +32,7 @@ export default function HomePage() {
       <OurPartners />
       <SolutionsSection />
       <Testimonials />
+      <GalleryPreview />
       <NewsletterSection />
       <CTABanner />
     </main>

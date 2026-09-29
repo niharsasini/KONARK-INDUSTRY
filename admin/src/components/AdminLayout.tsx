@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard, Package, ShoppingBag, Mail, Wrench, Plus,
   Users, FileEdit, Settings, LogOut, Menu, X,
-  Bell, ExternalLink, ChevronRight, Battery, Star, BarChart3, MessageSquareQuote, HelpCircle,
+  Bell, ExternalLink, ChevronRight, Battery, Star, BarChart3, MessageSquareQuote, HelpCircle, Images,
   type LucideIcon,
 } from "lucide-react";
 import { getStats, getNotifications, markNotificationRead } from "@/lib/adminApi";
@@ -35,6 +35,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Products", href: "/products", icon: Package },
       { label: "Add Product", href: "/products/new", icon: Plus },
       { label: "Testimonials", href: "/testimonials", icon: MessageSquareQuote },
+      { label: "Gallery", href: "/gallery", icon: Images },
       { label: "FAQ", href: "/faq", icon: HelpCircle },
     ],
   },
@@ -74,6 +75,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/customers": "Customers",
   "/reviews": "Reviews",
   "/testimonials": "Testimonials",
+  "/gallery": "Gallery",
   "/faq": "FAQ",
   "/notifications": "Notifications",
   "/reports": "Reports & Analytics",

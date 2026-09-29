@@ -460,3 +460,31 @@ export async function updateFaq(id: string, data: Record<string, unknown>) {
 export async function deleteFaq(id: string) {
   return adminRequest(`/api/v1/faqs/${id}`, { method: "DELETE" });
 }
+
+// ─── GALLERY ─────────────────────────────────────────────────────────────────
+
+export async function getAllGallery() {
+  return adminRequest("/api/v1/gallery/admin");
+}
+
+export async function createGalleryItem(data: Record<string, unknown>) {
+  return adminRequest("/api/v1/gallery", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateGalleryItem(id: string, data: Record<string, unknown>) {
+  return adminRequest(`/api/v1/gallery/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteGalleryItem(id: string) {
+  return adminRequest(`/api/v1/gallery/${id}`, { method: "DELETE" });
+}
+
+export async function toggleGalleryFeatured(id: string) {
+  return adminRequest(`/api/v1/gallery/${id}/toggle-featured`, { method: "PATCH" });
+}
