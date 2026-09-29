@@ -488,3 +488,69 @@ export async function deleteGalleryItem(id: string) {
 export async function toggleGalleryFeatured(id: string) {
   return adminRequest(`/api/v1/gallery/${id}/toggle-featured`, { method: "PATCH" });
 }
+
+// ─── GALLERY ALBUMS ──────────────────────────────────────────────────────────
+
+export type Album = {
+  id: string;
+  title: string;
+  slug: string;
+  description: string | null;
+  category: string;
+  cover_image: string | null;
+  event_date: string | null;
+  location: string | null;
+  is_published: boolean;
+  order: number;
+  photo_count: number;
+};
+
+export async function getAllAlbums() {
+  return adminRequest<Album[]>("/api/v1/albums/admin");
+}
+
+export async function createAlbum(data: Record<string, unknown>) {
+  return adminRequest<Album>("/api/v1/albums", { method: "POST", body: JSON.stringify(data) });
+}
+
+export async function updateAlbum(id: string, data: Record<string, unknown>) {
+  return adminRequest<Album>(`/api/v1/albums/${id}`, { method: "PATCH", body: JSON.stringify(data) });
+}
+
+export async function deleteAlbum(id: string, deletePhotos: boolean) {
+  return adminRequest(`/api/v1/albums/${id}?delete_photos=${deletePhotos}`, { method: "DELETE" });
+}
+
+export async function getAlbumPhotos(albumId: string) {
+  return adminRequest(`/api/v1/gallery/admin?album_id=${albumId}`);
+}
+
+export async function reorderAlbumPhotos(albumId: string, ids: string[]) {
+  return adminRequest(`/api/v1/albums/${albumId}/reorder`, { method: "POST", body: JSON.stringify({ ids }) });
+}
+
+/** Upload one image to Cloudinary (konark-gallery folder) with real progress events. */
+export function uploadGalleryImage(file: File, onProgress: (pct: number) => void): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("konark_admin_token") : null;
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("folder", "konark-gallery");
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", `${BASE_URL}/api/v1/products/upload-image/general`);
+    if (token) xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+    xhr.withCredentials = true;
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+    };
+    xhr.onload = () => {
+      let body: { url?: string; detail?: string } = {};
+      try { body = JSON.parse(xhr.responseText); } catch { /* non-JSON error (e.g. nginx 413) */ }
+      if (xhr.status >= 200 && xhr.status < 300 && body.url) resolve(body.url);
+      else if (xhr.status === 413) reject(new Error("File too large for the server"));
+      else reject(new Error(body.detail || `Upload failed (${xhr.status})`));
+    };
+    xhr.onerror = () => reject(new Error("Network error during upload"));
+    xhr.send(fd);
+  });
+}
