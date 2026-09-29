@@ -38,12 +38,13 @@ class GalleryItem(Document):
     is_active: bool = True
     sort_order: int = 0
     tags: List[str] = []
+    album_id: Optional[str] = None  # Album._id as str; None = not in any album
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Settings:
         name = "gallery"
-        indexes = ["is_active", "is_featured", "category", "sort_order"]
+        indexes = ["is_active", "is_featured", "category", "sort_order", "album_id"]
 
 
 class GalleryCreate(BaseModel):
@@ -57,6 +58,7 @@ class GalleryCreate(BaseModel):
     is_active: bool = True
     sort_order: int = 0
     tags: List[str] = []
+    album_id: Optional[str] = None
 
 
 class GalleryUpdate(BaseModel):
@@ -70,3 +72,4 @@ class GalleryUpdate(BaseModel):
     is_active: Optional[bool] = None
     sort_order: Optional[int] = None
     tags: Optional[List[str]] = None
+    album_id: Optional[str] = None

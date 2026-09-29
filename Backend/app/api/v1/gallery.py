@@ -26,6 +26,13 @@ router = APIRouter(prefix="/gallery", tags=["Gallery"])
 _SORT = [("sort_order", 1), ("created_at", -1)]
 
 
+def _out(item: GalleryItem) -> dict:
+    """JSON shape for clients: plain `id` (Beanie would otherwise emit `_id`)."""
+    d = item.model_dump(mode="json")
+    d.pop("revision_id", None)
+    return d
+
+
 async def _get_or_404(item_id: str) -> GalleryItem:
     """Fetch by id; a malformed id is treated the same as a missing one."""
     try:
@@ -40,10 +47,12 @@ async def _get_or_404(item_id: str) -> GalleryItem:
 # ─── Public ───────────────────────────────────────────────────────────────────
 
 @router.get("")
+@router.get("/", include_in_schema=False)  # no 307 redirect on trailing slash
 async def get_gallery(
     category: Optional[MediaCategory] = None,
     media_type: Optional[MediaType] = None,
     featured: Optional[bool] = None,
+    album_id: Optional[str] = None,
     limit: int = Query(50, ge=1, le=200),
     skip: int = Query(0, ge=0),
 ):
@@ -55,16 +64,19 @@ async def get_gallery(
         query = query.find(GalleryItem.media_type == media_type)
     if featured is not None:
         query = query.find(GalleryItem.is_featured == featured)
-    return await query.sort(_SORT).skip(skip).limit(limit).to_list()
+    if album_id:
+        query = query.find(GalleryItem.album_id == album_id)
+    return [_out(i) for i in await query.sort(_SORT).skip(skip).limit(limit).to_list()]
 
 
 @router.get("/featured")
 async def get_featured_gallery(limit: int = Query(12, ge=1, le=50)):
     """Public: featured items for the homepage preview."""
-    return await GalleryItem.find(
+    items = await GalleryItem.find(
         GalleryItem.is_active == True,
         GalleryItem.is_featured == True,
     ).sort(_SORT).limit(limit).to_list()
+    return [_out(i) for i in items]
 
 
 @router.get("/categories")
@@ -73,9 +85,10 @@ async def get_categories():
 
 
 @router.get("/admin")
-async def get_gallery_admin(admin: User = Depends(get_admin_user)):
-    """Admin: every item, active or not."""
-    return await GalleryItem.find_all().sort(_SORT).to_list()
+async def get_gallery_admin(album_id: Optional[str] = None, admin: User = Depends(get_admin_user)):
+    """Admin: every item, active or not (optionally only one album's)."""
+    query = GalleryItem.find(GalleryItem.album_id == album_id) if album_id else GalleryItem.find_all()
+    return [_out(i) for i in await query.sort(_SORT).to_list()]
 
 
 @router.get("/{item_id}")
@@ -83,7 +96,7 @@ async def get_gallery_item(item_id: str):
     item = await _get_or_404(item_id)
     if not item.is_active:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Gallery item not found")
-    return item
+    return _out(item)
 
 
 # ─── Admin ────────────────────────────────────────────────────────────────────
@@ -92,7 +105,7 @@ async def get_gallery_item(item_id: str):
 async def create_gallery_item(data: GalleryCreate, admin: User = Depends(get_admin_user)):
     item = GalleryItem(**data.model_dump())
     await item.insert()
-    return item
+    return _out(item)
 
 
 @router.patch("/{item_id}/toggle-featured")
@@ -113,7 +126,7 @@ async def update_gallery_item(
         setattr(item, key, value)
     item.updated_at = datetime.utcnow()
     await item.save()
-    return item
+    return _out(item)
 
 
 @router.delete("/{item_id}")
