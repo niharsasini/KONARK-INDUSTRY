@@ -1,12 +1,16 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import MegaPanel, { useMegaItem } from "./MegaPanel";
 
 function SvcItem({ icon, name, desc, href, external }) {
   const [hovered, setHovered] = useState(false);
   const Tag = external ? "a" : Link;
   const extraProps = external ? { href, target: "_blank", rel: "noopener noreferrer" } : { href };
+  const item = useMegaItem();
   return (
+    <motion.div variants={item}>
     <Tag
       {...extraProps}
       onMouseEnter={() => setHovered(true)}
@@ -15,7 +19,7 @@ function SvcItem({ icon, name, desc, href, external }) {
         display: "flex", alignItems: "center", gap: 12,
         padding: "10px 12px", borderRadius: 10,
         textDecoration: "none",
-        background: hovered ? "rgba(217,119,6,0.12)" : "transparent",
+        background: hovered ? "rgba(13,81,140,0.12)" : "transparent",
         transform: hovered ? "translateX(4px)" : "translateX(0)",
         transition: "all 0.15s ease",
       }}
@@ -23,10 +27,10 @@ function SvcItem({ icon, name, desc, href, external }) {
       <div style={{
         width: 38, height: 38, borderRadius: 10, flexShrink: 0,
         background: hovered
-          ? "linear-gradient(135deg, var(--gold), var(--gold-dark))"
+          ? "linear-gradient(135deg, var(--navy), var(--navy-dark))"
           : "linear-gradient(145deg, #F0F5FF, #E8F2FF)",
         border: hovered ? "1px solid transparent" : "1px solid rgba(13,81,140,0.08)",
-        boxShadow: hovered ? "0 4px 12px rgba(217,119,6,0.25)" : "2px 2px 6px rgba(13,81,140,0.06)",
+        boxShadow: hovered ? "0 4px 12px rgba(13,81,140,0.25)" : "2px 2px 6px rgba(13,81,140,0.06)",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 18, transition: "all 0.18s ease",
         transform: hovered ? "scale(1.08)" : "scale(1)",
@@ -38,64 +42,29 @@ function SvcItem({ icon, name, desc, href, external }) {
         {desc && <div style={{ fontSize: 12, color: "var(--text-subtle)", marginTop: 1 }}>{desc}</div>}
       </div>
     </Tag>
+    </motion.div>
   );
 }
 
 export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave }) {
-  const visible = {
-    opacity: 1,
-    transform: "translateX(-50%) translateY(0px) scale(1)",
-    visibility: "visible",
-    pointerEvents: "auto",
-    transition: "opacity 0.25s cubic-bezier(0.4,0,0.2,1), transform 0.25s cubic-bezier(0.4,0,0.2,1)",
-  };
-  const hidden = {
-    opacity: 0,
-    transform: "translateX(-50%) translateY(-10px) scale(0.97)",
-    visibility: "hidden",
-    pointerEvents: "none",
-    transition: "opacity 0.15s ease, transform 0.15s ease, visibility 0s 0.15s",
-  };
-
+  const item = useMegaItem();
   return (
-    <div
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      style={{
-        position: "absolute",
-        top: "calc(100% + 8px)",
-        left: "50%",
-        width: 560,
-        background: "rgba(255,255,255,0.97)",
-        backdropFilter: "blur(24px)",
-        border: "1px solid rgba(13,81,140,0.1)",
-        borderRadius: 20,
-        boxShadow:
-          "0 24px 64px rgba(13,81,140,0.12), 0 8px 24px rgba(13,81,140,0.06), 0 0 0 1px rgba(255,255,255,0.8), inset 0 1px 0 rgba(255,255,255,0.9)",
-        padding: 8,
-        zIndex: 999,
-        overflow: "hidden",
-        ...(isOpen ? visible : hidden),
-      }}
-    >
-      {/* Transparent bridge covers the gap */}
-      <div style={{ position: "absolute", top: -8, left: 0, right: 0, height: 8, background: "transparent" }} />
-
+    <MegaPanel isOpen={isOpen} width={560} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {/* Header */}
-      <div style={{
-        background: "linear-gradient(135deg, #FFF8EE, #FFF3E0)",
+      <motion.div variants={item} style={{
+        background: "linear-gradient(135deg, rgba(255,248,238,0.85), rgba(255,243,224,0.75))",
         borderRadius: 14, padding: "16px 20px", marginBottom: 6,
       }}>
         <div style={{ fontSize: 17, fontWeight: 800, color: "var(--text-heading)", marginBottom: 2 }}>Our Services</div>
         <div style={{ fontSize: 12, color: "var(--text-subtle)" }}>Doorstep service across Odisha</div>
-      </div>
+      </motion.div>
 
       {/* 2-column grid */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", padding: "0 4px 4px" }}>
         {/* Home & EV */}
         <div style={{ paddingRight: 8, borderRight: "1px solid rgba(148,163,184,0.12)" }}>
           <div style={{
-            fontSize: 10, fontWeight: 700, color: "var(--gold)",
+            fontSize: 10, fontWeight: 700, color: "var(--navy)",
             letterSpacing: "1.5px", textTransform: "uppercase",
             padding: "8px 12px 4px",
           }}>
@@ -109,7 +78,7 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         {/* Energy & Power */}
         <div style={{ paddingLeft: 8 }}>
           <div style={{
-            fontSize: 10, fontWeight: 700, color: "var(--gold)",
+            fontSize: 10, fontWeight: 700, color: "var(--navy)",
             letterSpacing: "1.5px", textTransform: "uppercase",
             padding: "8px 12px 4px",
           }}>
@@ -122,15 +91,15 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
       </div>
 
       {/* Featured card */}
-      <div style={{
-        background: "linear-gradient(135deg, rgba(217,119,6,0.08), rgba(13,81,140,0.08))",
-        border: "1px solid rgba(217,119,6,0.2)",
+      <motion.div variants={item} style={{
+        background: "linear-gradient(135deg, rgba(13,81,140,0.08), rgba(13,81,140,0.08))",
+        border: "1px solid rgba(13,81,140,0.2)",
         borderRadius: 12, padding: "14px 16px", margin: "4px 4px 8px",
         display: "flex", alignItems: "center", gap: 12,
       }}>
         <div style={{
           width: 40, height: 40, borderRadius: 10, flexShrink: 0,
-          background: "linear-gradient(135deg, var(--gold), var(--gold-dark))",
+          background: "linear-gradient(135deg, var(--navy), var(--navy-dark))",
           display: "flex", alignItems: "center", justifyContent: "center",
           fontSize: 20,
         }}>
@@ -143,19 +112,19 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         <Link
           href="/battery-swap"
           style={{
-            fontSize: 13, fontWeight: 700, color: "var(--gold)",
+            fontSize: 13, fontWeight: 700, color: "var(--navy)",
             textDecoration: "none", whiteSpace: "nowrap",
             transition: "color 0.15s",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold-dark)")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--gold)")}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy-dark)")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--navy)")}
         >
           Book Now →
         </Link>
-      </div>
+      </motion.div>
 
       {/* Footer */}
-      <div style={{
+      <motion.div variants={item} style={{
         borderTop: "1px solid rgba(13,81,140,0.06)",
         padding: "12px 16px 14px",
         display: "flex", justifyContent: "space-between", alignItems: "center",
@@ -163,7 +132,7 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         <Link
           href="/services"
           style={{ fontSize: 12, color: "var(--text-subtle)", textDecoration: "none", fontWeight: 500, transition: "color 0.15s" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy)")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-subtle)")}
         >
           View all services →
@@ -179,7 +148,7 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         >
           Book a Service →
         </Link>
-      </div>
-    </div>
+      </motion.div>
+    </MegaPanel>
   );
 }

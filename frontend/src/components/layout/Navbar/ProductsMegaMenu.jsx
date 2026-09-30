@@ -1,10 +1,14 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import MegaPanel, { useMegaItem } from "./MegaPanel";
 
 function MenuItem({ icon, name, desc, href }) {
   const [hovered, setHovered] = useState(false);
+  const item = useMegaItem();
   return (
+    <motion.div variants={item}>
     <Link
       href={href}
       onMouseEnter={() => setHovered(true)}
@@ -36,52 +40,17 @@ function MenuItem({ icon, name, desc, href }) {
         {desc && <div style={{ fontSize: 12, color: "var(--text-subtle)", marginTop: 1 }}>{desc}</div>}
       </div>
     </Link>
+    </motion.div>
   );
 }
 
 export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave }) {
-  const visible = {
-    opacity: 1,
-    transform: "translateX(-50%) translateY(0px) scale(1)",
-    visibility: "visible",
-    pointerEvents: "auto",
-    transition: "opacity 0.25s cubic-bezier(0.4,0,0.2,1), transform 0.25s cubic-bezier(0.4,0,0.2,1)",
-  };
-  const hidden = {
-    opacity: 0,
-    transform: "translateX(-50%) translateY(-10px) scale(0.97)",
-    visibility: "hidden",
-    pointerEvents: "none",
-    transition: "opacity 0.15s ease, transform 0.15s ease, visibility 0s 0.15s",
-  };
-
+  const item = useMegaItem();
   return (
-    <div
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      style={{
-        position: "absolute",
-        top: "calc(100% + 8px)",
-        left: "50%",
-        width: 660,
-        background: "rgba(255,255,255,0.97)",
-        backdropFilter: "blur(24px)",
-        border: "1px solid rgba(13,81,140,0.1)",
-        borderRadius: 20,
-        boxShadow:
-          "0 24px 64px rgba(13,81,140,0.12), 0 8px 24px rgba(13,81,140,0.06), 0 0 0 1px rgba(255,255,255,0.8), inset 0 1px 0 rgba(255,255,255,0.9)",
-        padding: 8,
-        zIndex: 999,
-        overflow: "hidden",
-        ...(isOpen ? visible : hidden),
-      }}
-    >
-      {/* Transparent bridge covers the gap */}
-      <div style={{ position: "absolute", top: -8, left: 0, right: 0, height: 8, background: "transparent" }} />
-
+    <MegaPanel isOpen={isOpen} width={660} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {/* Header */}
-      <div style={{
-        background: "linear-gradient(135deg, #F5F7FF, #EEF2FF)",
+      <motion.div variants={item} style={{
+        background: "linear-gradient(135deg, rgba(245,247,255,0.8), rgba(238,242,255,0.7))",
         borderRadius: 14, padding: "16px 20px", marginBottom: 6,
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
@@ -97,7 +66,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         >
           View All →
         </Link>
-      </div>
+      </motion.div>
 
       {/* 2-column grid */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", padding: "0 4px 4px" }}>
@@ -133,7 +102,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
       </div>
 
       {/* Footer */}
-      <div style={{
+      <motion.div variants={item} style={{
         borderTop: "1px solid rgba(13,81,140,0.06)",
         padding: "12px 16px 14px",
         display: "flex", justifyContent: "space-between", alignItems: "center",
@@ -158,7 +127,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         >
           Shop Now →
         </Link>
-      </div>
-    </div>
+      </motion.div>
+    </MegaPanel>
   );
 }

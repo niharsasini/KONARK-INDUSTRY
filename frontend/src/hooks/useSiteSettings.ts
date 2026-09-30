@@ -56,7 +56,7 @@ function fetchSettings(): Promise<PublicSiteSettings | null> {
 
 /** Shared hook for the public-safe site settings (tagline, banner, social links, WhatsApp template). */
 export function useSiteSettings(): PublicSiteSettings | null {
-  const [settings, setSettings] = useState<PublicSiteSettings | null>(cachedSettings);
+  const [settings, setSettings] = useState<PublicSiteSettings | null>(null); // null on first render so client matches SSR; the effect below applies the cache
 
   useEffect(() => {
     if (cachedSettings) {

@@ -280,6 +280,7 @@ export default function ServicesPage() {
     <div style={{ minHeight: "100vh" }}>
       {/* SECTION 1 — HERO */}
       <div
+        data-nav-theme="dark"
         style={{
           background: "linear-gradient(135deg, #0B1729 0%, #0F1E35 40%, #132040 70%, #0B1729 100%)",
           padding: "calc(68px + var(--banner-h,0px) + 60px) 24px 80px",
@@ -443,7 +444,7 @@ export default function ServicesPage() {
       </section>
 
       {/* SECTION 4 — WHY BOOK WITH US */}
-      <section style={{ background: "#0B1729", padding: "72px 24px" }}>
+      <section data-nav-theme="dark" style={{ background: "#0B1729", padding: "72px 24px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 44 }}>
             <span style={{ display: "inline-block", background: "rgba(13,81,140,0.2)", border: "1px solid rgba(79,195,247,0.25)", color: "#4FC3F7", fontSize: 10, fontWeight: 700, letterSpacing: "2px", padding: "5px 16px", borderRadius: 999, marginBottom: 16, textTransform: "uppercase" }}>

@@ -1,5 +1,5 @@
 import "./globals.css";
-import NavbarV2 from "@/components/layout/NavbarV2";
+import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ClientAuthModal from "@/components/ui/ClientAuthModal";
 import ClientWidgets from "@/components/ui/ClientWidgets";
@@ -52,7 +52,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         <ScrollProgress />
         <AnnouncementBanner />
-        <NavbarV2 />
+        <Navbar />
         <PageTransition>
           <main style={{ flex: 1 }}>{children}</main>
         </PageTransition>

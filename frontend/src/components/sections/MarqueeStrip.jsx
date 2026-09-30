@@ -43,7 +43,7 @@ function MarqueeRow({ items, iconColor, textColor, speed, reverse }) {
 
 export default function MarqueeStrip() {
   return (
-    <div style={{
+    <div data-nav-theme="dark" style={{
       background: "#0B1120",
       backdropFilter: "blur(8px)",
       borderTop: "1px solid rgba(148,163,184,0.12)",

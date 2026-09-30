@@ -112,7 +112,7 @@ export default function Footer() {
   ].filter((s) => s.href);
 
   return (
-    <footer style={{ background: "#080D18", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+    <footer data-nav-theme="dark" style={{ background: "#080D18", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
       <div className="footer-main">
         {/* Brand */}
         <div>
