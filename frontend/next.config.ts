@@ -34,8 +34,9 @@ const nextConfig: NextConfig = {
     ]
     if (dev) {
       config.watchOptions = {
-        poll: 1000,
+        poll: 5000,
         aggregateTimeout: 300,
+        ignored: ['**/node_modules/**', '**/.next/**', '**/.git/**', '**/frontend-diag/**'],
       }
     }
     return config
