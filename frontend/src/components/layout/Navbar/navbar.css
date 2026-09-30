@@ -80,17 +80,12 @@
 .nb-links:hover::before, .nb-actions:hover::before { opacity: 1; }
 .nb-links > *, .nb-actions > * { position: relative; z-index: 1; }
 
-/* Logo pill: emblem + gold wordmark */
-.nb-logo { justify-self: start; padding: 4px 16px 4px 8px; }
-.nb-root.compact .nb-logo { padding: 3px 14px 3px 6px; }
-.nb-logo-link { display: flex; align-items: center; gap: 9px; text-decoration: none; flex-shrink: 0; }
-.nb-logo-link img { width: 40px; height: 40px; object-fit: contain; transition: width 300ms ease-out, height 300ms ease-out; }
-.nb-root.compact .nb-logo-link img { width: 36px; height: 36px; }
-.nb-wordmark {
-  font-size: 13px; font-weight: 700; letter-spacing: 0.12em; font-variant-caps: all-small-caps; text-transform: uppercase;
-  background: linear-gradient(135deg, #F5C26B, #D97706);
-  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
-}
+/* Logo pill: tight around the logo image (which already contains the name) */
+.nb-logo { justify-self: start; padding: 4px; border-radius: 22px; }
+.nb-root.compact .nb-logo { padding: 3px; }
+.nb-logo-link { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+.nb-logo-link img { width: 56px; height: 56px; max-width: none; object-fit: contain; transition: width 300ms ease-out, height 300ms ease-out; }
+.nb-root.compact .nb-logo-link img { width: 48px; height: 48px; }
 
 .nb-actions { justify-self: end; gap: 8px; padding: 5px 9px; }
 .nb-root.compact .nb-actions { padding: 3px 7px; }
@@ -305,6 +300,8 @@
   .nb-root { display: flex; justify-content: space-between; }
   .nb-links, .nb-actions, .nb-mega-layer { display: none; }
   .nb-menu { display: flex; padding: 3px 4px 3px 6px; gap: 0; }
+  .nb-logo, .nb-root.compact .nb-logo { padding: 4px; border-radius: 18px; }
+  .nb-root .nb-logo-link img, .nb-root.compact .nb-logo-link img { width: 44px; height: 44px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
