@@ -123,7 +123,7 @@ export default function MobileMenu({ menuOpen, setMenuOpen, expandedSection, set
                 <button
                   onClick={() => { signOut(); close(); }}
                   className="nb-m-item"
-                  style={{ color: "#DC2626" }}
+                  style={{ color: "#FCA5A5" }}
                 >
                   <span className="nb-m-label">Sign Out</span>
                 </button>
@@ -137,10 +137,10 @@ export default function MobileMenu({ menuOpen, setMenuOpen, expandedSection, set
             <div className="nb-m-divider" />
 
             <motion.div variants={itemVariants} style={{ textAlign: "center", padding: "12px 14px 4px" }}>
-              <a href="tel:+919437611129" style={{ fontSize: 18, color: "#0D518C", fontWeight: 800, display: "block", marginBottom: 4, textDecoration: "none" }}>
+              <a href="tel:+919437611129" style={{ fontSize: 18, color: "#F5C26B", fontWeight: 800, display: "block", marginBottom: 4, textDecoration: "none" }}>
                 📞 +91 94376 11129
               </a>
-              <span style={{ fontSize: 12, color: "#64748B" }}>konarkindustrie@gmail.com</span>
+              <span style={{ fontSize: 12, color: "#94A3B8" }}>konarkindustrie@gmail.com</span>
             </motion.div>
           </nav></div>
 

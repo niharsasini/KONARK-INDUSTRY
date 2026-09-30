@@ -19,7 +19,7 @@ function SvcItem({ icon, name, desc, href, external }) {
         display: "flex", alignItems: "center", gap: 12,
         padding: "10px 12px", borderRadius: 10,
         textDecoration: "none",
-        background: hovered ? "rgba(13,81,140,0.12)" : "transparent",
+        background: hovered ? "rgba(245,194,107,0.10)" : "transparent",
         transform: hovered ? "translateX(4px)" : "translateX(0)",
         transition: "all 0.15s ease",
       }}
@@ -27,15 +27,15 @@ function SvcItem({ icon, name, desc, href, external }) {
       <div style={{
         width: 38, height: 38, borderRadius: 10, flexShrink: 0,
         background: hovered
-          ? "linear-gradient(135deg, var(--navy), var(--navy-dark))"
-          : "linear-gradient(145deg, #F0F5FF, #E8F2FF)",
-        border: hovered ? "1px solid transparent" : "1px solid rgba(13,81,140,0.08)",
-        boxShadow: hovered ? "0 4px 12px rgba(13,81,140,0.25)" : "2px 2px 6px rgba(13,81,140,0.06)",
+          ? "linear-gradient(135deg, #F5C26B, #D97706)"
+          : "rgba(255,255,255,0.05)",
+        border: hovered ? "1px solid transparent" : "1px solid rgba(255,255,255,0.08)",
+        boxShadow: hovered ? "0 4px 14px rgba(217,119,6,0.35)" : "none",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 18, transition: "all 0.18s ease",
         transform: hovered ? "scale(1.08)" : "scale(1)",
       }}>
-        <span style={{ filter: hovered ? "brightness(10)" : "none", transition: "filter 0.15s ease" }}>{icon}</span>
+        <span style={{ filter: "none" }}>{icon}</span>
       </div>
       <div>
         <div style={{ fontSize: 14, fontWeight: 600, color: "var(--text-heading)" }}>{name}</div>
@@ -52,7 +52,7 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
     <MegaPanel isOpen={isOpen} width={560} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {/* Header */}
       <motion.div variants={item} style={{
-        background: "linear-gradient(135deg, rgba(255,248,238,0.85), rgba(255,243,224,0.75))",
+        background: "linear-gradient(135deg, rgba(245,194,107,0.10), rgba(255,255,255,0.03))",
         borderRadius: 14, padding: "16px 20px", marginBottom: 6,
       }}>
         <div style={{ fontSize: 17, fontWeight: 800, color: "var(--text-heading)", marginBottom: 2 }}>Our Services</div>
@@ -92,14 +92,14 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
 
       {/* Featured card */}
       <motion.div variants={item} style={{
-        background: "linear-gradient(135deg, rgba(13,81,140,0.08), rgba(13,81,140,0.08))",
-        border: "1px solid rgba(13,81,140,0.2)",
+        background: "linear-gradient(135deg, rgba(245,194,107,0.10), rgba(255,255,255,0.03))",
+        border: "1px solid rgba(245,194,107,0.22)",
         borderRadius: 12, padding: "14px 16px", margin: "4px 4px 8px",
         display: "flex", alignItems: "center", gap: 12,
       }}>
         <div style={{
           width: 40, height: 40, borderRadius: 10, flexShrink: 0,
-          background: "linear-gradient(135deg, var(--navy), var(--navy-dark))",
+          background: "linear-gradient(135deg, #F5C26B, #D97706)",
           display: "flex", alignItems: "center", justifyContent: "center",
           fontSize: 20,
         }}>
@@ -125,7 +125,7 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
 
       {/* Footer */}
       <motion.div variants={item} style={{
-        borderTop: "1px solid rgba(13,81,140,0.06)",
+        borderTop: "1px solid rgba(255,255,255,0.08)",
         padding: "12px 16px 14px",
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
@@ -139,12 +139,7 @@ export default function ServicesMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         </Link>
         <Link
           href="/services/enquiry"
-          className="clay-btn clay-btn-primary"
-          style={{
-            padding: "8px 20px", fontSize: 13,
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            textDecoration: "none", color: "#FFFFFF",
-          }}
+          className="nb-mega-cta"
         >
           Book a Service →
         </Link>

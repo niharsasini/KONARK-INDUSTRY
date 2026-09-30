@@ -17,7 +17,7 @@ function MenuItem({ icon, name, desc, href }) {
         display: "flex", alignItems: "center", gap: 12,
         padding: "10px 12px", borderRadius: 10,
         textDecoration: "none",
-        background: hovered ? "rgba(13,81,140,0.12)" : "transparent",
+        background: hovered ? "rgba(245,194,107,0.10)" : "transparent",
         transform: hovered ? "translateX(4px)" : "translateX(0)",
         transition: "all 0.15s ease",
       }}
@@ -25,15 +25,15 @@ function MenuItem({ icon, name, desc, href }) {
       <div style={{
         width: 38, height: 38, borderRadius: 10, flexShrink: 0,
         background: hovered
-          ? "linear-gradient(135deg, var(--navy), var(--sky))"
-          : "linear-gradient(145deg, #F0F5FF, #E8F2FF)",
-        border: hovered ? "1px solid transparent" : "1px solid rgba(13,81,140,0.08)",
-        boxShadow: hovered ? "0 4px 12px rgba(13,81,140,0.25)" : "2px 2px 6px rgba(13,81,140,0.06)",
+          ? "linear-gradient(135deg, #F5C26B, #D97706)"
+          : "rgba(255,255,255,0.05)",
+        border: hovered ? "1px solid transparent" : "1px solid rgba(255,255,255,0.08)",
+        boxShadow: hovered ? "0 4px 14px rgba(217,119,6,0.35)" : "none",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 18, transition: "all 0.18s ease",
         transform: hovered ? "scale(1.08)" : "scale(1)",
       }}>
-        <span style={{ filter: hovered ? "brightness(10)" : "none", transition: "filter 0.15s ease" }}>{icon}</span>
+        <span style={{ filter: "none" }}>{icon}</span>
       </div>
       <div>
         <div style={{ fontSize: 14, fontWeight: 600, color: "var(--text-heading)" }}>{name}</div>
@@ -50,7 +50,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
     <MegaPanel isOpen={isOpen} width={660} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {/* Header */}
       <motion.div variants={item} style={{
-        background: "linear-gradient(135deg, rgba(245,247,255,0.8), rgba(238,242,255,0.7))",
+        background: "linear-gradient(135deg, rgba(245,194,107,0.10), rgba(255,255,255,0.03))",
         borderRadius: 14, padding: "16px 20px", marginBottom: 6,
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
@@ -103,7 +103,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
 
       {/* Footer */}
       <motion.div variants={item} style={{
-        borderTop: "1px solid rgba(13,81,140,0.06)",
+        borderTop: "1px solid rgba(255,255,255,0.08)",
         padding: "12px 16px 14px",
         display: "flex", justifyContent: "space-between", alignItems: "center",
         marginTop: 4,
@@ -118,12 +118,7 @@ export default function ProductsMegaMenu({ isOpen, onMouseEnter, onMouseLeave })
         </Link>
         <Link
           href="/products"
-          className="clay-btn clay-btn-primary"
-          style={{
-            padding: "8px 20px", fontSize: 13,
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            textDecoration: "none", color: "#FFFFFF",
-          }}
+          className="nb-mega-cta"
         >
           Shop Now →
         </Link>

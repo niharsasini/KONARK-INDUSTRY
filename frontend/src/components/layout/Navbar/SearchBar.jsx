@@ -21,7 +21,7 @@ export default function SearchBar({ searchOpen, setSearchOpen, searchQuery, setS
               if (e.key === "Escape") { setSearchOpen(false); setSearchQuery(""); }
             }}
             placeholder="Search products..."
-            style={{ width: 220, background: "rgba(255,255,255,0.85)", border: "1px solid var(--sky)", color: "var(--text-heading)", fontSize: 13, padding: "7px 12px", borderRadius: 10, outline: "none" }}
+            style={{ width: 220, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E6EDF7", fontSize: 13, padding: "7px 12px", borderRadius: 10, outline: "none" }}
           />
           {searchPreview.length > 0 && (
             <div style={{ position: "absolute", top: "calc(100% + 6px)", left: 0, right: 0, background: "var(--bg-card)", border: "1px solid var(--border-default)", borderRadius: 12, zIndex: 300, overflow: "hidden", boxShadow: "0 8px 32px rgba(15,23,42,0.5)" }}>
